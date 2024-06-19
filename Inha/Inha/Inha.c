@@ -23,21 +23,18 @@ void main()
 	int m, n;
 	scanf("%d%d", &m, &n);
 	int res = n * 365 * m * (3 * 60 + 40);
-	int y, d, h, min;
-	min = res % 60;
-	h = (res / 60) % 24;
-	d = (res / 60 / 24) % 365;
-	y = (res / 60 / 24 / 365);
+	int min = res % 60;
+	int h = (res / 60) % 24;
+	int d = (res / 60 / 24) % 365;
+	int y = (res / 60 / 24 / 365);
 	
 	const int a = 100 * 365 * 24 * 60;
 	int pres = a - res;
-	int py, pd, ph, pmin;
-	pmin = pres % 60;
-	ph = (pres/60) % 24;
-	pd = (pres/60/24) % 365;
-	py = (pres/60/24/365);
+	int pmin = pres % 60;
+	int ph = (pres / 60) % 24;
+	int pd = (pres / 60 / 24) % 365;
+	int py = (pres / 60 / 24 / 365);
 
 	printf("줄어든 수명: %d 년 %d 일 %d 시 %d 분\n", y, d, h, min);
 	printf("기대 수명: %d 년 %d 일 %d 시 %d 분\n", py, pd, ph, pmin);
 }
-
