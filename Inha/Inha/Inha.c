@@ -2,15 +2,30 @@
 #include <stdio.h>
 
 /*
-Q1. 사용자로부터 정수 3개를 입력 받아서 저장을 하고 
-	조건 연산자를 이용하여 이 변수들 중에 가장 큰 값을 구해
-	출력하는 프로그램을 작성하라.
+Q2. 두 개의 정수를 입력받아 두 수의 차를 출력하는 프로그램을
+	작성하라.
+	단, 무조건 큰 수에서 작은 수를 빼야 한다.
+	ex) 12 5 -> 7
+		4 16 -> 12
+	case 1. if 문 이용
+	case 2. 조건연산자 이용 
 */
 
+// case 1. if문 이용
 void main()
-{	
-	int a, b, c;
-	scanf("%d%d%d", &a, &b, &c);
-	int max = (((a > b) ? a : b) > c) ? ((a > b) ? a : b) : c;
-	printf("%d\n", max);
+{
+	int a, b, result;
+	scanf("%d%d", &a, &b);
+	if (a > b) result = a - b;
+	else result = b - a;
+	printf("result: %d", result);
 }
+
+// case 2. 조건연산자 이용 
+//void main()
+//{
+//	int a, b, result;
+//	scanf("%d%d", &a, &b);
+//	result = (a > b) ? a - b : b - a;
+//	printf("result: %d", result);
+//}
