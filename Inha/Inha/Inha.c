@@ -2,30 +2,35 @@
 #include <stdio.h>
 
 /*
-Q3. 학생의 전체 평균 점수에 대한 학점을 출력하는 프로그램을 
-	작성하라.
-	성적이 90 이상 A, 성적이 80 이상 B,
-	성적이 70 이상 C, 성적이 60 이상 D,
-	그 미만은 F로 처리한다.
-	
-	프로그램 실행시 국어, 영어, 수학의 점수를 입력 받는다.
-	그 평균을 구하고, 위 평가 기준을 참고하여 적절한 학점을
-	출력하라. */
+Q4. 키보드로 수식을 입력하면 계산 결과를 출력하는
+	프로그램을 작성하세요. 정수 사칙연산만 입력합니다. 
+*/
 
 int main()
 {
-	int a, b, c;
-	printf("국어, 영어, 수학의 점수를 입력하세요: ");
-	scanf("%d%d%d", &a, &b, &c);
-	double avg = (double)(a + b + c) / 3;
-	if (avg >= 90)
-		printf("평균: %.1lf, 성적: A\n", avg);
-	else if ( avg >= 80 )
-		printf("평균: %.1lf, 성적: B\n", avg);
-	else if ( avg >= 70 )
-		printf("평균: %.1lf, 성적: C\n", avg);
-	else if ( avg >= 60)
-		printf("평균: %.1lf, 성적: D\n", avg);
-	else
-		printf("평균: %.1lf, 성적: F\n", avg);
+	int a, b;
+	double result = 0;
+	char c;
+	printf("사칙연산 입력(정수): ");
+	scanf("%d%c%d", &a, &c, &b);
+	switch (c) {
+	case '+':
+		result = a + b;
+		break;
+	case '-':
+		result = a - b;
+		break;
+	case '*':
+		result = a * b;
+		break;
+	case '/':
+		result = (double)a / b;
+		break;
+	default:
+		printf("Error\n");
+		return 0;
+	}
+	if ( c != '/')
+		printf("%d%c%d = %d", a, c, b, (int)result);
+	else printf("%d%c%d = %.2lf", a, c, b, result);
 }
