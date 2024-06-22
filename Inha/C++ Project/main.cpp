@@ -1,59 +1,47 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <stack>
+#include <queue>
+#include <string>
 using namespace std;
 
-// 백준 1874번 : 스택 수열
+// 백준 3015번 : 오아시스 재결합
+
 
 int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
-
-	int cnt;
-	cin >> cnt;
-
-	int num = 1;	// 자연수 값
-
-	stack<int> myStack;
-	vector<char> result;
-	bool can = true;
-
-	for (int i = 0; i < cnt; i++) {
-		int sy;
-		cin >> sy;
-		
-		if (sy >= num)
-		{
-			while (sy >= num) {
-				myStack.push(num);
-				num++;
-				result.push_back('+');
-			}
-			myStack.pop();
-			result.push_back('-');
-		}
-
-		else {
-			int n = myStack.top();
-			myStack.pop();
-			if (n > sy) {
-				cout << "NO";
-				can = false;
-				return 0;
-			}
-
-			else {
-				result.push_back('-');
-			}
-		}
-	}
-
-	if (can)
+	queue<int> q;
+	int n, input;
+	cin >> n;
+	while (n--)
 	{
-		for (int i = 0; i < result.size(); i++) {
-			cout << result[i] << '\n';
+		string str;
+		cin >> str;
+		if (str == "push") {
+			cin >> input;
+			q.push(input);
+		}
+		else if (str == "pop") {
+			if (!q.empty()) {
+				cout << q.front() << '\n';
+				q.pop();
+			}
+			else cout << "-1\n";
+		}
+		else if (str == "size") {
+			cout << q.size() << "\n";
+		}
+		else if (str == "empty") {
+			if (q.empty()) cout << "1\n";
+			else cout << "0\n";
+		}
+		else if (str == "front") {
+			if (!q.empty()) cout << q.front() << '\n';
+			else cout << "-1\n";
+		}
+		else {
+			if (!q.empty()) cout << q.back() << "\n";
+			else cout << "-1\n";
 		}
 	}
 }
