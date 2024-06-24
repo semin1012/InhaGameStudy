@@ -17,31 +17,32 @@ Q2. 임의의 N을 입력 받아서 다음과 같은 형태로 출력하도록 �
 	***
 	**
 	* 
+
+Q4. 임의의 N을 입력받아서 다음과 같은 형태로 출력하도록 하라.
+	ex) N = 3
+	* *
+	 *
+	* *
+	ex) N = 4
+	*  *
+	 **
+	 **
+	*  *
 */
 
 int main()
 {
 	int n;
 	scanf("%d", &n);
-	for (int i = 1; i <= n; i++) {
-		for ( int j = 0 ; j < i ; j++ )
-			printf("*");
-		printf("\n");
-	}
-	for (int i = 1; i < n; i++) {
-		for (int j = 0; j < n -i; j++)
-			printf("*");
+
+	for (int i = 0; i < n; i++) 
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (j == i || j == n - 1 - i)
+				printf("*");
+			else printf(" ");
+		}
 		printf("\n");
 	}
 }
-
-//int main() {
-//	int M = 0, N = 0, a = 0, b = 0, i = 0;
-//	printf("M과 N을 입력하세요: ");
-//	scanf("%d%d", &M, &N);
-//
-//	for (int i = 1; i < 100; i++) {
-//		if (i % M == 0 || i % N == 0)
-//			printf("%d ", i);
-//	}
-//}
