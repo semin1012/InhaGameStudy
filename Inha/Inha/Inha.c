@@ -47,15 +47,29 @@ Q5. 다음 식을 만족하는 모든 A와 Z를 구하는 프로그램을 작성
 	   ......
 	=> A = 9	Z = 0
 
-Q. 소수 출력 프로그램 
+Q. 소수 출력 프로그램, p.205
+	
+
 */
 
 int main()
 {
-	int n;
+	int n, b = 0;
+	printf("2 이상의 정수를 입력하세요: ");
 	scanf("%d", &n);
-	printf("N 은 %d 입니다.\n", n);
-	for (int i = 0; i <= n; i++) {
-		printf("A = %d  Z = %d\n", i, n - i);
+	for (int i = 2; i < n; i++) {
+		bool a = false;
+		for (int j = 2; j < i; j++) {
+			if (i % j == 0) {
+				a = true;
+			}
+		}
+		if (a == false) { 
+			printf("%5d ", i); 
+			b++;
+			if (b % 5 == 0) {
+				printf("\n");
+			}
+		}
 	}
 }
