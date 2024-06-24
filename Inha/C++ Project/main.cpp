@@ -1,47 +1,39 @@
 #include <iostream>
-#include <queue>
-#include <string>
+#include <deque>
+#include <algorithm>
 using namespace std;
-
-// 백준 3015번 : 오아시스 재결합
-
 
 int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
-	queue<int> q;
-	int n, input;
-	cin >> n;
-	while (n--)
-	{
+	int t, n;
+	cin >> t;
+	while (t--) {
+		int i = 0;
 		string str;
-		cin >> str;
-		if (str == "push") {
-			cin >> input;
-			q.push(input);
+		deque<int> dq;
+		cin >> str >> n;
+		while (dq.size() != n) {
+			char c;
+			cin >> c;
+			if (isalnum(c)) dq.push_back(c - 48);
 		}
-		else if (str == "pop") {
-			if (!q.empty()) {
-				cout << q.front() << '\n';
-				q.pop();
+		while (str[i] != NULL) {
+			if (str[i] == 'R') {
+				for (int i = 0; i < (int)dq.size()-1; i++) {
+					reverse(dq.begin(), dq.end());
+				}
 			}
-			else cout << "-1\n";
+			else if ( str[i] == 'D') {
+
+			}
+			i++;
 		}
-		else if (str == "size") {
-			cout << q.size() << "\n";
-		}
-		else if (str == "empty") {
-			if (q.empty()) cout << "1\n";
-			else cout << "0\n";
-		}
-		else if (str == "front") {
-			if (!q.empty()) cout << q.front() << '\n';
-			else cout << "-1\n";
-		}
-		else {
-			if (!q.empty()) cout << q.back() << "\n";
-			else cout << "-1\n";
-		}
+		cout << "[";
+		/*for (int i = dq.begin(); i < dq.size()-1; i++) {
+			cout << dq[i] << ",";
+		}*/
+		cout << dq.back() << "]\n";
 	}
 }
