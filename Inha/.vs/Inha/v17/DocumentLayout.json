@@ -11,7 +11,7 @@
       "RelativeMoniker": "D:0:0:{F604C276-267F-4A29-B7B2-E73EAFBA6B50}|C\u002B\u002B Project\\C\u002B\u002B Project.vcxproj|solutionrelative:C\u002B\u002B Project\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\2022\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.40.33807\\INCLUDE\\STDBOOL.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\stdbool.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,8 +31,7 @@
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\stdbool.h",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-06-24T05:46:19.52Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-24T05:46:19.52Z"
             },
             {
               "$type": "Document",
@@ -42,7 +41,7 @@
               "RelativeDocumentMoniker": "C\u002B\u002B Project\\main.cpp",
               "ToolTip": "D:\\InhaGameStudy\\Inha\\C\u002B\u002B Project\\main.cpp",
               "RelativeToolTip": "C\u002B\u002B Project\\main.cpp",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAACYAAAABAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-06-21T07:28:28.415Z",
               "EditorCaption": ""
@@ -55,7 +54,7 @@
               "RelativeDocumentMoniker": "Inha\\Inha.c",
               "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c*",
               "RelativeToolTip": "Inha\\Inha.c*",
-              "ViewState": "AQIAADwAAAAAAAAAAAAcwFYAAAAPAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAB8AAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-06-18T07:55:06.719Z",
               "EditorCaption": ""
