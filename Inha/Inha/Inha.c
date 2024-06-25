@@ -18,25 +18,42 @@ Q2. 이전 문제 AZ ZA, 소수 구하기,
 	출력 부분을 각각 함수로 구현하라.
 
 p.234. 1부터 10까지의 합 계산 (재귀호출)
+
+Q3. 달팽이 한 마리가 한달이 지나면 어른이 되고,
+	다시 한달이 지나면 새끼를 낳는다.
+	새로 태어난 달팽이 역시 한달이 지나면 어른이 되고,
+	다시 한달 후부터 새끼를 낳는다고 할 때,
+	달팽이가 매달 새끼를 낳으면 1년 후 전체 달팽이의 수는
+	얼마인지 알 수 있도록 프로그램을 작성하라. 
+
+	가정 1. 달팽이는 자웅동체이다.
+	가정 2. 달팽이는 1년 만에 죽지 않는다. 
+	가정 3. 처음 새끼 달팽이는 1마리이다.
+	새끼, 성체 달팽이 수를 매달 확인할 수 있도록 그 수의 변화도 출력하라.
+
 */
 
-//int rec_func(int n)
-//{
-//	int sum = n;
-//	if (n > 1) {
-//		sum += rec_func(n - 1);
-//	}
-//	return sum;
-//}
-
-int rec_func(int n)
+void snail(int kid, int adult, int month)
 {
-	if (n == 1)
-		return 1;
-	return n + rec_func(n - 1);
+	printf("%d 달 후의 달팽이\n", month);
+	printf("어른의 수: %d\n", adult);
+	printf("새끼의 수: %d\n", kid);
+	printf("총 달팽이 수: %d\n\n", kid + adult);
+	if (month< 12)
+		snail(adult, adult+kid, month+1);
 }
 
 int main()
 {
-	printf("%d\n", rec_func(10));
+	snail(1, 0, 0);
 }
+
+// cnt - 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10
+// n   - 1 + 2 + 4 + 7 + 11 + ... 
+
+//1+1
+//2
+//2+2
+//4
+//4+3
+//7

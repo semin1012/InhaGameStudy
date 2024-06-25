@@ -31,7 +31,9 @@
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\stdbool.h",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-06-24T05:46:19.52Z"
+              "WhenOpened": "2024-06-24T05:46:19.52Z",
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -41,7 +43,7 @@
               "RelativeDocumentMoniker": "C\u002B\u002B Project\\main.cpp",
               "ToolTip": "D:\\InhaGameStudy\\Inha\\C\u002B\u002B Project\\main.cpp",
               "RelativeToolTip": "C\u002B\u002B Project\\main.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACkAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAKAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-06-21T07:28:28.415Z",
               "EditorCaption": ""
@@ -52,9 +54,9 @@
               "Title": "Inha.c",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c",
               "RelativeDocumentMoniker": "Inha\\Inha.c",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c*",
-              "RelativeToolTip": "Inha\\Inha.c*",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAACAAAAALAAAA",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c",
+              "RelativeToolTip": "Inha\\Inha.c",
+              "ViewState": "AQIAABUAAAAAAAAAAAAwwCwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-06-18T07:55:06.719Z",
               "EditorCaption": ""
