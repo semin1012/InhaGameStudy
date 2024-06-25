@@ -18,113 +18,62 @@ Q2. 이전 문제 AZ ZA, 소수 구하기,
 	출력 부분을 각각 함수로 구현하라.
 */
 
-
-void AZZA();
-void isDicimal();
-void calculator();
-float calculator_operation(int a, char b, int c);
-void calculator_output(int a, char b, int c, float result);
-
+// 예제 7-2
+/*int get_num(void);
 
 int main()
 {
-	int p;
-	while (1)
-	{
-		printf("1: AZ ZA   2: 소수 구하기   3: 사칙 연산 프로그램   0: 종료\n");
-		printf("프로그램을 선택해주세요: ");
-		scanf("%d", &p);
-		switch (p) {
-		case 1:
-			AZZA();
-			break;
-		case 2:
-			isDicimal();
-			break;
-		case 3:
-			calculator();
-			break;
-		case 0:
-			return 0;
-		}
-	}
+	int result;
+	result = get_num();
+	printf("반환값: %d\n", result);
+	return 0;
 }
 
-void isDicimal()
+int get_num(void)
 {
-	int n;
-	printf("\n100 이하의 정수를 입력하세요: ");
-	scanf("%d", &n);
-	bool check;
-	int col = 0;
-	for (int i = 2; i <= n; i++)
+	int num;
+	printf("양수 입력: ");
+	scanf("%d", &num);
+
+	return num;
+}
+
+// 예제 7-3
+void print_star(char ch, int count);
+
+int main(void)
+{
+	print_star('@', 5);
+	return 0;
+}
+
+void print_star(char ch, int count)
+{
+	int i;
+	for (i = 0; i < count; i++) 
 	{
-		check = true;
-		for (int j = 2; j < i; j++)
-		{
-			if (i % j == 0) {
-				check = false;
-				break;
-			}
-		}
-		if (check == true) {
-			printf("%5d ", i);
-			col++;
-			if (col % 5 == 0)
-				printf("\n");
-		}
+		printf("%c", ch);
 	}
+	return;
+}
+*/
+
+// 예제 7-4
+void print_line(void);
+
+int main(void)
+{
+	print_line();
+	printf("    학번        이름        전공        학점\n");
+	print_line();
+
+	return 0;
+}
+
+void print_line(void)
+{
+	for (int i = 0; i < 50; i++)
+		printf("-");
 	printf("\n");
-}
-
-void AZZA()
-{
-	int n;
-	printf("\n10 미만의 정수를 입력해 주세요:  ");
-	scanf("%d", &n);
-	for (int i = 0; i <= n; i++) {
-		printf("%2d + %2d = %2d\n", i, n, i + n);
-	}
-	printf("\n");
-}
-
-
-void calculator()
-{
-	int a1, a2;
-	char c;
-	printf("공백 없는 수식을 입력하세요: ");
-	scanf("%d%c%d", &a1, &c, &a2);
-	float result = calculator_operation(a1, c, a2);
-
-	calculator_output(a1, c, a2, result);
-}
-
-float calculator_operation(int a, char b, int c)
-{
-	float result;
-	if (b == '+')
-	{
-		result = a + c;
-	}
-	else if (b == '-')
-	{
-		result = a - c;
-	}
-	else if (b == '*')
-	{
-		result = a * c;
-	}
-	else if (b == '/')
-	{
-		result = (float)a / c;
-	}
-	else printf("다시 입력하세요. \n");
-
-	return result;
-}
-
-void calculator_output(int a, char b, int c, float result)
-{
-	printf("%d %c %d = %.1f\n\n", a, b, c, result);
+	return;
 }
