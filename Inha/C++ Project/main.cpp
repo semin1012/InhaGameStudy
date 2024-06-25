@@ -22,7 +22,7 @@ int main()
 			if (c == '[' || c == '(') s.push(c);
 			else if (c == ']') 
 			{
-				if (  s.top() != '[')
+				if (s.empty() || s.top() != '[')
 				{
 					result = false;
 					break;

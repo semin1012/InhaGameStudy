@@ -16,64 +16,27 @@ Q2. 이전 문제 AZ ZA, 소수 구하기,
 	수정하라.
 	사칙 연산 프로그램은 입력 부분, 계산 부분,
 	출력 부분을 각각 함수로 구현하라.
+
+p.234. 1부터 10까지의 합 계산 (재귀호출)
 */
 
-// 예제 7-2
-/*int get_num(void);
+//int rec_func(int n)
+//{
+//	int sum = n;
+//	if (n > 1) {
+//		sum += rec_func(n - 1);
+//	}
+//	return sum;
+//}
+
+int rec_func(int n)
+{
+	if (n == 1)
+		return 1;
+	return n + rec_func(n - 1);
+}
 
 int main()
 {
-	int result;
-	result = get_num();
-	printf("반환값: %d\n", result);
-	return 0;
-}
-
-int get_num(void)
-{
-	int num;
-	printf("양수 입력: ");
-	scanf("%d", &num);
-
-	return num;
-}
-
-// 예제 7-3
-void print_star(char ch, int count);
-
-int main(void)
-{
-	print_star('@', 5);
-	return 0;
-}
-
-void print_star(char ch, int count)
-{
-	int i;
-	for (i = 0; i < count; i++) 
-	{
-		printf("%c", ch);
-	}
-	return;
-}
-*/
-
-// 예제 7-4
-void print_line(void);
-
-int main(void)
-{
-	print_line();
-	printf("    학번        이름        전공        학점\n");
-	print_line();
-
-	return 0;
-}
-
-void print_line(void)
-{
-	for (int i = 0; i < 50; i++)
-		printf("-");
-	printf("\n");
-	return;
+	printf("%d\n", rec_func(10));
 }
