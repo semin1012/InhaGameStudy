@@ -8,53 +8,39 @@ int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
-	//char c = ' ';
-	stack<char> c;
-	char in;
-	bool running = true, result = true;
 
-	while (1) 
-	{
-		cin >> in;
-		if (in != '.') running = true;
+	while (1) {
+		string in;
+		stack<char> s;
+		bool result = true;
+		getline(cin, in);
 
-		if (in == '.' && running == false)
-			return 0;
+		if (in == ".") return 0;
 
-		switch (in) {
-		case '(':
-			c.push(in);
-			break;
-		case ')':
-			if (!c.empty() && c.top() == '(')
-				c.pop();
-			else 
-				result = false;
-			break;
-		case '[':
-			c.push(in);
-			break;
-		case ']':
-			if (!c.empty() && c.top() == '[')
-				c.pop();
-			else
-				result = false;
-			break;
-		case '.':
-			if (!c.empty()) {
-				cout << "no\n";
-				for (int i = 0; i < c.size(); i++)
-					c.pop();
-			} 
-			else if (result == false) {
-				cout << "no\n";
+		for (auto c : in) 
+		{
+			if (c == '[' || c == '(') s.push(c);
+			else if (c == ']') 
+			{
+				if (  s.top() != '[')
+				{
+					result = false;
+					break;
+				}
+				s.pop();
 			}
-			else cout << "yes\n";
-			running = false;
-			result = true;
-			break;
-		default:
-			break;
+			else if (c == ')') 
+			{
+				if (s.empty() || s.top() != '(')
+				{
+					result = false;
+					break;
+				}
+				s.pop();
+			}
 		}
+
+		if (!s.empty()) result = false;
+		(result == true) ? cout << "yes\n" : cout << "no\n";
 	}
 }
