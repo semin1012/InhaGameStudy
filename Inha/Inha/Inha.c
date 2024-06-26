@@ -27,35 +27,21 @@ Q2. 문자열을 입력받아서 광고판에 광고 문자가 출력되는
 
 */
 
-#define MAX 128
-
 int main()
 {
-	char str[MAX];
-	printf("내용을 입력하세요: ");
-	gets(str);
-	bool change = false;
-	int idx = 0;
-	char temp[MAX];
-	while (1)
-	{
-		system("cls");
+	int a = 10, b = 15, total;
+	double avg;
+	int* pa, *pb;
+	int* pt = &total;
+	double* pg = &avg;
 
-		strcpy(temp, str);
-		for (int i = 1; i < MAX; i++) {
-			if (str[i + 1] == '\0') {
-				str[i + 1] = ' ';
-				for (int j = 1; j < MAX - i; j++)
-					str[i + 1 + j] = temp[j - 1];
-			}
-			str[i - 1] = str[i];
-		}
+	pa = &a;
+	pb = &b;
 
-		for (int i = 0; i <= 20; i++) {
-			printf("%c", str[i]);
-		}
+	*pt = *pa + *pb;
+	*pg = *pt / 2.0;
 
-		
-		Sleep(500);
-	}
+	printf("두 정수의 값: %d, %d\n", *pa, *pb);
+	printf("두 정수의 합: %d\n", *pt);
+	printf("두 정수의 평균: %.1lf\n", *pg);
 }
