@@ -32,7 +32,8 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-06-24T05:46:19.52Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -42,7 +43,7 @@
               "RelativeDocumentMoniker": "Inha\\Inha.c",
               "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c*",
               "RelativeToolTip": "Inha\\Inha.c*",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAwwCYAAAAfAAAA",
+              "ViewState": "AQIAAB0AAAAAAAAAAAAAADAAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-06-26T00:26:54.034Z",
               "EditorCaption": ""
