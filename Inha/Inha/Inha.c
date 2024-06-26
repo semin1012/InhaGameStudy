@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <limits.h> // MAX, MIN 값을 자동으로 출력해주는 헤더
+#include <string.h>
 
 /*
 Q1. 길이가 5인 int형 배열을 선언하고,
@@ -12,22 +13,32 @@ Q1. 길이가 5인 int형 배열을 선언하고,
 	3. 입력된 정수들의 총 합
 */
 
+/*
+// 예제 8-4
 int main()
 {
-	int arr[5];
-	int max = INT_MIN, min = INT_MAX, sum = 0;
+	char str[80] = "applejam";
+	printf("최초 문자열: %s\n", str);
+	printf("문자열 입력: ");
+	scanf("%s", str);
+	printf("입력 후 문자열: %s\n", str);
+}
+// 예제 8-5
+int main()
+{
+	char str1[80] = "cat";
+	char str2[80];
 
-	for (int i = 0; i < 5; i++)
-	{
-		printf("정수를 입력하세요: ");
-		scanf("%d", &arr[i]);
-		if (max < arr[i])
-			max = arr[i];
-		if (min > arr[i])
-			min = arr[i];
-		sum += arr[i];
-	}
-	printf("\n입력된 정수 중 최대값: %d\n", max);
-	printf("입력된 정수 중 최소값: %d\n", min);
-	printf("입력된 정수들의 총합: %d\n", sum);
+	strcpy(str1, "tiger");
+	strcpy(str2, str1);
+	printf("%s, %s\n", str1, str2);
+}
+*/
+
+int main()
+{
+	int a = 10;
+	int b;
+	b = a;
+	printf("a: %d, b: %d", &a, &b);
 }
