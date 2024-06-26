@@ -11,34 +11,30 @@ Q1. 길이가 5인 int형 배열을 선언하고,
 	1. 입력된 정수 중 최대값
 	2. 입력된 정수 중 최소값
 	3. 입력된 정수들의 총 합
-*/
 
-/*
-// 예제 8-4
-int main()
-{
-	char str[80] = "applejam";
-	printf("최초 문자열: %s\n", str);
-	printf("문자열 입력: ");
-	scanf("%s", str);
-	printf("입력 후 문자열: %s\n", str);
-}
-// 예제 8-5
-int main()
-{
-	char str1[80] = "cat";
-	char str2[80];
+p.260  대소문자 변환 프로그램
 
-	strcpy(str1, "tiger");
-	strcpy(str2, str1);
-	printf("%s, %s\n", str1, str2);
-}
 */
 
 int main()
 {
-	int a = 10;
-	int b;
-	b = a;
-	printf("a: %d, b: %d", &a, &b);
+	char str[100];
+	int change = 0;
+	printf("문장 입력: ");
+	gets(str);
+
+	for (int i = 0; i < 100; i++) 
+	{
+		if (str[i] == '\0')
+			break;
+		if (str[i] >= 65 && str[i] <= 90) 
+		{
+			str[i] = str[i] + 32;
+			change++;
+		}
+	}
+
+	printf("바뀐 문장: ");
+	puts(str);
+	printf("바뀐 문자 수: %d", change);
 }
