@@ -4,6 +4,7 @@
 #include <limits.h> // MAX, MIN 값을 자동으로 출력해주는 헤더
 #include <string.h>
 #include <Windows.h>
+#include <conio.h>
 
 /*
 Q1. 길이가 5인 int형 배열을 선언하고,
@@ -27,21 +28,48 @@ Q2. 문자열을 입력받아서 광고판에 광고 문자가 출력되는
 
 */
 
+#define MAX 25
+
 int main()
 {
-	int a = 10, b = 15, total;
-	double avg;
-	int* pa, *pb;
-	int* pt = &total;
-	double* pg = &avg;
+	char str[MAX];
+	printf("내용을 입력하세요: ");
+	gets(str);
+	int length = strlen(str);
 
-	pa = &a;
-	pb = &b;
+	char temp[MAX];
+	int j = 0;
 
-	*pt = *pa + *pb;
-	*pg = *pt / 2.0;
+	strcpy(temp, str);
+	temp[length] = ' ';
 
-	printf("두 정수의 값: %d, %d\n", *pa, *pb);
-	printf("두 정수의 합: %d\n", *pt);
-	printf("두 정수의 평균: %.1lf\n", *pg);
+	while (1)
+	{
+		system("cls");
+
+		for (int i = 0; i < 20; i++) {
+			printf("%c", temp[(i + j) % (length+1)]);
+		}
+		j++;
+
+		printf("\n\n문자를 입력하면 내용을 다시 입력합니다.\n");
+		Sleep(300);
+
+		if (_kbhit())   // 아무키나 눌려지면 멈춥니다
+		{
+			system("cls");
+
+			printf("내용을 입력하세요: ");
+			for (int i = 0; i < MAX; i++) {
+				str[i] = '\0';
+			}
+			gets(str);
+			length = strlen(str);
+
+			strcpy(temp, str);
+			temp[length] = ' ';
+
+			int j = 0;
+		}
+	}
 }
