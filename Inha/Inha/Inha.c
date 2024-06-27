@@ -30,38 +30,53 @@ Q3. 임의의 문자열을 입력받아 뒤집어 출력하는 프로그램을 �
 		Output	> dlroW olleH
 */
 
-#define MAX 6
-
-void reverseInt(int n[], int* pn)
-{
-}
+void input_ary(double* pa, int size);
+double find_max(double* pa, int size);
+void print_ary(double* pa, int size);
 
 int main()
 {
-	int n[MAX] = { 1,2,3,4,5,6 };
-	int* pn = n;
-	int temp;
+	double ary[5];
+	double max;
+	int size = sizeof(ary) / sizeof(ary[0]);
 
-	for (int i = 0; i < (MAX+1)/2; i++) {
-		temp = *(pn + i);
-		*(pn + i) = *(pn + MAX - i - 1);
-		*(pn + MAX - i - 1) = temp;
+	input_ary(ary, size);
+	max = find_max(ary, size);
+	print_ary(ary, size);
+	printf("배열의 최댓값: %.1lf\n", max);
+	print_ary(ary, size);
+}
+
+void input_ary(double* pa, int size)
+{
+	int i;
+	
+	printf("%d개의 실수값 입력: ", size);
+	for (int i = 0; i < size; i++)
+	{
+		scanf("%lf", pa + i);
 	}
-	for (int i = 0; i < MAX; i++)
-		printf("%d ", n[i]);
+}
 
-	printf("\n\n문자열을 입력하세요: ");
-	char str[128];
-	char* pstr = str;
+double find_max(double* pa, int size)
+{
+	double max;
+	int i;
 
-	gets(str);
-	int length = strlen(str);
-
-	for (int i = 0; i < (length + 1) / 2; i++) {
-		temp = *(pstr + length -1 -i);
-		*(pstr+length - 1 - i) = *(pstr + i);
-		*(pstr+i) = temp;
+	max = pa[0];
+	for (i = 1; i < size; i++)
+	{
+		if (pa[i] > max) max = pa[i];
 	}
-	for (int i = 0; i < length; i++)
-		printf("%c", str[i]);
+
+	return max;
+}
+
+void print_ary(double* pa, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		printf("%.1lf ", pa[i]);
+	}
+	printf("\n");
 }
