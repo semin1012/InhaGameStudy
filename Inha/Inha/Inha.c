@@ -19,48 +19,49 @@ Q1. 문자열을 입력받아서 광고판에 광고 문자가 출력되는
 
 	<< 포인터를 사용해 보자! >>
 
+Q2. 길이가 6인 int형 배열을 선언하고, 1,2,3,4,5,6 으로 초기화한 다음 
+	배열에 저장된 값의 순서가 반대로 6,5,4,3,2,1 이 되도록 변경하는
+	프로그램을 작성하라.
+	포인터를 활용하라.
+
+Q3. 임의의 문자열을 입력받아 뒤집어 출력하는 프로그램을 작성하라.
+	ex > 
+		Input	> Hello World 
+		Output	> dlroW olleH
 */
 
-#define MAX 128
+#define MAX 6
 
-void init(char *str, int *length, int *j)
+void reverseInt(int n[], int* pn)
 {
-	printf("내용을 입력하세요: ");
-	gets(str);
-
-	*length = strlen(str);
-	str[*length] = ' ';
-	str[*length + 1] = '\0';
-	*j = 0;
 }
 
 int main()
 {
-	char str[MAX];
-	int length = 0, j = 0;
-	char* temp = &str;
-	
-	init(str, &length, &j);
+	int n[MAX] = { 1,2,3,4,5,6 };
+	int* pn = n;
+	int temp;
 
-	while (1)
-	{
-		system("cls");
-
-		for (int i = 0; i < 20; i++) {
-			printf("%c", temp[(i+j)%(length+1)]);
-		}
-		j++;
-
-		printf("\n\n문자를 입력하면 내용을 다시 입력합니다.\n");
-		Sleep(300);
-
-		if (_kbhit())   // 아무키나 눌려지면 멈춥니다
-		{
-			system("cls");
-			for (int i = 0; i < MAX; i++) 
-				str[i] = '\0';
-
-			init(str, &length, &j);
-		}
+	for (int i = 0; i < (MAX+1)/2; i++) {
+		temp = *(pn + i);
+		*(pn + i) = *(pn + MAX - i - 1);
+		*(pn + MAX - i - 1) = temp;
 	}
+	for (int i = 0; i < MAX; i++)
+		printf("%d ", n[i]);
+
+	printf("\n\n문자열을 입력하세요: ");
+	char str[128];
+	char* pstr = str;
+
+	gets(str);
+	int length = strlen(str);
+
+	for (int i = 0; i < (length + 1) / 2; i++) {
+		temp = *(pstr + length -1 -i);
+		*(pstr+length - 1 - i) = *(pstr + i);
+		*(pstr+i) = temp;
+	}
+	for (int i = 0; i < length; i++)
+		printf("%c", str[i]);
 }
