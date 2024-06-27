@@ -28,55 +28,53 @@ Q3. 임의의 문자열을 입력받아 뒤집어 출력하는 프로그램을 �
 	ex > 
 		Input	> Hello World 
 		Output	> dlroW olleH
+
+p.320. 로또 번호 생성 프로그램 (입력 후 출력)
 */
 
-void input_ary(double* pa, int size);
-double find_max(double* pa, int size);
-void print_ary(double* pa, int size);
+void input_nums(int *lotto_nums);
+void print_nums(int* lotto_nums);
 
 int main()
 {
-	double ary[5];
-	double max;
-	int size = sizeof(ary) / sizeof(ary[0]);
+	int lotto_nums[6];
 
-	input_ary(ary, size);
-	max = find_max(ary, size);
-	print_ary(ary, size);
-	printf("배열의 최댓값: %.1lf\n", max);
-	print_ary(ary, size);
+	input_nums(lotto_nums);
+	print_nums(lotto_nums);
 }
 
-void input_ary(double* pa, int size)
+void input_nums(int* lotto_nums)
 {
-	int i;
-	
-	printf("%d개의 실수값 입력: ", size);
-	for (int i = 0; i < size; i++)
-	{
-		scanf("%lf", pa + i);
+	int n = 0;
+	int input = 0;
+	bool check = false;
+	while (n != 6) {
+		printf("번호 입력: ");
+		scanf("%d", &input);
+
+		for (int i = 0; i < n; i++) 
+		{
+			if ( *(lotto_nums+i) == input ) 
+			{
+				printf("같은 번호가 있습니다!\n");
+				check = true;
+				break;
+			}
+		}
+		if (check == true)
+		{
+			check = false;
+			continue;
+		}
+		lotto_nums[n] = input;
+
+		n++;
 	}
 }
 
-double find_max(double* pa, int size)
+void print_nums(int* lotto_nums)
 {
-	double max;
-	int i;
-
-	max = pa[0];
-	for (i = 1; i < size; i++)
-	{
-		if (pa[i] > max) max = pa[i];
-	}
-
-	return max;
-}
-
-void print_ary(double* pa, int size)
-{
-	for (int i = 0; i < size; i++)
-	{
-		printf("%.1lf ", pa[i]);
-	}
-	printf("\n");
+	printf("로또 번호: ");
+	for (int i = 0; i < 6; i++)
+		printf("%2d ", lotto_nums[i]);
 }
