@@ -219,73 +219,105 @@ Q1. p.381 도전 실전 예제
 	이용하여 프로그램을 작성하라.
 	대소문자에 대해서도 strcmp와 동일한 결과가
 	나올 수 있도록 한다. 
+
+Q2. 문자열에서 특정 단어를 찾아서 다른 단어로 바꾸는
+	프로그램을 작성하라.
+	ex> "I am a boy. I am happy!"
+	-> 찾을 단어: boy
+	-> 바꿀 단어: girl
+	-> 변경된 문자열 > I am a girl. I am happy!
+	1. strstr -> api 를 활용
+	2. my_strstr 를 만들기
 */
 
-int my_strcmp(char* pa, char* pb);
-void my_swap(char* pa, char* pb);
-void my_strcpy(char* pd, char* ps);
+char* my_strstr(char* ps, char* pf);
 
 int main()
 {
-	char str1[80], str2[80], str3[80];
-	printf("단어 입력: ");
-	scanf("%s", str1); 
-	scanf("%s", str2);
-	scanf("%s", str3);
+	char str[80];
+	char find[80];
+	char change[80];
+	char result[80] = { '\0' };
 
-	if ( my_strcmp(str1, str2 ) > 0)
-		my_swap(str1, str2);
-	if (my_strcmp(str1, str3) > 0)
-		my_swap(str1, str3);
-	if (my_strcmp(str2, str3) > 0)
-		my_swap(str2, str3);
+	int find_size = 0;
+	int change_size = 0;
+	int cnt = 0;
+	printf("> ");
+	gets(str);
+	printf("찾을 단어: ");
+	scanf("%s", find);
+	find_size = strlen(find);
+	printf("바꿀 단어: ");
+	scanf("%s", change);
+	change_size = strlen(change);
 
-	printf("입력한 단어: %s, %s, %s", str1, str2, str3);
+	// 찾는 문자가 있는지 my_strstr로 확인
+	// my_strstr : 찾는 문자가 있으면 찾는 문자의 위치를 반환 받음
+	char* fp = my_strstr(str, find);
 
-}
-
-void my_swap(char* pa, char* pb)
-{
-	char temp[80];
-	my_strcpy(temp, pa);
-	my_strcpy(pa, pb);
-	my_strcpy(pb, temp);
-}
-
-void my_strcpy(char* pd, char* ps)
-{
-	char* po = pd;
-
-	while (*ps != '\0')
-	{
-		*pd = *ps;
-		pd++;
-		ps++;
-	}
-	*pd = '\0';
-}
-
-int my_strcmp(char* pa, char* pb)
-{
-	char a = '\0', b = '\0';
-
-	while (( a == b ) && (*pa != '\0'))
-	{
-		if (*pa >= 'a')
-		{
-			a = *(pa)-32;
-		}
-		else a = *pa;
-		if (*pb >= 'a')
-		{
-			b = *(pb)-32;
-		}
-		else b = *pb;
-		pa++;
-		pb++;
+	// 찾는 문자 없으면 프로그램 종료
+	if (fp == NULL) {
+		printf("찾는 단어가 문자열에 존재하지 않습니다.\n");
+		return 0;
 	}
 
-	if (a > b) return 1;
-	else if (a < b) return -1;
-	else return 0;
+	// 찾는 문자 있으면 찾는 문자의 위치를 기준으로
+	// result[80]에 (찾는 위치 전의 문자열 + 바꿀 문자 + 찾은 문자 다음의 문자열) 합쳐줌
+	else {
+		char* op = str;
+		// 찾는 위치 전까지는 result에 문자열 그대로 넣는다
+		while (op != fp)
+		{
+			result[cnt] = *op;
+			op++;
+			cnt++;
+		}
+		// 찾은 문자의 사이즈만큼 포인터를 옭겨 준다
+		for (int i = 0; i < find_size; i++)
+		{
+			op++;
+		}
+		// result에 찾은 위치부터는 바꿀 문자열 넣는다
+		for (int i = 0; i < change_size; i++)
+		{
+			result[cnt] = change[i];
+			cnt++;
+		}
+		// 바꾼 문자열 넣었으면 끝까지 result에 그대로 넣어준다
+		while (*op != '\0')
+		{
+			result[cnt] = *op;
+			op++;
+			cnt++;
+		}
+	}
+
+	printf("\n%s\n", result);
+}
+
+char* my_strstr(char* ps, char* pf)
+{
+	int cnt = 0;
+
+	while (ps[cnt] != '\0')
+	{
+		if (ps[cnt] == *pf)
+		{
+			char* start = ps[cnt];
+			bool check = true;
+			for (int i = 0; i < strlen(pf); i++)
+			{
+				//printf("%c %c\n", ps[cnt + i], pf[i]);
+				if (ps[cnt+i] != pf[i])
+					check = false;
+			}
+			if (check == true)
+			{
+				return (ps + cnt);
+			}
+			pf++;
+		}
+		cnt++;
+	}
+	return NULL;
 }

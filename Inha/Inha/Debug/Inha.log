@@ -1,2 +1,5 @@
 ﻿  Inha.c
+D:\InhaGameStudy\Inha\Inha\Inha.c(246,2): warning C4013: 'gets'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+D:\InhaGameStudy\Inha\Inha\Inha.c(308,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+D:\InhaGameStudy\Inha\Inha\Inha.c(306,10): warning C4047: '초기화 중': 'char *'의 간접 참조 수준이 'char'과(와) 다릅니다.
   Inha.vcxproj -> D:\InhaGameStudy\Inha\Debug\Inha.exe
