@@ -8,53 +8,39 @@
 
 
 /*
-// 예제 11-4 
+p.343 길이가 가장 긴 단어 찾기
+*/
+
+#define MAX 128
+
 int main()
 {
 	char ch;
-
-	//int i;
-	//for (i = 0; i < 3; i++)
-	//{
-	//	scanf("%c", &ch);
-	//	printf("%c", ch);
-	//}
-
-	while (1)
-	{
-		scanf("%c", &ch);
-		if (ch == '\n')
-			break;
-		printf("%c", ch);
-	}
-}
-*/
-
-
-void my_gets(char* str, int size);
-
-int main()
-{
-	char str[7];
-	
-	while (1)
-	{
-		my_gets(str, sizeof(str));
-		printf("입력한 문자열: %s\n", str);
-	}
-}
-
-void my_gets(char* str, int size)
-{
-	int ch;
+	char temp[MAX];
+	char result[MAX];
+	int max = 0;
 	int i = 0;
 
-	ch = getchar();
-	while ((ch != '\n') && (i < size - 1))
+	while (1)
 	{
-		str[i] = ch;
-		i++;
 		ch = getchar();
+		if (ch == EOF) break;
+		else if (ch != '\n')
+		{
+			temp[i++] = ch;
+		}
+		else 
+		{
+			if (max < (i)) 
+			{
+				max = i;
+				strcpy(result, temp);
+			}
+			for (int j = 0; j < i; j++)
+				temp[j] = '\0';
+			i = 0;
+		}
 	}
-	str[i] = '\0';
+	printf("가장 긴 단어의 길이: %d\n", max);
+	printf("가장 긴 단어: %s\n", result);
 }
