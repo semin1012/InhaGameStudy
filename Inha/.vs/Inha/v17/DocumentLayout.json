@@ -32,9 +32,9 @@
               "Title": "Inha.c",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c",
               "RelativeDocumentMoniker": "Inha\\Inha.c",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c",
-              "RelativeToolTip": "Inha\\Inha.c",
-              "ViewState": "AQIAACABAAAAAAAAAAAqwC0BAAAYAAAA",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c*",
+              "RelativeToolTip": "Inha\\Inha.c*",
+              "ViewState": "AQIAAHAAAAAAAAAAAAAiwIEAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-06-26T00:26:54.034Z",
               "IsPinned": true,
@@ -48,8 +48,7 @@
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\stdbool.h",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-06-27T05:58:00.858Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-27T05:58:00.858Z"
             },
             {
               "$type": "Document",
@@ -71,8 +70,7 @@
               "RelativeToolTip": "C\u002B\u002B Project\\main.cpp",
               "ViewState": "AQIAABAAAAAAAAAAAAAqwDMAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-06-21T07:28:28.415Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-21T07:28:28.415Z"
             }
           ]
         }
