@@ -4,49 +4,54 @@
 #include <algorithm>
 using namespace std;
 
-int board[102][102] = { -1 };
-int visit[102][102] = { -1 };
+int board[1001][1001];
+int dist[1001][1001];
 int dir_x[4] = { 0, 0, 1, -1 };
-int dir_y[4] = { -1, 1, 0, 0 };
+int dir_y[4] = { 1, -1, 0, 0 };
 
 int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
+	int m, n;
+	cin >> m >> n;
 
-	char c;
-	int n, m;
-	cin >> n >> m;
+	queue<pair<int, int>> q;
 
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
-			cin >> c;
-			board[i][j] = c - '0';
+			cin >> board[i][j];
+			if (board[i][j] == 1)
+				q.push({ i, j });
+			if (board[i][j] == 0)
+				dist[i][j] = -1;
 		}
 	}
 
-	queue<pair<int, int>> q;
-	visit[0][0] = 1;
-	q.push({ 0,0 });
-	int cnt = 0;
-	int dx = 0, dy = 0;
-	
-	while (!q.empty())
-	{
-		pair<int, int> cur = q.front();
-		q.pop();
-		for (int i = 0; i < 4; i++)
-		{
-			dx = cur.first + dir_x[i];
-			dy = cur.second + dir_y[i];
-			if (dx < 0 || dy < 0 || dx >= n || dy >= m)
-				continue;
-			if (visit[dx][dy] > 1 || board[dx][dy] != 1)
-				continue;
-			visit[dx][dy] = visit[cur.first][cur.second] + 1;
+	while (!q.empty()) {
+		pair<int, int> cur = q.front(); q.pop();
 
+		for (int i = 0; i < 4; i++) {
+			int dx = cur.first + dir_x[i];
+			int dy = cur.second + dir_y[i];
+			if (dist[dx][dy] >= 0)
+				continue;
+			if (dy < 0 || dx < 0 || dy >= m || dx >= n)
+				continue;
+			dist[dx][dy] = dist[cur.first][cur.second] + 1;
 			q.push({ dx, dy });
 		}
 	}
-	cout << visit[n-1][m-1];
+
+	int answer = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (dist[i][j] == -1) {
+				cout << "-1";
+				return 0;
+			}
+			answer = max(answer, dist[i][j]);
+		}
+	}
+	cout << answer;
 }

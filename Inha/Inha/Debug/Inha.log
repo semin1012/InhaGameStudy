@@ -1,8 +1,2 @@
 ﻿  Inha.c
-D:\InhaGameStudy\Inha\Inha\Inha.c(86,12): warning C4047: '함수': 'int *'의 간접 참조 수준이 'int (*)[3][3]'과(와) 다릅니다.
-D:\InhaGameStudy\Inha\Inha\Inha.c(86,12): warning C4024: 'transpose': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
-D:\InhaGameStudy\Inha\Inha\Inha.c(86,16): warning C4047: '함수': 'int *'의 간접 참조 수준이 'int (*)[3][3]'과(와) 다릅니다.
-D:\InhaGameStudy\Inha\Inha\Inha.c(86,16): warning C4024: 'transpose': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
-D:\InhaGameStudy\Inha\Inha\Inha.c(87,14): warning C4047: '함수': 'int *'의 간접 참조 수준이 'int (*)[3][3]'과(와) 다릅니다.
-D:\InhaGameStudy\Inha\Inha\Inha.c(87,14): warning C4024: 'printMatrix': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
   Inha.vcxproj -> D:\InhaGameStudy\Inha\Debug\Inha.exe
