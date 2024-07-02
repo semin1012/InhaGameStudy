@@ -7,143 +7,106 @@
 #include <conio.h>		// Sleep(1000)
 
 /*
-//예제 14-3
-void assign10(void);
-void assign20(void);
+Q1. 다음과 같이 A행렬의 행렬 B를 구현하라.
+	ex>
+	A 행렬					B 행렬
+		1 2 3 4				5 1
+		5 6 7 8		=>		6 2
+							7 3
+							8 4
 
-int a;
+	A 행렬					B 행렬
+		1 2 3				7 4 1
+		4 5 6		=>		8 5 2
+		7 8 9				9 6 3
 
-int main()
-{
-	printf("함수 호출 전 a 값: %d\n", a);
+#define ROW 2
+#define COL 4
+#define MAX 3
 
-	assign10();
-	assign20();
-
-	printf("함수 호출 후 a 값:%d\n", a);
-}
-
-void assign10(void)
-{
-	a = 10;
-}
-
-void assign20(void)
-{
-	int a;
-	a = 20;
-}
-// 예제 13-5
-void auto_func(void);
-void static_func(void);
+void matrixTransformation(int* a, int* result, int row, int col);
+void matrixPrint(int* a, int row, int col);
 
 int main()
 {
-	int i;
+	int a[ROW][COL] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+	int b[MAX][MAX] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	int a_result[COL][ROW];
+	int b_result[MAX][MAX];
 
-	printf("일반 지역 변수(auto)를 사용한 함수...\n");
-	for (i = 0; i < 3; i++)
+	matrixTransformation(&a, &a_result, COL, ROW);
+	matrixPrint(&a_result, COL, ROW);
+	printf("\n");
+	matrixTransformation(&b, & b_result, MAX, MAX);
+	matrixPrint(&b_result, MAX, MAX);
+	
+}
+
+void matrixTransformation(int* a, int* result, int row, int col)
+{
+	for (int i = 0; i < row; i++)
 	{
-		auto_func();
-	}
-
-	printf("정적 지역 변수(static)를 사용한 함수...\n");
-	for (i = 0; i < 3; i++)
-	{
-		static_func();
-	}
-}
-
-void auto_func(void)
-{
-	auto int a = 0;
-
-	a++;
-	printf("%d\n", a);
-}
-
-void static_func(void)
-{
-	static int a;
-
-	a++;
-	printf("%d\n", a);
-}
-// 예제 13-6
-int* sum(int a, int b);
-
-int main(void)
-{
-	int* resp;
-
-	resp = sum(10, 20);
-	int* resp2 = sum(50, 20);
-	printf("두 정수의 합: %d\n", *resp);
-}
-
-int* sum(int a, int b)
-{
-	int res;
-	res = a + b;
-	return &res;
-}
-// 예제 14-2
-int main()
-{
-	int num[3][4] = {
-		1, 2,
-		5, 6, 7, 8,
-		9, 10, 11, 12
-	};
-
-	int i, j;
-	for (i = 0; i < 3; i++) 
-	{
-		for (j = 0; j < 4; j++)
+		for (int j = 0; j < col; j++)
 		{
-			printf("%5d", num[i][j]);
+			*(result + i * col + j) = *(a +(col-1-j)*row + i);
+		}
+	}
+}
+
+void matrixPrint(int* a, int row, int col)
+{
+	for (int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < col; j++)
+		{
+			printf("%d ", *(a + i * col + j));
 		}
 		printf("\n");
 	}
 }
-// 예제 14-3
+*/
+
+
+
+/*
+Q2. n x n 행렬에 대해서 전치행렬을 구하라.
+	ex>
+		A 행렬				B 행렬
+		1 2 3				1 4 7
+		4 5 6		=>		2 5 8
+		7 8 9				3 6 9
+*/
+#define MAX 3
+
+void transpose(int* a, int* result, int col, int row);
+void printMatrix(int* a, int row, int col);
+
 int main()
 {
-	char animals[5][20];
-	int i;
-	int count;
+	int a[MAX][MAX] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	int b[MAX][MAX];
+	transpose(&a, &b, MAX, MAX);
+	printMatrix(&b, MAX, MAX);
+}
 
-	count = sizeof(animals) / sizeof(animals[0]);
-	for (i = 0; i < count; i++)
+void transpose(int* a, int* result, int col, int row)
+{
+	for (int i = 0; i < row; i++)
 	{
-		scanf("%s", animals[i]);
-	}
-	for (i = 0; i < count; i++)
-	{
-		printf("%s  ", animals[i]);
+		for (int j = 0; j < col; j++)
+		{
+			*(result+i*row+j) = *(a+j*row+i);
+		}
 	}
 }
-*/
-// 예제 14-5
-int main()
+
+void printMatrix(int* a, int row, int col)
 {
-	int score[4][3][2] = {
-		72, 80, 95, 60, 68, 98, 83, 90, 75, 72, 84, 90,
-		66, 85, 90, 88, 95, 92, 88, 95, 43, 72, 56, 75
-	};
-
-	int i, j, k;
-
-	for (i = 0; i < 2; i++)
+	for (int i = 0; i < row; i++)
 	{
-		printf("%d반 점수...\n", i + 1);
-		for (j = 0; j < 3; j++)
+		for (int j = 0; j < col; j++)
 		{
-			for (k = 0; k < 4; k++)
-			{
-				printf("%5d ", score[i][j][k]);
-			}
-			printf("\n");
+			printf("%d ", *(a + i * col + j));
 		}
 		printf("\n");
 	}
