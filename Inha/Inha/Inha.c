@@ -35,100 +35,43 @@ Q2. 다음과 같이 두 개의 int형 포인터 변수와 길이가 5인
 	저장되어야 한다. 
 	arr 주소값, 최대/최소의 주소값 
 	maxPtr, minPtr이 가진 주소에 저장된 값도 출력하라.
-// 예제 15-7
-int sum(int, int);
-int sub(int a, int b);
 
-int main()
-{
-	int (*fp)(int, int);
-	int res;
-
-	fp = sum;
-	res = fp(10, 20);
-	printf("sum result: %d\n", res);
-	printf("   fp의 주소: %p\n", &res);
-	printf("sum()의 주소: %p\n\n", &sum);
-
-	fp = sub;
-	res = fp(10, 20);
-	printf("sub result: %d\n", res);
-	printf("   fp의 주소: %p\n", &res);
-	printf("sub()의 주소: %p\n\n", &sub);
-}
-
-int sum(int a, int b)
-{
-	return (a + b);
-}
-
-int sub(int a, int b)
-{
-	return (a - b);
-}
-// 예제 15-8
-void func(int (*fp)(int, int));
-int sum(int a, int b);
-int mul(int a, int b);
-int Max(int a, int b);
-
-int main()
-{
-	int sel;
-
-	printf("01 정수의 합\n");
-	printf("02 정수의 곱\n");
-	printf("03 정수 중에서 큰 값 계산\n");
-	printf("원하는 연산을 선택하세요: ");
-	scanf("%d", &sel);
-
-	switch (sel)
-	{
-	case 1: func(sum); break;
-	case 2: func(mul); break;
-	case 3: func(Max); break;
-	}
-}
-
-void func(int (*fp)(int, int))
-{
-	int a, b;
-	int res;
-
-	printf("두 정수의 값을 입력하세요: ");
-	scanf("%d%d", &a, &b);
-	res = fp(a, b);
-	printf("결괏값은: %d\n", res);
-}
-
-int sum(int a, int b)
-{
-	return (a + b);
-}
-
-int mul(int a, int b)
-{
-	return (a * b);
-}
-
-int Max(int a, int b)
-{
-	if (a > b) return a;
-	else return b;
-}
+p.476 프로필 교환 프로그램
+	int형과 double형 교환 가능한 swap("int", &a, &b) 구현
 */
-// 예제 15-9
+
+void swap(char* str, void* vpa, void* vpb);
+
 int main()
 {
-	int a = 10;
-	double b = 3.5;
-	void* vp;
-	
-	vp = &a;
-	printf("a: %d\n", *(int*)vp);
-	printf("a: %f\n", *(float*)vp);	// 출력 0.0000 이렇게 나옴 
+	double lengthA, lengthB;
+	int ageA, ageB;
+	printf("첫 번째 사람의 나이와 키 입력: ");
+	scanf("%d%lf", &ageA, &lengthA);
+	printf("두 번째 사람의 나이와 키 입력: ");
+	scanf("%d%lf", &ageB, &lengthB);
 
-	vp = &b;
-	printf("b: %.1lf\n", *(double*)vp);
-	printf("b: %d\n", *(int*)vp);	// 출력 0 나옴 
+	printf("\n---------------swap---------------\n\n");
+
+	swap("int", &ageA, &ageB);
+	swap("double", &lengthA, &lengthB);
+
+	printf("첫 번째 사람의 나이는 %d, 키는 %.1lf 입니다.\n", ageA, lengthA);
+	printf("두 번째 사람의 나이는 %d, 키는 %.1lf 입니다.\n", ageB, lengthB);
+}
+
+void swap(char* str, void* vpa, void* vpb)
+{
+	if (str == "int")
+	{
+		int temp = *(int*)vpa;
+		*(int*)vpa = *(int*)vpb;
+		*(int*)vpb = temp;
+	}
+	else if (str == "double")
+	{
+		double temp = *(double*)vpa;
+		*(double*)vpa = *(double*)vpb;
+		*(double*)vpb = temp;
+	}
 }
