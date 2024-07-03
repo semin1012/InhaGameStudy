@@ -22,116 +22,86 @@ Q1. 야구 게임
 	3 > 2 6 4 -> 1s 1b (2의 위치가 맞으나 6은 위치가 다름)
 	4 > 2 1 6 -> HR 
 
-*/
+// 예제 14-?
+int main()
+{
+	int ary1[4] = { 1, 2, 3, 4 };
+	int ary2[4] = { 11, 12, 13, 14 };
+	int ary3[4] = { 21, 22, 23, 24 };
+	int* pary[3] = { ary1, ary2, ary3, };
+	int i, j;
+	
+	int maxJ = sizeof(ary1[0]);
+	int maxI = sizeof(pary) / maxJ;
 
-#define MAX 3
+	for (i = 0; i < maxI; i++)
+	{
+		for (j = 0; j < maxJ; j++)
+		{
+			printf("%5d", pary[i][j]);
+		}
+		printf("\n");
+	}
 
-void setNumbers(int* correct);
-void printNumbers(int* arr);
-int getStrike(int* correct, int* arr);
-int getBall(int* correct, int* arr);
-int getResult(int strike, int ball);
+	printf("\n-----------------주소-----------------\n\n");
+
+	for (i = 0; i < 3; i++)
+	{
+		printf("pary[%d]: %p, %x\n", i, pary[i], pary[i]);
+		printf("ary1[%d]: %p, %x\n", i, &ary1[i], &ary1[i]);
+		printf("\n");
+	}
+}
+// 예제 15-1
+int main()
+{
+	int a = 10;
+	int* pi;
+	int** ppi;
+
+	pi = &a;
+	ppi = &pi;
+
+	printf("----------------------------------------------------\n");
+	printf("  변수    변수값      &연산      *연산      **연산 \n");
+	printf("----------------------------------------------------\n");
+	printf("  a%12d%12u\n", a, &a);
+	printf(" pi%12u%12u%12d\n", pi, &pi, *pi);
+	printf("ppi%12u%12u%12u%12u\n", ppi, &ppi, *ppi, **ppi);
+}
+// 예제 15-2
+void swap_ptr(char** ppa, char** ppb);
 
 int main()
 {
-	srand(time(NULL));	// 난수 
-	int correct[MAX];
+	char* pa = "success";
+	char* pb = "failure";
 
-	setNumbers(correct);
-	printNumbers(correct);
-
-	int answerCnt = 1;
-	int answer[MAX];
-	int strike = 0, ball = 0;
-
-	while (1)
-	{
-		printf("%d > ", answerCnt);
-		for (int i = 0; i < MAX; i++)
-			scanf("%d", &answer[i]);
-
-		printf("-> ");
-
-		strike = getStrike(correct, answer);
-		ball = getBall(correct, answer);
-
-		if (getResult(strike, ball) == -1)
-			return 0;
-
-		answerCnt++;
-	}
+	printf("pa -> %s, pb -> %s\n", pa, pb);
+	swap_ptr(&pa, &pb);
+	printf("pa -> %s, pb -> %s\n", pa, pb);
 }
 
-// 정답 난수 생성
-void setNumbers(int* correct) 
+void swap_ptr(char** ppa, char** ppb)
 {
-	for (int i = 0; i < MAX; i++) {
-		int random = rand() % 9 + 1;
-		bool duplication = false;
-		for (int j = 0; j < MAX; j++) {
-			if (random == *(correct+j)) {
-				duplication = true;
-				break;
-			}
-		}
-		if (duplication == true) i--;
-		else *(correct+i) = random;
-	}
+	char* pt;
+	pt = *ppa;
+	*ppa = *ppb;
+	*ppb = pt;
 }
-
-// 정답 출력 (편의용)
-void printNumbers(int* arr)
+// 예제 15-4
+int main()
 {
-	for (int i = 0; i < MAX; i++) {
-		printf("%d ", *(arr+i));
-	}
-	printf("\n\n");
+	int ary[5];
+	printf("  ary의 값: %u\t", ary);
+	printf("ary의 주소: %u\n", &ary);
+	printf("   ary + 1: %u\t", ary + 1);
+	printf("  &ary + 1: %u\n", &ary + 1);
 }
-
-// strike 개수 리턴
-int getStrike(int* correct, int* arr)
+*/
+// 배열 포인터
+int main()
 {
-	int strike = 0;
-	for (int i = 0; i < MAX; i++)
-	{
-		if (*(correct + i) == *(arr + i))
-			strike++;
-	}
-	return strike;
-}
-
-// ball 개수 리턴
-int getBall(int* correct, int* arr)
-{
-	int ball = 0;
-	for (int i = 0; i < MAX; i++)
-	{
-		for (int j = 0; j < MAX; j++)
-		{
-			if (i == j)
-				continue;
-			if (*(correct + i) == *(arr + j))
-				ball++;
-		}
-	}
-	return ball;
-}
-
-// 결과 출력 및 Homerun 여부 리턴 (홈런일 경우 -1 리턴)
-int getResult(int strike, int ball)
-{
-	if (strike == 0 && ball == 0)
-	{
-		printf("out\n\n");
-		return 0;
-	}
-
-	if (strike == MAX)
-	{
-		printf("HR\n");
-		return -1;
-	}
-
-	printf("%ds %db\n\n", strike, ball);
-	return 0;
+	int* pAry[5];
+	int(*pa)[4];	//배열 포인터
 }
