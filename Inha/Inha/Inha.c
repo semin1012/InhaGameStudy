@@ -7,85 +7,131 @@
 #include <conio.h>		// Sleep(1000)
 
 /*
-Q4. 다음과 같이 배열에 숫자가 채워지도록 프로그램을 작성하라.
-	N x N 인 경우만 해당
+Q1. 야구 게임
+	세 개의 숫자를 입력 받아서 다음과 같이 숫자가 있지만
+	그 위치가 틀렸을 때는 "ball"을 출력하고 
+	숫자와 위치가 맞으면 "strike"를 출력한다. 
+	숫자와 위치가 다 틀리면 "out"을 출력하도록 한다.
+	무엇이 볼이고 스트라이크인지는 출력하지 않는다.
+	세 개의 숫자와 위치가 다 맞으면 "homerun"을 표시하고 게임을
+	끝낸다.
 
-	ex> N = 3
-		1 2 6
-		3 5 7
-		4 8 9
+	ex> 정답: 2 1 6 ( 보여지면 안 됨 + 중복 불가 )
+	1 > 8 3 5 -> out
+	2 > 6 5 9 -> 0s 1b (6이 있으나 위치가 달라 ball)
+	3 > 2 6 4 -> 1s 1b (2의 위치가 맞으나 6은 위치가 다름)
+	4 > 2 1 6 -> HR 
+
 */
 
-//		0,0  1
-//		1,0  2
-//		0,1  3
-//		0,2  4
-//		1,1  5 
-//		2,0  6
-//		2,1  7
-//		1,2  8
-//		2,2  9
+#define MAX 3
+
+void setNumbers(int* correct);
+void printNumbers(int* arr);
+int getStrike(int* correct, int* arr);
+int getBall(int* correct, int* arr);
+int getResult(int strike, int ball);
 
 int main()
 {
-	int n;
-	printf("> n 입력: ");
-	scanf("%d", &n);
-	printf("\n");
+	srand(time(NULL));	// 난수 
+	int correct[MAX];
 
-	int num = 1;
-	int i = 0, j = 0;
-	int result[64][64] = { 0 };
-	int dir = 0;
+	setNumbers(correct);
+	printNumbers(correct);
 
-	while (num <= n * n) 
+	int answerCnt = 1;
+	int answer[MAX];
+	int strike = 0, ball = 0;
+
+	while (1)
 	{
-		result[i][j] = num;
+		printf("%d > ", answerCnt);
+		for (int i = 0; i < MAX; i++)
+			scanf("%d", &answer[i]);
 
-		// dir이 0이면 대각선 '위'로 올라감
-		if (dir == 0) {
-			// j+1 연산이 배열 크기를 벗어난다면 진행 안 하고 그 자리에서 내려감
-			if (j+1 == n) {
-				i++;
-				num++;
-				dir = 1;	// 방향도 바꿈
-				continue;
+		printf("-> ");
+
+		strike = getStrike(correct, answer);
+		ball = getBall(correct, answer);
+
+		if (getResult(strike, ball) == -1)
+			return 0;
+
+		answerCnt++;
+	}
+}
+
+// 정답 난수 생성
+void setNumbers(int* correct) 
+{
+	for (int i = 0; i < MAX; i++) {
+		int random = rand() % 9 + 1;
+		bool duplication = false;
+		for (int j = 0; j < MAX; j++) {
+			if (random == *(correct+j)) {
+				duplication = true;
+				break;
 			}
-			// j가 n 이상이거나 i가 0 이하이면 해당 방향으로 더 못 가니까 방향 바꿔줌
-			// 방향은 바꾸지만 오른쪽 or 위쪽은 갈 수 있는 방향이라면 ++, -- 연산함
-			if (j < n)
-				j++;
-			else dir = 1;
-			if (i > 0)
-				i--;
-			else dir = 1;
-		}							
-		// dir이 1이면 대각선 '아래'로 내려감
-		else {
-			// i+1 연산이 배열 크기를 벗어나면 진행 안 하고 그 자리에서 옆으로 감
-			if (i + 1 == n)
-			{
-				j++;
-				num++;
-				dir = 0;
-				continue;
-			}
-			// i가 n 이상이거나 j가 0 이하이면 해당 방향으로 더 못 가니까 방향 바꿔줌
-			// 방향은 바꾸지만 왼쪽 or 아래쪽은 갈 수 있는 방향이라면 ++, -- 연산함
-			if (i < n)
-				i++;
-			else dir = 0;
-			if (j > 0)
-				j--;
-			else dir = 0;
 		}
-		num++;
+		if (duplication == true) i--;
+		else *(correct+i) = random;
+	}
+}
+
+// 정답 출력 (편의용)
+void printNumbers(int* arr)
+{
+	for (int i = 0; i < MAX; i++) {
+		printf("%d ", *(arr+i));
+	}
+	printf("\n\n");
+}
+
+// strike 개수 리턴
+int getStrike(int* correct, int* arr)
+{
+	int strike = 0;
+	for (int i = 0; i < MAX; i++)
+	{
+		if (*(correct + i) == *(arr + i))
+			strike++;
+	}
+	return strike;
+}
+
+// ball 개수 리턴
+int getBall(int* correct, int* arr)
+{
+	int ball = 0;
+	for (int i = 0; i < MAX; i++)
+	{
+		for (int j = 0; j < MAX; j++)
+		{
+			if (i == j)
+				continue;
+			if (*(correct + i) == *(arr + j))
+				ball++;
+		}
+	}
+	return ball;
+}
+
+// 결과 출력 및 Homerun 여부 리턴 (홈런일 경우 -1 리턴)
+int getResult(int strike, int ball)
+{
+	if (strike == 0 && ball == 0)
+	{
+		printf("out\n\n");
+		return 0;
 	}
 
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			printf("%2d ", result[i][j]);
-		}
-		printf("\n");
+	if (strike == MAX)
+	{
+		printf("HR\n");
+		return -1;
 	}
+
+	printf("%ds %db\n\n", strike, ball);
+	return 0;
 }

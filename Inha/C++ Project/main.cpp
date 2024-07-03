@@ -18,14 +18,12 @@ int main()
 	cin >> r >> c;
 
 	for (int i = 0; i < r; i++) {
+		fill(dist1[i], dist1[i] + c, -1);
+		fill(dist2[i], dist2[i] + c, -1);
+	}
+
+	for (int i = 0; i < r; i++)
 		cin >> board[i];
-	}
-
-	for (int i = 0; i < r; i++) {
-		fill(dist1[i], dist1[i] + c, -1);
-		fill(dist1[i], dist1[i] + c, -1);
-	}
-
 	queue<pair<int, int>> q1;
 	queue<pair<int, int>> q2;
 
