@@ -1,7 +1,2 @@
 ﻿  Inha.c
-D:\InhaGameStudy\Inha\Inha\Inha.c(57,9): warning C4477: 'printf' : 서식 문자열 '%12u'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'int (*)[5]'입니다.
-D:\InhaGameStudy\Inha\Inha\Inha.c(58,9): warning C4477: 'printf' : 서식 문자열 '%12u'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'int *'입니다.
-D:\InhaGameStudy\Inha\Inha\Inha.c(59,9): warning C4477: 'printf' : 서식 문자열 '%12u'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'int *'입니다.
-D:\InhaGameStudy\Inha\Inha\Inha.c(46,7): warning C4047: '초기화 중': 'int *'의 간접 참조 수준이 'int (*)[5]'과(와) 다릅니다.
-D:\InhaGameStudy\Inha\Inha\Inha.c(47,7): warning C4047: '초기화 중': 'int *'의 간접 참조 수준이 'int (*)[5]'과(와) 다릅니다.
   Inha.vcxproj -> D:\InhaGameStudy\Inha\Debug\Inha.exe

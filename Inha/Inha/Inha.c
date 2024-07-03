@@ -35,48 +35,100 @@ Q2. 다음과 같이 두 개의 int형 포인터 변수와 길이가 5인
 	저장되어야 한다. 
 	arr 주소값, 최대/최소의 주소값 
 	maxPtr, minPtr이 가진 주소에 저장된 값도 출력하라.
-*/
-
-#define MAX_ARRAY 5
-void MaxAndMin(int **maxPtr, int **minPtr);
+// 예제 15-7
+int sum(int, int);
+int sub(int a, int b);
 
 int main()
 {
-	int arr[MAX_ARRAY];
-	int* maxPtr = &arr;
-	int* minPtr = &arr;
+	int (*fp)(int, int);
+	int res;
 
-	printf("정수를 5개 입력하세요: ");
-	for (int i = 0; i < MAX_ARRAY; i++)
-	{
-		scanf("%d", &arr[i]);
-	}
+	fp = sum;
+	res = fp(10, 20);
+	printf("sum result: %d\n", res);
+	printf("   fp의 주소: %p\n", &res);
+	printf("sum()의 주소: %p\n\n", &sum);
 
-	MaxAndMin(&maxPtr, &minPtr);
-
-	printf("   arr의 주소: %12u\n", &arr);
-	printf("최대값의 주소: %12u, maxPtr의 값: %d\n", maxPtr, *maxPtr);
-	printf("최소값의 주소: %12u, minPtr의 값: %d\n", minPtr, *minPtr);
+	fp = sub;
+	res = fp(10, 20);
+	printf("sub result: %d\n", res);
+	printf("   fp의 주소: %p\n", &res);
+	printf("sub()의 주소: %p\n\n", &sub);
 }
 
-void MaxAndMin(int** maxPtr, int** minPtr)
+int sum(int a, int b)
 {
-	int* temp = *maxPtr;
+	return (a + b);
+}
 
-	// 최대값 찾기
-	for (int i = 0; i < MAX_ARRAY; i++) 
-	{
-		if (*(*(maxPtr)+i) > *temp)
-			temp = *(maxPtr)+i;
-	}
-	*maxPtr = temp;
+int sub(int a, int b)
+{
+	return (a - b);
+}
+// 예제 15-8
+void func(int (*fp)(int, int));
+int sum(int a, int b);
+int mul(int a, int b);
+int Max(int a, int b);
 
-	temp = *minPtr;
-	// 최소값 찾기
-	for (int i = 0; i < MAX_ARRAY; i++) 
+int main()
+{
+	int sel;
+
+	printf("01 정수의 합\n");
+	printf("02 정수의 곱\n");
+	printf("03 정수 중에서 큰 값 계산\n");
+	printf("원하는 연산을 선택하세요: ");
+	scanf("%d", &sel);
+
+	switch (sel)
 	{
-		if (*(*(minPtr)+i) < *temp)
-			temp = *(minPtr)+i;
+	case 1: func(sum); break;
+	case 2: func(mul); break;
+	case 3: func(Max); break;
 	}
-	*minPtr = temp;
+}
+
+void func(int (*fp)(int, int))
+{
+	int a, b;
+	int res;
+
+	printf("두 정수의 값을 입력하세요: ");
+	scanf("%d%d", &a, &b);
+	res = fp(a, b);
+	printf("결괏값은: %d\n", res);
+}
+
+int sum(int a, int b)
+{
+	return (a + b);
+}
+
+int mul(int a, int b)
+{
+	return (a * b);
+}
+
+int Max(int a, int b)
+{
+	if (a > b) return a;
+	else return b;
+}
+*/
+// 예제 15-9
+int main()
+{
+	int a = 10;
+	double b = 3.5;
+	void* vp;
+	
+	vp = &a;
+	printf("a: %d\n", *(int*)vp);
+	printf("a: %f\n", *(float*)vp);	// 출력 0.0000 이렇게 나옴 
+
+	vp = &b;
+	printf("b: %.1lf\n", *(double*)vp);
+	printf("b: %d\n", *(int*)vp);	// 출력 0 나옴 
 }
