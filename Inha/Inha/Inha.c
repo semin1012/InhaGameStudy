@@ -7,71 +7,106 @@
 #include <conio.h>		// Sleep(1000)
 
 /*
-Q1. 야구 게임
-	세 개의 숫자를 입력 받아서 다음과 같이 숫자가 있지만
-	그 위치가 틀렸을 때는 "ball"을 출력하고 
-	숫자와 위치가 맞으면 "strike"를 출력한다. 
-	숫자와 위치가 다 틀리면 "out"을 출력하도록 한다.
-	무엇이 볼이고 스트라이크인지는 출력하지 않는다.
-	세 개의 숫자와 위치가 다 맞으면 "homerun"을 표시하고 게임을
-	끝낸다.
+// 예제 16-1
+int main()
+{
+	int* pi;
+	double* pd;
 
-	ex> 정답: 2 1 6 ( 보여지면 안 됨 + 중복 불가 )
-	1 > 8 3 5 -> out
-	2 > 6 5 9 -> 0s 1b (6이 있으나 위치가 달라 ball)
-	3 > 2 6 4 -> 1s 1b (2의 위치가 맞으나 6은 위치가 다름)
-	4 > 2 1 6 -> HR 
+	pi = (int*)malloc(sizeof(int) * 1000000000);
+	pd = (double*)malloc(sizeof(double));
 
-Q2. 다음과 같이 두 개의 int형 포인터 변수와 길이가 5인 
-	int형 배열을 선언한다.
-	int *maxPtr;
-	int *minPtr;
-	int arr[5];
-	MaxAndMin이라는 함수를 정의하고 이를 호출해서 위 배열과 
-	두 포인터를 변수로 전달한다.
-	이 함수의 호출이 완료되면 
-	포인터 변수 maxPtr에는 가장 큰 배열 요소의 주소값이 
-	포인터 변수 minPtr에는 가장 작은 배열 요소의 주소값이
-	저장되어야 한다. 
-	arr 주소값, 최대/최소의 주소값 
-	maxPtr, minPtr이 가진 주소에 저장된 값도 출력하라.
+	for (int i = 0; i < 1000000000; i++) {
+		if (pi[i] == NULL)
+		{
+			printf("i = %d\n", i);
+			printf("# 메모리가 부족합니다.\n");
+			exit(1);
+		}
 
-p.476 프로필 교환 프로그램
-	int형과 double형 교환 가능한 swap("int", &a, &b) 구현
-*/
 
-void swap(char* str, void* vpa, void* vpb);
+		pi[i] = i;
+		*pd = 3.4;
+
+		//printf("정수형으로 사용: %d\n", pi[i]);
+		//printf("실수형으로 사용: %.1lf\n", *pd);
+
+		//printf("\n");
+	}
+
+	printf("완료\n");
+	free(pi);
+	free(pd);
+}
+// 예제 16-3
+int main()
+{
+	int* pi;
+	int size = 5;
+	int count = 0;
+	int num;
+	int i;
+
+	pi = (int*)calloc(size, sizeof(int));
+	while (1)
+	{
+		printf("양수만 입력하세요 => ");
+		scanf("%d", &num);
+		if (num <= 0) break;
+		if (count == size)
+		{
+			size += 5;
+			pi = (int*)realloc(pi, size * sizeof(int));
+			printf("size 변경, 현재 size: %d\n", size);
+		}
+		pi[count++] = num;
+	}
+	for (i = 0; i < count; i++)
+	{
+		printf("%5d", pi[i]);
+	}
+	free(pi);
+}
+// 예제 16-5 수정
+void print_str(char** ps);
 
 int main()
 {
-	double lengthA, lengthB;
-	int ageA, ageB;
-	printf("첫 번째 사람의 나이와 키 입력: ");
-	scanf("%d%lf", &ageA, &lengthA);
-	printf("두 번째 사람의 나이와 키 입력: ");
-	scanf("%d%lf", &ageB, &lengthB);
+	char temp[80];
+	char* str;
+	int size = 5;
+	str = (char*)calloc(size, sizeof(char));
+	int count = 0;
+	
+	while (1)
+	{
+		// 안되는디? 이중 포인터 써볼것
+		printf("문자열을 입력하세요. (end는 종료): ");
+		gets(temp);
+		if (strcmp(temp, "end") == 0) break;
+		if (count + 1 == size)
+		{
+			size += 5;
+			str = (char*)realloc(str, sizeof(char) * size);
+			printf("size 변화, size 크기: %d\n", size);
+		}
+		str[count] = (char*)malloc(strlen(temp) + 1);
+		strcpy(str[count++], temp);
+	}
 
-	printf("\n---------------swap---------------\n\n");
-
-	swap("int", &ageA, &ageB);
-	swap("double", &lengthA, &lengthB);
-
-	printf("첫 번째 사람의 나이는 %d, 키는 %.1lf 입니다.\n", ageA, lengthA);
-	printf("두 번째 사람의 나이는 %d, 키는 %.1lf 입니다.\n", ageB, lengthB);
+	print_str(str);
+	for (int i = 0; str[i] != NULL; i++)
+	{
+		free(str[i]);
+	}
 }
 
-void swap(char* str, void* vpa, void* vpb)
+void print_str(char** ps)
 {
-	if (str == "int")
+	while (*ps != NULL)
 	{
-		int temp = *(int*)vpa;
-		*(int*)vpa = *(int*)vpb;
-		*(int*)vpb = temp;
-	}
-	else if (str == "double")
-	{
-		double temp = *(double*)vpa;
-		*(double*)vpa = *(double*)vpb;
-		*(double*)vpb = temp;
+		printf("%s\n", *ps);
+		ps++;
 	}
 }
+*/
