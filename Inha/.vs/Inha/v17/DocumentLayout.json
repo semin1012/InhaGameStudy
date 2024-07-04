@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\InhaGameStudy\\Inha\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F604C276-267F-4A29-B7B2-E73EAFBA6B50}|C\u002B\u002B Project\\C\u002B\u002B Project.vcxproj|D:\\InhaGameStudy\\Inha\\C\u002B\u002B Project\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F604C276-267F-4A29-B7B2-E73EAFBA6B50}|C\u002B\u002B Project\\C\u002B\u002B Project.vcxproj|solutionrelative:C\u002B\u002B Project\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|D:\\InhaGameStudy\\Inha\\Inha\\Inha.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\Inha.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -14,10 +18,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{F604C276-267F-4A29-B7B2-E73EAFBA6B50}|C\u002B\u002B Project\\C\u002B\u002B Project.vcxproj|C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\2022\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.40.33807\\INCLUDE\\STRING||{3B902123-F8A7-4915-9F01-361F908088D0}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F604C276-267F-4A29-B7B2-E73EAFBA6B50}|C\u002B\u002B Project\\C\u002B\u002B Project.vcxproj|D:\\InhaGameStudy\\Inha\\C\u002B\u002B Project\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F604C276-267F-4A29-B7B2-E73EAFBA6B50}|C\u002B\u002B Project\\C\u002B\u002B Project.vcxproj|solutionrelative:C\u002B\u002B Project\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,11 +27,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "exe_common.inl",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\crt\\src\\vcruntime\\exe_common.inl",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\crt\\src\\vcruntime\\exe_common.inl",
@@ -42,20 +42,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Inha.c",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c",
               "RelativeDocumentMoniker": "Inha\\Inha.c",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c*",
-              "RelativeToolTip": "Inha\\Inha.c*",
-              "ViewState": "AQIAAA0AAAAAAAAAAAAhwBkAAAAaAAAA",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.c",
+              "RelativeToolTip": "Inha\\Inha.c",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABwAAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-06-26T00:26:54.034Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "yvals_core.h",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h",
@@ -66,7 +66,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "string",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string",
@@ -77,13 +77,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "main.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\C\u002B\u002B Project\\main.cpp",
               "RelativeDocumentMoniker": "C\u002B\u002B Project\\main.cpp",
               "ToolTip": "D:\\InhaGameStudy\\Inha\\C\u002B\u002B Project\\main.cpp",
               "RelativeToolTip": "C\u002B\u002B Project\\main.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
+              "ViewState": "AQIAABsAAAAAAAAAAAAAADEAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-07-03T06:44:29.68Z",
               "EditorCaption": ""
