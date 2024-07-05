@@ -21,172 +21,86 @@ Q1. p.540 성적 처리 프로그램
 		2. 검색 -> 이름 검색으로 하고 먼저 찾은 것을 우선 출력
 		3. 메모리 할당 활용, 자기 참조 구조체 활용
 		4. 입력/출력/검색은 각각 개별 함수로 구현한다.
+
+p.582 도전 실전 예제
+	단어 검출 프로그램 작성
+
+Q3. 구구단 출력 -> 99.txt
+	원하는 구구단을 찾아 출력하는 프로그램을 작성하라. 
+	= fseek() 이용
+	ex>
+		99.txt ( 구구단 정보가 저장된 파일 )
+		2 x 1 = 2 ...
+		
+		출력을 원하는 구구단은 ? 3
+		3 x 1 = 3 ...
 */
-// 파일 입출력 실습
-/*
-int main(int argc, char** argv)
-{
-	FILE* fp, *fp2;
-	char str[] = "banana";
 
-
-	// :: read file
-	fp = fopen("../data/a.txt", "r");
-	if (fp == NULL)
-	{
-		printf("fail! \n");
-		return 0;
-	}
-	printf("read file success!\n");
-
-	// :: write file
-	fp2 = fopen("../data/b.txt", "w");
-	if (fp2 == NULL) 
-	{
-		printf("\nfail! \n");
-		return 0;
-	}
-	printf("\nwrite file success!\n");
-
-	char ch;
-	while (1)
-	{
-		ch = fgetc(fp);
-		if (ch == EOF) {
-			break;
-		}
-		fputc(ch, fp2);
-	}
-
-	fputc('\n', fp2);
-	
-	fclose(fp);
-	fclose(fp2);
-}
-// 예제 18-6
 int main()
 {
-	FILE* fp;
-	int ary[10] = { 13, 10, 13, 13, 10, 26, 13, 10, 13, 10 };
-	int i, res;
-
-	fp = fopen("a.txt", "wb");
-	for (i = 0; i < 10; i++)
-	{
-		fputc(ary[i], fp);
-	}
-	fclose(fp);
-
-	fp = fopen("a.txt", "rt");
-	while (1)
-	{
-		res = fgetc(fp);
-		if (res == EOF) break;
-		printf("%4d", res);
-	}
-	fclose(fp);
-}
-// 예제 18-7
-int main()
-{
-	FILE* fp;
-	char str[20];
-
-	fp = fopen("a.txt", "a+");
-	if (fp == NULL)
-	{
-		printf("파일을 만들지 못했습니다.\n");
-		return 1;
-	}
-
-	while (1)
-	{
-		printf("과일 이름: ");
-		scanf("%s", str);
-		if (strcmp(str, "end") == 0)
-		{
-			break;
-		}
-		else if (strcmp(str, "list") == 0)
-		{
-			fseek(fp, 0, SEEK_SET);
-			while (1)
-			{
-				fgets(str, sizeof(str), fp);
-				if (feof(fp))
-				{
-					break;
-				}
-				printf("%s", str);
-			}
-		}
-		else
-		{
-			fprintf(fp, "%s\n", str);
-		}
-	}
-	fclose(fp);
-}
-// 예제 18-9
-int main()
-{
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF || _CRTDBG_LEAK_CHECK_DF);
 	FILE* ifp, * ofp;
-	char name[20];
-	int kor, eng, math;
-	int total;
-	double avg;
-	int res;
 
-	ifp = fopen("a.txt", "r");
-	if (ifp == NULL)
-	{
-		printf("입력 파일을 열지 못했습니다.\n");
+	int size = 14;
+	int count = 0;
+
+	char buffer[100];
+
+	char** res = (char**)calloc(size, sizeof(char));
+
+	ifp = fopen("a.txt", "rt");
+	if (ifp == NULL) {
+		printf("등록 단어 파일 읽기 실패\n");
 		return 1;
 	}
+	printf("등록 단어 파일 읽기 성공\n");
 
-	ofp = fopen("b.txt", "w");
+	while (fgets(buffer, sizeof(buffer), ifp))
+	{
+		buffer[strlen(buffer) - 1] = '\0';
+		res[count] = (char*)malloc(101);
+		strcpy(res[count], buffer);
+		printf("입력: %s\n", buffer);
+		count++;
+	}
+
+	res[count] = NULL;
+	//count = 0;
+
+
+	ofp = fopen("b.txt", "wt");
 	if (ofp == NULL)
 	{
-		printf("출력 파일을 열지 못했습니다.\n");
+		printf("입력 단어 파일 읽기 실패\n");
 		return 1;
 	}
+	printf("입력 단어 파일 읽기 성공!\n");
 
-	while (1)
+	printf("\n단어를 입력하세요. quit 입력 시 종료합니다.\n\n");
+
+	//while (1)
+	//{
+	//	printf("> ");
+	//	scanf("%s", buffer);
+	//	break;
+	//	/*if (strcmp(buffer, "quit") == 0)
+	//		break;*/
+	//	
+	//	//fscanf(ofp, "%s", buffer);
+	//	//if (res[count] == NULL)
+	//	//	break;
+	//	//fprintf(ofp, "%s\n", res[count]);
+	//	//printf("%s\n", res[count]);
+	//	//count++;
+	//}
+
+	for (int i = 0; i < count; i++)
 	{
-		res = fscanf(ifp, "%s%d%d%d", name, &kor, &eng, &math);
-		if (res == EOF) 
-		{
-			break;
-		}
-		total = kor + eng + math;
-		avg = total / 3.f;
-		fprintf(ofp, "%s%5d%7.1lf\n", name, total, avg);
+		free(res[i]);
 	}
 
 	fclose(ifp);
 	fclose(ofp);
+
+	_CrtDumpMemoryLeaks();
 }
-// 예제 18-11
-int main()
-{
-	FILE* afp, * bfp;
-	int num = 10;
-	int res;
-
-	afp = fopen("a.txt", "wt");
-	fprintf(afp, "%d", num);	// 파일에 출력
-	
-	bfp = fopen("b.txt", "wb");
-	fwrite(&num, 4, sizeof(num), bfp);
-
-	fclose(afp);
-
-	fclose(bfp);
-
-	bfp = fopen("b.txt", "rb");
-	fread(&res, sizeof(res), 1, bfp);
-	printf("%d", res);
-
-	fclose(bfp);
-}
-*/

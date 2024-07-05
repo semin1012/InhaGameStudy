@@ -1,1 +1,8 @@
-10
+dog
+tiger
+horse
+monkey
+lion
+koala
+giraffe
+owl
