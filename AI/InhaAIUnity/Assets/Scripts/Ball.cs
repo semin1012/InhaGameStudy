@@ -10,10 +10,14 @@ public class Ball : MonoBehaviour
         Debug.Log("시작");
     }
 
-    // Update is called once per frame
-    void Update()
+	private void FixedUpdate()
 	{
-        this.transform.Rotate(new Vector3(1, 1, 1));
-		Debug.Log("업데이트");
+
+	}
+
+	// Update is called once per frame
+	void Update()
+	{
+		this.transform.Rotate(new Vector3(1, 1, 1)*Time.deltaTime * 50);
 	}
 }
