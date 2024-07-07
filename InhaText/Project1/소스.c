@@ -36,116 +36,44 @@ Q3. 구구단 출력 -> 99.txt
 		3 x 1 = 3 ...
 */
 
-#define MAX_WORD_SIZE 80
-
-FILE* openFile(FILE* file, char fileName[], char mode[]);		// 파일 읽기 성공/실패 출력하려고 만듬
-char** readWordListInFile(FILE* file, int* count, int* size, char** res, char buffer[]);	// 파일에서 단어 목록 읽어오는 함수
-void inputWords(FILE* ofp, FILE* cfp, char buffer[], int* count, char** res);		// 파일에 단어 입력하는 함수
+#define MAX_LENGTH 15
 
 int main()
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF || _CRTDBG_LEAK_CHECK_DF);
-	FILE* ifp = NULL, * ofp = NULL, * cfp = NULL;
-	int size = 2;
-	int count = 0;
-	char buffer[MAX_WORD_SIZE] = { 0 };
-	char** res = (char**)calloc(size, sizeof(char*));
+	// 구구단 저장하는 파일 만들기
+	FILE* ofp = NULL;
+	char buffer[MAX_LENGTH + 1] = {0};
+	int n = 0;
+	ofp = fopen("99.txt", "wt");
 
-
-	// 단어 파일 불러오기
-	ifp = openFile(ifp, "a.txt", "rt");
-	// 단어 파일의 단어 목록을 읽어서 res에 저장해두기
-	res = readWordListInFile(ifp, &count, &size, res, buffer);
-	fclose(ifp);
-	
-	
-	ofp = openFile(ofp, "b.txt", "wt");		// 입력하는 단어를 저장할 파일 열기
-	cfp = openFile(cfp, "c.txt", "wt");		//  겹치지 않는 단어만 저장할 파일 열기
-	// 파일에 입력한 단어 저장하기
-	inputWords(ofp, cfp, buffer, &count, res);
-
-	// 동적할당 해제
-	for (int i = 0; i < count; i++)
-	{
-		free(res[i]);
+	if (ofp == NULL) {
+		printf("파일 읽기 실패\n");
+		return 0;
 	}
 
-	free(res);
+	for (int i = 2; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			fprintf(ofp, "%2d × %2d = %2d\n", i, j, i * j);
+		}
+		fprintf(ofp, "\n");
+	}
+
 	fclose(ofp);
-	fclose(cfp);
 
-	_CrtDumpMemoryLeaks();
-}
+	// 구구단 저장 파일 불러와서 출력하기
+	ofp = fopen("99.txt", "rt");
+
+	printf("출력을 원하는 구구단은?\n> ");
+	scanf("%d", &n);
 
 
-FILE* openFile(FILE* file, char fileName[], char mode[])
-{
-	file = fopen(fileName, mode);
-	if (file == NULL)
-	{
-		printf("\"%s\" 파일 읽기 실패\n", fileName);
-		exit(0);	// 실패하면 프로그램 종료
-	}
-	printf("\"%s\" 파일 읽기 성공!\n", fileName);
-	return file;
-}
+	// + 2 * (n-2)를 하는 이유는 2칸짜리 엔터가 n-2번만큼 더 들어가기 때문
+	fseek(ofp, (15 * (n-2) * 9 + 2 * (n-2)), SEEK_SET);
 
-char** readWordListInFile(FILE* file, int* count, int* size, char** res, char buffer[])
-{
-	while (fgets((buffer), sizeof(buffer), file))
-	{
-		if ((*count) == (*size))
-		{
-			*size += 5;
-			res = (char**)realloc(res, (*size) * sizeof(char*));
-			printf("size 변경, 현재 size : %d\n", *size);
-		}
-
-		buffer[strlen(buffer) - 1] = '\0';
-		res[*count] = (char*)calloc(sizeof(char), strlen(buffer) + 1);
-		strcpy(res[*count], buffer);
-		//printf("%s\n", buffer);
-		(*count)++;
-		_strset(buffer, '\0');
+	for (int i = 0; i < 9; i++) {
+		fgets(buffer, MAX_LENGTH, ofp);
+		printf("%s", buffer);
 	}
 
-	return res;
-}
-
-void inputWords(FILE* ofp, FILE* cfp, char buffer[], int* count, char** res)
-{
-	printf("\n단어를 입력하세요. quit 입력 시 종료합니다.\n\n");
-
-	while (1)
-	{
-		_strset(buffer, '\0');
-
-		printf("> ");
-		scanf("%s", buffer);
-
-
-		if (strcmp(buffer, "quit") == 0)
-			return;
-
-		// res에 저장된 단어랑 중복되는지 확인
-		bool duplicate = false;
-		for (int i = 0; i < (*count); i++)
-		{
-			if (strcmp(res[i], buffer) == 0) {
-				duplicate = true;
-			}
-		}
-
-		buffer[strlen(buffer)] = '\n';
-		buffer[strlen(buffer)+1] = '\0';
-
-		// 중복되지 않으면 c.txt에 저장
-		if (duplicate == false)
-		{
-			fprintf(cfp, "%s", buffer);
-		}
-		// 입력된 단어 모두 b.txt에 저장
-		fprintf(ofp, "%s", buffer);
-
-	}
+	fclose(ofp);
 }
