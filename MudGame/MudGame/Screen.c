@@ -40,10 +40,15 @@ void ScreenRelease()
     CloseHandle(g_hScreen[1]);
 }
 
+void setColor(int colorNum) {
+    SetConsoleTextAttribute(g_hScreen[g_nScreenIndex], colorNum);
+}
+
 void ScreenPrint(int x, int y, char* string)
 {
     DWORD dw;
     COORD CursorPosition = { x, y };
+
     SetConsoleCursorPosition(g_hScreen[g_nScreenIndex], CursorPosition);
     WriteFile(g_hScreen[g_nScreenIndex], string, strlen(string), &dw, NULL);
 }
