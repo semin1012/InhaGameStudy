@@ -23,7 +23,7 @@ void drawMap() {
 		for (int j = 0; j < MAPSIZE_Y; j++)
 		{
 			if (map[j][i] == 1)
-				ScreenPrint(i*2, j, "□");
+				ScreenPrint(i*2, j, "■");
 			else ScreenPrint(i*2, j, " ");
 		}
 		printf("\n");
@@ -31,13 +31,14 @@ void drawMap() {
 }
 
 void update() {
+
 }
 
 void render()
 {
 	ScreenClear();
 	drawMap();
-	ScreenPrint(player.x, player.y, "♀");
+	ScreenPrint(player.x, player.y, "●");
 	ScreenFlipping();
 }
 
@@ -50,45 +51,69 @@ void render()
 | |_\ \| | | || |  | || |___  /\__/ /  | |  | | | || |\ \   | |  
  \____/\_| |_/\_|  |_/\____/  \____/   \_/  \_| |_/\_| \_|  \_/  
  */
+
+/*
+  __   _   _  _  _   ___  _ _  _  _ 
+ / _| / \\ | || \\| | | o \\| | || \\| |
+( (_ ( o )| || \\\\ | |   /| U || \\\\ |
+ \\__| \\_/ |_||_|\\_| |_|\\\\|___||_|\\_|
+                                    
+*/
+
 void game_start(int i)
 {
 	ScreenClear();
 
-	ScreenPrint(0, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀⠀⣴⣶⡄⠀⣶⣶⡄⠀⣴⣶⡄\n");
-	ScreenPrint(0, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠙⠋⠁⠀⠉⠋⠁⠀⠙⠋⠀\n");
-	ScreenPrint(0, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+	if (i % 2 == 0) {
+		ScreenPrint(44, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀⠀⣴⣶⡄⠀⣶⣶⡄⠀⣴⣶⡄\n");
+		ScreenPrint(44, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠙⠋⠁⠀⠉⠋⠁⠀⠙⠋⠀\n");
+		ScreenPrint(44, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+	}
+	else {
+		ScreenPrint(44, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⣶⣶⡄⠀⣴⣶⡄\n");
+		ScreenPrint(44, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⠉⠋⠁⠀⠙⠋⠀\n");
+		ScreenPrint(44, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+	}
 
-	ScreenPrint(0, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣶⣶⡄⠀⣴⣶⡄\n");
-	ScreenPrint(0, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠉⠋⠁⠀⠙⠋⠀\n");
-	ScreenPrint(0, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-	ScreenPrint(0, 18, "     ○ ");
-	ScreenPrint(i, 20, "    ​ ◝◜  ⠀  ⠀⠀◝◜         ◝◜  ⠀  ⠀⠀◝◜  ◝◜⠀◝◜                      ◝◜⠀◝◜    ◝◜   ◝◜  ⠀◝◜        ◝◜ ◝◜◝◜\n");
-	ScreenPrint(i, 21, "⠀             ◝◜  ⠀◝◜⠀◝◜  ⠀  ⠀⠀⠀⠀⠀⠀⠀◝◜   ◝◜  ⠀◝◜◝◜⠀◝◜         ◝◜  ◝◜          ◝◜⠀◝◜        ◝◜ ◝◜⠀\n");
-	ScreenPrint(0, 22, "_◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲_\n");
-	ScreenPrint(0, 23, " ☁         ☁          ☁          ☁          ☁          ☁          ☁          ☁          ☁          ☁          ☁\n");
+	ScreenPrint(35, 13, " CCC  OOO  III N   N    RRRR  U   U N   N ");
+	ScreenPrint(35, 14, "C    O   O  I  NN  N    R   R U   U NN  N ");
+	ScreenPrint(35, 15, "C    O   O  I  N N N    RRRR  U   U N N N ");
+	ScreenPrint(35, 16, "C    O   O  I  N  NN    R R   U   U N  NN ");
+	ScreenPrint(35, 17, " CCC  OOO  III N   N    R  RR  UUU  N   N ");
+
+	ScreenPrint(44, 20, "Press Enter to Start");
+	ScreenPrint(0, 18 + 4, "     ○ ");
+	ScreenPrint(i, 20 + 4, "    ​ ◝◜  ⠀  ⠀⠀◝◜         ◝◜  ⠀  ⠀⠀◝◜  ◝◜⠀◝◜                      ◝◜⠀◝◜    ◝◜   ◝◜  ⠀◝◜        ◝◜ ◝◜◝◜\n");
+	ScreenPrint(i, 21 + 4, "⠀             ◝◜  ⠀◝◜⠀◝◜  ⠀  ⠀⠀⠀⠀⠀⠀⠀◝◜   ◝◜  ⠀◝◜◝◜⠀◝◜         ◝◜  ◝◜          ◝◜⠀◝◜        ◝◜ ◝◜⠀\n");
+	ScreenPrint(0, 22 + 4, "_◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲_\n");
+	ScreenPrint(0, 23 + 4, " ☁         ☁          ☁          ☁          ☁          ☁          ☁          ☁          ☁          ☁          ☁\n");
 
 	ScreenFlipping();
 }
 
-void release() {
+bool canGo(int x, int y)
+{
+	if (map[y][x] == 0)
+		return true;
+	return false;
 }
 
 int main(void) {
-	int nKey, nRemain;
+	int nRemain;
 	bool gamestart = false;
 
 	ScreenInit();//버퍼를 2개 생성한다.
@@ -97,43 +122,46 @@ int main(void) {
 
 	while (1) {
 
-		game_start(i);
-		i += 2;
+		if (gamestart == false) {
+			game_start(i);
+			i += 1;
+			if (_kbhit())   // 아무키나 눌려지면 멈춥니다
+			{
+				gamestart = true;
+			}
+			Sleep(300);
+		}
 
 		if (gamestart == true) {
 			update();
 			render();
-		}
 
-		if (_kbhit()) { //키보드가 눌렸는지 체크 
-			nKey = _getch(); //눌린값 대입
-			if (nKey == 'q') //q를 눌렀다면 break
+			if (GetAsyncKeyState('Q') & 0x8000)	// Q 눌렀을 때
 				break;
-			else if (nKey == 224 || nKey == 0) {
-				nKey = _getch();
-				switch (nKey) {
-				case 75: //왼쪽 방향키를 눌렀다면 
+
+			if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
+				if (canGo(player.x - 1, player.y))
 					player.x--;
-					break;
-				case 77:  //오른쪽 방향키를 눌렀다면
-					player.x++;
-					break;
-
-				case 72:  //위쪽 방향키를 눌렀다면
-					player.y--;
-					break;
-
-				case 80:  //아래쪽 방향키를 눌렀다면
-					player.y++;
-					break;
-				}
 			}
+			
+			if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+				if (canGo(player.x + 1, player.y))
+					player.x++;
+			}
+			
+			if (GetAsyncKeyState(VK_UP) & 0x8000) {
+				if (canGo(player.x, player.y - 1))
+					player.y--;
+			}
+			
+			if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
+				if (canGo(player.x, player.y + 1))
+					player.y++;
+			}
+			Sleep(10);
 		}
-		Sleep(300);
 	}
 
-
-	release();
 	ScreenRelease(); //화면 버퍼 초기화 함수에서 생성한 두 개의 화면 버퍼를 모두 해제한다.
 	return 0;
 }
