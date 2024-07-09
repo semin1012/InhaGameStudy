@@ -18,5 +18,25 @@
     <ClCompile Include="소스.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="sub.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="input.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="average.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="student.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="point.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="line.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -18,61 +18,171 @@ Q1. 파일 복사 프로그램 만들기
 		원본파일: source.txt
 		대상파일: dest.txt
 */
+// 예제 19-1
+/*
+#include "student.h"
+int main(void)
+{
+	Student a = { 315, "홍길동" };
 
-void gotoxy(int x, int y);
+	printf("학번: %d, 이름: %s\n", a.num, a.name);
+}
+// 예제 19-2
+#define PI 3.14159
+#define LIMIT 100.0
+#define MSG "passed!"
+#define ERR_PRN printf("허용 범위를 벗어났습니다!\n")
 
 int main()
 {
-	char origin[80];
-	char copy[80];
+	double radius, area;
 
-	char data[4];
+	printf("반지름을 입력하세요(10 이하): ");
+	scanf("%lf", &radius);
+	area = PI * radius * radius;
+	if (area > LIMIT) ERR_PRN;
+	else printf("원의 면적: %.2lf (%s)\n", area, MSG);
+}
+// 예제 19-3
+#define SUM(a, b) ((a) + (b))
+#define MUL(a, b) ((a) * (b))
 
-	printf("원본 파일: ");
-	scanf("%s", &origin);
-	printf("대상 파일: ");
-	scanf("%s", &copy);
+int main()
+{
+	int a = 10, b = 20;
+	int x = 30, y = 40;
+	int res;
 
-	FILE* ofp, *cfp;
-	ofp = fopen(origin, "rb");
-	cfp = fopen(copy, "wb");
-	
-	fseek(ofp, 0, SEEK_END);
+	printf("a + b = %d\n", SUM(a, b));
+	printf("x + b = %d\n", MUL(a, b));
+	res = 30 / MUL(2, 5);
+	printf("res: %d\n", res);
+}
+// 예제 19-4
+void func();
 
-	int size = ftell(ofp);
+int main()
+{
+	printf("컴파일 날짜와 시간: %s, %s\n\n", __DATE__, __TIME__);
+	printf("파일명: %s\n", __FILE__);
+	printf("함수명: %s\n", __FUNCTION__);
+	printf("행번호: %d\n", __LINE__);
 
-	fseek(ofp, 0, SEEK_SET);
-
-	int currentSize = 0;
-	float printSize = 0.f;
-
-	for (int i = 1;  i < (size / 4) + 1; i++) {
-		fread(&data, sizeof(data), 1, ofp);
-		fwrite(&data, sizeof(data), 1, cfp);
-		fseek(ofp, sizeof(data) * i, SEEK_SET);
-
-		currentSize += sizeof(data);
-		printSize = ((float)currentSize / size) * 100;
-
-		// 백분율 표시
-		gotoxy(0, 3);
-		for (int i = 0; i < printSize / 10; i++) {
-			printf("■");
-		}
-		gotoxy(22, 3);
-		printf("%.1f %\n", printSize);
-
-		//Sleep(10);	// 속도 느리게 하려고 추가
-	}
-
-
-	fclose(ofp);
-	fclose(cfp);
+#line 100 "macro.c"
+	func();
 }
 
+void func()
+{
+	printf("\n");
+	printf("파일명: %s\n", __FILE__);
+	printf("함수명: %s\n", __FUNCTION__);
+	printf("행번호: %d\n", __LINE__);
+}
+// 예제 19-5
+#define PRINT_EXPR(x) printf(#x " = %d\n", x)
+#define NAME_CAT(x, y) (x##y)
+#define VER 6
+int main()
+{
+	int a1, a2;
 
-void gotoxy(int x, int y) 
-{ 
-	COORD Pos = { x, y };	
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); 
+	NAME_CAT(a, 1) = 10;
+	NAME_CAT(a, 2) = 20;
+	PRINT_EXPR(a1 + a2);
+	PRINT_EXPR(a2 - a1);
+
+#if VER >= 6
+	printf("버전 %d\n", VER);
+#else
+#error 컴파일러 버전은 6.0 이상이어야 합니다
+#endif
+}
+// 예제 19-6
+#define VER 7
+#define BIT16
+int main()
+{
+	int max;
+
+#if VER >= 6
+	printf("버전 %d입니다.\n", VER);
+#endif
+
+#ifdef BIT16
+	max = 32767;
+#else 
+	max = 2147483647;
+#endif
+
+	printf("int형 변수의 최댓값: %d\n", max);
+}
+// 예제 19-7
+#pragma pack(push, 1)
+typedef struct
+{
+	char ch;
+	int in;
+} Sample1;
+
+#pragma pack(pop)
+typedef struct
+{
+	char ch;
+	int in;
+} Sample2;
+
+int main()
+{
+	printf("Sample1 구조체의 크기: %d바이트\n", sizeof(Sample1));
+	printf("Sample2 구조체의 크기: %d바이트\n", sizeof(Sample2));
+}
+//예제 19-8
+
+void input_data(int*, int*);
+double average(int, int);
+
+int main()
+{
+	int a, b;
+	double avg;
+
+	input_data(&a, &b);
+	avg = average(a, b);
+	printf("%d와 %d의 평균: %.1lf\n", a, b, avg);
+}
+int input_data();
+double average();
+void print_data(double);
+
+int count = 0;
+static int total = 0;
+
+int main()
+{
+	double avg;
+
+	total = input_data();
+	avg = average();
+	print_data(avg);
+}
+
+void print_data(double avg)
+{
+	printf("입력한 양수의 개수: %d\n", count);
+	printf("전체 합과 평균: %d, %.1lf\n", total, avg);
+}
+*/
+// 예제 19-9
+#include "point.h"
+#include "line.h"
+
+int main()
+{
+	Line a = { { 1, 2 }, {5, 6} };
+	Point b;
+
+	b.x = (a.first.x + a.second.x) / 2;
+	b.y = (a.first.y + a.second.y) / 2;
+	printf("선의 가운데 점의 좌표: (%d, %d)\n", b.x, b.y);
 }
