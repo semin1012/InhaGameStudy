@@ -6,146 +6,73 @@
 #include <crtdbg.h>		// 메모리 릭이 일어났는지 확인하기 위함
 
 /*
-Q1. p.540 성적 처리 프로그램
-	학번, 이름, 학점(국/영/수)을 입력받을 수 있는
-	구조체를 만들고, 임의 수의 학생에 대한 데이터를 입력받아
-	출력하는 프로그램을 작성하라.
-	다음 4개의 메뉴를 구성하고, 각 메뉴의 선택시 작동은 다음과 같다.
-
-	1. 입력 - 학번, 이름, 성적 순으로 입력
-	2. 출력 - 성적(평균)에 따라 (정렬된 형태로) 출력
-	3. 검색 - 이름으로 해당 학생의 학점, 성적을 출력
-	4. 종료
-	조건>
-		1. 번호 중복 불가, 이름은 중복 가능
-		2. 검색 -> 이름 검색으로 하고 먼저 찾은 것을 우선 출력
-		3. 메모리 할당 활용, 자기 참조 구조체 활용
-		4. 입력/출력/검색은 각각 개별 함수로 구현한다.
-
-p.582 도전 실전 예제
-	단어 검출 프로그램 작성
-
-Q3. 구구단 출력 -> 99.txt
-	원하는 구구단을 찾아 출력하는 프로그램을 작성하라.
-	= fseek() 이용
-	ex>
-		99.txt ( 구구단 정보가 저장된 파일 )
-		2 x 1 = 2 ...
-
-		출력을 원하는 구구단은 ? 3
-		3 x 1 = 3 ...
+Q1. 파일 복사 프로그램 만들기
+	복사할 파일명과 복사 후 생성되는 파일명을
+	입력받아서 파일을 복사하는 프로그램을 작성하라.
+	단, txt 파일 뿐만 아니라 이미지 파일 등...
+	모든 종류의 파일에 다 동일하게 적용할 수 있어야
+	한다.
+	복사 진행 과정을 백분율로 화면에 표시해주도록
+	하고 한번에 n 바이트씩 복사하도록 한다.
+	ex > 4바이트
+		원본파일: source.txt
+		대상파일: dest.txt
 */
 
-#define MAX_WORD_SIZE 80
-
-FILE* openFile(FILE* file, char fileName[], char mode[]);		// 파일 읽기 성공/실패 출력하려고 만듬
-char** readWordListInFile(FILE* file, int* count, int* size, char** res, char buffer[]);	// 파일에서 단어 목록 읽어오는 함수
-void inputWords(FILE* ofp, FILE* cfp, char buffer[], int* count, char** res);		// 파일에 단어 입력하는 함수
+void gotoxy(int x, int y);
 
 int main()
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF || _CRTDBG_LEAK_CHECK_DF);
-	FILE* ifp = NULL, * ofp = NULL, * cfp = NULL;
-	int size = 2;
-	int count = 0;
-	char buffer[MAX_WORD_SIZE] = { 0 };
-	char** res = (char**)calloc(size, sizeof(char*));
+	char origin[80];
+	char copy[80];
 
+	char data[4];
 
-	// 단어 파일 불러오기
-	ifp = openFile(ifp, "../data/a.txt", "rt");
-	// 단어 파일의 단어 목록을 읽어서 res에 저장해두기
-	res = readWordListInFile(ifp, &count, &size, res, buffer);
-	fclose(ifp);
+	printf("원본 파일: ");
+	scanf("%s", &origin);
+	printf("대상 파일: ");
+	scanf("%s", &copy);
 
+	FILE* ofp, *cfp;
+	ofp = fopen(origin, "rb");
+	cfp = fopen(copy, "wb");
+	
+	fseek(ofp, 0, SEEK_END);
 
-	ofp = openFile(ofp, "../data/b.txt", "wt");		// 입력하는 단어를 저장할 파일 열기
-	cfp = openFile(cfp, "../data/c.txt", "wt");		//  겹치지 않는 단어만 저장할 파일 열기
-	// 파일에 입력한 단어 저장하기
-	inputWords(ofp, cfp, buffer, &count, res);
+	int size = ftell(ofp);
 
-	// 동적할당 해제
-	for (int i = 0; i < count; i++)
-	{
-		free(res[i]);
+	fseek(ofp, 0, SEEK_SET);
+
+	int currentSize = 0;
+	float printSize = 0.f;
+
+	for (int i = 1;  i < (size / 4) + 1; i++) {
+		fread(&data, sizeof(data), 1, ofp);
+		fwrite(&data, sizeof(data), 1, cfp);
+		fseek(ofp, sizeof(data) * i, SEEK_SET);
+
+		currentSize += sizeof(data);
+		printSize = ((float)currentSize / size) * 100;
+
+		// 백분율 표시
+		gotoxy(0, 3);
+		for (int i = 0; i < printSize / 10; i++) {
+			printf("■");
+		}
+		gotoxy(22, 3);
+		printf("%.1f %\n", printSize);
+
+		//Sleep(10);	// 속도 느리게 하려고 추가
 	}
 
-	free(res);
+
 	fclose(ofp);
 	fclose(cfp);
-
-	_CrtDumpMemoryLeaks();
 }
 
 
-FILE* openFile(FILE* file, char fileName[], char mode[])
-{
-	file = fopen(fileName, mode);
-	if (file == NULL)
-	{
-		printf("\"%s\" 파일 읽기 실패\n", fileName);
-		exit(0);	// 실패하면 프로그램 종료
-	}
-	printf("\"%s\" 파일 읽기 성공!\n", fileName);
-	return file;
-}
-
-char** readWordListInFile(FILE* file, int* count, int* size, char** res, char buffer[])
-{
-	while (fgets((buffer), sizeof(buffer), file))
-	{
-		if ((*count) == (*size))
-		{
-			*size += 5;
-			res = (char**)realloc(res, (*size) * sizeof(char*));
-			printf("size 변경, 현재 size : %d\n", *size);
-		}
-
-		buffer[strlen(buffer) - 1] = '\0';
-		res[*count] = (char*)calloc(sizeof(char), strlen(buffer) + 1);
-		strcpy(res[*count], buffer);
-		//printf("%s\n", buffer);
-		(*count)++;
-		_strset(buffer, '\0');
-	}
-
-	return res;
-}
-
-void inputWords(FILE* ofp, FILE* cfp, char buffer[], int* count, char** res)
-{
-	printf("\n단어를 입력하세요. quit 입력 시 종료합니다.\n\n");
-
-	while (1)
-	{
-		_strset(buffer, '\0');
-
-		printf("> ");
-		scanf("%s", buffer);
-
-
-		if (strcmp(buffer, "quit") == 0)
-			return;
-
-		// res에 저장된 단어랑 중복되는지 확인
-		bool duplicate = false;
-		for (int i = 0; i < (*count); i++)
-		{
-			if (strcmp(res[i], buffer) == 0) {
-				duplicate = true;
-			}
-		}
-
-		buffer[strlen(buffer)] = '\n';
-		buffer[strlen(buffer) + 1] = '\0';
-
-		// 중복되지 않으면 c.txt에 저장
-		if (duplicate == false)
-		{
-			fprintf(cfp, "%s", buffer);
-		}
-		// 입력된 단어 모두 b.txt에 저장
-		fprintf(ofp, "%s", buffer);
-
-	}
+void gotoxy(int x, int y) 
+{ 
+	COORD Pos = { x, y };	
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); 
 }
