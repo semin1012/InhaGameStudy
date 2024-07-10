@@ -64,13 +64,8 @@ int main(void) {
 
 
 	/*     A* 알고리즘      */
-	// 시작점 (출발지)
-	s.x = enemy.x;
-	s.y = enemy.y;
-
-	// 목적지 (도착지)
-	e.x = player.x;	
-	e.y = player.y;
+	printf("Enemy 위치: (%d, %d)\n", enemy.x, enemy.y);
+	printf("Player 위치: (%d, %d)\n\n", player.x, player.y);
 
 
 	// 벽
@@ -84,28 +79,46 @@ int main(void) {
 	}
 
 
-	astar();
 	//print_weight();
 
-	//while (1) {
-	//	// 게임 시작 화면 
-	//	if (gamestart == false) {
-	//		game_start(i);
-	//		i += 1;
-	//		if (_kbhit())   // 아무키나 눌려지면 게임 스타트
-	//		{
-	//			gamestart = true;
-	//		}
-	//		Sleep(300);
-	//	}
+	while (1) {
+		// 게임 시작 화면 
+		if (gamestart == false) {
+			game_start(i);
+			i += 1;
+			if (_kbhit())   // 아무키나 눌려지면 게임 스타트
+			{
+				gamestart = true;
+			}
+			Sleep(300);
+		}
 
-	//	// 플레이 화면
-	//	if (gamestart == true) {
-	//		update();
-	//		render();
-	//		Sleep(15);
-	//	}
-	//}
+		// 플레이 화면
+		if (gamestart == true) {
+			Q = NULL;
+
+			update();
+			// 시작점 (출발지)
+			s.x = enemy.x;
+			s.y = enemy.y;
+
+			// 목적지 (도착지)
+			e.x = player.x;
+			e.y = player.y;
+
+			if (s.x != e.x && s.y != e.y) {
+				printf("Player 위치: (%d, %d)\n\n", player.x, player.y);
+				astar();
+
+				enemy.x = Q->v.x;
+				enemy.y = Q->v.y;
+			}
+
+			update();
+			render();
+			Sleep(50);
+		}
+	}
 
 	//화면 버퍼 초기화 함수에서 생성한 두 개의 화면 버퍼를 모두 해제한다.
 	//ScreenRelease(); 
@@ -192,7 +205,7 @@ int calc_heuristic(VERTEX v, int c, int r, int* gx)
 
 	if (abs(v.y - c) == abs(v.x - r))
 	{	// 대각선은 14를 더함
-		*gx = *gx + 14;
+		*gx = *gx + 19;
 	}
 	else
 	{	// 상하좌우는 10을 더함
@@ -226,7 +239,10 @@ void add_openlist(VERTEX v)
 				pre[i][j] = (v.y * MAPSIZE_Y) + v.x;
 				if (e.y == i && e.y == j)
 				{
-					Q = NULL;
+					/*enemy.x = j;
+					enemy.y = i;*/
+					printf("eee (%d, %d) 방문\n", enemy.x, enemy.y);
+					// Q = NULL;
 					return;
 				}
 			}
@@ -234,10 +250,12 @@ void add_openlist(VERTEX v)
 			temp.y = i;
 			temp.x = j;
 			temp.g = gx;
+
 			enqueue(temp);
 
 		}
 	}
+	printf("eee (%d, %d) 방문\n", enemy.x, enemy.y);
 }
 
 void astar(void)
@@ -254,20 +272,12 @@ void astar(void)
 	{
 		// 큐가 비지 않았다면 현재 점을 방문 목록에 넣는다
 		visit[v.y][v.x] = CLOSED;
-		//printf("(%d, %d) 방문\n", v.x +1, v.y + 1);
+		printf("(%d, %d) 방문\n", v.x +1, v.y + 1);
 		v = dequeue();
 
 
 		add_openlist(v);
-		enemy.x = v.x;
-		enemy.y = v.y;
 		printf("(%d, %d) 방문\n", enemy.x, enemy.y);
-		Sleep(100);
+		break;
 	}
-
-	enemy.x = player.x;
-	enemy.y = player.y;
-	printf("(%d, %d) 방문\n", enemy.x, enemy.y);
-	printf("최종: (%d, %d)\n", enemy.x, enemy.y);
-
 }

@@ -15,8 +15,8 @@ void init()
 
 	ScreenInit();
 
-	player.x = 5;
-	player.y = 5;
+	player.x = 10;
+	player.y = 13;
 	player.coin = 0;
 
 	if (!readStageFromFile(0)) {	// 읽기 실패하면 종료
