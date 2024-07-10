@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <Windows.h>
+#include "Scene.h"
+#include "ConsoleFunc.h"
 #include "stdafx.h"
 
 extern PLAYER player;
@@ -11,8 +13,10 @@ void init()
 {
 	system("mode con cols=120 lines=30 | title Coin Run"); // 콘솔창 크기 및 제목 설정
 
-	player.x = 20;
-	player.y = 10;
+	ScreenInit();
+
+	player.x = 5;
+	player.y = 5;
 	player.coin = 0;
 
 	if (!readStageFromFile(0)) {	// 읽기 실패하면 종료

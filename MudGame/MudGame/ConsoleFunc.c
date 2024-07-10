@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include<Windows.h>
+#include <Windows.h>
 
 static int g_nScreenIndex;
 static HANDLE g_hScreen[2];

@@ -2,13 +2,15 @@
 
 typedef struct _PLAYER
 {
-    int x, y; // 출력기준좌표
+    int x; // 출력기준좌표
+    int y;
     int coin;
 } PLAYER;
 
 typedef struct _ENEMY
 {
-    int x, y;
+    int x;
+    int y;
 } ENEMY;
 
 enum ColorType {
