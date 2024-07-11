@@ -132,6 +132,7 @@
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</SDLCheck>
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</SDLCheck>
     </ClCompile>
+    <ClCompile Include="Enemy.c" />
     <ClCompile Include="GameStruct.c" />
     <ClCompile Include="Player.c" />
     <ClCompile Include="Scene.c" />
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Astar.h" />
     <ClInclude Include="CoinRun.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameStruct.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ConsoleFunc.h" />

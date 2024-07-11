@@ -4,6 +4,8 @@
 #include "Scene.h"
 #include "ConsoleFunc.h"
 #include "GameStruct.h"
+#include "Enemy.h"
+#include "Astar.h"
 #include "stdafx.h"
 
 extern PLAYER player;
@@ -21,6 +23,11 @@ void init(int *map[MAPSIZE_Y][MAPSIZE_X])
 	player.y = 20;
 	player.coin = 0;
 
+	if (!readStageFromFile(0)) {	// 읽기 실패하면 종료
+		exit(0);
+	}
+
+	lastTime = clock();
 
 	/*     A* 알고리즘      */
 	// 벽
@@ -38,18 +45,16 @@ void init(int *map[MAPSIZE_Y][MAPSIZE_X])
 	s.x = enemy.x;
 	s.y = enemy.y;
 
-	lastTime = clock();
-
 	astar();
 	print_character();
-
-	if (!readStageFromFile(0)) {	// 읽기 실패하면 종료
-		exit(0);
-	}
 }
 
 
-void update() {
+void update(int* enemyMove) {
+	UpdateFPS();
+	moveEnemy(enemyMove);
+	Sleep(100);
+
 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)	// ESC 눌렀을 때 바로 종료
 		exit(0);
 

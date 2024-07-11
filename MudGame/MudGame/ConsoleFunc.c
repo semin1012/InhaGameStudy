@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <Windows.h>
+#include "Astar.h"
 
 static int g_nScreenIndex;
 static HANDLE g_hScreen[2];

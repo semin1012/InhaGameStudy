@@ -2,5 +2,5 @@
 
 
 void init();
-void update();
+void update(int* enemyMove);
 void render();

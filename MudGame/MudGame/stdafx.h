@@ -34,7 +34,7 @@ enum ColorType {
     DARKPURPLE,	//5
     DARKYELLOW,	//6
     GRAY,		//7
-    DarkGray,	//8
+    DARKGRAY,	//8
     BLUE,		//9
     GREEN,		//10
     SKYBLUE,	//11
