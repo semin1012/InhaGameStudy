@@ -13,8 +13,9 @@ extern ENEMY enemy;
 extern VERTEX s, e;	// start, end
 extern DWORD lastTime;
 extern bool gameOver;
+extern int count;
 
-void init(int *map[MAPSIZE_Y][MAPSIZE_X])
+void init()
 {
 	system("mode con cols=120 lines=30 | title Coin Run"); // 콘솔창 크기 및 제목 설정
 	ScreenInit();
@@ -50,18 +51,15 @@ void init(int *map[MAPSIZE_Y][MAPSIZE_X])
 	print_character();
 }
 
+void restart(bool* gameover)
+{
+	*gameover = false;
+}
+
 
 void update(bool* gameOver) {
 
-
-	if (*gameOver == true)
-	{
-		if (GetAsyncKeyState('R') & 0x8000)	// ESC 눌렀을 때 바로 종료
-			exit(0);
-	}
-
-
-	if (*gameOver == false) {
+	if (*gameOver == false ) {
 		if (isOverlapEnemy())
 		{
 			*gameOver = true;
@@ -69,7 +67,28 @@ void update(bool* gameOver) {
 			{
 				free(newq[i]);
 			}
-			free(newq);
+
+			e.x = player.x;
+			e.y = player.y;
+			s.x = enemy.x;
+			s.y = enemy.y;
+
+			Q = NULL;
+
+			memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+			memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+			memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+
+			for (int i = 0; i < MAPSIZE_Y; i++)
+			{
+				for (int j = 0; j < MAPSIZE_X; j++)
+				{
+					if (map[i][j] == 1)
+						visit[i][j] = -2;	// WALL = -2
+				}
+			}
+
+			count = 0;
 			return;
 		}
 

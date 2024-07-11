@@ -12,5 +12,5 @@ extern ENEMY enemy;
 bool readStageFromFile(int stage);
 void drawMap();
 void game_start();
-void printGameOver();
+void printGameOver(bool* gameStart, bool* gameOver);
 void gameStartScene(bool* gameStart);

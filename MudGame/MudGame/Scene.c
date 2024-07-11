@@ -71,11 +71,6 @@ void gameStartScene(bool* gameStart)
 	game_start();
 	if (_kbhit())   // 아무키나 눌려지면 게임 스타트
 	{
-		for (int j = 0; j < count; j++)
-		{
-			free(newq[j]);
-		}
-
 		count = 0;
 
 		e.x = player.x;
@@ -160,7 +155,7 @@ void game_start()
 	ScreenFlipping();
 }
 
-void printGameOver()
+void printGameOver(bool *gameStart, bool *gameOver)
 {
 	static int idir = 0;
 	static int i = 0;
@@ -205,6 +200,14 @@ void printGameOver()
 		i--;
 		if (i == -2)
 			idir = 0;
+	}
+
+
+	if (GetAsyncKeyState('R') & 0x8000)
+	{
+		//*gameStart = false;
+
+		count = 0;
 	}
 
 	ScreenFlipping();

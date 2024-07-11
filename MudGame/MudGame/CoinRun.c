@@ -5,6 +5,8 @@
 #include <time.h>
 #include <crtdbg.h>
 #include "ConsoleFunc.h"
+#include "Scene.h"
+#include "GameStruct.h"
 #include "CoinRun.h"
 #include "stdafx.h"
 #pragma comment(lib, "winmm.lib")
@@ -56,9 +58,7 @@ int main(void)
 
 			else if (gameOver == true)
 			{
-				printGameOver();
-				update(&gameOver);
-				//replay(&gameOver);
+				printGameOver(&gameStart, &gameOver);
 			}
 		}
 	}
