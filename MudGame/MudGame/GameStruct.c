@@ -41,6 +41,8 @@ void update() {
 				map[player.y][player.x - 1] = 0;
 				player.x--;
 			}
+			else if (player.y == enemy.y && player.x - 1 == enemy.x)
+				exit(0);
 		}
 	}
 
@@ -56,21 +58,25 @@ void update() {
 				map[player.y][player.x + 1] = 0;
 				player.x++;
 			}
+			else if (player.y == enemy.y && player.x + 1 == enemy.x)
+				exit(0);
 		}
 	}
 
 	if (GetAsyncKeyState(VK_UP) & 0x8000) {
 		{
-			if (map[player.y-1][player.x] == 0)
+			if (map[player.y - 1][player.x] == 0)
 			{
 				player.y--;
 			}
-			else if (map[player.y-1][player.x] == 2)
+			else if (map[player.y - 1][player.x] == 2)
 			{
 				player.coin++;
-				map[player.y-1][player.x] = 0;
+				map[player.y - 1][player.x] = 0;
 				player.y--;
 			}
+			else if (player.y - 1 == enemy.y && player.x == enemy.x)
+				exit(0);
 		}
 	}
 
@@ -85,6 +91,8 @@ void update() {
 			map[player.y + 1][player.x] = 0;
 			player.y++;
 		}
+		else if (player.y + 1 == enemy.y && player.x == enemy.x)
+			exit(0);
 	}
 }
 

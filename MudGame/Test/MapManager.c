@@ -5,6 +5,8 @@ int main()
 	system("mode con cols=120 lines=35 | title Coin Run"); // 콘솔창 크기 및 제목 설정
 	FILE* ofp;
 	ofp = fopen("../data/map_1.txt", "wb");
+	
+	int coinNum = 0;
 
 	if (ofp == NULL)
 	{
@@ -23,12 +25,15 @@ int main()
 				printf("%d ", 1);*/
 			else if(j == 0 || j == 24)
 				fprintf(ofp, "%d ", 1);
-			else if (i % 2 == 0 && i % 4 != 0)
+			else if (i % 2 == 0 && i % 4 != 0) {
 				fprintf(ofp, "%d ", 2);
+				coinNum++;
+			}
 			else fprintf(ofp, "%d ", 0);
 		}
 		fprintf(ofp, "\n");
 	}
+	fprintf(ofp, "%d", coinNum);
 
 	fclose(ofp);
 }

@@ -3,6 +3,8 @@
 #include "consoleFunc.h"
 #include "stdafx.h"
 
+extern int coinAllCnt;
+
 bool readStageFromFile(int stage)
 {
 	FILE* ifp;
@@ -29,6 +31,8 @@ bool readStageFromFile(int stage)
 				fscanf(ifp, "%d", &map[i][j]);
 			}
 		}
+
+		fscanf(ifp, "%d", &coinAllCnt);
 
 		fclose(ifp);
 		return true;

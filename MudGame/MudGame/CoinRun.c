@@ -61,6 +61,7 @@ void moveEnemy()
 
 int dirX[8] = { 0, 0, 1, -1, -1, 1, 1, -1};
 int dirY[8] = { -1, 1, 0, 0, -1, 1, -1, 1};
+int coinAllCnt = 0;
 
 QUEUE* f = NULL;
 QUEUE** newq;
@@ -80,11 +81,11 @@ void UpdateFPS()
 
 	if (timeElapsed >= 3000.0f)         //흐른 시간이 3초 이상이면 처리
 	{
-		//for (int i = 0; i < count; i++)
-		//{
-		//	free(newq[i]);
-		//}
-		
+		for (int i = 0; i < count; i++)
+		{
+			free(newq[i]);
+		}
+
 		count = 0;
 
 		e.x = player.x;
@@ -125,13 +126,16 @@ void UpdateFPS()
 int main(void) 
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF || _CRTDBG_LEAK_CHECK_DF);
+
+	/*_CrtSetBreakAlloc(223);
+	_CrtSetBreakAlloc(85);*/
 	system("mode con cols=210 lines=60 | title Coin Run"); // 콘솔창 크기 및 제목 설정
 	bool gamestart = true;
 	int i = 1;
 
 	init();
 
-	newq = (QUEUE**)malloc(sizeof(QUEUE*) * size);
+	newq = (QUEUE**)calloc(size, sizeof(QUEUE*));
 
 	/*     A* 알고리즘      */
 	// 벽
@@ -144,8 +148,6 @@ int main(void)
 		}
 	}
 
-	int j, backtrack;
-
 	e.x = player.x;
 	e.y = player.y;
 	s.x = enemy.x;
@@ -154,13 +156,6 @@ int main(void)
 
 	astar();
 	print_character();
-	//print_character();
-
-	/////////////////////
-
-
-
-	/////////////////////
 
 
 	int monsterMove = 0;
@@ -178,7 +173,6 @@ int main(void)
 		}
 
 		// 플레이 화면
-		int prevX, prevY;
 		if (gamestart == true) {
 			//Q = NULL;
 			monsterMove++;
@@ -203,11 +197,22 @@ int main(void)
 
 				if (enemy.x == player.x && enemy.y == player.y)
 					break;
+
+				if (player.coin == coinAllCnt)
+				{
+					for (int i = 0; i < count; i++)
+					{
+						free(newq[i]);
+					}
+					free(newq);
+					break;
+				}
 			}
 			render();
 			Sleep(150);
 		}
 	}
+
 
 	_CrtDumpMemoryLeaks();
 	//화면 버퍼 초기화 함수에서 생성한 두 개의 화면 버퍼를 모두 해제한다.
@@ -231,33 +236,6 @@ void print_character(void)
 	}
 
 	g[e.y][e.x] = 7;
-
-	//for (i = 0; i < MAPSIZE_Y; i++)
-	//{
-	//	for (j = 0; j < MAPSIZE_X; j++)
-	//	{
-	//		/*if (i == e.y && j == e.x)
-	//		{
-	//			printf("%2s", " ");
-	//		}
-
-	//		else*/if (i == s.y && j == s.x)
-	//		{
-	//			printf("%2s", "☆");
-	//		}
-	//		else if (g[i][j] == 7)
-	//		{
-	//			printf("%2s", "●");
-	//		}
-	//		else if (visit[i][j] == -2)
-	//		{
-	//			printf("%2s", "▤");
-	//		}
-	//		else
-	//			printf("%2s", "○");
-	//	}
-	//	printf("\n");
-	//}
 }
 
 int empty_queue(void)
@@ -275,7 +253,7 @@ VERTEX dequeue(void)
 		v.y = ff->v.y;
 		v.x = ff->v.x;
 		v.g = ff->v.g;
-		free(ff);
+		//free(ff);
 		return v;
 	}
 	return v;
@@ -284,7 +262,7 @@ VERTEX dequeue(void)
 void enqueue(VERTEX v)
 {
 	f = Q;
-	newq[count] = (QUEUE*)malloc(sizeof(QUEUE));
+	newq[count] = (QUEUE*)calloc(2, sizeof(QUEUE));
 	VERTEX temp;
 	int cnt = 0;
 	int key;
