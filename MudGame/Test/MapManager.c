@@ -12,16 +12,16 @@ int main()
 	}
 	else printf("읽기 성공!\n");
 
-	for (int i = 0; i < 29; i++) {
-		for (int j = 0; j < 60; j++) {
-			if (i == 0 || i == 28)
+	for (int i = 0; i < 25; i++) {
+		for (int j = 0; j < 25; j++) {
+			if (i == 0 || i == 24)
 				fprintf(ofp, "%d ", 1);
 			else if (i % 4 == 0 && j % 5 != 0)
 				fprintf(ofp, "%d ", 1);
 
 			/*else if ( j % 4 == 0 )
 				printf("%d ", 1);*/
-			else if(j == 0 || j == 59)
+			else if(j == 0 || j == 24)
 				fprintf(ofp, "%d ", 1);
 			else if (i % 2 == 0 && i % 4 != 0)
 				fprintf(ofp, "%d ", 2);

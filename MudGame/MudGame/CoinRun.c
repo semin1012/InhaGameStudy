@@ -2,9 +2,14 @@
 #include <string.h>
 #include <stdbool.h>
 #include <Windows.h>
+#include <time.h>
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include "ConsoleFunc.h"
 #include "GameStruct.h"
 #include "stdafx.h"
+#pragma comment(lib, "winmm.lib")
 
 
 PLAYER player;
@@ -44,6 +49,7 @@ void enqueue(VERTICAL);
 VERTEX dequeue(void);
 int empty_queue(void);
 void print_weight(void);
+void print_character(void);
 
 
 
@@ -53,9 +59,70 @@ void moveEnemy()
 }
 
 
+int dirX[8] = { 0, 0, 1, -1, -1, 1, 1, -1};
+int dirY[8] = { -1, 1, 0, 0, -1, 1, -1, 1};
 
-int main(void) {
+QUEUE* f = NULL;
+QUEUE* newq = NULL;
 
+static DWORD lastTime;   //마지막 시간(temp변수)
+
+void UpdateFPS()
+{
+	static float timeElapsed = 0.0f;            //흐른 시간
+
+	DWORD curTime = clock();      //현재 시간
+	float timeDelta = (curTime - lastTime) ;        //timeDelta(1번생성후 흐른 시간) 1초단위로 바꿔준다.
+
+	timeElapsed += timeDelta;
+
+	if (timeElapsed >= 3000.0f)         //흐른 시간이 3초 이상이면 처리
+	{
+		if (newq != NULL)
+		{
+			free(newq);
+			newq = NULL;
+		}
+
+		e.x = player.x;
+		e.y = player.y;
+		s.x = enemy.x;
+		s.y = enemy.y;
+
+		Q = NULL;
+
+		//timeElapsed = 0.0f;
+
+		memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+		memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+		memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+
+		for (int i = 0; i < MAPSIZE_Y; i++)
+		{
+			for (int j = 0; j < MAPSIZE_X; j++)
+			{
+				if (map[i][j] == 1)
+					visit[i][j] = -2;	// WALL = -2
+			}
+		}
+		astar();
+		print_character();
+	}
+	else
+	{
+
+	}
+
+
+	lastTime = curTime;
+}
+
+
+
+
+int main(void) 
+{
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF || _CRTDBG_LEAK_CHECK_DF);
 	system("mode con cols=210 lines=60 | title Coin Run"); // 콘솔창 크기 및 제목 설정
 	bool gamestart = true;
 	int i = 1;
@@ -64,22 +131,36 @@ int main(void) {
 
 
 	/*     A* 알고리즘      */
-	printf("Enemy 위치: (%d, %d)\n", enemy.x, enemy.y);
-	printf("Player 위치: (%d, %d)\n\n", player.x, player.y);
-
-
 	// 벽
 	for (int i = 0; i < MAPSIZE_Y; i++)
 	{
 		for (int j = 0; j < MAPSIZE_X; j++)
 		{
-			if ( map[i][j] == 1)
+			if (map[i][j] == 1)
 				visit[i][j] = -2;	// WALL = -2
 		}
 	}
 
+	int j, backtrack;
 
-	//print_weight();
+	e.x = player.x;
+	e.y = player.y;
+	s.x = enemy.x;
+	s.y = enemy.y;
+	lastTime = clock();
+
+	astar();
+	print_character();
+	//print_character();
+
+	/////////////////////
+
+
+
+	/////////////////////
+
+
+	int monsterMove = 0;
 
 	while (1) {
 		// 게임 시작 화면 
@@ -94,55 +175,87 @@ int main(void) {
 		}
 
 		// 플레이 화면
+		int prevX, prevY;
 		if (gamestart == true) {
-			Q = NULL;
-
+			//Q = NULL;
+			monsterMove++;
 			update();
-			// 시작점 (출발지)
-			s.x = enemy.x;
-			s.y = enemy.y;
 
-			// 목적지 (도착지)
-			e.x = player.x;
-			e.y = player.y;
+			UpdateFPS();
 
-			if (s.x != e.x && s.y != e.y) {
-				printf("Player 위치: (%d, %d)\n\n", player.x, player.y);
-				astar();
+			if (monsterMove % 2 == 0) {
+				for (int i = 0; i < 8; i++)
+				{
+					g[enemy.y][enemy.x] = 8;
+					int dir_x = enemy.x + dirX[i];
+					int dir_y = enemy.y + dirY[i];
 
-				enemy.x = Q->v.x;
-				enemy.y = Q->v.y;
+					if (g[dir_y][dir_x] == 7) {
+						g[dir_y][dir_x] = 8;
+						enemy.x = dir_x;
+						enemy.y = dir_y;
+						break;
+					}
+				}
+
+				if (enemy.x == player.x && enemy.y == player.y)
+					break;
 			}
-
-			update();
 			render();
-			Sleep(50);
+			Sleep(150);
 		}
 	}
 
+	_CrtDumpMemoryLeaks();
 	//화면 버퍼 초기화 함수에서 생성한 두 개의 화면 버퍼를 모두 해제한다.
 	//ScreenRelease(); 
 	return 0;
 }
 
 
-void print_weight(void)
+void print_character(void)
 {
-	int i, j;
-	for (i = 0; i < MAPSIZE_Y- 10; i++)
-	{
-		for (j = 0; j < MAPSIZE_X - 30; j++)
-		{
-			if (i == e.y && j == e.x)
-			{
-				printf("!");
-			}
-			printf("%4d", g[i][j]);
-		}
-		printf("\n");
-	}
-}
+	int i, j, backtack;
 
+	i = pre[e.y][e.x] / MAPSIZE_Y;
+	j = pre[e.y][e.x] % MAPSIZE_Y;
+	while (pre[i][j] != UNDEF)
+	{
+		backtack = pre[i][j];
+		g[i][j] = 7;
+		i = backtack / MAPSIZE_Y;
+		j = backtack % MAPSIZE_Y;
+	}
+
+	g[e.y][e.x] = 7;
+
+	//for (i = 0; i < MAPSIZE_Y; i++)
+	//{
+	//	for (j = 0; j < MAPSIZE_X; j++)
+	//	{
+	//		/*if (i == e.y && j == e.x)
+	//		{
+	//			printf("%2s", " ");
+	//		}
+
+	//		else*/if (i == s.y && j == s.x)
+	//		{
+	//			printf("%2s", "☆");
+	//		}
+	//		else if (g[i][j] == 7)
+	//		{
+	//			printf("%2s", "●");
+	//		}
+	//		else if (visit[i][j] == -2)
+	//		{
+	//			printf("%2s", "▤");
+	//		}
+	//		else
+	//			printf("%2s", "○");
+	//	}
+	//	printf("\n");
+	//}
+}
 
 int empty_queue(void)
 {
@@ -151,15 +264,15 @@ int empty_queue(void)
 
 VERTEX dequeue(void)
 {
-	QUEUE* f = Q;
+	QUEUE* ff = Q;
 	VERTEX v = { 0, 0, 0 };
-	if (f != NULL)
+	if (ff != NULL)
 	{
-		Q = f->next;
-		v.y = f->v.y;
-		v.x = f->v.x;
-		v.g = f->v.g;
-		free(f);
+		Q = ff->next;
+		v.y = ff->v.y;
+		v.x = ff->v.x;
+		v.g = ff->v.g;
+		free(ff);
 		return v;
 	}
 	return v;
@@ -167,8 +280,8 @@ VERTEX dequeue(void)
 
 void enqueue(VERTEX v)
 {
-	QUEUE* f = Q;
-	QUEUE* newq = (QUEUE*)malloc(sizeof(QUEUE));
+	f = Q;
+	newq = (QUEUE*)malloc(sizeof(QUEUE));
 	VERTEX temp;
 	int cnt = 0;
 	int key;
@@ -237,12 +350,9 @@ void add_openlist(VERTEX v)
 			{
 				g[i][j] = w;
 				pre[i][j] = (v.y * MAPSIZE_Y) + v.x;
-				if (e.y == i && e.y == j)
+				if (e.y == i && e.x == j)
 				{
-					/*enemy.x = j;
-					enemy.y = i;*/
-					printf("eee (%d, %d) 방문\n", enemy.x, enemy.y);
-					// Q = NULL;
+					Q = NULL;
 					return;
 				}
 			}
@@ -255,13 +365,12 @@ void add_openlist(VERTEX v)
 
 		}
 	}
-	printf("eee (%d, %d) 방문\n", enemy.x, enemy.y);
+	//printf("eee (%d, %d) 방문\n", enemy.x, enemy.y);
 }
 
 void astar(void)
 {
 	VERTEX v;
-	g[s.y][s.x] = 0;
 	pre[s.y][s.x] = UNDEF;	// 시작 지점은 루트가 없다
 	s.g = 0;
 	v = s;	// current 포인트를 시작점으로 만든다
@@ -272,12 +381,9 @@ void astar(void)
 	{
 		// 큐가 비지 않았다면 현재 점을 방문 목록에 넣는다
 		visit[v.y][v.x] = CLOSED;
-		printf("(%d, %d) 방문\n", v.x +1, v.y + 1);
 		v = dequeue();
 
 
 		add_openlist(v);
-		printf("(%d, %d) 방문\n", enemy.x, enemy.y);
-		break;
 	}
 }

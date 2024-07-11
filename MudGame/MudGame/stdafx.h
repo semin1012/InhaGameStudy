@@ -33,7 +33,7 @@ enum ColorType {
 } COLOR;
 
 
-#define MAPSIZE_X 60
-#define MAPSIZE_Y 29
+#define MAPSIZE_X 25
+#define MAPSIZE_Y 25
 
 int map[MAPSIZE_Y][MAPSIZE_X];
