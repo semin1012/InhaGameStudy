@@ -63,7 +63,9 @@ int dirX[8] = { 0, 0, 1, -1, -1, 1, 1, -1};
 int dirY[8] = { -1, 1, 0, 0, -1, 1, -1, 1};
 
 QUEUE* f = NULL;
-QUEUE* newq = NULL;
+QUEUE** newq;
+int count = 0;
+int size = 5;
 
 static DWORD lastTime;   //마지막 시간(temp변수)
 
@@ -78,11 +80,12 @@ void UpdateFPS()
 
 	if (timeElapsed >= 3000.0f)         //흐른 시간이 3초 이상이면 처리
 	{
-		if (newq != NULL)
-		{
-			free(newq);
-			newq = NULL;
-		}
+		//for (int i = 0; i < count; i++)
+		//{
+		//	free(newq[i]);
+		//}
+		
+		count = 0;
 
 		e.x = player.x;
 		e.y = player.y;
@@ -119,7 +122,6 @@ void UpdateFPS()
 
 
 
-
 int main(void) 
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF || _CRTDBG_LEAK_CHECK_DF);
@@ -129,6 +131,7 @@ int main(void)
 
 	init();
 
+	newq = (QUEUE**)malloc(sizeof(QUEUE*) * size);
 
 	/*     A* 알고리즘      */
 	// 벽
@@ -183,7 +186,7 @@ int main(void)
 
 			UpdateFPS();
 
-			if (monsterMove % 2 == 0) {
+			if (monsterMove % 3 == 0) {
 				for (int i = 0; i < 8; i++)
 				{
 					g[enemy.y][enemy.x] = 8;
@@ -281,15 +284,15 @@ VERTEX dequeue(void)
 void enqueue(VERTEX v)
 {
 	f = Q;
-	newq = (QUEUE*)malloc(sizeof(QUEUE));
+	newq[count] = (QUEUE*)malloc(sizeof(QUEUE));
 	VERTEX temp;
 	int cnt = 0;
 	int key;
-	newq->next = NULL;
-	newq->v = v;
+	newq[count]->next = NULL;
+	newq[count]->v = v;
 	if (f == NULL)
 	{
-		Q = newq;
+		Q = newq[count];
 		return;
 	}
 
@@ -304,8 +307,14 @@ void enqueue(VERTEX v)
 		}
 		f = f->next;
 	}
-	newq->v = v;
-	f->next = newq;
+	newq[count]->v = v;
+	f->next = newq[count];
+	count++;
+	if (count == size)
+	{
+		size += 5;
+		newq = (QUEUE**)realloc(newq, sizeof(*newq)*size);
+	}
 }
 
 int calc_heuristic(VERTEX v, int c, int r, int* gx)

@@ -30,23 +30,61 @@ void update() {
 		exit(0);
 
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-		if (canGo(player.x - 1, player.y))
-			player.x--;
+		{
+			if (map[player.y][player.x - 1] == 0)
+			{
+				player.x--;
+			}
+			else if (map[player.y][player.x - 1] == 2)
+			{
+				player.coin++;
+				map[player.y][player.x - 1] = 0;
+				player.x--;
+			}
+		}
 	}
 
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-		if (canGo(player.x + 1, player.y))
-			player.x++;
+		{
+			if (map[player.y][player.x + 1] == 0)
+			{
+				player.x++;
+			}
+			else if (map[player.y][player.x + 1] == 2)
+			{
+				player.coin++;
+				map[player.y][player.x + 1] = 0;
+				player.x++;
+			}
+		}
 	}
 
 	if (GetAsyncKeyState(VK_UP) & 0x8000) {
-		if (canGo(player.x, player.y - 1))
-			player.y--;
+		{
+			if (map[player.y-1][player.x] == 0)
+			{
+				player.y--;
+			}
+			else if (map[player.y-1][player.x] == 2)
+			{
+				player.coin++;
+				map[player.y-1][player.x] = 0;
+				player.y--;
+			}
+		}
 	}
 
 	if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-		if (canGo(player.x, player.y + 1))
+		if (map[player.y + 1][player.x] == 0)
+		{
 			player.y++;
+		}
+		else if (map[player.y + 1][player.x] == 2)
+		{
+			player.coin++;
+			map[player.y + 1][player.x] = 0;
+			player.y++;
+		}
 	}
 }
 
