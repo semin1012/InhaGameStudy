@@ -24,7 +24,7 @@ int main(void)
 	bool gameOver = false;
 	newq = (QUEUE**)calloc(size, sizeof(QUEUE*));
 
-	init(); 
+	init();
 
 	while (1) {
 		// 게임 시작 화면 
@@ -57,7 +57,8 @@ int main(void)
 			else if (gameOver == true)
 			{
 				printGameOver();
-				replay(&gameOver);
+				update(&gameOver);
+				//replay(&gameOver);
 			}
 		}
 	}

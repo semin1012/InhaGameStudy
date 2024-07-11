@@ -27,40 +27,40 @@
     <ClCompile Include="Player.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Astar.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConsoleFunc.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStruct.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Astar.h">
-      <Filter>소스 파일</Filter>
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CoinRun.h">
-      <Filter>소스 파일</Filter>
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleFunc.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>소스 파일</Filter>
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStruct.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

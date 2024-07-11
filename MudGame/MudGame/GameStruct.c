@@ -53,26 +53,26 @@ void init(int *map[MAPSIZE_Y][MAPSIZE_X])
 
 void update(bool* gameOver) {
 
-	if (isOverlapEnemy())
-	{
-		*gameOver = true;
-		for (int i = 0; i < count; i++)
-		{
-			free(newq[i]);
-		}
-		free(newq);
-	}
 
 	if (*gameOver == true)
 	{
-
 		if (GetAsyncKeyState('R') & 0x8000)	// ESC 눌렀을 때 바로 종료
 			exit(0);
-
 	}
 
 
 	if (*gameOver == false) {
+		if (isOverlapEnemy())
+		{
+			*gameOver = true;
+			for (int i = 0; i < count; i++)
+			{
+				free(newq[i]);
+			}
+			free(newq);
+			return;
+		}
+
 		UpdateFPS();
 		moveEnemy();
 		Sleep(100);

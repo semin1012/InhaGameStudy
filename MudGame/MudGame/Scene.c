@@ -50,7 +50,7 @@ void drawMap()
 		for (int j = 0; j < MAPSIZE_Y; j++)
 		{
 			if (map[j][i] == 1) {
-				setColor(WHITE);
+				setColor(DARKGRAY);
 				ScreenPrint(i * 2 + MAP_VERTICAL_ALIGN, j, "■");
 			}
 			else if (map[j][i] == 0) {
