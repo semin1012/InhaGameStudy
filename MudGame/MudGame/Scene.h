@@ -13,4 +13,4 @@ bool readStageFromFile(int stage);
 void drawMap();
 void game_start();
 void printGameOver();
-int gameStartScene(bool* gameStart);
+void gameStartScene(bool* gameStart);

@@ -1,3 +1,4 @@
 #pragma once
 
-void moveEnemy(int* enemyMove);
+void moveEnemy();
+bool isOverlapEnemy();

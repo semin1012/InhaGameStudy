@@ -2,5 +2,5 @@
 
 
 void init();
-void update(int* enemyMove);
+void update(bool* gameOver);
 void render();

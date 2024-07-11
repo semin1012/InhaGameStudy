@@ -5,30 +5,26 @@
 #include <time.h>
 #include <crtdbg.h>
 #include "ConsoleFunc.h"
-#include "GameStruct.h"
 #include "CoinRun.h"
 #include "stdafx.h"
 #pragma comment(lib, "winmm.lib")
 
+extern bool gameOver;
 
 int main(void) 
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF || _CRTDBG_LEAK_CHECK_DF);
 
-	int enemyMove = 0;
 	bool gameStart = false;
 	bool gameOver = false;
 	newq = (QUEUE**)calloc(size, sizeof(QUEUE*));
 
-	init();
-
-	int idir = 0;
+	init();		// 게임 초기화
 
 	while (1) {
 		// 게임 시작 화면 
 		if (gameStart == false) {
 			gameStartScene(&gameStart);
-			//printGameOver();
 		}
 
 		// 플레이 화면
@@ -36,18 +32,8 @@ int main(void)
 		{			
 			if (gameOver == false) 
 			{
-				update(&enemyMove);
-
-				if (enemy.x == player.x && enemy.y == player.y)
-				{
-					for (int i = 0; i < count; i++)
-					{
-						free(newq[i]);
-					}
-					free(newq);
-
-					gameOver = true;
-				}
+				// gameOver 여부에 따라 수행 동작이 다름
+				update(&gameOver);
 
 				if (player.coin == coinAllCnt)
 				{

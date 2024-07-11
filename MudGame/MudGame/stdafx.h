@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <stdbool.h>
 typedef struct _PLAYER
 {
     int x; // 출력기준좌표

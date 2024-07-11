@@ -1,16 +1,19 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "stdafx.h"
 #include "Enemy.h"
 
 extern ENEMY enemy;
 extern int dirX[];
 extern int dirY[];
+extern PLAYER player;
 
-void moveEnemy(int* enemyMove)
+void moveEnemy()
 {
-	(*enemyMove)++;
+	static int enemyMove = 0;
+	enemyMove++;
 
-	if (*enemyMove % 3 == 0) {
+	if (enemyMove % 3 == 0) {
 		for (int i = 0; i < 8; i++)
 		{
 			g[enemy.y][enemy.x] = 8;
@@ -25,4 +28,12 @@ void moveEnemy(int* enemyMove)
 			}
 		}
 	}
+}
+
+bool isOverlapEnemy()
+{
+	if (enemy.x == player.x && enemy.y == player.y) {
+		return true;
+	}
+	else return false;
 }
