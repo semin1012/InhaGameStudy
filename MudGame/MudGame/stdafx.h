@@ -1,5 +1,5 @@
 #pragma once
-
+#include <Windows.h>
 typedef struct _PLAYER
 {
     int x; // 출력기준좌표
@@ -12,6 +12,18 @@ typedef struct _ENEMY
     int x;
     int y;
 } ENEMY;
+
+typedef struct vertex {
+    int x;
+    int y;
+    int g;
+} VERTEX;
+
+typedef struct queue {
+    VERTEX v;
+    struct queue* next;
+} QUEUE;
+
 
 enum ColorType {
     BLACK,  	//0
@@ -36,4 +48,15 @@ enum ColorType {
 #define MAPSIZE_X 25
 #define MAPSIZE_Y 25
 
+// A* 알고리즘
+#define UNDEF -1
+#define CLOSED -3
+#define DONTMOVE -1
+#define INF 0
+
 int map[MAPSIZE_Y][MAPSIZE_X];
+
+int g[MAPSIZE_Y][MAPSIZE_X];
+int visit[MAPSIZE_Y][MAPSIZE_X];
+int pre[MAPSIZE_Y][MAPSIZE_X];
+static DWORD lastTime;   //마지막 시간(temp변수)

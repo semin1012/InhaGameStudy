@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Astar.c" />
     <ClCompile Include="CoinRun.c">
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</SDLCheck>
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</SDLCheck>
@@ -137,6 +138,8 @@
     <ClCompile Include="ConsoleFunc.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Astar.h" />
+    <ClInclude Include="CoinRun.h" />
     <ClInclude Include="GameStruct.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ConsoleFunc.h" />

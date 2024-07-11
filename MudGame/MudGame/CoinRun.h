@@ -1,0 +1,17 @@
+#pragma once
+#include "stdafx.h"
+
+extern QUEUE* Q;
+extern VERTEX s, e;	// start, end
+
+extern QUEUE* f;
+extern QUEUE** newq;
+extern int count;
+extern int size;
+
+PLAYER player;
+ENEMY enemy = { 1, 1 };
+
+int dirX[8] = { 0, 0, 1, -1, -1, 1, 1, -1 };
+int dirY[8] = { -1, 1, 0, 0, -1, 1, -1, 1 };
+int coinAllCnt = 0;

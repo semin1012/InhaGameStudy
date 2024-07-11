@@ -30,6 +30,9 @@
     <ClCompile Include="Scene.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Astar.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleFunc.h">
@@ -45,6 +48,12 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Astar.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CoinRun.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

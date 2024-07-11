@@ -3,21 +3,45 @@
 #include <Windows.h>
 #include "Scene.h"
 #include "ConsoleFunc.h"
+#include "GameStruct.h"
 #include "stdafx.h"
 
 extern PLAYER player;
 extern ENEMY enemy;
+extern VERTEX s, e;	// start, end
+extern DWORD lastTime;
 
-
-void init()
+void init(int *map[MAPSIZE_Y][MAPSIZE_X])
 {
 	system("mode con cols=120 lines=30 | title Coin Run"); // 콘솔창 크기 및 제목 설정
-
 	ScreenInit();
+
 
 	player.x = 20;
 	player.y = 20;
 	player.coin = 0;
+
+
+	/*     A* 알고리즘      */
+	// 벽
+	for (int i = 0; i < MAPSIZE_Y; i++)
+	{
+		for (int j = 0; j < MAPSIZE_X; j++)
+		{
+			if (map[i][j] == 1)
+				visit[i][j] = -2;	// WALL = -2
+		}
+	}
+
+	e.x = player.x;
+	e.y = player.y;
+	s.x = enemy.x;
+	s.y = enemy.y;
+
+	lastTime = clock();
+
+	astar();
+	print_character();
 
 	if (!readStageFromFile(0)) {	// 읽기 실패하면 종료
 		exit(0);
@@ -112,6 +136,6 @@ void render()
 	strcat(coin_print, coin_num);
 
 	setColor(SKYBLUE);
-	ScreenPrint(50, 29, coin_print);
+	ScreenPrint(20, 26, coin_print);
 	ScreenFlipping();
 }

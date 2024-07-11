@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <Windows.h>
 #include "consoleFunc.h"
+#include "Scene.h"
 #include "stdafx.h"
 
 extern int coinAllCnt;
+extern DWORD lastTime;
 
 bool readStageFromFile(int stage)
 {
@@ -61,6 +64,16 @@ void drawMap()
 	}
 }
 
+int gameStartScene(int* i, bool* gameStart)
+{
+	game_start(*i);
+	*i += 1;
+	if (_kbhit())   // 아무키나 눌려지면 게임 스타트
+	{
+		*gameStart = true;
+	}
+	Sleep(300);
+}
 
 void game_start(int i)
 {
