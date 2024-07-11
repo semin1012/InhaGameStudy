@@ -52,9 +52,6 @@ void init(int *map[MAPSIZE_Y][MAPSIZE_X])
 
 
 void update(bool* gameOver) {
-	UpdateFPS();
-	moveEnemy();
-	Sleep(100);
 
 	if (isOverlapEnemy())
 	{
@@ -66,7 +63,19 @@ void update(bool* gameOver) {
 		free(newq);
 	}
 
+	if (*gameOver == true)
+	{
+
+		if (GetAsyncKeyState('R') & 0x8000)	// ESC 눌렀을 때 바로 종료
+			exit(0);
+
+	}
+
+
 	if (*gameOver == false) {
+		UpdateFPS();
+		moveEnemy();
+		Sleep(100);
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)	// ESC 눌렀을 때 바로 종료
 			exit(0);
 
@@ -135,25 +144,49 @@ void update(bool* gameOver) {
 			else if (player.y + 1 == enemy.y && player.x == enemy.x)
 				*gameOver = true;
 		}
+
 	}
 }
 
 void render()
 {
+	static int i = 0;
+	static int animDir = 0;
 	ScreenClear();
 	drawMap();
-	setColor(GREEN);
-	ScreenPrint(player.x * 2, player.y, "㋡");
+
+	setColor(YELLOW);
+	if (animDir == 0)
+	{
+		i++;
+		if (i == 2)
+		{
+			i = 0;
+			animDir = -1;
+		}
+		ScreenPrint(player.x * 2 + MAP_VERTICAL_ALIGN, player.y, "㋡");
+	}
+	else 
+	{
+		i--;
+		if (i == -2) 
+		{
+			i = 0;
+			animDir = 0;
+		}
+		ScreenPrint(player.x * 2 + MAP_VERTICAL_ALIGN, player.y, "㋛");
+	}
+	
 
 
 	setColor(RED);
-	ScreenPrint(enemy.x * 2, enemy.y, "⛑");
+	ScreenPrint(enemy.x * 2 + MAP_VERTICAL_ALIGN, enemy.y, "⛑");
 	char coin_print[30] = "Coin: ";
 	char coin_num[10];
 	sprintf(coin_num, "%d", player.coin);
 	strcat(coin_print, coin_num);
 
 	setColor(SKYBLUE);
-	ScreenPrint(20, 26, coin_print);
+	ScreenPrint(20 + MAP_VERTICAL_ALIGN, 26, coin_print);
 	ScreenFlipping();
 }

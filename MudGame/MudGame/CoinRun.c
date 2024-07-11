@@ -11,6 +11,11 @@
 
 extern bool gameOver;
 
+void replay(bool* gameOver)
+{
+	gameOver = false;
+}
+
 int main(void) 
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF || _CRTDBG_LEAK_CHECK_DF);
@@ -19,7 +24,7 @@ int main(void)
 	bool gameOver = false;
 	newq = (QUEUE**)calloc(size, sizeof(QUEUE*));
 
-	init();		// 게임 초기화
+	init(); 
 
 	while (1) {
 		// 게임 시작 화면 
@@ -32,8 +37,7 @@ int main(void)
 		{			
 			if (gameOver == false) 
 			{
-				// gameOver 여부에 따라 수행 동작이 다름
-				update(&gameOver);
+				update(&gameOver);		// gameOver 여부에 따라 수행 동작이 다름
 
 				if (player.coin == coinAllCnt)
 				{
@@ -53,6 +57,7 @@ int main(void)
 			else if (gameOver == true)
 			{
 				printGameOver();
+				replay(&gameOver);
 			}
 		}
 	}

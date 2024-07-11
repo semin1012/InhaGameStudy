@@ -51,14 +51,14 @@ void drawMap()
 		{
 			if (map[j][i] == 1) {
 				setColor(WHITE);
-				ScreenPrint(i * 2, j, "■");
+				ScreenPrint(i * 2 + MAP_VERTICAL_ALIGN, j, "■");
 			}
 			else if (map[j][i] == 0) {
-				ScreenPrint(i * 2, j, " ");
+				ScreenPrint(i * 2 + MAP_VERTICAL_ALIGN, j, " ");
 			}
 			else {
 				setColor(YELLOW);
-				ScreenPrint(i * 2, j, "⸰");
+				ScreenPrint(i * 2 + MAP_VERTICAL_ALIGN, j, "⸰");
 			}
 		}
 		printf("\n");

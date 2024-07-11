@@ -48,6 +48,7 @@ enum ColorType {
 
 #define MAPSIZE_X 25
 #define MAPSIZE_Y 25
+#define MAP_VERTICAL_ALIGN 32
 
 // A* 알고리즘
 #define UNDEF -1
