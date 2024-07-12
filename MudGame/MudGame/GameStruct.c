@@ -15,17 +15,13 @@ extern DWORD lastTime;
 extern bool gameOver;
 extern int count;
 extern int stage;
+extern int coinAllCnt;
 
 void init()
 {
 	system("mode con cols=120 lines=30 | title Coin Run"); // 콘솔창 크기 및 제목 설정
 	ScreenInit();
 
-
-	//player.x = 20;
-	//player.y = 20;
-	player.x = 20;
-	player.y = 13;
 	player.coin = 0;
 
 	if (!readStageFromFile(stage)) {	// 읽기 실패하면 종료
@@ -63,6 +59,7 @@ void restart(bool* gameover)
 void update(bool* gameOver) {
 
 	if (*gameOver == false ) {
+		// 몬스터와 닿았다면 게임오버
 		if (isOverlapEnemy())
 		{
 			*gameOver = true;
@@ -101,55 +98,55 @@ void update(bool* gameOver) {
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)	// ESC 눌렀을 때 바로 종료
 			exit(0);
 
+
+		// 디버깅 키
+		if (GetAsyncKeyState('D') & 0x8000) {
+			player.coin = coinAllCnt;
+		}
+
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
+			if (map[player.y][player.x - 1] == 0)
 			{
-				if (map[player.y][player.x - 1] == 0)
-				{
-					player.x--;
-				}
-				else if (map[player.y][player.x - 1] == 2)
-				{
-					player.coin++;
-					map[player.y][player.x - 1] = 0;
-					player.x--;
-				}
-				else if (player.y == enemy.y && player.x - 1 == enemy.x)
-					*gameOver = true;
+				player.x--;
 			}
+			else if (map[player.y][player.x - 1] == 2)
+			{
+				player.coin++;
+				map[player.y][player.x - 1] = 0;
+				player.x--;
+			}
+			else if (player.y == enemy.y && player.x - 1 == enemy.x)
+				*gameOver = true;
 		}
 
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+			if (map[player.y][player.x + 1] == 0)
 			{
-				if (map[player.y][player.x + 1] == 0)
-				{
-					player.x++;
-				}
-				else if (map[player.y][player.x + 1] == 2)
-				{
-					player.coin++;
-					map[player.y][player.x + 1] = 0;
-					player.x++;
-				}
-				else if (player.y == enemy.y && player.x + 1 == enemy.x)
-					*gameOver = true;
+				player.x++;
 			}
+			else if (map[player.y][player.x + 1] == 2)
+			{
+				player.coin++;
+				map[player.y][player.x + 1] = 0;
+				player.x++;
+			}
+			else if (player.y == enemy.y && player.x + 1 == enemy.x)
+				*gameOver = true;
 		}
 
 		if (GetAsyncKeyState(VK_UP) & 0x8000) {
+			if (map[player.y - 1][player.x] == 0)
 			{
-				if (map[player.y - 1][player.x] == 0)
-				{
-					player.y--;
-				}
-				else if (map[player.y - 1][player.x] == 2)
-				{
-					player.coin++;
-					map[player.y - 1][player.x] = 0;
-					player.y--;
-				}
-				else if (player.y - 1 == enemy.y && player.x == enemy.x)
-					*gameOver = true;
+				player.y--;
 			}
+			else if (map[player.y - 1][player.x] == 2)
+			{
+				player.coin++;
+				map[player.y - 1][player.x] = 0;
+				player.y--;
+			}
+			else if (player.y - 1 == enemy.y && player.x == enemy.x)
+				*gameOver = true;
 		}
 
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000) {

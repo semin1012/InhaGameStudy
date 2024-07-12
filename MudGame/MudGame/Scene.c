@@ -37,9 +37,14 @@ bool readStageFromFile(int stage)
 				fscanf(ifp, "%d", &map[i][j]);
 			}
 		}
-
+		// 총 코인 개수
 		fscanf(ifp, "%d", &coinNum);
 
+		// 플레이어 좌표
+		fscanf(ifp, "%d%d", &player.x, &player.y);
+
+		// 몬스터 좌표
+		fscanf(ifp, "%d%d", &enemy.x, &enemy.y);
 		fclose(ifp);
 	}
 
@@ -85,11 +90,6 @@ void gameStartScene(bool* gameStart)
 	if (_kbhit())   // 아무키나 눌려지면 게임 스타트
 	{
 		count = 0;
-
-		e.x = player.x;
-		e.y = player.y;
-		s.x = enemy.x;
-		s.y = enemy.y;
 
 		Q = NULL;
 
@@ -170,12 +170,6 @@ void game_start()
 
 void initToReplay()
 {
-	player.x = 20;
-	player.y = 20;
-	player.coin = 0;
-	enemy.x = 1;
-	enemy.y = 1;
-
 	if (!readStageFromFile(0)) {	// 읽기 실패하면 종료
 		exit(0);
 	}
@@ -300,14 +294,11 @@ void printGameClearAtStage(bool* gameStart, bool* gameClear, int* stage, int nex
 	// 엔터 누르면 다음 스테이지
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8000))
 	{
-		player.x = 20;
-		player.y = 13;
 		// TODO: 디버깅 때문에 해둠
 		*stage = nextStage;
 		*gameClear = false;
 		changeStage(*stage);
 		UpdateFPS();
-		drawMap();
 	}
 
 	ScreenFlipping();

@@ -34,8 +34,14 @@
 //		}
 //		fprintf(ofp, "\n");
 //	}
-//	fprintf(ofp, "%d", coinNum);
+//	// 총 코인 개수 
+//	fprintf(ofp, "%d ", coinNum);
 //
+//	// 플레이어 좌표 (x, y)
+//	fprintf(ofp, "%d %d ", 20, 20);
+//
+//	// 몬스터 좌표 (x, y)
+//	fprintf(ofp, "%d %d ", 1, 1);
 //	fclose(ofp);
 //}
 
@@ -102,8 +108,17 @@ int main()
 		fprintf(ofp, "\n");
 		printf("\n");
 	}
-	fprintf(ofp, "%d", coinNum);
+
+	// 총 코인 개수
+	fprintf(ofp, "%d ", coinNum);
 	printf("%d ", coinNum);
 
+	// 플레이어 좌표 (x, y)
+	fprintf(ofp, "%d %d ", 13, 20);
+	printf("%d %d ", 13, 20);
+
+	// 몬스터 좌표 (x, y)
+	fprintf(ofp, "%d %d ", 10, 12);
+	printf("%d %d ", 10, 12);
 	fclose(ofp);
 }
