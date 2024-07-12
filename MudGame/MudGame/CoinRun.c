@@ -31,7 +31,7 @@ int main(void)
 		}
 
 		// 플레이 화면
-		if (gameStart == true) 
+		else if (gameStart == true) 
 		{			
 			if (gameOver == false) 
 			{
@@ -43,7 +43,12 @@ int main(void)
 				if (countCointNuminMap() == 0)
 				{
 					gameClear = true;
-					printGameClearAtStage(&gameStart, &gameClear, &stage, stage + 1);
+					if (stage == 2)
+					{
+						printGameAllStageClear(&gameStart, &gameClear, &stage);
+					}
+					else 
+						printGameClearAtStage(&gameStart, &gameClear, &stage, stage + 1);
 				}
 			}
 

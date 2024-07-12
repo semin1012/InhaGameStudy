@@ -103,45 +103,34 @@ extern int dwID;
 void gameStartScene(bool* gameStart)
 {
 	game_start();
-	if (_kbhit())   // 아무키나 눌려지면 게임 스타트
+	*gameStart = false;
+
+	if ((GetAsyncKeyState(VK_RETURN) & 0x8000))
 	{
 		pauseBgm(&openBgm, dwID);
 
 		playingSceneBgm();
-		count = 0;
-
-		Q = NULL;
-
-		memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-
-		for (int i = 0; i < MAPSIZE_Y; i++)
-		{
-			for (int j = 0; j < MAPSIZE_X; j++)
-			{
-				if (map[i][j] == 1)
-					visit[i][j] = -2;	// WALL = -2
-			}
-		}
-
-		astar();
-		print_character();
 		*gameStart = true;
 
 	}
-	Sleep(300);
 }
 
 void game_start()
 {
 	static int i = 0;
+	static int j = 0;
 	i++;
 	ScreenClear();
+	Sleep(50);
 
 	setColor(YELLOW);
 
-	if (i % 2 == 0) {
+	if (i % 3 == 0)
+	{
+		j++;
+	}
+
+	if (j % 2 == 0) {
 		ScreenPrint(44, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
 		ScreenPrint(44, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
 		ScreenPrint(44, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
@@ -179,8 +168,8 @@ void game_start()
 	setColor(YELLOW);
 	ScreenPrint(0, 18 + 4, "     ● ");
 	setColor(BLUE);
-	ScreenPrint(i, 20 + 4, "    ​ ◝◜  ⠀  ⠀⠀◝◜         ◝◜  ⠀  ⠀⠀◝◜  ◝◜⠀◝◜                      ◝◜⠀◝◜    ◝◜   ◝◜  ⠀◝◜        ◝◜ ◝◜◝◜\n");
-	ScreenPrint(i, 21 + 4, "⠀             ◝◜  ⠀◝◜⠀◝◜  ⠀  ⠀⠀⠀⠀⠀⠀⠀◝◜   ◝◜  ⠀◝◜◝◜⠀◝◜         ◝◜  ◝◜          ◝◜⠀◝◜        ◝◜ ◝◜⠀\n");
+	ScreenPrint(j, 20 + 4, "    ​ ◝◜  ⠀  ⠀⠀◝◜         ◝◜  ⠀  ⠀⠀◝◜  ◝◜⠀◝◜                      ◝◜⠀◝◜    ◝◜   ◝◜  ⠀◝◜        ◝◜ ◝◜◝◜\n");
+	ScreenPrint(j, 21 + 4, "⠀             ◝◜  ⠀◝◜⠀◝◜  ⠀  ⠀⠀⠀⠀⠀⠀⠀◝◜   ◝◜  ⠀◝◜◝◜⠀◝◜         ◝◜  ◝◜          ◝◜⠀◝◜        ◝◜ ◝◜⠀\n");
 
 	setColor(DARKGREEN);
 	ScreenPrint(0, 22 + 4, "_◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲_\n");
@@ -246,6 +235,93 @@ void changeStage(int nextStage)
 	s.x = enemy.x;
 	s.y = enemy.y;
 }
+
+
+void printGameAllStageClear(bool* gameStart, bool* gameClear, int* stage)
+{
+	static int idir = 0;
+	static int i = 0;
+	static int j = 0;
+	static bool playSound = false;
+
+	if (playSound == false)
+	{
+		pauseBgm(&playingBgm, dwID);
+		playingClearBgm();
+		playSound = true;
+	}
+
+	ScreenClear();
+
+	setColor(DARKGRAY);
+	ScreenPrint(8, (-2) + 3 + i, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
+	ScreenPrint(8, (-2) + 4 + i, "    _ (_)(_)(_) _   (_)              (_)(_)(_)(_)(_)        _(_)_        (_)(_)(_)(_) _     (_)\n");
+	ScreenPrint(8, (-2) + 5 + i, "   (_)         (_)  (_)              (_)                  _(_) (_)_      (_)         (_)    (_)\n");
+	ScreenPrint(8, (-2) + 6 + i, "   (_)              (_)              (_) _  _           _(_)     (_)_    (_) _  _  _ (_)    (_)\n");
+	ScreenPrint(8, (-2) + 7 + i, "   (_)              (_)              (_)(_)(_)         (_) _  _  _ (_)   (_)(_)(_)(_)       (_)\n");
+	ScreenPrint(8, (-2) + 8 + i, "   (_)          _   (_)              (_)               (_)(_)(_)(_)(_)   (_)   (_) _\n");
+	ScreenPrint(8, (-2) + 9 + i, "   (_) _  _  _ (_)  (_) _  _  _  _   (_) _  _  _  _    (_)         (_)   (_)      (_) _      _\n");
+	ScreenPrint(8, (-2) + 10 + i, "      (_)(_)(_)     (_)(_)(_)(_)(_)  (_)(_)(_)(_)(_)   (_)         (_)   (_)         (_)    (_)\n");
+
+	setColor(DARKGRAY);
+	ScreenPrint(8, 12 + i - 2, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
+	ScreenPrint(8, 13 + i - 2, "    _ (_)(_)(_) _   (_)              (_)(_)(_)(_)(_)        _(_)_        (_)(_)(_)(_) _     (_)\n");
+	ScreenPrint(8, 14 + i - 2, "   (_)         (_)  (_)              (_)                  _(_) (_)_      (_)         (_)    (_)\n");
+	ScreenPrint(8, 15 + i - 2, "   (_)              (_)              (_) _  _           _(_)     (_)_    (_) _  _  _ (_)    (_)\n");
+	ScreenPrint(8, 16 + i - 2, "   (_)              (_)              (_)(_)(_)         (_) _  _  _ (_)   (_)(_)(_)(_)       (_)\n");
+	ScreenPrint(8, 17 + i - 2, "   (_)          _   (_)              (_)               (_)(_)(_)(_)(_)   (_)   (_) _\n");
+	ScreenPrint(8, 18 + i - 2, "   (_) _  _  _ (_)  (_) _  _  _  _   (_) _  _  _  _    (_)         (_)   (_)      (_) _      _\n");
+	ScreenPrint(8, 19 + i - 2, "      (_)(_)(_)     (_)(_)(_)(_)(_)  (_)(_)(_)(_)(_)   (_)         (_)   (_)         (_)    (_)\n");
+
+	setColor(DARKGRAY);
+	ScreenPrint(8, 12 + i + 9 - 2, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
+	ScreenPrint(8, 13 + i + 9 - 2, "    _ (_)(_)(_) _   (_)              (_)(_)(_)(_)(_)        _(_)_        (_)(_)(_)(_) _     (_)\n");
+	ScreenPrint(8, 14 + i + 9 - 2, "   (_)         (_)  (_)              (_)                  _(_) (_)_      (_)         (_)    (_)\n");
+	ScreenPrint(8, 15 + i + 9 - 2, "   (_)              (_)              (_) _  _           _(_)     (_)_    (_) _  _  _ (_)    (_)\n");
+	ScreenPrint(8, 16 + i + 9 - 2, "   (_)              (_)              (_)(_)(_)         (_) _  _  _ (_)   (_)(_)(_)(_)       (_)\n");
+	ScreenPrint(8, 17 + i + 9 - 2, "   (_)          _   (_)              (_)               (_)(_)(_)(_)(_)   (_)   (_) _\n");
+	ScreenPrint(8, 18 + i + 9 - 2, "   (_) _  _  _ (_)  (_) _  _  _  _   (_) _  _  _  _    (_)         (_)   (_)      (_) _      _\n");
+	ScreenPrint(8, 19 + i + 9 - 2, "      (_)(_)(_)     (_)(_)(_)(_)(_)  (_)(_)(_)(_)(_)   (_)         (_)   (_)         (_)    (_)\n");
+
+	if (idir == 0)
+	{
+		j++;
+		if (j == 5) {
+			i++;
+			j = 0;
+		}
+		if (i == 1)
+			idir = -1;
+	}
+	if (idir == -1)
+	{
+		j++;
+		if (j == 5) {
+			i--;
+			j = 0;
+		}
+		if (i == -1)
+			idir = 0;
+	}
+
+	// 'R' 누르면 다시 시작
+	if ((GetAsyncKeyState('R') & 0x8000))
+	{
+		// TODO: 디버깅 때문에 해둠
+		*stage = 0;
+		player.coin = 0;
+		coinAllCnt = 0;
+		changeStage(*stage);
+		UpdateFPS();
+		playSound = false;
+		*gameClear = false;
+		*gameStart = false;
+	}
+
+	ScreenFlipping();
+	Sleep(50);
+}
+
 
 void printGameClearAtStage(bool* gameStart, bool* gameClear, int* stage, int nextStage)
 {

@@ -47,6 +47,15 @@ void init()
 	s.x = enemy.x;
 	s.y = enemy.y;
 
+
+	count = 0;
+
+	Q = NULL;
+
+	memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+	memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+	memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+	
 	astar();
 	print_character();
 
