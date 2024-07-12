@@ -17,3 +17,4 @@ int dirY[8] = { -1, 1, 0, 0, -1, 1, -1, 1 };
 int coinAllCnt = 0;
 int coinNum = 0;
 int stage = 0;
+int enemySpeed = 3;

@@ -46,7 +46,7 @@ int main(void)
 					update(&gameOver);		// gameOver 여부에 따라 수행 동작이 다름
 					render();
 				}
-				if (player.coin == coinAllCnt && stage == 0)
+				if (player.coin == coinAllCnt )
 				{
 					gameClear = true;
 					printGameClearAtStage(&gameStart, &gameClear, &stage, stage + 1);

@@ -7,13 +7,14 @@ extern ENEMY enemy;
 extern int dirX[];
 extern int dirY[];
 extern PLAYER player;
+extern int enemySpeed;
 
 void moveEnemy()
 {
 	static int enemyMove = 0;
 	enemyMove++;
 
-	if (enemyMove % 3 == 0) {
+	if (enemyMove % enemySpeed == 0) {
 		for (int i = 0; i < 8; i++)
 		{
 			g[enemy.y][enemy.x] = 8;
