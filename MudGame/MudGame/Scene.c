@@ -75,6 +75,8 @@ bool readStageFromFile(int stage)
 	return true;
 }
 
+
+
 void drawMap()
 {
 	for (int i = 0; i < MAPSIZE_X; i++)
@@ -180,9 +182,62 @@ void game_start()
 
 void initToReplay(int stage)
 {
-	if (!readStageFromFile(stage)) {	// 읽기 실패하면 종료
-		exit(0);
+	FILE* ifp;
+	char name[20];
+	char num[2];
+
+	// txt 파일 이름 파싱
+	strcpy(name, "../data/map_");
+	stage += 1;
+	itoa(stage, num, 10);
+	strcat(name, num);
+	strcat(name, ".txt");
+	// ex) name = "../data/map_1.txt"
+
+	ifp = fopen(name, "rb");
+
+
+	int tempMap[MAPSIZE_Y][MAPSIZE_X];
+
+	if (ifp == NULL) {
+		printf("%s 파일 읽기를 실패하여 종료합니다.\n", name);
+		return false;
 	}
+	else {
+		for (int i = 0; i < MAPSIZE_Y; i++) {
+			for (int j = 0; j < MAPSIZE_X; j++) {
+				fscanf(ifp, "%d", &tempMap[i][j]);
+			}
+		}
+		// 총 코인 개수
+		fscanf(ifp, "%d", &coinNum);
+
+		// 플레이어 좌표
+		fscanf(ifp, "%d%d", &player.x, &player.y);
+
+		// 몬스터 좌표
+		fscanf(ifp, "%d%d", &enemy.x, &enemy.y);
+
+		// 몬스터 스피드 
+		fscanf(ifp, "%d", &enemySpeed);
+
+		// 몬스터 수
+		fscanf(ifp, "%d", &enemyNum);
+
+		for (int i = 0; i < enemyNum; i++)
+		{
+			fscanf(ifp, "%d%d", &enemysPos[i].x, &enemysPos[i].y);
+		}
+
+		fclose(ifp);
+	}
+
+
+	//===============================
+
+	//if (!readStageFromFile(stage)) {	// 읽기 실패하면 종료
+	//	exit(0);
+	//}
 
 	playingSceneBgm();
 
@@ -470,15 +525,27 @@ void printGameOver(bool *gameStart, bool *gameOver, int stage)
 	{
 		if (stage == 0)
 		{
-			player.coin -= 100;
+			player.coin -= 50;
+			if (player.coin < 0)
+			{
+				player.coin = 0;
+			}
 		}
 		else if (stage == 1)
 		{
-			player.coin -= 400;
+			player.coin -= 70;
+			if (player.coin < 0)
+			{
+				player.coin = 0;
+			}
 		}
 		else if (stage == 2)
 		{
-			player.coin -= 300;
+			player.coin -= 100;
+			if (player.coin < 0)
+			{
+				player.coin = 0;
+			}
 		}
 		*gameOver = false;
 		initToReplay(stage);
