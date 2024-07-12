@@ -24,6 +24,7 @@ int main(void)
 
 	bool gameStart = false;
 	bool gameOver = false;
+	bool gameClear = false;
 	newq = (QUEUE**)calloc(size, sizeof(QUEUE*));
 
 	init();
@@ -31,6 +32,7 @@ int main(void)
 	while (1) {
 		// 게임 시작 화면 
 		if (gameStart == false) {
+			//printGameClearAtStage(&gameStart, &gameOver, 0);
 			gameStartScene(&gameStart);
 		}
 
@@ -39,21 +41,15 @@ int main(void)
 		{			
 			if (gameOver == false) 
 			{
-				update(&gameOver);		// gameOver 여부에 따라 수행 동작이 다름
-
-				if (player.coin == coinAllCnt)
+				if (gameClear == false)
 				{
-					for (int i = 0; i < count; i++)
-					{
-						free(newq[i]);
-					}
-					free(newq);
-
-					// TODO: 다음 스테이지로 넘어가게 해야 됨
-					break;
+					update(&gameOver);		// gameOver 여부에 따라 수행 동작이 다름
+					render();
 				}
-
-				render();
+				if (player.coin == 5)
+				{
+					printGameClearAtStage(&gameStart, &gameClear, 0);
+				}
 			}
 
 			else if (gameOver == true)

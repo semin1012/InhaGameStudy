@@ -13,4 +13,5 @@ bool readStageFromFile(int stage);
 void drawMap();
 void game_start();
 void printGameOver(bool* gameStart, bool* gameOver);
+void printGameClearAtStage(bool* gameStart, bool* gameOver, int stage);
 void gameStartScene(bool* gameStart);

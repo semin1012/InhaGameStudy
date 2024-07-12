@@ -155,6 +155,125 @@ void game_start()
 	ScreenFlipping();
 }
 
+void initToReplay()
+{
+	player.x = 20;
+	player.y = 20;
+	player.coin = 0;
+	enemy.x = 1;
+	enemy.y = 1;
+
+	if (!readStageFromFile(0)) {	// 읽기 실패하면 종료
+		exit(0);
+	}
+	lastTime = clock();
+
+	/*     A* 알고리즘      */
+	// 벽
+	for (int i = 0; i < MAPSIZE_Y; i++)
+	{
+		for (int j = 0; j < MAPSIZE_X; j++)
+		{
+			if (map[i][j] == 1)
+				visit[i][j] = -2;	// WALL = -2
+		}
+	}
+	
+	e.x = player.x;
+	e.y = player.y;
+	s.x = enemy.x;
+	s.y = enemy.y;
+
+	//astar();
+	//print_character();
+}
+
+void printGameClearAtStage(bool* gameStart, bool* gameClear, int stage)
+{
+	static int idir = 0;
+	static int i = 0;
+	static int j = 0;
+
+	ScreenClear();
+
+	*gameClear = true;
+
+	setColor(DARKGRAY);
+	ScreenPrint(8, (-2) + 3 + i, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
+	ScreenPrint(8, (-2) + 4 + i, "    _ (_)(_)(_) _   (_)              (_)(_)(_)(_)(_)        _(_)_        (_)(_)(_)(_) _     (_)\n");
+	ScreenPrint(8, (-2) + 5 + i, "   (_)         (_)  (_)              (_)                  _(_) (_)_      (_)         (_)    (_)\n");
+	ScreenPrint(8, (-2) + 6 + i, "   (_)              (_)              (_) _  _           _(_)     (_)_    (_) _  _  _ (_)    (_)\n");
+	ScreenPrint(8, (-2) + 7 + i, "   (_)              (_)              (_)(_)(_)         (_) _  _  _ (_)   (_)(_)(_)(_)       (_)\n");
+	ScreenPrint(8, (-2) + 8 + i, "   (_)          _   (_)              (_)               (_)(_)(_)(_)(_)   (_)   (_) _\n");
+	ScreenPrint(8, (-2) + 9 + i, "   (_) _  _  _ (_)  (_) _  _  _  _   (_) _  _  _  _    (_)         (_)   (_)      (_) _      _\n");
+	ScreenPrint(8, (-2) + 10 + i, "      (_)(_)(_)     (_)(_)(_)(_)(_)  (_)(_)(_)(_)(_)   (_)         (_)   (_)         (_)    (_)\n");
+
+	setColor(DARKGRAY);
+	ScreenPrint(8, 12 + i - 2, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
+	ScreenPrint(8, 13 + i - 2, "    _ (_)(_)(_) _   (_)              (_)(_)(_)(_)(_)        _(_)_        (_)(_)(_)(_) _     (_)\n");
+	ScreenPrint(8, 14 + i - 2, "   (_)         (_)  (_)              (_)                  _(_) (_)_      (_)         (_)    (_)\n");
+	ScreenPrint(8, 15 + i - 2, "   (_)              (_)              (_) _  _           _(_)     (_)_    (_) _  _  _ (_)    (_)\n");
+	ScreenPrint(8, 16 + i - 2, "   (_)              (_)              (_)(_)(_)         (_) _  _  _ (_)   (_)(_)(_)(_)       (_)\n");
+	ScreenPrint(8, 17 + i - 2, "   (_)          _   (_)              (_)               (_)(_)(_)(_)(_)   (_)   (_) _\n");
+	ScreenPrint(8, 18 + i - 2, "   (_) _  _  _ (_)  (_) _  _  _  _   (_) _  _  _  _    (_)         (_)   (_)      (_) _      _\n");
+	ScreenPrint(8, 19 + i - 2, "      (_)(_)(_)     (_)(_)(_)(_)(_)  (_)(_)(_)(_)(_)   (_)         (_)   (_)         (_)    (_)\n");
+
+	setColor(DARKGRAY);
+	ScreenPrint(8, 12 + i + 9 - 2, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
+	ScreenPrint(8, 13 + i + 9 - 2, "    _ (_)(_)(_) _   (_)              (_)(_)(_)(_)(_)        _(_)_        (_)(_)(_)(_) _     (_)\n");
+	ScreenPrint(8, 14 + i + 9 - 2, "   (_)         (_)  (_)              (_)                  _(_) (_)_      (_)         (_)    (_)\n");
+	ScreenPrint(8, 15 + i + 9 - 2, "   (_)              (_)              (_) _  _           _(_)     (_)_    (_) _  _  _ (_)    (_)\n");
+	ScreenPrint(8, 16 + i + 9 - 2, "   (_)              (_)              (_)(_)(_)         (_) _  _  _ (_)   (_)(_)(_)(_)       (_)\n");
+	ScreenPrint(8, 17 + i + 9 - 2, "   (_)          _   (_)              (_)               (_)(_)(_)(_)(_)   (_)   (_) _\n");
+	ScreenPrint(8, 18 + i + 9 - 2, "   (_) _  _  _ (_)  (_) _  _  _  _   (_) _  _  _  _    (_)         (_)   (_)      (_) _      _\n");
+	ScreenPrint(8, 19 + i + 9 - 2, "      (_)(_)(_)     (_)(_)(_)(_)(_)  (_)(_)(_)(_)(_)   (_)         (_)   (_)         (_)    (_)\n");
+
+
+	setColor(YELLOW);
+	ScreenPrint(38,  9 + 1, "┌───────────────────────────────────✦ \n");
+	ScreenPrint(38, 10 + 1, "✦ ╮ 탈출 성공!                      │ \n");
+	ScreenPrint(38, 11 + 1, "│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│ \n");
+	ScreenPrint(38, 12 + 1, "│                                   │ \n");
+	ScreenPrint(38, 13 + 1, "│  경찰을 피하기 성공했습니다.      │ \n");
+	ScreenPrint(38, 14 + 1, "│                                   │ \n");
+	ScreenPrint(38, 15 + 1, "│  계속 진행하려면 엔터를 누르세요. │ \n");
+	ScreenPrint(38, 16 + 1, "│                                   │ \n");
+	ScreenPrint(38, 17 + 1, "└───────────────────────────────────✦ \n");
+
+	if (idir == 0)
+	{
+		j++;
+		if (j == 5) {
+			i++;
+			j = 0;
+		}
+		if (i == 1)
+			idir = -1;
+	}
+	if (idir == -1)
+	{
+		j++;
+		if (j == 5) {
+			i--;
+			j = 0;
+		}
+		if (i == -1)
+			idir = 0;
+	}
+
+	if ((GetAsyncKeyState('R') & 0x8000) || (GetAsyncKeyState('r') & 0x8000))
+	{
+		initToReplay();
+		UpdateFPS();
+		//*gameStart = false;
+		count = 0;
+	}
+
+	ScreenFlipping();
+	Sleep(50);
+}
+
+
 void printGameOver(bool *gameStart, bool *gameOver)
 {
 	static int idir = 0;
@@ -203,13 +322,15 @@ void printGameOver(bool *gameStart, bool *gameOver)
 	}
 
 
-	if (GetAsyncKeyState('R') & 0x8000)
+	if ((GetAsyncKeyState('R') & 0x8000) || (GetAsyncKeyState('r') & 0x8000))
 	{
+		*gameOver = false;
+		initToReplay();
+		UpdateFPS();
 		//*gameStart = false;
-
 		count = 0;
 	}
 
 	ScreenFlipping();
-	Sleep(150);
+	Sleep(75);
 }
