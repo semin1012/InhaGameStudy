@@ -1,11 +1,10 @@
 #include <stdio.h>
-#include <stdbool.h>
-#include <Windows.h>
 #include "Scene.h"
 #include "ConsoleFunc.h"
 #include "GameStruct.h"
 #include "Enemy.h"
 #include "Astar.h"
+#include "Sound.h"
 #include "stdafx.h"
 
 extern PLAYER player;
@@ -50,6 +49,8 @@ void init()
 
 	astar();
 	print_character();
+
+	playingIntroBgm();
 }
 
 void restart(bool* gameover)
@@ -64,6 +65,10 @@ void update(bool* gameOver) {
 		// 몬스터와 닿았다면 게임오버
 		if (isOverlapEnemy())
 		{
+			// TODO: 죽는 사운드
+			pauseBgm(&playingBgm, dwID);
+			playingDeathSound();
+
 			*gameOver = true;
 			for (int i = 0; i < count; i++)
 			{
@@ -122,6 +127,7 @@ void update(bool* gameOver) {
 			}
 			else if (map[player.y][player.x - 1] == 2)
 			{
+				playingGetCoinSound();
 				player.coin++;
 				map[player.y][player.x - 1] = 0;
 				player.x--;
@@ -137,6 +143,7 @@ void update(bool* gameOver) {
 			}
 			else if (map[player.y][player.x + 1] == 2)
 			{
+				playingGetCoinSound();
 				player.coin++;
 				map[player.y][player.x + 1] = 0;
 				player.x++;
@@ -152,6 +159,7 @@ void update(bool* gameOver) {
 			}
 			else if (map[player.y - 1][player.x] == 2)
 			{
+				playingGetCoinSound();
 				player.coin++;
 				map[player.y - 1][player.x] = 0;
 				player.y--;
@@ -167,6 +175,7 @@ void update(bool* gameOver) {
 			}
 			else if (map[player.y + 1][player.x] == 2)
 			{
+				playingGetCoinSound();
 				player.coin++;
 				map[player.y + 1][player.x] = 0;
 				player.y++;

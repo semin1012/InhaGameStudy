@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
-#include <Windows.h>
 #include <time.h>
 #include <crtdbg.h>
 #include "ConsoleFunc.h"
@@ -9,14 +7,10 @@
 #include "GameStruct.h"
 #include "CoinRun.h"
 #include "stdafx.h"
-#pragma comment(lib, "winmm.lib")
 
 extern bool gameOver;
 
-void replay(bool* gameOver)
-{
-	gameOver = false;
-}
+
 
 int main(void) 
 {

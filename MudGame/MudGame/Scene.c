@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <stdbool.h>
-#include <Windows.h>
 #include "consoleFunc.h"
 #include "Scene.h"
+#include "Sound.h"
 #include "Astar.h"
 #include "stdafx.h"
 
@@ -98,12 +97,17 @@ void drawMap()
 	}
 }
 
+extern MCI_OPEN_PARMS openBgm;
+extern int dwID;
 
 void gameStartScene(bool* gameStart)
 {
 	game_start();
 	if (_kbhit())   // 아무키나 눌려지면 게임 스타트
 	{
+		pauseBgm(&openBgm, dwID);
+
+		playingSceneBgm();
 		count = 0;
 
 		Q = NULL;
@@ -120,9 +124,11 @@ void gameStartScene(bool* gameStart)
 					visit[i][j] = -2;	// WALL = -2
 			}
 		}
+
 		astar();
 		print_character();
 		*gameStart = true;
+
 	}
 	Sleep(300);
 }
@@ -188,6 +194,9 @@ void initToReplay(int stage)
 	if (!readStageFromFile(stage)) {	// 읽기 실패하면 종료
 		exit(0);
 	}
+
+	playingSceneBgm();
+
 	lastTime = clock();
 
 	/*     A* 알고리즘      */
@@ -209,6 +218,9 @@ void initToReplay(int stage)
 
 void changeStage(int nextStage)
 {
+	pauseBgm(&clearSound, dwID);
+	playingSceneBgm();
+
 	enemy.x = 1;
 	enemy.y = 1;
 
@@ -240,6 +252,14 @@ void printGameClearAtStage(bool* gameStart, bool* gameClear, int* stage, int nex
 	static int idir = 0;
 	static int i = 0;
 	static int j = 0;
+	static bool playSound = false;
+
+	if (playSound == false)
+	{
+		pauseBgm(&playingBgm, dwID);
+		playingClearBgm();
+		playSound = true;
+	}
 
 	ScreenClear();
 
@@ -314,6 +334,7 @@ void printGameClearAtStage(bool* gameStart, bool* gameClear, int* stage, int nex
 		*gameClear = false;
 		changeStage(*stage);
 		UpdateFPS();
+		playSound = false;
 	}
 
 	ScreenFlipping();
@@ -371,7 +392,18 @@ void printGameOver(bool *gameStart, bool *gameOver, int stage)
 
 	if ((GetAsyncKeyState('R') & 0x8000) || (GetAsyncKeyState('r') & 0x8000))
 	{
-		player.coin -= 50;
+		if (stage == 0)
+		{
+			player.coin -= 100;
+		}
+		else if (stage == 1)
+		{
+			player.coin -= 400;
+		}
+		else if (stage == 2)
+		{
+			player.coin -= 300;
+		}
 		*gameOver = false;
 		initToReplay(stage);
 		UpdateFPS();

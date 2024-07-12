@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <Windows.h>
+#include <mmsystem.h>
+#pragma comment(lib,"winmm.lib")
 
 // Stage 1
 //int main()
@@ -139,10 +142,10 @@
 //	printf("%d\n", 2);
 //
 //	// Enemys Pos
-//	fprintf(ofp, "%d %d ", 6, 2);
-//	printf("%d %d\n", 6, 2);
-//	fprintf(ofp, "%d %d ", 21, 22);
-//	printf("%d %d\n", 21, 22);
+//	fprintf(ofp, "%d %d ", 3, 2);
+//	printf("%d %d\n", 3, 2);
+//	fprintf(ofp, "%d %d ", 20, 22);
+//	printf("%d %d\n", 20, 22);
 //
 //	fclose(ofp);
 //}
@@ -153,6 +156,7 @@ int main()
 	system("mode con cols=120 lines=35 | title Coin Run"); // 콘솔창 크기 및 제목 설정
 	FILE* ofp;
 	ofp = fopen("../data/map_3.txt", "wb");
+
 	
 	int coinNum = 0;
 

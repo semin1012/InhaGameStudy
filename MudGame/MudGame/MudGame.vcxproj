@@ -137,6 +137,7 @@
     <ClCompile Include="Player.c" />
     <ClCompile Include="Scene.c" />
     <ClCompile Include="ConsoleFunc.c" />
+    <ClCompile Include="Sound.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Astar.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="ConsoleFunc.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

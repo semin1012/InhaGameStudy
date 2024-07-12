@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <Windows.h>
+#include "stdafx.h"
 #include "Astar.h"
 
 static int g_nScreenIndex;

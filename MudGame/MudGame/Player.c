@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include "stdafx.h"
 
 extern PLAYER player;
@@ -21,6 +20,7 @@ bool canGo(int x, int y)
 int countCointNuminMap()
 {
 	int coin_num = 0;
+
 	for (int i = 0; i < MAPSIZE_Y; i++)
 	{
 		for (int j = 0; j < MAPSIZE_X; j++)
