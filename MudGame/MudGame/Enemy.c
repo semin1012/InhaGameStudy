@@ -69,5 +69,12 @@ bool isOverlapEnemy()
 	if (enemy.x == player.x && enemy.y == player.y) {
 		return true;
 	}
-	else return false;
+
+	for (int i = 0; i < enemyNum; i++)
+	{
+		if (enemysPos[i].x == player.x && enemysPos[i].y == player.y)
+			return true;
+	}
+
+	return false;
 }

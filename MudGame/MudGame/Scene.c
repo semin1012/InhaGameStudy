@@ -183,9 +183,9 @@ void game_start()
 	ScreenFlipping();
 }
 
-void initToReplay()
+void initToReplay(int stage)
 {
-	if (!readStageFromFile(0)) {	// 읽기 실패하면 종료
+	if (!readStageFromFile(stage)) {	// 읽기 실패하면 종료
 		exit(0);
 	}
 	lastTime = clock();
@@ -321,7 +321,7 @@ void printGameClearAtStage(bool* gameStart, bool* gameClear, int* stage, int nex
 }
 
 
-void printGameOver(bool *gameStart, bool *gameOver)
+void printGameOver(bool *gameStart, bool *gameOver, int stage)
 {
 	static int idir = 0;
 	static int i = 0;
@@ -373,7 +373,7 @@ void printGameOver(bool *gameStart, bool *gameOver)
 	{
 		player.coin -= 50;
 		*gameOver = false;
-		initToReplay();
+		initToReplay(stage);
 		UpdateFPS();
 		//*gameStart = false;
 		count = 0;

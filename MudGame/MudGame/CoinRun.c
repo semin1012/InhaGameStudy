@@ -55,7 +55,7 @@ int main(void)
 
 			else if (gameOver == true)
 			{
-				printGameOver(&gameStart, &gameOver);
+				printGameOver(&gameStart, &gameOver, stage);
 			}
 		}
 	}
