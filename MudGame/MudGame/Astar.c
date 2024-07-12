@@ -25,7 +25,7 @@ void UpdateFPS()
 
 	timeElapsed += timeDelta;
 
-	if (timeElapsed >= 3000.0f)         //흐른 시간이 3초 이상이면 처리
+	if (timeElapsed >= 5000.0f)         //흐른 시간이 3초 이상이면 처리
 	{
 		for (int i = 0; i < count; i++)
 		{

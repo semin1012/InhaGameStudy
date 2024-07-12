@@ -14,6 +14,7 @@ extern VERTEX s, e;	// start, end
 extern DWORD lastTime;
 extern bool gameOver;
 extern int count;
+extern int stage;
 
 void init()
 {
@@ -21,11 +22,13 @@ void init()
 	ScreenInit();
 
 
+	//player.x = 20;
+	//player.y = 20;
 	player.x = 20;
-	player.y = 20;
+	player.y = 13;
 	player.coin = 0;
 
-	if (!readStageFromFile(0)) {	// 읽기 실패하면 종료
+	if (!readStageFromFile(stage)) {	// 읽기 실패하면 종료
 		exit(0);
 	}
 

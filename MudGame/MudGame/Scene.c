@@ -7,16 +7,18 @@
 #include "stdafx.h"
 
 extern int coinAllCnt;
+extern int coinNum;
 extern DWORD lastTime;
+extern int map[MAPSIZE_Y][MAPSIZE_X];
 
 bool readStageFromFile(int stage)
 {
 	FILE* ifp;
 	char name[20];
+	char num[2];
 
 	// txt 파일 이름 파싱
 	strcpy(name, "../data/map_");
-	char num[2];
 	stage += 1;
 	itoa(stage, num, 10);
 	strcat(name, num);
@@ -36,11 +38,22 @@ bool readStageFromFile(int stage)
 			}
 		}
 
-		fscanf(ifp, "%d", &coinAllCnt);
+		fscanf(ifp, "%d", &coinNum);
 
 		fclose(ifp);
-		return true;
 	}
+
+
+	if (stage == 1 )
+	{
+		coinAllCnt = coinNum;
+	}
+	else 
+	{
+		coinAllCnt += coinNum;
+	}
+
+	return true;
 }
 
 void drawMap()
@@ -183,20 +196,43 @@ void initToReplay()
 	e.y = player.y;
 	s.x = enemy.x;
 	s.y = enemy.y;
-
-	//astar();
-	//print_character();
 }
 
-void printGameClearAtStage(bool* gameStart, bool* gameClear, int stage)
+void changeStage(int nextStage)
+{
+	enemy.x = 1;
+	enemy.y = 1;
+
+	if (!readStageFromFile(nextStage)) {	// 읽기 실패하면 종료
+		exit(0);
+	}
+
+	lastTime = clock();
+
+	/*     A* 알고리즘      */
+	// 벽
+	for (int i = 0; i < MAPSIZE_Y; i++)
+	{
+		for (int j = 0; j < MAPSIZE_X; j++)
+		{
+			if (map[i][j] == 1)
+				visit[i][j] = -2;	// WALL = -2
+		}
+	}
+
+	e.x = player.x;
+	e.y = player.y;
+	s.x = enemy.x;
+	s.y = enemy.y;
+}
+
+void printGameClearAtStage(bool* gameStart, bool* gameClear, int* stage, int nextStage)
 {
 	static int idir = 0;
 	static int i = 0;
 	static int j = 0;
 
 	ScreenClear();
-
-	*gameClear = true;
 
 	setColor(DARKGRAY);
 	ScreenPrint(8, (-2) + 3 + i, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
@@ -261,12 +297,17 @@ void printGameClearAtStage(bool* gameStart, bool* gameClear, int stage)
 			idir = 0;
 	}
 
-	if ((GetAsyncKeyState('R') & 0x8000) || (GetAsyncKeyState('r') & 0x8000))
+	// 엔터 누르면 다음 스테이지
+	if ((GetAsyncKeyState(VK_RETURN) & 0x8000))
 	{
-		initToReplay();
+		player.x = 20;
+		player.y = 13;
+		// TODO: 디버깅 때문에 해둠
+		*stage = nextStage;
+		*gameClear = false;
+		changeStage(*stage);
 		UpdateFPS();
-		//*gameStart = false;
-		count = 0;
+		drawMap();
 	}
 
 	ScreenFlipping();
@@ -290,6 +331,13 @@ void printGameOver(bool *gameStart, bool *gameOver)
 	ScreenPrint(10, 7 + 17 + i, ". ######::: ##:::: ##: ##:::: ##: ########::::. #######::::. ###:::: ########: ##:::. ##: ####:\n");
 	ScreenPrint(10, 8 + 17 + i, ":......::::..:::::..::..:::::..::........::::::.......::::::...:::::........::..:::::..::....::\n");
 
+	setColor(DARKGRAY);
+	ScreenPrint(80, 2 + 7, "┏┯┯┯┯┯┯┯┯┯┓\n");
+	ScreenPrint(80, 3 + 7, "┃││∧ ∧││┃ 살려줘!!\n");
+	ScreenPrint(80, 4 + 7, "┃│(≧Д≦)┃\n");
+	ScreenPrint(80, 5 + 7, "┃│ф  ф││┃\n");
+	ScreenPrint(80, 6 + 7, "┗┷┷┷┷┷┷┷┷┷┛\n");
+
 	setColor(WHITE);
 	ScreenPrint(13 , 12 - 11, "＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿\n");
 	ScreenPrint(13 , 13 - 11, "|　도망 실패!　　　　　　　　　 　　 [－][口][×]|\n");
@@ -300,13 +348,6 @@ void printGameOver(bool *gameStart, bool *gameOver)
 	ScreenPrint(13 , 18 - 11, "| 　　｜예　　　　 |　　　 　　|예　 　　   |　  |\n");
 	ScreenPrint(13 , 19 - 11, "|　　　￣￣￣￣￣￣　　　　　 　￣￣￣￣￣￣　　 |\n");
 	ScreenPrint(13 , 20 - 11, "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣\n");
-
-	setColor(DARKGRAY);
-	ScreenPrint(80, 2 + 7, "┏┯┯┯┯┯┯┯┯┯┓\n");
-	ScreenPrint(80, 3 + 7, "┃││∧ ∧││┃ 살려줘!!\n");
-	ScreenPrint(80, 4 + 7, "┃│(≧Д≦)┃\n");
-	ScreenPrint(80, 5 + 7, "┃│ф  ф││┃\n");
-	ScreenPrint(80, 6 + 7, "┗┷┷┷┷┷┷┷┷┷┛\n");
 
 	if (idir == 0)
 	{
