@@ -371,6 +371,7 @@ void printGameOver(bool *gameStart, bool *gameOver)
 
 	if ((GetAsyncKeyState('R') & 0x8000) || (GetAsyncKeyState('r') & 0x8000))
 	{
+		player.coin -= 50;
 		*gameOver = false;
 		initToReplay();
 		UpdateFPS();

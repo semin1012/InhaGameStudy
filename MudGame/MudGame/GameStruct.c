@@ -103,7 +103,16 @@ void update(bool* gameOver) {
 
 		// 디버깅 키
 		if (GetAsyncKeyState('D') & 0x8000) {
-			player.coin = coinAllCnt;
+			for (int i = 0; i < MAPSIZE_Y; i++)
+			{
+				for (int j = 0; j < MAPSIZE_X; j++)
+				{
+					if (map[i][j] == 2)
+					{
+						map[i][j] = 0;
+					}
+				}
+			}
 		}
 
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
