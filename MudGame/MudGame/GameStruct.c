@@ -109,7 +109,7 @@ void update(bool* gameOver) {
 		}
 
 		UpdateFPS();
-		moveEnemy();
+		moveEnemy(false);
 		Sleep(50);
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)	// ESC 눌렀을 때 바로 종료
 			exit(0);

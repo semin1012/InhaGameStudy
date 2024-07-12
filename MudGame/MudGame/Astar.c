@@ -17,14 +17,14 @@ extern ENEMY enemy;
 
 void UpdateFPS()
 {
-	static float timeElapsed = 0.0f;            //흐른 시간
+	static float timeElapsed = 5000.0f;            //흐른 시간
 
 	DWORD curTime = clock();      //현재 시간
 	float timeDelta = (curTime - lastTime);        //timeDelta(1번생성후 흐른 시간) 1초단위로 바꿔준다.
 
 	timeElapsed += timeDelta;
 
-	if (timeElapsed >= 5000.0f)         //흐른 시간이 3초 이상이면 처리
+	if (timeElapsed >= 1000.0f)         //흐른 시간이 3초 이상이면 처리
 	{
 		for (int i = 0; i < count; i++)
 		{
@@ -54,6 +54,8 @@ void UpdateFPS()
 		}
 		astar();
 		print_character();
+
+		timeElapsed = 0.0f;
 	}
 
 

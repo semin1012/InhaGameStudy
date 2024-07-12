@@ -308,7 +308,7 @@ void printGameAllStageClear(bool* gameStart, bool* gameClear, int* stage)
 
 	ScreenClear();
 
-	setColor(DARKGRAY);
+	setColor(YELLOW);
 	ScreenPrint(8, (-2) + 3 + i, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
 	ScreenPrint(8, (-2) + 4 + i, "    _ (_)(_)(_) _   (_)              (_)(_)(_)(_)(_)        _(_)_        (_)(_)(_)(_) _     (_)\n");
 	ScreenPrint(8, (-2) + 5 + i, "   (_)         (_)  (_)              (_)                  _(_) (_)_      (_)         (_)    (_)\n");
@@ -318,7 +318,6 @@ void printGameAllStageClear(bool* gameStart, bool* gameClear, int* stage)
 	ScreenPrint(8, (-2) + 9 + i, "   (_) _  _  _ (_)  (_) _  _  _  _   (_) _  _  _  _    (_)         (_)   (_)      (_) _      _\n");
 	ScreenPrint(8, (-2) + 10 + i, "      (_)(_)(_)     (_)(_)(_)(_)(_)  (_)(_)(_)(_)(_)   (_)         (_)   (_)         (_)    (_)\n");
 
-	setColor(DARKGRAY);
 	ScreenPrint(8, 12 + i - 2, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
 	ScreenPrint(8, 13 + i - 2, "    _ (_)(_)(_) _   (_)              (_)(_)(_)(_)(_)        _(_)_        (_)(_)(_)(_) _     (_)\n");
 	ScreenPrint(8, 14 + i - 2, "   (_)         (_)  (_)              (_)                  _(_) (_)_      (_)         (_)    (_)\n");
@@ -328,7 +327,6 @@ void printGameAllStageClear(bool* gameStart, bool* gameClear, int* stage)
 	ScreenPrint(8, 18 + i - 2, "   (_) _  _  _ (_)  (_) _  _  _  _   (_) _  _  _  _    (_)         (_)   (_)      (_) _      _\n");
 	ScreenPrint(8, 19 + i - 2, "      (_)(_)(_)     (_)(_)(_)(_)(_)  (_)(_)(_)(_)(_)   (_)         (_)   (_)         (_)    (_)\n");
 
-	setColor(DARKGRAY);
 	ScreenPrint(8, 12 + i + 9 - 2, "       _  _  _       _                _  _  _  _  _           _           _  _  _  _         _\n");
 	ScreenPrint(8, 13 + i + 9 - 2, "    _ (_)(_)(_) _   (_)              (_)(_)(_)(_)(_)        _(_)_        (_)(_)(_)(_) _     (_)\n");
 	ScreenPrint(8, 14 + i + 9 - 2, "   (_)         (_)  (_)              (_)                  _(_) (_)_      (_)         (_)    (_)\n");
@@ -337,6 +335,34 @@ void printGameAllStageClear(bool* gameStart, bool* gameClear, int* stage)
 	ScreenPrint(8, 17 + i + 9 - 2, "   (_)          _   (_)              (_)               (_)(_)(_)(_)(_)   (_)   (_) _\n");
 	ScreenPrint(8, 18 + i + 9 - 2, "   (_) _  _  _ (_)  (_) _  _  _  _   (_) _  _  _  _    (_)         (_)   (_)      (_) _      _\n");
 	ScreenPrint(8, 19 + i + 9 - 2, "      (_)(_)(_)     (_)(_)(_)(_)(_)  (_)(_)(_)(_)(_)   (_)         (_)   (_)         (_)    (_)\n");
+
+
+	setColor(SKYBLUE);
+	ScreenPrint(38, 9 + 1, "┌──────────────────────────────────────✦ \n");
+	ScreenPrint(38, 10 + 1, "✦ ╮ 축하합니다!                       │ \n");
+	ScreenPrint(38, 11 + 1, "│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│ \n");
+	ScreenPrint(38, 12 + 1, "│                                     │ \n");
+	ScreenPrint(38, 13 + 1, "│  경찰을 따돌리고 코인을 모았습니다. │ \n");
+	ScreenPrint(38, 14 + 1, "│                                     │ \n");
+	ScreenPrint(38, 15 + 1, "│  다시 하려면 'R'을 누르세요.        │ \n");
+	ScreenPrint(38, 16 + 1, "│                                     │ \n");
+	ScreenPrint(38, 17 + 1, "└────────────────────────────────────✦ \n");
+
+	char coins[5];
+	itoa(player.coin, coins, 10);
+
+	setColor(WHITE);
+	char coinString[100] = "총 모은 코인: ";
+	strcat(coinString, coins);
+	ScreenPrint(60, 19, coinString);
+
+	char bestCoins[5];
+	itoa(player.coin, bestCoins, 10);
+
+	setColor(WHITE);
+	char bestCoinString[100] = "최고 기록: ";
+	strcat(bestCoinString, coins);
+	ScreenPrint(63, 20, bestCoinString);
 
 	if (idir == 0)
 	{
@@ -547,6 +573,8 @@ void printGameOver(bool *gameStart, bool *gameOver, int stage)
 				player.coin = 0;
 			}
 		}
+
+		moveEnemy(true);
 		*gameOver = false;
 		initToReplay(stage);
 		UpdateFPS();

@@ -10,12 +10,16 @@ extern int enemySpeed;
 extern int enemyNum;
 extern ENEMY enemysPos[10];
 
-void moveEnemy()
+void moveEnemy(bool init)
 {
 	static int enemyMove = 0;
 	static int i = 0;
 	static int idir = 0;
 	enemyMove++;
+
+	if (init == true) {
+		i = 0;
+	}
 
 	if (enemyMove % enemySpeed == 0) {
 		for (int i = 0; i < 8; i++)
@@ -40,7 +44,8 @@ void moveEnemy()
 			i++;
 			for (int i = 0; i < enemyNum; i++)
 			{
-				enemysPos[i].x += 1;
+				if (map[enemysPos[i].x+1][enemysPos[i].y] != 1)
+					enemysPos[i].x += 1;
 			}
 			if (i == 2)
 			{
@@ -52,7 +57,8 @@ void moveEnemy()
 			i--;
 			for (int i = 0; i < enemyNum; i++)
 			{
-				enemysPos[i].x -= 1;
+				if (map[enemysPos[i].x - 1][enemysPos[i].y] != 1)
+					enemysPos[i].x -= 1;
 			}
 			if (i == -2)
 			{
