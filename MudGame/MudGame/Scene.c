@@ -11,6 +11,8 @@ extern int coinNum;
 extern DWORD lastTime;
 extern int map[MAPSIZE_Y][MAPSIZE_X];
 extern int enemySpeed;
+extern int enemyNum;
+extern ENEMY enemysPos[10];
 
 bool readStageFromFile(int stage)
 {
@@ -49,6 +51,15 @@ bool readStageFromFile(int stage)
 
 		// 몬스터 스피드 
 		fscanf(ifp, "%d", &enemySpeed);
+
+		// 몬스터 수
+		fscanf(ifp, "%d", &enemyNum);
+
+		for (int i = 0; i < enemyNum; i++)
+		{
+			fscanf(ifp, "%d%d", &enemysPos[i].x, &enemysPos[i].y);
+		}
+
 		fclose(ifp);
 	}
 

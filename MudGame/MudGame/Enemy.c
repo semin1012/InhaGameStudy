@@ -8,10 +8,14 @@ extern int dirX[];
 extern int dirY[];
 extern PLAYER player;
 extern int enemySpeed;
+extern int enemyNum;
+extern ENEMY enemysPos[10];
 
 void moveEnemy()
 {
 	static int enemyMove = 0;
+	static int i = 0;
+	static int idir = 0;
 	enemyMove++;
 
 	if (enemyMove % enemySpeed == 0) {
@@ -28,6 +32,35 @@ void moveEnemy()
 				break;
 			}
 		}
+	}
+
+	if (enemyMove % 4 == 0)
+	{
+		if (idir == 0)
+		{
+			i++;
+			for (int i = 0; i < enemyNum; i++)
+			{
+				enemysPos[i].x += 1;
+			}
+			if (i == 2)
+			{
+				idir = -1;
+			}
+		}
+		else 
+		{
+			i--;
+			for (int i = 0; i < enemyNum; i++)
+			{
+				enemysPos[i].x -= 1;
+			}
+			if (i == -2)
+			{
+				idir = 0;
+			}
+		}
+
 	}
 }
 

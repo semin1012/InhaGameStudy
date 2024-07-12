@@ -18,3 +18,5 @@ int coinAllCnt = 0;
 int coinNum = 0;
 int stage = 0;
 int enemySpeed = 3;
+int enemyNum = 0;
+ENEMY enemysPos[10];

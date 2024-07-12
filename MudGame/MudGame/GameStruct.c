@@ -16,6 +16,8 @@ extern bool gameOver;
 extern int count;
 extern int stage;
 extern int coinAllCnt;
+extern int enemyNum;
+extern ENEMY enemysPos[10];
 
 void init()
 {
@@ -185,21 +187,27 @@ void render()
 		}
 		ScreenPrint(player.x * 2 + MAP_VERTICAL_ALIGN, player.y, "㋡");
 	}
-	else 
+	else
 	{
 		i--;
-		if (i == -2) 
+		if (i == -2)
 		{
 			i = 0;
 			animDir = 0;
 		}
 		ScreenPrint(player.x * 2 + MAP_VERTICAL_ALIGN, player.y, "㋛");
 	}
-	
+
 
 
 	setColor(RED);
 	ScreenPrint(enemy.x * 2 + MAP_VERTICAL_ALIGN, enemy.y, "⛑");
+
+	for (int i = 0; i < enemyNum; i++)
+	{
+		ScreenPrint(enemysPos[i].x * 2 + MAP_VERTICAL_ALIGN, enemysPos[i].y, "⛑");
+	}
+
 	char coin_print[30] = "Coin: ";
 	char coin_num[10];
 	sprintf(coin_num, "%d", player.coin);
