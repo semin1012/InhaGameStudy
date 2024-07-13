@@ -1,5 +1,11 @@
 ScriptsOnlyBuild:
   usedScripts:
+    Assembly-CSharp:
+    - ArrowController
+    Assembly-CSharp.dll:
+    - CameraController
+    - ClearDirector
+    - PlayerControllerCloud
     Unity.2D.Animation.Editor.dll:
     - UnityEditor.U2D.Animation.BoneGizmo
     Unity.2D.Animation.Runtime.dll:
@@ -26,29 +32,122 @@ ScriptsOnlyBuild:
     - UnityEditor.Tilemaps.RandomBrush
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
+    Unity.TextMeshPro:
+    - TMPro.TMP_FontAsset
+    - TMPro.TMP_Settings
+    - TMPro.TMP_SpriteAsset
+    - TMPro.TMP_StyleSheet
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
-  serializedClasses: {}
+  serializedClasses:
+    Unity.TextMeshPro:
+    - TMPro.FaceInfo_Legacy
+    - TMPro.FontAssetCreationSettings
+    - TMPro.KerningTable
+    - TMPro.TMP_Character
+    - TMPro.TMP_FontFeatureTable
+    - TMPro.TMP_FontWeightPair
+    - TMPro.TMP_GlyphAdjustmentRecord
+    - TMPro.TMP_GlyphPairAdjustmentRecord
+    - TMPro.TMP_GlyphValueRecord
+    - TMPro.TMP_Sprite
+    - TMPro.TMP_SpriteCharacter
+    - TMPro.TMP_SpriteGlyph
+    - TMPro.TMP_Style
+    UnityEngine.TextCoreFontEngineModule:
+    - UnityEngine.TextCore.FaceInfo
+    - UnityEngine.TextCore.Glyph
+    - UnityEngine.TextCore.GlyphMetrics
+    - UnityEngine.TextCore.GlyphRect
   methodsToPreserve: []
   sceneClasses:
-    Assets/Scenes/SampleScene.unity:
+    Assets/Scenes/ClearScene.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
       Script: {instanceID: 0}
     - Class: 20
       Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
     - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 28648}
+    - Class: 115
+      Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 212
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    Assets/Scenes/CloudPlayScene.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 49
+      Script: {instanceID: 0}
+    - Class: 50
+      Script: {instanceID: 0}
+    - Class: 58
+      Script: {instanceID: 0}
+    - Class: 61
+      Script: {instanceID: 0}
+    - Class: 74
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
+    - Class: 91
+      Script: {instanceID: 0}
+    - Class: 95
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 17476}
+    - Class: 114
+      Script: {instanceID: 19904}
+    - Class: 114
+      Script: {instanceID: 20226}
+    - Class: 114
+      Script: {instanceID: 21146}
+    - Class: 114
+      Script: {instanceID: 25250}
+    - Class: 114
+      Script: {instanceID: 26362}
+    - Class: 114
+      Script: {instanceID: 27228}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 212
       Script: {instanceID: 0}
     - Class: 213
       Script: {instanceID: 0}
@@ -505,6 +604,12 @@ ScriptsOnlyBuild:
     className: TMP_SubMeshUI
   - hash:
       serializedVersion: 2
+      Hash: 88d8fc840ce425a856e3cea00dac737a
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: GameCenter
+  - hash:
+      serializedVersion: 2
       Hash: 9078325c2a6f6a2d9612ade897511860
     assemblyName: Unity.TextMeshPro
     namespaceName: TMPro
@@ -695,6 +800,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI
     namespaceName: UnityEngine.UI
     className: CanvasScaler
+  - hash:
+      serializedVersion: 2
+      Hash: 97a5ce231f41daff21b64ca163f4f69d
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: RouletteController
   - hash:
       serializedVersion: 2
       Hash: ef38c1407dba8c1f5d69f5db61a694fe
@@ -991,6 +1102,12 @@ ScriptsOnlyBuild:
     className: SpriteLibrarySourceAsset
   - hash:
       serializedVersion: 2
+      Hash: 011909ff81a67ef4fa1413adcb8be7fb
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: CarController
+  - hash:
+      serializedVersion: 2
       Hash: ff76cf6cf52b4db7b95af6ffadca9288
     assemblyName: Unity.Timeline
     namespaceName: UnityEngine.Timeline
@@ -1039,11 +1156,48 @@ ScriptsOnlyBuild:
     className: UnityOnSliderValueChangedMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 97a5ce231f41daff21b64ca163f4f69d
+      Hash: 188fa1317c63ba87167f8cc4cdfa5877
     assemblyName: Assembly-CSharp
     namespaceName: 
-    className: RouletteController
+    className: PlayerController
+  - hash:
+      serializedVersion: 2
+      Hash: cd86b910ed090c285e270931b1d91a2b
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: ArrowController
+  - hash:
+      serializedVersion: 2
+      Hash: 7c6a87575f87874774719cff16dd00dc
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: ArrowGenerator
+  - hash:
+      serializedVersion: 2
+      Hash: c2152867980c5462e9358bd29b4aecf6
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: GameDirector
+  - hash:
+      serializedVersion: 2
+      Hash: 1932bde5af323f0fcfea2537516fbc60
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: PlayerControllerCloud
+  - hash:
+      serializedVersion: 2
+      Hash: fcd9a14c31ecc091d4de82aac00efbdb
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: CameraController
+  - hash:
+      serializedVersion: 2
+      Hash: 606235ea64885bff25bfddc69ad200a1
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: ClearDirector
   platform: 13
   scenePathNames:
-  - Assets/Scenes/SampleScene.unity
+  - Assets/Scenes/CloudPlayScene.unity
+  - Assets/Scenes/ClearScene.unity
   playerPath: D:/InhaGameStudy/AI/My project/_Build/build.apk
