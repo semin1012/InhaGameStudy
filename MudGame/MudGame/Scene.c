@@ -2,6 +2,7 @@
 #include "consoleFunc.h"
 #include "Scene.h"
 #include "Sound.h"
+#include "Enemy.h"
 #include "Astar.h"
 #include "stdafx.h"
 
@@ -12,6 +13,7 @@ extern int map[MAPSIZE_Y][MAPSIZE_X];
 extern int enemySpeed;
 extern int enemyNum;
 extern ENEMY enemysPos[10];
+extern int maxCoinNum;
 
 bool readStageFromFile(int stage)
 {
@@ -29,13 +31,17 @@ bool readStageFromFile(int stage)
 
 	ifp = fopen(name, "rb");
 
-	if (ifp == NULL) {
+	if (ifp == NULL) 
+	{
 		printf("%s 파일 읽기를 실패하여 종료합니다.\n", name);
 		return false;
 	}
-	else {
-		for (int i = 0; i < MAPSIZE_Y; i++) {
-			for (int j = 0; j < MAPSIZE_X; j++) {
+	else 
+	{
+		for (int i = 0; i < MAPSIZE_Y; i++) 
+		{
+			for (int j = 0; j < MAPSIZE_X; j++) 
+			{
 				fscanf(ifp, "%d", &map[i][j]);
 			}
 		}
@@ -71,6 +77,29 @@ bool readStageFromFile(int stage)
 	{
 		coinAllCnt += coinNum;
 	}
+
+	return true;
+}
+
+
+bool readMaxCoinData()
+{
+	FILE* ifp;
+
+	ifp = fopen("../data/max_coin.txt", "rb");
+
+	if (ifp == NULL) 
+	{
+		printf("%s 파일 읽기를 실패하여 종료합니다.\n", "max_coin.txt");
+		return false;
+	}
+
+	else 
+	{
+		fscanf(ifp, "%d", &maxCoinNum);
+	}
+
+	fclose(ifp);
 
 	return true;
 }
@@ -291,6 +320,41 @@ void changeStage(int nextStage)
 	s.y = enemy.y;
 }
 
+void printCoin()
+{
+	char coins[5];
+	itoa(player.coin, coins, 10);
+
+	setColor(WHITE);
+	char coinString[100] = "총 모은 코인: ";
+	strcat(coinString, coins);
+	ScreenPrint(60, 19, coinString);
+
+
+	char bestCoins[5];
+	itoa(maxCoinNum, bestCoins, 10);
+
+	setColor(WHITE);
+	char bestCoinString[100] = "최고 기록: ";
+	strcat(bestCoinString, bestCoins);
+
+	ScreenPrint(63, 20, bestCoinString);
+}
+
+void saveMaxCoin()
+{
+	if (player.coin > maxCoinNum)
+	{
+		FILE* ifp;
+		ifp = fopen("../data/max_coin.txt", "wb");
+
+		fprintf(ifp, "%d", player.coin);
+
+		maxCoinNum = player.coin;
+
+		fclose(ifp);
+	}
+}
 
 void printGameAllStageClear(bool* gameStart, bool* gameClear, int* stage)
 {
@@ -348,21 +412,8 @@ void printGameAllStageClear(bool* gameStart, bool* gameClear, int* stage)
 	ScreenPrint(38, 16 + 1, "│                                     │ \n");
 	ScreenPrint(38, 17 + 1, "└────────────────────────────────────✦ \n");
 
-	char coins[5];
-	itoa(player.coin, coins, 10);
-
-	setColor(WHITE);
-	char coinString[100] = "총 모은 코인: ";
-	strcat(coinString, coins);
-	ScreenPrint(60, 19, coinString);
-
-	char bestCoins[5];
-	itoa(player.coin, bestCoins, 10);
-
-	setColor(WHITE);
-	char bestCoinString[100] = "최고 기록: ";
-	strcat(bestCoinString, coins);
-	ScreenPrint(63, 20, bestCoinString);
+	saveMaxCoin();
+	printCoin();
 
 	if (idir == 0)
 	{

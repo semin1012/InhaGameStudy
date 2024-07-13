@@ -58,7 +58,6 @@ void UpdateFPS()
 		timeElapsed = 0.0f;
 	}
 
-
 	lastTime = curTime;
 }
 

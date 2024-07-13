@@ -29,6 +29,8 @@ public class CarController : MonoBehaviour
 
             // 스와이프 길이를 처음 속도로 변경한다.
             this.speed = swipeLength / 500.0f;
+
+            GetComponent<AudioSource>().Play();
         }
 
         transform.Translate(this.speed, 0, 0);

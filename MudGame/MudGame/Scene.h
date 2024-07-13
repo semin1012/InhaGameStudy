@@ -10,7 +10,9 @@ extern PLAYER player;
 extern ENEMY enemy;
 
 bool readStageFromFile(int stage);
+bool readMaxCoinData();
 void drawMap();
+void printCoin();
 void game_start();
 void initToReplay(int stage);
 void printGameOver(bool* gameStart, bool* gameOver, int stage);

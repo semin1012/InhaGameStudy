@@ -28,6 +28,9 @@ void init()
 	if (!readStageFromFile(stage)) {	// 읽기 실패하면 종료
 		exit(0);
 	}
+	if (!readMaxCoinData()) {	// 읽기 실패하면 종료
+		exit(0);
+	}
 
 	lastTime = clock();
 
@@ -62,11 +65,11 @@ void init()
 	playingIntroBgm();
 }
 
-void restart(bool* gameover)
-{
-	*gameover = false;
-}
 
+void saveData()
+{
+
+}
 
 void update(bool* gameOver) {
 
@@ -127,6 +130,11 @@ void update(bool* gameOver) {
 					}
 				}
 			}
+		}
+
+		if (GetAsyncKeyState('S') & 0x8000) {
+			// TODO: 저장
+			saveData();
 		}
 
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
