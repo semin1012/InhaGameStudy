@@ -134,6 +134,8 @@
     </ClCompile>
     <ClCompile Include="Enemy.c" />
     <ClCompile Include="GameStruct.c" />
+    <ClCompile Include="KeyInput.c" />
+    <ClCompile Include="KeyInput.h" />
     <ClCompile Include="Player.c" />
     <ClCompile Include="Scene.c" />
     <ClCompile Include="ConsoleFunc.c" />

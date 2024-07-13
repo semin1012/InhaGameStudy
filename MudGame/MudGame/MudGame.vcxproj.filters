@@ -39,6 +39,12 @@
     <ClCompile Include="Sound.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="KeyInput.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyInput.h">
+      <Filter>헤더 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Astar.h">

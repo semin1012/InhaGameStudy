@@ -1,20 +1,35 @@
 #include <stdio.h>
 #include "stdafx.h"
+#include "Sound.h"
+#include "Astar.h"
 
 extern PLAYER player;
 extern int map[MAPSIZE_Y][MAPSIZE_X];
+extern ENEMY enemy;
 
-bool canGo(int x, int y)
+extern VERTEX s, e;	// start, end
+extern int count;
+
+extern QUEUE* Q;
+extern QUEUE** newq;
+
+void movePlayer(int x, int y, bool* gameOver)
 {
 	if (map[y][x] == 0)
-		return true;
+	{
+		player.x = x;
+		player.y = y;
+	}
 	else if (map[y][x] == 2)
 	{
+		playingGetCoinSound();
 		player.coin++;
 		map[y][x] = 0;
-		return true;
+		player.x = x;
+		player.y = y;
 	}
-	return false;
+	if (y == enemy.y && x == enemy.x)
+		*gameOver = true;
 }
 
 int countCointNuminMap()
@@ -33,4 +48,39 @@ int countCointNuminMap()
 	}
 
 	return coin_num;
+}
+
+
+void setDeath(bool* gameOver)
+{
+	pauseBgm(&playingBgm, dwID);
+	playingDeathSound();
+
+	*gameOver = true;
+	for (int i = 0; i < count; i++)
+	{
+		free(newq[i]);
+	}
+
+	e.x = player.x;
+	e.y = player.y;
+	s.x = enemy.x;
+	s.y = enemy.y;
+
+	Q = NULL;
+
+	memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+	memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+	memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+
+	for (int i = 0; i < MAPSIZE_Y; i++)
+	{
+		for (int j = 0; j < MAPSIZE_X; j++)
+		{
+			if (map[i][j] == 1)
+				visit[i][j] = -2;	// WALL = -2
+		}
+	}
+
+	count = 0;
 }

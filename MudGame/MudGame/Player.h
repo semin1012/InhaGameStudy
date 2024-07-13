@@ -1,4 +1,4 @@
 #pragma once
 
-bool canGo(int x, int y);
 int countCointNuminMap();
+void movePlayer(int x, int y, bool* gameOver);

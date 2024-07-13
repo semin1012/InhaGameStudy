@@ -66,6 +66,7 @@ void init()
 }
 
 
+// TODO: 저장
 void saveData()
 {
 
@@ -77,59 +78,21 @@ void update(bool* gameOver) {
 		// 몬스터와 닿았다면 게임오버
 		if (isOverlapEnemy())
 		{
-			// TODO: 죽는 사운드
-			pauseBgm(&playingBgm, dwID);
-			playingDeathSound();
-
-			*gameOver = true;
-			for (int i = 0; i < count; i++)
-			{
-				free(newq[i]);
-			}
-
-			e.x = player.x;
-			e.y = player.y;
-			s.x = enemy.x;
-			s.y = enemy.y;
-
-			Q = NULL;
-
-			memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-			memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-			memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-
-			for (int i = 0; i < MAPSIZE_Y; i++)
-			{
-				for (int j = 0; j < MAPSIZE_X; j++)
-				{
-					if (map[i][j] == 1)
-						visit[i][j] = -2;	// WALL = -2
-				}
-			}
-
-			count = 0;
+			setDeath(gameOver);
 			return;
 		}
 
 		UpdateFPS();
 		moveEnemy(false);
 		Sleep(50);
+
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)	// ESC 눌렀을 때 바로 종료
 			exit(0);
 
 
 		// 디버깅 키
 		if (GetAsyncKeyState('D') & 0x8000) {
-			for (int i = 0; i < MAPSIZE_Y; i++)
-			{
-				for (int j = 0; j < MAPSIZE_X; j++)
-				{
-					if (map[i][j] == 2)
-					{
-						map[i][j] = 0;
-					}
-				}
-			}
+			inputDebugKey();
 		}
 
 		if (GetAsyncKeyState('S') & 0x8000) {
@@ -138,69 +101,20 @@ void update(bool* gameOver) {
 		}
 
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-			if (map[player.y][player.x - 1] == 0)
-			{
-				player.x--;
-			}
-			else if (map[player.y][player.x - 1] == 2)
-			{
-				playingGetCoinSound();
-				player.coin++;
-				map[player.y][player.x - 1] = 0;
-				player.x--;
-			}
-			else if (player.y == enemy.y && player.x - 1 == enemy.x)
-				*gameOver = true;
+			movePlayer(player.x - 1, player.y, gameOver);
 		}
 
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-			if (map[player.y][player.x + 1] == 0)
-			{
-				player.x++;
-			}
-			else if (map[player.y][player.x + 1] == 2)
-			{
-				playingGetCoinSound();
-				player.coin++;
-				map[player.y][player.x + 1] = 0;
-				player.x++;
-			}
-			else if (player.y == enemy.y && player.x + 1 == enemy.x)
-				*gameOver = true;
+			movePlayer(player.x + 1, player.y, gameOver);
 		}
 
 		if (GetAsyncKeyState(VK_UP) & 0x8000) {
-			if (map[player.y - 1][player.x] == 0)
-			{
-				player.y--;
-			}
-			else if (map[player.y - 1][player.x] == 2)
-			{
-				playingGetCoinSound();
-				player.coin++;
-				map[player.y - 1][player.x] = 0;
-				player.y--;
-			}
-			else if (player.y - 1 == enemy.y && player.x == enemy.x)
-				*gameOver = true;
+			movePlayer(player.x, player.y-1, gameOver);
 		}
 
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-			if (map[player.y + 1][player.x] == 0)
-			{
-				player.y++;
-			}
-			else if (map[player.y + 1][player.x] == 2)
-			{
-				playingGetCoinSound();
-				player.coin++;
-				map[player.y + 1][player.x] = 0;
-				player.y++;
-			}
-			else if (player.y + 1 == enemy.y && player.x == enemy.x)
-				*gameOver = true;
+			movePlayer(player.x, player.y+1, gameOver);
 		}
-
 	}
 }
 
