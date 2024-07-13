@@ -59,7 +59,7 @@ void init()
 	memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
 	memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
 	
-	astar();
+	astar(&pre, &s, &visit, Q, &g, &e);
 	print_character();
 
 	playingIntroBgm();

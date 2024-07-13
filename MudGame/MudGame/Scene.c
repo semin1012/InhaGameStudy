@@ -362,7 +362,7 @@ void initToReplay(int stage)
 
 	if (ifp == NULL) {
 		printf("%s 파일 읽기를 실패하여 종료합니다.\n", name);
-		return false;
+		return;
 	}
 	else {
 		for (int i = 0; i < MAPSIZE_Y; i++) {
