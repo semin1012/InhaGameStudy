@@ -7,6 +7,7 @@
 #include "GameStruct.h"
 #include "CoinRun.h"
 #include "stdafx.h"
+#include "Player.h"
 
 extern bool gameOver;
 

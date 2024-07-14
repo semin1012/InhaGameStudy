@@ -1,10 +1,11 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include "Scene.h"
 #include "ConsoleFunc.h"
 #include "GameStruct.h"
 #include "Enemy.h"
 #include "Astar.h"
 #include "Sound.h"
+#include "Player.h"
 #include "stdafx.h"
 
 extern PLAYER player;
@@ -72,6 +73,21 @@ void saveData()
 
 }
 
+
+void inputDebugKey()
+{
+	for (int i = 0; i < MAPSIZE_Y; i++)
+	{
+		for (int j = 0; j < MAPSIZE_X; j++)
+		{
+			if (map[i][j] == 2)
+			{
+				map[i][j] = 0;
+			}
+		}
+	}
+}
+
 void update(bool* gameOver) {
 
 	if (*gameOver == false ) {
@@ -134,7 +150,7 @@ void render()
 			i = 0;
 			animDir = -1;
 		}
-		ScreenPrint(player.x * 2 + MAP_VERTICAL_ALIGN, player.y, "㋡");
+		ScreenPrint(player.x * 2 + MAP_VERTICAL_ALIGN, player.y, "●");
 	}
 	else
 	{
@@ -144,17 +160,17 @@ void render()
 			i = 0;
 			animDir = 0;
 		}
-		ScreenPrint(player.x * 2 + MAP_VERTICAL_ALIGN, player.y, "㋛");
+		ScreenPrint(player.x * 2 + MAP_VERTICAL_ALIGN, player.y, "●");
 	}
 
 
 
 	setColor(RED);
-	ScreenPrint(enemy.x * 2 + MAP_VERTICAL_ALIGN, enemy.y, "⛑");
+	ScreenPrint(enemy.x * 2 + MAP_VERTICAL_ALIGN, enemy.y, "※");
 
 	for (int i = 0; i < enemyNum; i++)
 	{
-		ScreenPrint(enemysPos[i].x * 2 + MAP_VERTICAL_ALIGN, enemysPos[i].y, "⛑");
+		ScreenPrint(enemysPos[i].x * 2 + MAP_VERTICAL_ALIGN, enemysPos[i].y, "※");
 	}
 
 	char coin_print[30] = "Coin: ";
