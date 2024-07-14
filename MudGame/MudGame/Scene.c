@@ -325,7 +325,7 @@ void drawMap()
 			}
 			else {
 				setColor(YELLOW);
-				ScreenPrint(i * 2 + MAP_VERTICAL_ALIGN, j, "·");
+				ScreenPrint(i * 2 + MAP_VERTICAL_ALIGN, j, "＊");
 			}
 		}
 		printf("\n");
