@@ -1,9 +1,10 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include "consoleFunc.h"
 #include "Scene.h"
 #include "Sound.h"
 #include "Enemy.h"
 #include "Astar.h"
+#include "Player.h"
 #include "stdafx.h"
 
 extern int coinAllCnt;
@@ -18,33 +19,54 @@ extern int maxCoinNum;
 extern MCI_OPEN_PARMS openBgm;
 extern int dwID;
 
-
-
+ 
 void printTextGameStart(int i, int j)
 {
 	if (j % 2 == 0) {
-		ScreenPrint(44, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀⠀⣴⣶⡄⠀⣶⣶⡄⠀⣴⣶⡄\n");
-		ScreenPrint(44, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠙⠋⠁⠀⠉⠋⠁⠀⠙⠋⠀\n");
-		ScreenPrint(44, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 1, "        :$@@@@#;.");
+		ScreenPrint(44, 2, "     .*@@@@@@@@##$,     ");
+		ScreenPrint(44, 3, "     !@@@@@@@@@@@--@$     ");
+		ScreenPrint(44, 4, "    .@@@@@@@@@@@@!;#=.    ");
+		ScreenPrint(44, 5, "    .@@@@@@@@@@@@$=!~,     ");
+		ScreenPrint(44, 6, "    ,@@@@@@@@@@=~.       ");
+		ScreenPrint(44, 7, "    .@@@@@@@@@@@#=!-.     ");
+		ScreenPrint(44, 8, "     ;@@@@@@@@@@@@$;     ");
+		ScreenPrint(44, 9, "     .=@@@@@@@@@@@#,   ");
+		ScreenPrint(44, 10, "       .:$@@@@#;.    ");
+
+
+		//ScreenPrint(44, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀⠀⣴⣶⡄⠀⣶⣶⡄⠀⣴⣶⡄\n");
+		//ScreenPrint(44, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠙⠋⠁⠀⠉⠋⠁⠀⠙⠋⠀\n");
+		//ScreenPrint(44, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
 	}
 	else {
-		ScreenPrint(44, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⣶⣶⡄⠀⣴⣶⡄\n");
-		ScreenPrint(44, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⠉⠋⠁⠀⠙⠋⠀\n");
-		ScreenPrint(44, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		ScreenPrint(44, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		ScreenPrint(44, 1, "        :$@@@@#;.");
+		ScreenPrint(44, 2, "     .*@@@@@@@@##$,     ");
+		ScreenPrint(44, 3, "     !@@@@@@@@@@@--@$     ");
+		ScreenPrint(44, 4, "    .@@@@@@@@@@@@!;#=.    ");
+		ScreenPrint(44, 5, "    .@@@@@@@@@@@@$=!~,     ");
+		ScreenPrint(44, 6, "    ,@@@@@@@@@@=~.       ");
+		ScreenPrint(44, 7, "    .@@@@@@@@@@@#=!-.     ");
+		ScreenPrint(44, 8, "     ;@@@@@@@@@@@@$;     ");
+		ScreenPrint(44, 9, "     .=@@@@@@@@@@@#,   ");
+		ScreenPrint(44, 10, "       .:$@@@@#;.    ");
+		//ScreenPrint(44, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⣶⣶⡄⠀⣴⣶⡄\n");
+		//ScreenPrint(44, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⠉⠋⠁⠀⠙⠋⠀\n");
+		//ScreenPrint(44, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
+		//ScreenPrint(44, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
 	}
 	setColor(WHITE);
 
@@ -59,13 +81,14 @@ void printTextGameStart(int i, int j)
 
 	setColor(YELLOW);
 	ScreenPrint(0, 18 + 4, "     ● ");
-	setColor(BLUE);
-	ScreenPrint(j, 20 + 4, "    ​ ◝◜  ⠀  ⠀⠀◝◜         ◝◜  ⠀  ⠀⠀◝◜  ◝◜⠀◝◜                      ◝◜⠀◝◜    ◝◜   ◝◜  ⠀◝◜        ◝◜ ◝◜◝◜\n");
-	ScreenPrint(j, 21 + 4, "⠀             ◝◜  ⠀◝◜⠀◝◜  ⠀  ⠀⠀⠀⠀⠀⠀⠀◝◜   ◝◜  ⠀◝◜◝◜⠀◝◜         ◝◜  ◝◜          ◝◜⠀◝◜        ◝◜ ◝◜⠀\n");
+	setColor(YELLOW);
+	ScreenPrint(j, 20 + 4, "     ♪      ♪       ♩       ♩   ♪    ♩               ♪  ♩ ♩ ♩      ♪    ♩♩     ♪            ♩ ♪ ♪ \n");
+	ScreenPrint(j, 21 + 4, "♪       ♩   ♪       ♩ ♪   ♪    ♩   ♪       ♩  ♪      ♩   ♪    ♩      ♪   ♪ ♪       ♩      ♪     ♪");
 
 	setColor(DARKGREEN);
-	ScreenPrint(0, 22 + 4, "_◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲__◢╲___◢╲◢╲_◢╲_◢╲_\n");
-	ScreenPrint(0, 23 + 4, " ☁         ☁          ☁          ☁          ☁          ☁          ☁          ☁          ☁          ☁          ☁\n");
+	ScreenPrint(0, 22 + 4, "△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△\n");
+	setColor(BLUE);
+	ScreenPrint(0, 23 + 4, "〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓\n");
 
 	ScreenFlipping();
 
@@ -106,15 +129,15 @@ void printTextGameClearAtStage(int i)
 
 
 	setColor(YELLOW);
-	ScreenPrint(38, 9 + 1, "┌───────────────────────────────────✦ \n");
-	ScreenPrint(38, 10 + 1, "✦ ╮ 탈출 성공!                      │ \n");
+	ScreenPrint(38, 9 + 1, "┌───────────────────────────────────★\n");
+	ScreenPrint(38, 10 + 1, "☆  탈출 성공!                      │ \n");
 	ScreenPrint(38, 11 + 1, "│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│ \n");
 	ScreenPrint(38, 12 + 1, "│                                   │ \n");
 	ScreenPrint(38, 13 + 1, "│  경찰을 피하기 성공했습니다.      │ \n");
 	ScreenPrint(38, 14 + 1, "│                                   │ \n");
 	ScreenPrint(38, 15 + 1, "│  계속 진행하려면 엔터를 누르세요. │ \n");
 	ScreenPrint(38, 16 + 1, "│                                   │ \n");
-	ScreenPrint(38, 17 + 1, "└───────────────────────────────────✦ \n");
+	ScreenPrint(38, 17 + 1, "└───────────────────────────────────★ \n");
 
 	ScreenFlipping();
 }
@@ -152,15 +175,15 @@ void printTextOnGameAllStageClear(int i)
 
 
 	setColor(SKYBLUE);
-	ScreenPrint(38, 9 + 1, "┌──────────────────────────────────────✦ \n");
-	ScreenPrint(38, 10 + 1, "✦ ╮ 축하합니다!                       │ \n");
+	ScreenPrint(38, 9 + 1, "┌─────────────────────────────────────♣ \n");
+	ScreenPrint(38, 10 + 1, "♧  축하합니다!                       │ \n");
 	ScreenPrint(38, 11 + 1, "│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│ \n");
 	ScreenPrint(38, 12 + 1, "│                                     │ \n");
 	ScreenPrint(38, 13 + 1, "│  경찰을 따돌리고 코인을 모았습니다. │ \n");
 	ScreenPrint(38, 14 + 1, "│                                     │ \n");
 	ScreenPrint(38, 15 + 1, "│  다시 하려면 'R'을 누르세요.        │ \n");
 	ScreenPrint(38, 16 + 1, "│                                     │ \n");
-	ScreenPrint(38, 17 + 1, "└────────────────────────────────────✦ \n");
+	ScreenPrint(38, 17 + 1, "└─────────────────────────────────────♣ \n");
 
 }
 void printTextGameOver(int i)
@@ -180,7 +203,7 @@ void printTextGameOver(int i)
 	setColor(DARKGRAY);
 	ScreenPrint(80, 2 + 7, "┏┯┯┯┯┯┯┯┯┯┓\n");
 	ScreenPrint(80, 3 + 7, "┃││∧ ∧││┃ 살려줘!!\n");
-	ScreenPrint(80, 4 + 7, "┃│(≧Д≦)┃\n");
+	ScreenPrint(80, 4 + 7, "┃│(ㅠㅠ)┃\n");
 	ScreenPrint(80, 5 + 7, "┃│ф  ф││┃\n");
 	ScreenPrint(80, 6 + 7, "┗┷┷┷┷┷┷┷┷┷┛\n");
 
@@ -302,7 +325,7 @@ void drawMap()
 			}
 			else {
 				setColor(YELLOW);
-				ScreenPrint(i * 2 + MAP_VERTICAL_ALIGN, j, "⸰");
+				ScreenPrint(i * 2 + MAP_VERTICAL_ALIGN, j, "＊");
 			}
 		}
 		printf("\n");
@@ -333,7 +356,7 @@ void game_start()
 
 	setColor(YELLOW);
 
-	if (i % 3 == 0)
+	if (i % 5 == 0)
 	{
 		j++;
 	}
