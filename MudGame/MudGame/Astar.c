@@ -130,15 +130,15 @@ int empty_queue(void)
 }
 
 
-void enqueue(VERTEX v)
+void enqueue(VERTEX *v, QUEUE* Q)
 {
 	f = Q;
 	newq[count] = (QUEUE*)calloc(2, sizeof(QUEUE));
 	VERTEX temp;
 	int cnt = 0;
 	int key;
+	newq[count]->v= *v;
 	newq[count]->next = NULL;
-	newq[count]->v = v;
 	if (f == NULL)
 	{
 		Q = newq[count];
@@ -147,16 +147,16 @@ void enqueue(VERTEX v)
 
 	while (f->next != NULL)
 	{
-		key = g[v.y][v.x];
+		key = g[v->y][v->x];
 		if (key < g[f->v.y][f->v.x])
 		{
 			temp = f->v;
-			f->v = v;
-			v = temp;
+			f->v = *v;
+			*v = temp;
 		}
 		f = f->next;
 	}
-	newq[count]->v = v;
+	newq[count]->v = *v;
 	f->next = newq[count];
 	count++;
 	if (count == size)
@@ -219,7 +219,7 @@ void add_openlist(VERTEX *v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre
 			temp.x = j;
 			temp.g = gx;
 
-			enqueue(temp);
+			enqueue(&temp, Q);
 
 		}
 	}
