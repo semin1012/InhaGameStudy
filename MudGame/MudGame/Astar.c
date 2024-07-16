@@ -8,8 +8,8 @@ QUEUE* Q;
 VERTEX s, e;	// start, end
 
 QUEUE* f = NULL;
-QUEUE** newq;
-int count = 0;
+QUEUE** newq[10];
+int count[10];
 int size = 5;
 
 // =========================================
@@ -25,6 +25,10 @@ int size2 = 5;
 
 extern PLAYER player;
 extern ENEMY enemy;
+extern int enemyNum;
+extern ENEMY enemysPos[10];
+
+
 
 void UpdateFPS()
 {
@@ -35,14 +39,21 @@ void UpdateFPS()
 
 	timeElapsed += timeDelta;
 
+	for (int i = 0; i < enemyNum; i++)
+	{
+		for (int j = 0; j < count[i]; j++)
+		{
+
+		}
+	}
 	if (timeElapsed >= 1000.0f)         //흐른 시간이 3초 이상이면 처리
 	{
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < count[0]; i++)
 		{
-			free(newq[i]);
+			free(newq[0][i]);
 		}
 
-		count = 0;
+		count[0] = 0;
 
 		e.x = player.x;
 		e.y = player.y;
@@ -133,15 +144,15 @@ int empty_queue(void)
 void enqueue(VERTEX v, QUEUE** Q)
 {
 	f = *Q;
-	newq[count] = (QUEUE*)calloc(2, sizeof(QUEUE));
+	newq[0][count[0]] = (QUEUE*)calloc(2, sizeof(QUEUE));
 	VERTEX temp;
 	int cnt = 0;
 	int key;
-	newq[count]->v= v;
-	newq[count]->next = NULL;
+	newq[0][count[0]]->v= v;
+	newq[0][count[0]]->next = NULL;
 	if (f == NULL)
 	{
-		*Q = newq[count];
+		*Q = newq[0][count[0]];
 		return;
 	}
 
@@ -156,13 +167,13 @@ void enqueue(VERTEX v, QUEUE** Q)
 		}
 		f = f->next;
 	}
-	newq[count]->v = v;
-	f->next = newq[count];
-	count++;
-	if (count == size)
+	newq[0][count[0]]->v = v;
+	f->next = newq[0][count[0]];
+	count[0]++;
+	if (count[0] == size)
 	{
 		size += 5;
-		newq = (QUEUE**)realloc(newq, sizeof(*newq) * size);
+		newq[0] = (QUEUE**)realloc(newq[0], sizeof(*newq[0]) * size);
 	}
 }
 
@@ -247,7 +258,6 @@ void astar(int pre[][MAPSIZE_X], VERTEX* s, int visit[][MAPSIZE_X], QUEUE** Q, i
 {
 	VERTEX v;
 	pre[s->y][s->x] = UNDEF;	// 시작 지점은 루트가 없다
-	//(*(pre+ 1) + 1) = UNDEF;
 	s->g = 0;
 	v = *s;	// current 포인트를 시작점으로 만든다
 

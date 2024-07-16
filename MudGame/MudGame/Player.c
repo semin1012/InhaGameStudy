@@ -11,7 +11,7 @@ extern VERTEX s, e;	// start, end
 extern int count;
 
 extern QUEUE* Q;
-extern QUEUE** newq;
+extern QUEUE** newq[10];
 
 void movePlayer(int x, int y, bool* gameOver)
 {
@@ -59,7 +59,7 @@ void setDeath(bool* gameOver)
 	*gameOver = true;
 	for (int i = 0; i < count; i++)
 	{
-		free(newq[i]);
+		free(newq[0][i]);
 	}
 
 	e.x = player.x;

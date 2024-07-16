@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 extern int count;
-extern QUEUE** newq;
+extern QUEUE** newq[10];
 extern VERTEX e;
 extern VERTEX s;
 extern QUEUE* Q;

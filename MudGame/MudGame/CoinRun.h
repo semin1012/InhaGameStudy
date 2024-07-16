@@ -5,7 +5,7 @@ extern QUEUE* Q;
 extern VERTEX s, e;	// start, end
 
 extern QUEUE* f;
-extern QUEUE** newq;
+extern QUEUE** newq[10];
 extern int count;
 extern int size;
 
