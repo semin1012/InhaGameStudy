@@ -1,27 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "stdafx.h"
 #include "Astar.h"
-
-QUEUE* Q;
-VERTEX s, e;	// start, end
-
-QUEUE* f = NULL;
-QUEUE** newq[10];
-int count[10];
-int size = 5;
-
-// =========================================
-
-
-QUEUE* Q2;
-VERTEX s2, e2;	// start, end
-
-QUEUE* f2 = NULL;
-QUEUE** newq2;
-int count2 = 0;
-int size2 = 5;
+#include "stdafx.h"
 
 extern PLAYER player;
 extern ENEMY enemy;
@@ -29,151 +9,131 @@ extern int enemyNum;
 extern ENEMY enemysPos[10];
 
 
+extern QUEUE* Q[10];
+extern VERTEX s[10];
+extern VERTEX e;	// start, end
+
+extern QUEUE* f[10];
+extern QUEUE** newq[10];
+extern int count[10];
+extern int size[10];
+
+int cnt = 0;
 
 void UpdateFPS()
 {
 	static float timeElapsed = 5000.0f;            //흐른 시간
 
+
 	DWORD curTime = clock();      //현재 시간
-	float timeDelta = (curTime - lastTime);        //timeDelta(1번생성후 흐른 시간) 1초단위로 바꿔준다.
+	int timeDelta = (curTime - lastTime);        //timeDelta(1번생성후 흐른 시간) 1초단위로 바꿔준다.
 
 	timeElapsed += timeDelta;
 
-	for (int i = 0; i < enemyNum; i++)
+	//if (timeElapsed >= 1000.0f)
+	if(timeElapsed >= 500.0f)
 	{
-		for (int j = 0; j < count[i]; j++)
+		for (int j = 0; j < count[cnt]; j++)
 		{
-
+			free(newq[cnt][j]);
 		}
-	}
-	if (timeElapsed >= 1000.0f)         //흐른 시간이 3초 이상이면 처리
-	{
-		for (int i = 0; i < count[0]; i++)
-		{
-			free(newq[0][i]);
-		}
-
-		count[0] = 0;
+		count[cnt] = 0;
 
 		e.x = player.x;
 		e.y = player.y;
-		s.x = enemy.x;
-		s.y = enemy.y;
+		s[cnt].x = enemysPos[cnt].x;
+		s[cnt].y = enemysPos[cnt].y;
 
-		Q = NULL;
+		Q[cnt] = NULL;
 
-		memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+		memset(g[cnt], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+		memset(pre[cnt], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+		memset(visit[cnt], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
 
-		for (int i = 0; i < MAPSIZE_Y; i++)
+		for (int j = 0; j < MAPSIZE_Y; j++)
 		{
-			for (int j = 0; j < MAPSIZE_X; j++)
+			for (int z = 0; z < MAPSIZE_X; z++)
 			{
-				if (map[i][j] == 1)
-					visit[i][j] = -2;	// WALL = -2
+				if (map[j][z] == 1)
+					visit[cnt][j][z] = -2;	// WALL = -2
 			}
 		}
-		astar(&pre, &s, &visit, &Q, &g, &e);
-		print_character();
+
+		astar(pre[cnt], &s[cnt], visit[cnt], &Q[cnt], g[cnt], &e, cnt);
+		print_character(cnt);
+
+		//if ( cnt + 1<= enemyNum )
+		//	cnt++;
+
+		//if (cnt == enemyNum)
+		//	cnt = 0;
 
 		timeElapsed = 0.0f;
-	}
-	else if (timeElapsed >= 2000.0f)
-	{
-		//for (int i = 0; i < count2; i++)
-		//{
-		//	free(newq2[i]);
-		//}
-
-		//count2 = 0;
-
-		//// TODO, 적 추가
-		//e.x = player.x;
-		//e.y = player.y;
-		//s.x = enemy.x;
-		//s.y = enemy.y;
-
-		//Q2 = NULL;
-
-		//memset(g2, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		//memset(pre2, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		//memset(visit2, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-
-		//for (int i = 0; i < MAPSIZE_Y; i++)
-		//{
-		//	for (int j = 0; j < MAPSIZE_X; j++)
-		//	{
-		//		if (map[i][j] == 1)
-		//			visit2[i][j] = -2;	// WALL = -2
-		//	}
-		//}
-		//astar(&pre, &s, &visit, Q, &g, &e);
-		//print_character();
-
-		//timeElapsed = 0.0f;
+		if (cnt + 1 < enemyNum)
+			cnt++;
+		else cnt = 0;
 	}
 
 	lastTime = curTime;
 }
 
 
-void print_character(void)
+void print_character(int z)
 {
 	int i, j, backtack;
 
-	i = pre[e.y][e.x] / MAPSIZE_Y;
-	j = pre[e.y][e.x] % MAPSIZE_Y;
-	while (pre[i][j] != UNDEF)
+	i = pre[z][e.y][e.x] / MAPSIZE_Y;
+	j = pre[z][e.y][e.x] % MAPSIZE_Y;
+	while (pre[z][i][j] != UNDEF)
 	{
-		backtack = pre[i][j];
-		g[i][j] = 7;
+		backtack = pre[z][i][j];
+		g[z][i][j] = 7;
 		i = backtack / MAPSIZE_Y;
 		j = backtack % MAPSIZE_Y;
 	}
 
-	g[e.y][e.x] = 7;
+	g[z][e.y][e.x] = 7;
 }
 
-int empty_queue(void)
+int empty_queue(int i)
 {
-	return Q == NULL;
+	return Q[i] == NULL;
 }
 
 
-void enqueue(VERTEX v, QUEUE** Q)
+void enqueue(VERTEX v, QUEUE** Q, int i)
 {
-	f = *Q;
-	newq[0][count[0]] = (QUEUE*)calloc(2, sizeof(QUEUE));
+	f[i] = *Q;
+	newq[i][count[i]] = (QUEUE*)calloc(2, sizeof(QUEUE));
 	VERTEX temp;
 	int cnt = 0;
 	int key;
-	newq[0][count[0]]->v= v;
-	newq[0][count[0]]->next = NULL;
-	if (f == NULL)
+	newq[i][count[i]]->v= v;
+	newq[i][count[i]]->next = NULL;
+	if (f[i] == NULL)
 	{
-		*Q = newq[0][count[0]];
+		*Q = newq[i][count[i]];
 		return;
 	}
 
-	while (f->next != NULL)
+	while (f[i]->next != NULL)
 	{
-		key = g[v.y][v.x];
-		if (key < g[f->v.y][f->v.x])
+		key = g[i][v.y][v.x];
+		if (key < g[i][f[i]->v.y][f[i]->v.x])
 		{
-			temp = f->v;
-			f->v = v;
+			temp = f[i]->v;
+			f[i]->v = v;
 			v = temp;
 		}
-		f = f->next;
+		f[i] = f[i]->next;
 	}
-	newq[0][count[0]]->v = v;
-	f->next = newq[0][count[0]];
-	count[0]++;
-	if (count[0] == size)
+	newq[i][count[i]]->v = v;
+	f[i]->next = newq[i][count[i]];
+	count[i]++;
+	if (count[i] == size[i])
 	{
-		size += 5;
-		newq[0] = (QUEUE**)realloc(newq[0], sizeof(*newq[0]) * size);
+		size[i] += 5;
+		newq[i] = (QUEUE**)realloc(newq[i], sizeof(*newq[i]) * size[i]);
 	}
 }
 
@@ -198,7 +158,7 @@ int calc_heuristic(VERTEX v, int c, int r, int* gx)
 
 
 
-void add_openlist(VERTEX v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre[][MAPSIZE_X], VERTEX* e, QUEUE** Q)
+void add_openlist(VERTEX v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre[][MAPSIZE_X], VERTEX* e, QUEUE** Q, int num)
 {
 	VERTEX temp;
 	int cnt = 0;
@@ -230,7 +190,7 @@ void add_openlist(VERTEX v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre[
 			temp.x = j;
 			temp.g = gx;
 
-			enqueue(temp, Q);
+			enqueue(temp, Q, num);
 
 		}
 	}
@@ -254,21 +214,21 @@ VERTEX dequeue(QUEUE** Q)
 	return v;
 }
 
-void astar(int pre[][MAPSIZE_X], VERTEX* s, int visit[][MAPSIZE_X], QUEUE** Q, int g[][MAPSIZE_X], VERTEX* e)
+void astar(int pre[][MAPSIZE_X], VERTEX* s, int visit[][MAPSIZE_X], QUEUE** Q, int g[][MAPSIZE_X], VERTEX* e, int i)
 {
 	VERTEX v;
 	pre[s->y][s->x] = UNDEF;	// 시작 지점은 루트가 없다
 	s->g = 0;
 	v = *s;	// current 포인트를 시작점으로 만든다
 
-	add_openlist(v, visit, g, pre, e, Q);
+	add_openlist(v, visit, g, pre, e, Q, i);
 
-	while (!empty_queue())
+	while (!empty_queue(i))
 	{
 		// 큐가 비지 않았다면 현재 점을 방문 목록에 넣는다
 		visit[v.y][v.x] = CLOSED;
 		v = dequeue(Q);
 
-		add_openlist(v, visit, g, pre, e, Q);
+		add_openlist(v, visit, g, pre, e, Q, i);
 	}
 }

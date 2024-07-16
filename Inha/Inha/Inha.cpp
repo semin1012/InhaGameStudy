@@ -2,21 +2,34 @@
 #include <iostream>
 using namespace std;
 
-int max4(int a, int b, int c, int d)
+int med3(int a, int b, int c)
 {
-    int max = a;
-    if (max < b) max = b;
-    if (max < c) max = c;
-    if (max < d) max = d;
-    return max;
+    if (a >= b && a >= c)
+    {
+        if (b > c)
+            return b;
+        else return c;
+    }
+    else if (b >= a && b >= c)
+    {
+        if (a > c)
+            return a;
+        else return c;
+    }
+    else
+    {
+        if (a > b)
+            return a;
+        else return b;
+    }
 }
 
 int main()
 {
-    int a, b, c, d;
+    int a, b, c;
+    cout << "세 정수를 입력하세요: ";
+    cin >> a >> b >> c;
 
-    cin >> a >> b >> c >> d;
-    
-    int max = max4(a, b, c, d);
-    cout << "max: " << max << endl;
+    int med = med3(a, b, c);
+    cout << "중앙값: " << med << endl;
 }

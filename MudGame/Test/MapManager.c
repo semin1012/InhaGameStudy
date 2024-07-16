@@ -51,7 +51,10 @@
 //	printf("%d ", 3);
 //
 //	// Enemy Num
-//	fprintf(ofp, "%d ", 0);
+//	fprintf(ofp, "%d ", 1);
+//
+//	// Enemys Pos
+//	fprintf(ofp, "%d %d ", 1, 1);
 //
 //
 //	fclose(ofp);
@@ -138,14 +141,14 @@
 //	printf("%d ", 3);
 //
 //	// Enemy Num
-//	fprintf(ofp, "%d ", 2);
+//	fprintf(ofp, "%d ", 1);
 //	printf("%d\n", 2);
 //
 //	// Enemys Pos
 //	fprintf(ofp, "%d %d ", 3, 2);
 //	printf("%d %d\n", 3, 2);
-//	fprintf(ofp, "%d %d ", 20, 22);
-//	printf("%d %d\n", 20, 22);
+//	//fprintf(ofp, "%d %d ", 20, 22);
+//	//printf("%d %d\n", 20, 22);
 //
 //	fclose(ofp);
 //}
@@ -234,20 +237,18 @@ int main()
 	printf("\n");
 
 	// 몬스터 수
-	fprintf(ofp, "%d ", 5);
-	printf("%d \n", 5);
+	fprintf(ofp, "%d ", 2);
+	printf("%d \n", 2);
 
 	// 몬스터 좌표
 	fprintf(ofp, "%d %d ", 5, 3);
 	printf("%d %d\n", 5, 3);
 	fprintf(ofp, "%d %d ", 20, 3);
 	printf("%d %d\n", 20, 3);
-	fprintf(ofp, "%d %d ", 5, 20);
-	printf("%d %d\n", 5, 20);
-	fprintf(ofp, "%d %d ", 20, 20);
-	printf("%d %d ", 20, 20);
-	fprintf(ofp, "%d %d ", 11, 11);
-	printf("%d %d ", 11, 11);
+	/*fprintf(ofp, "%d %d ", 5, 20);
+	printf("%d %d\n", 5, 20);*/
+	//fprintf(ofp, "%d %d ", 20, 20);
+	//printf("%d %d ", 20, 20);
 
 	fclose(ofp);
 }

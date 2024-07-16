@@ -3,8 +3,8 @@
 #include "Scene.h"
 #include "Sound.h"
 #include "Enemy.h"
-#include "Astar.h"
 #include "Player.h"
+#include "Astar.h"
 #include "stdafx.h"
 
 extern int coinAllCnt;
@@ -19,6 +19,16 @@ extern int maxCoinNum;
 extern MCI_OPEN_PARMS openBgm;
 extern int dwID;
 
+extern QUEUE* Q[10];
+extern VERTEX s[10];
+extern VERTEX e;	// start, end
+
+extern QUEUE* f[10];
+extern QUEUE** newq[10];
+extern int count[10];
+extern int size[10];
+
+extern int cnt;
  
 void printTextGameStart(int i, int j)
 {
@@ -429,28 +439,32 @@ void initToReplay(int stage)
 
 	/*     A* 알고리즘      */
 	// 벽
-	for (int i = 0; i < MAPSIZE_Y; i++)
+	for (int i = 0; i < 1; i++)
 	{
-		for (int j = 0; j < MAPSIZE_X; j++)
+		e.x = player.x;
+		e.y = player.y;
+		s[i].x = enemysPos[i].x;
+		s[i].y = enemysPos[i].y;
+
+
+		for (int j = 0; j < MAPSIZE_Y; j++)
 		{
-			if (map[i][j] == 1)
-				visit[i][j] = -2;	// WALL = -2
+			for (int z = 0; z < MAPSIZE_X; z++)
+			{
+				if (map[j][z] == 1)
+					visit[i][j][z] = -2;	// WALL = -2
+			}
 		}
 	}
-	
-	e.x = player.x;
-	e.y = player.y;
-	s.x = enemy.x;
-	s.y = enemy.y;
+
+
+
 }
 
 void changeStage(int nextStage)
 {
 	pauseBgm(&clearSound, dwID);
 	playingSceneBgm();
-
-	enemy.x = 1;
-	enemy.y = 1;
 
 	if (!readStageFromFile(nextStage)) {	// 읽기 실패하면 종료
 		exit(0);
@@ -460,19 +474,26 @@ void changeStage(int nextStage)
 
 	/*     A* 알고리즘      */
 	// 벽
-	for (int i = 0; i < MAPSIZE_Y; i++)
+
+	for ( int i = 0; i < enemyNum; i++ )
+		newq[i] = (QUEUE**)calloc(size[i], sizeof(QUEUE*));
+
+	for (int i = 0; i < 1; i++)
 	{
-		for (int j = 0; j < MAPSIZE_X; j++)
+		e.x = player.x;
+		e.y = player.y;
+		s[i].x = enemysPos[i].x;
+		s[i].y = enemysPos[i].y;
+
+		for (int j = 0; j < MAPSIZE_Y; j++)
 		{
-			if (map[i][j] == 1)
-				visit[i][j] = -2;	// WALL = -2
+			for (int z = 0; z < MAPSIZE_X; z++)
+			{
+				if (map[j][z] == 1)
+					visit[i][j][z] = -2;	// WALL = -2
+			}
 		}
 	}
-
-	e.x = player.x;
-	e.y = player.y;
-	s.x = enemy.x;
-	s.y = enemy.y;
 }
 
 
@@ -557,8 +578,13 @@ void printGameAllStageClear(bool* gameStart, bool* gameClear, int* stage)
 		*stage = 0;
 		player.coin = 0;
 		coinAllCnt = 0;
+		for (int i = 0; i < enemyNum; i++)
+		{
+			count[i] = 0;
+		}
 		changeStage(*stage);
 		UpdateFPS();
+
 		playSound = false;
 		*gameClear = false;
 		*gameStart = false;
@@ -611,8 +637,21 @@ void printGameClearAtStage(bool* gameStart, bool* gameClear, int* stage, int nex
 		// TODO: 디버깅 때문에 해둠
 		*stage = nextStage;
 		*gameClear = false;
+		for (int i = 0; i < enemyNum; i++)
+		{
+			// 여기이상함
+			if (count[i] != 0)
+			{
+				for (int j = 0; j < count[i]; j++)
+				{
+					//free(newq[i][j]);
+				}
+			}
+			count[i] = 0;
+		}
 		changeStage(*stage);
 		UpdateFPS();
+		cnt = 0;
 		playSound = false;
 	}
 
@@ -670,7 +709,8 @@ void printGameOver(bool *gameStart, bool *gameOver, int stage)
 		initToReplay(stage);
 		UpdateFPS();
 		//*gameStart = false;
-		count = 0;
+		for ( int i = 0; i < 10; i++)
+			count[i] = 0;
 	}
 
 	Sleep(75);

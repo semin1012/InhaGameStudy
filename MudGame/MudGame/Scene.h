@@ -1,11 +1,6 @@
 #pragma once
 #include "stdafx.h"
 
-extern int count;
-extern QUEUE** newq[10];
-extern VERTEX e;
-extern VERTEX s;
-extern QUEUE* Q;
 extern PLAYER player;
 extern ENEMY enemy;
 

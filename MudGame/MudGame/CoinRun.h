@@ -1,13 +1,13 @@
 #pragma once
 #include "stdafx.h"
 
-extern QUEUE* Q;
-extern VERTEX s, e;	// start, end
-
-extern QUEUE* f;
-extern QUEUE** newq[10];
-extern int count;
-extern int size;
+//extern QUEUE* Q[10];
+//extern VERTEX s[10], e;	// start, end
+//
+//extern QUEUE* f;
+//extern QUEUE** newq[10];
+//extern int count[10];
+//extern int size[10];
 
 PLAYER player;
 ENEMY enemy = { 1, 1 };
@@ -22,3 +22,12 @@ int enemyNum = 0;
 ENEMY enemysPos[10];
 
 int maxCoinNum = 0;
+
+QUEUE* Q[10];
+VERTEX s[10];
+VERTEX e;	// start, end
+
+QUEUE* f[10] = { NULL };
+QUEUE** newq[10];
+int count[10];
+int size[10] = { 5 };

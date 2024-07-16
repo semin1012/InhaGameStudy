@@ -21,22 +21,27 @@ void moveEnemy(bool init)
 		i = 0;
 	}
 
+	
 	if (enemyMove % enemySpeed == 0) {
-		for (int i = 0; i < 8; i++)
+		for (int j = 0; j < enemyNum; j++)
 		{
-			g[enemy.y][enemy.x] = 8;
-			int dir_x = enemy.x + dirX[i];
-			int dir_y = enemy.y + dirY[i];
+			for (int i = 0; i < 8; i++)
+			{
+				g[j][enemysPos[j].y][enemysPos[j].x] = 8;
+				int dir_x = enemysPos[j].x + dirX[i];
+				int dir_y = enemysPos[j].y + dirY[i];
 
-			if (g[dir_y][dir_x] == 7) {
-				g[dir_y][dir_x] = 8;
-				enemy.x = dir_x;
-				enemy.y = dir_y;
-				break;
+				if (g[j][dir_y][dir_x] == 7) {
+					g[j][dir_y][dir_x] = 8;
+					enemysPos[j].x = dir_x;
+					enemysPos[j].y = dir_y;
+					break;
+				}
 			}
 		}
 	}
 
+	/*
 	if (enemyMove % 4 == 0)
 	{
 		if (idir == 0)
@@ -66,15 +71,11 @@ void moveEnemy(bool init)
 			}
 		}
 
-	}
+	}*/
 }
 
 bool isOverlapEnemy()
 {
-	if (enemy.x == player.x && enemy.y == player.y) {
-		return true;
-	}
-
 	for (int i = 0; i < enemyNum; i++)
 	{
 		if (enemysPos[i].x == player.x && enemysPos[i].y == player.y)

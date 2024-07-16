@@ -3,21 +3,30 @@
 #include "ConsoleFunc.h"
 #include "GameStruct.h"
 #include "Enemy.h"
-#include "Astar.h"
 #include "Sound.h"
 #include "Player.h"
+#include "Astar.h"
 #include "stdafx.h"
 
 extern PLAYER player;
 extern ENEMY enemy;
-extern VERTEX s, e;	// start, end
 extern DWORD lastTime;
 extern bool gameOver;
-extern int count;
 extern int stage;
 extern int coinAllCnt;
 extern int enemyNum;
 extern ENEMY enemysPos[10];
+
+
+
+extern QUEUE* Q[10];
+extern VERTEX s[10];
+extern VERTEX e;	// start, end
+
+extern QUEUE* f[10];
+extern QUEUE** newq[10];
+extern int count[10];
+extern int size[10];
 
 void init()
 {
@@ -37,31 +46,64 @@ void init()
 
 	/*     A* 알고리즘      */
 	// 벽
-	for (int i = 0; i < MAPSIZE_Y; i++)
-	{
-		for (int j = 0; j < MAPSIZE_X; j++)
-		{
-			if (map[i][j] == 1)
-				visit[i][j] = -2;	// WALL = -2
-		}
-	}
+	//for (int i = 0; i < MAPSIZE_Y; i++)
+	//{
+	//	for (int j = 0; j < MAPSIZE_X; j++)
+	//	{
+	//		if (map[i][j] == 1)
+	//			visit[0][i][j] = -2;	// WALL = -2
+	//	}
+	//}
 
-	e.x = player.x;
-	e.y = player.y;
-	s.x = enemy.x;
-	s.y = enemy.y;
+	//e.x = player.x;
+	//e.y = player.y;
+	//s.x = enemy.x;
+	//s.y = enemy.y;
 
 
-	count = 0;
+	//count = 0;
 
-	Q = NULL;
+	//Q = NULL;
 
-	memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-	memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-	memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-	
-	astar(&pre, &s, &visit, &Q, &g, &e);
+	//memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+	//memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+	//memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+
+	//astar(pre, &s, visit, &Q, g, &e, 0);
 	//print_character();
+
+
+	for (int i = 0; i < enemyNum; i++)
+	{
+		for (int j = 0; j < count[i]; j++)
+		{
+			free(newq[i][j]);
+		}
+
+		count[i] = 0;
+
+		e.x = player.x;
+		e.y = player.y;
+		s[i].x = enemysPos[i].x;
+		s[i].y = enemysPos[i].y;
+
+		Q[i] = NULL;
+
+		memset(g[i], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+		memset(pre[i], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+		memset(visit[i], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
+
+		for (int j = 0; j < MAPSIZE_Y; j++)
+		{
+			for (int z = 0; z < MAPSIZE_X; z++)
+			{
+				if (map[j][z] == 1)
+					visit[i][j][z] = -2;	// WALL = -2
+			}
+		}
+		astar(pre[i], &s[i], visit[i], &Q[i], g[i], &e, 0);
+		print_character(i);
+	}
 
 	playingIntroBgm();
 }
@@ -166,7 +208,7 @@ void render()
 
 
 	setColor(RED);
-	ScreenPrint(enemy.x * 2 + MAP_VERTICAL_ALIGN, enemy.y, "※");
+	//ScreenPrint(enemy.x * 2 + MAP_VERTICAL_ALIGN, enemy.y, "※");
 
 	for (int i = 0; i < enemyNum; i++)
 	{

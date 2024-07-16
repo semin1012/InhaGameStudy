@@ -20,7 +20,7 @@ int main(void)
 	bool gameStart = false;
 	bool gameOver = false;
 	bool gameClear = false;
-	newq[0] = (QUEUE**)calloc(size, sizeof(QUEUE*));
+	newq[0] = (QUEUE**)calloc(size[0], sizeof(QUEUE*));
 
 	init();
 

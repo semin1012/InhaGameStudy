@@ -60,14 +60,7 @@ enum ColorType {
 
 int map[MAPSIZE_Y][MAPSIZE_X];
 
-int g[MAPSIZE_Y][MAPSIZE_X];
-int visit[MAPSIZE_Y][MAPSIZE_X];
-int pre[MAPSIZE_Y][MAPSIZE_X];
+int g[10][MAPSIZE_Y][MAPSIZE_X];
+int visit[10][MAPSIZE_Y][MAPSIZE_X];
+int pre[10][MAPSIZE_Y][MAPSIZE_X];
 static DWORD lastTime;   //마지막 시간(temp변수)
-
-
-// ================================================
-
-int g2[MAPSIZE_Y][MAPSIZE_X];
-int visit2[MAPSIZE_Y][MAPSIZE_X];
-int pre2[MAPSIZE_Y][MAPSIZE_X];
