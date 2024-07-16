@@ -63,7 +63,7 @@ void UpdateFPS()
 					visit[i][j] = -2;	// WALL = -2
 			}
 		}
-		astar(pre, &s, visit, Q, g, &e);
+		astar(&pre, &s, &visit, &Q, &g, &e);
 		print_character();
 
 		timeElapsed = 0.0f;
@@ -130,33 +130,33 @@ int empty_queue(void)
 }
 
 
-void enqueue(VERTEX *v, QUEUE* Q)
+void enqueue(VERTEX v, QUEUE** Q)
 {
-	f = Q;
+	f = *Q;
 	newq[count] = (QUEUE*)calloc(2, sizeof(QUEUE));
 	VERTEX temp;
 	int cnt = 0;
 	int key;
-	newq[count]->v= *v;
+	newq[count]->v= v;
 	newq[count]->next = NULL;
 	if (f == NULL)
 	{
-		Q = newq[count];
+		*Q = newq[count];
 		return;
 	}
 
 	while (f->next != NULL)
 	{
-		key = g[v->y][v->x];
+		key = g[v.y][v.x];
 		if (key < g[f->v.y][f->v.x])
 		{
 			temp = f->v;
-			f->v = *v;
-			*v = temp;
+			f->v = v;
+			v = temp;
 		}
 		f = f->next;
 	}
-	newq[count]->v = *v;
+	newq[count]->v = v;
 	f->next = newq[count];
 	count++;
 	if (count == size)
@@ -187,30 +187,30 @@ int calc_heuristic(VERTEX v, int c, int r, int* gx)
 
 
 
-void add_openlist(VERTEX *v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre[][MAPSIZE_X], VERTEX* e, QUEUE* Q)
+void add_openlist(VERTEX v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre[][MAPSIZE_X], VERTEX* e, QUEUE** Q)
 {
 	VERTEX temp;
 	int cnt = 0;
 	int i, j, w, gx;
 
 	// 가까운 지점들 탐색한다
-	for (i = v->y - 1; i <= v->y + 1; i++)
+	for (i = v.y - 1; i <= v.y + 1; i++)
 	{
 		if (i < 0 || i >= MAPSIZE_Y) continue;
-		for (j = v->x - 1; j <= v->x + 1; j++)
+		for (j = v.x - 1; j <= v.x + 1; j++)
 		{
-			if (j < 0 || j >= MAPSIZE_X || (i == v->y && j == v->x) ||
+			if (j < 0 || j >= MAPSIZE_X || (i == v.y && j == v.x) ||
 				visit[i][j] <= DONTMOVE) continue;
 
-			w = calc_heuristic(*v, i, j, &gx);
+			w = calc_heuristic(v, i, j, &gx);
 
 			if (w < g[i][j] || g[i][j] == INF)
 			{
 				g[i][j] = w;
-				pre[i][j] = (v->y * MAPSIZE_Y) + v->x;
+				pre[i][j] = (v.y * MAPSIZE_Y) + v.x;
 				if (e->y == i && e->x == j)
 				{
-					Q = NULL;
+					*Q = NULL;
 					return;
 				}
 			}
@@ -219,7 +219,7 @@ void add_openlist(VERTEX *v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre
 			temp.x = j;
 			temp.g = gx;
 
-			enqueue(&temp, Q);
+			enqueue(temp, Q);
 
 		}
 	}
@@ -227,13 +227,13 @@ void add_openlist(VERTEX *v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre
 }
 
 
-VERTEX dequeue(QUEUE* Q)
+VERTEX dequeue(QUEUE** Q)
 {
-	QUEUE* ff = Q;
+	QUEUE* ff = *Q;
 	VERTEX v = { 0, 0, 0 };
 	if (ff != NULL)
 	{
-		Q = ff->next;
+		*Q = ff->next;
 		v.y = ff->v.y;
 		v.x = ff->v.x;
 		v.g = ff->v.g;
@@ -243,7 +243,7 @@ VERTEX dequeue(QUEUE* Q)
 	return v;
 }
 
-void astar(int pre[][MAPSIZE_X], VERTEX* s, int visit[][MAPSIZE_X], QUEUE* Q, int g[][MAPSIZE_X], VERTEX* e)
+void astar(int pre[][MAPSIZE_X], VERTEX* s, int visit[][MAPSIZE_X], QUEUE** Q, int g[][MAPSIZE_X], VERTEX* e)
 {
 	VERTEX v;
 	pre[s->y][s->x] = UNDEF;	// 시작 지점은 루트가 없다
@@ -251,7 +251,7 @@ void astar(int pre[][MAPSIZE_X], VERTEX* s, int visit[][MAPSIZE_X], QUEUE* Q, in
 	s->g = 0;
 	v = *s;	// current 포인트를 시작점으로 만든다
 
-	add_openlist(&v, visit, g, pre, e, Q);
+	add_openlist(v, visit, g, pre, e, Q);
 
 	while (!empty_queue())
 	{
@@ -259,6 +259,6 @@ void astar(int pre[][MAPSIZE_X], VERTEX* s, int visit[][MAPSIZE_X], QUEUE* Q, in
 		visit[v.y][v.x] = CLOSED;
 		v = dequeue(Q);
 
-		add_openlist(&v, visit, g, pre, e, Q);
+		add_openlist(v, visit, g, pre, e, Q);
 	}
 }
