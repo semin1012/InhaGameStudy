@@ -63,7 +63,7 @@ void UpdateFPS()
 					visit[i][j] = -2;	// WALL = -2
 			}
 		}
-		astar(&pre, &s, &visit, Q, &g, &e);
+		astar(pre, &s, visit, Q, g, &e);
 		print_character();
 
 		timeElapsed = 0.0f;
@@ -187,7 +187,7 @@ int calc_heuristic(VERTEX v, int c, int r, int* gx)
 
 
 
-void add_openlist(VERTEX *v, int *visit[MAPSIZE_Y][MAPSIZE_X], int *g[MAPSIZE_Y][MAPSIZE_X], int *pre[MAPSIZE_Y][MAPSIZE_X], VERTEX* e, QUEUE* Q)
+void add_openlist(VERTEX *v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre[][MAPSIZE_X], VERTEX* e, QUEUE* Q)
 {
 	VERTEX temp;
 	int cnt = 0;
@@ -243,11 +243,11 @@ VERTEX dequeue(QUEUE* Q)
 	return v;
 }
 
-void astar(int *pre[MAPSIZE_Y][MAPSIZE_X], VERTEX* s, int* visit[MAPSIZE_Y][MAPSIZE_X], QUEUE* Q, int* g[MAPSIZE_Y][MAPSIZE_X], VERTEX* e)
+void astar(int pre[][MAPSIZE_X], VERTEX* s, int visit[][MAPSIZE_X], QUEUE* Q, int g[][MAPSIZE_X], VERTEX* e)
 {
 	VERTEX v;
-	//(*pre)[s->y][s->x] = UNDEF;	// 시작 지점은 루트가 없다
-	//*(pre+ 1) + 1) = UNDEF;
+	pre[s->y][s->x] = UNDEF;	// 시작 지점은 루트가 없다
+	//(*(pre+ 1) + 1) = UNDEF;
 	s->g = 0;
 	v = *s;	// current 포인트를 시작점으로 만든다
 

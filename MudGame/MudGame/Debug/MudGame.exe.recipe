@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\InhaGameStudy\MudGame\Debug\MudGame.exe</FullPath>
+      <FullPath>D:\InhaGameStudy\MudGame\Release\MudGame.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
