@@ -20,6 +20,8 @@ int stage = 0;
 int enemySpeed = 3;
 int enemyNum = 0;
 ENEMY enemysPos[10];
+int enemyFixedNum = 0;
+ENEMY enemysFixedPos[10];
 
 int maxCoinNum = 0;
 
@@ -30,4 +32,4 @@ VERTEX e;	// start, end
 QUEUE* f[10] = { NULL };
 QUEUE** newq[10];
 int count[10];
-int size[10] = { 5 };
+int size[10] = { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };

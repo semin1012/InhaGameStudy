@@ -10,16 +10,15 @@ extern int enemySpeed;
 extern int enemyNum;
 extern ENEMY enemysPos[10];
 
+extern int enemyFixedNum;
+extern ENEMY enemysFixedPos[10];
+
 void moveEnemy(bool init)
 {
 	static int enemyMove = 0;
 	static int i = 0;
 	static int idir = 0;
 	enemyMove++;
-
-	if (init == true) {
-		i = 0;
-	}
 
 	
 	if (enemyMove % enemySpeed == 0) {
@@ -41,37 +40,35 @@ void moveEnemy(bool init)
 		}
 	}
 
-	/*
 	if (enemyMove % 4 == 0)
 	{
 		if (idir == 0)
 		{
 			i++;
-			for (int i = 0; i < enemyNum; i++)
+			for (int i = 0; i < enemyFixedNum; i++)
 			{
-				if (map[enemysPos[i].x+1][enemysPos[i].y] != 1)
-					enemysPos[i].x += 1;
+				if (map[enemysFixedPos[i].x + 1][enemysFixedPos[i].y] != 1)
+					enemysFixedPos[i].x += 1;
 			}
 			if (i == 2)
 			{
 				idir = -1;
 			}
 		}
-		else 
+		else
 		{
 			i--;
-			for (int i = 0; i < enemyNum; i++)
+			for (int i = 0; i < enemyFixedNum; i++)
 			{
-				if (map[enemysPos[i].x - 1][enemysPos[i].y] != 1)
-					enemysPos[i].x -= 1;
+				if (map[enemysFixedPos[i].x - 1][enemysFixedPos[i].y] != 1)
+					enemysFixedPos[i].x -= 1;
 			}
 			if (i == -2)
 			{
 				idir = 0;
 			}
 		}
-
-	}*/
+	}
 }
 
 bool isOverlapEnemy()

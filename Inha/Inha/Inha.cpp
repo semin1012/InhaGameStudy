@@ -4,56 +4,40 @@
 #include <cstring>
 using namespace std;
 
-// p.232 문제 5, 6, 9번
-struct CandyBar
-{
-    string name;
-    float weight;
-    int kcal;
-};
+// 자료구조 p.33 8번, 9번
 
-#define CANDY_NUM 5
+int GaussAdd(int n)
+{
+    int sum;
+    sum = (1 + n) * (n / 2);
+    if (n % 2 != 0)
+        sum += (n / 2) + 1;
+    return sum;
+}
+
+int sumof(int a, int b)
+{
+    int sum = 0;
+    for (int i = a; i <= b; i++)
+    {
+        sum += i;
+    }
+    return sum;
+}
 
 int main()
 {
-    CandyBar snack = { "Mocha Munch", 2.3, 350 };
+    int n, n2;
+    cout << "***** 가우스 덧셈 ***** " << endl;
+    cout << "> n을 입력하세요: ";
+    cin >> n;
 
-    // 5번 출력
-    cout << "이름: " << snack.name << ", 무게: " << snack.weight << ", 칼로리: " << snack.kcal << endl;
+    cout << "> 1부터 n까지의 합: " << GaussAdd(n) << endl << endl;
 
-    cout << endl;
 
-    // 6번
-    CandyBar candys[CANDY_NUM] = {
-        {"apple candy", 2.0, 100 },
-        {"banana candy", 2.1, 122},
-        {"blueberry candy", 1.9, 118},
-        {"cherry candy", 2.0, 130},
-        {"red candy", 1.95, 123}
-    };
-
-    for (int i = 0; i < CANDY_NUM; i++)
-    {
-        cout << "이름: " << candys[i].name << ", 무게: " << candys[i].weight << ", 칼로리: " << candys[i].kcal << endl;
-    }
-
-    cout << endl; 
-
-    // 7번
-    CandyBar *pCandys = new CandyBar[5];
-    if (pCandys)
-    {
-        for (int i = 0; i < CANDY_NUM; i++)
-        {
-            cout << "캔디의 이름, 무게, 칼로리를 입력하세요: ";
-            cin >> pCandys[i].name >> pCandys[i].weight >> pCandys[i].kcal;
-        }
-
-        for (int i = 0; i < CANDY_NUM; i++)
-        {
-            cout << "이름: " << pCandys[i].name << ", 무게: " << pCandys[i].weight << ", 칼로리: " << pCandys[i].kcal << endl;
-        }
-
-        delete[] pCandys;
-    }
+    cout << "***** sumof(int, int) ***** " << endl;
+    cout << "> 1부터 n까지의 합: " << sumof(1, n) << endl << endl;
+    cout << "> 정수 두 개를 입력하세요: ";
+    cin >> n >> n2;
+    cout << "> " << n << "부터 "<< n2 << "까지의 합 : " << sumof(n, n2) << endl;
 }

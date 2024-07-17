@@ -77,12 +77,16 @@ void setDeath(bool* gameOver)
 
 	*gameOver = true;
 
-
 	for (int i = 0; i < enemyNum; i++)
 	{
 		for (int j = 0; j < count[i]; j++)
 		{
-			//free(newq[i][j]);
+			if (newq[i][j] != NULL)
+			{
+				free(newq[i][j]);
+				newq[i][j] = NULL;
+			}
+			free(newq[i][j]);
 		}
 
 		count[i] = 0;

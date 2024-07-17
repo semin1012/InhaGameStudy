@@ -56,6 +56,8 @@
 //	// Enemys Pos
 //	fprintf(ofp, "%d %d ", 1, 1);
 //
+//	// Enemy num [고정]
+//	fprintf(ofp, "%d ", 0);
 //
 //	fclose(ofp);
 //}
@@ -137,18 +139,28 @@
 //	printf("%d %d ", 10, 12);
 //
 //	// Enemy Speed
-//	fprintf(ofp, "%d ", 3);
-//	printf("%d ", 3);
+//	fprintf(ofp, "%d ", 2);
+//	printf("%d ", 2);
 //
 //	// Enemy Num
-//	fprintf(ofp, "%d ", 1);
+//	fprintf(ofp, "%d ", 2);
 //	printf("%d\n", 2);
 //
 //	// Enemys Pos
 //	fprintf(ofp, "%d %d ", 3, 2);
 //	printf("%d %d\n", 3, 2);
-//	//fprintf(ofp, "%d %d ", 20, 22);
-//	//printf("%d %d\n", 20, 22);
+//	fprintf(ofp, "%d %d ", 20, 22);
+//	printf("%d %d\n", 20, 22);
+//
+//	// Enemy.num [ 고정 ] 
+//	fprintf(ofp, "%d ", 2);
+//	printf("%d \n", 2);
+//	
+//	// Enemy.pos [ 고정 ]
+//	fprintf(ofp, "%d %d ", 3, 2);
+//	printf("%d %d\n", 3, 2);
+//	fprintf(ofp, "%d %d ", 20, 22);
+//	printf("%d %d\n", 20, 22);
 //
 //	fclose(ofp);
 //}
@@ -177,12 +189,32 @@ int main()
 				fprintf(ofp, "%d ", 1);
 				printf("%d ", 1);
 			}
-			else if (i == 5 && j <= 6 || i == 5 && j >= 17)
+			else if (i == 12 && j % 2 == 0)
 			{
 				fprintf(ofp, "%d ", 1);
 				printf("%d ", 1);
 			}
-			else if (i == 18 && j <= 6 || i == 18 && j >= 17)
+			else if (i == 15 && j % 3 == 0)
+			{
+				fprintf(ofp, "%d ", 1);
+				printf("%d ", 1);
+			}
+			else if (i == 9 && j % 3 == 0)
+			{
+				fprintf(ofp, "%d ", 1);
+				printf("%d ", 1);
+			}
+			else if (j == 12 && i % 2 == 0)
+			{
+				fprintf(ofp, "%d ", 1);
+				printf("%d ", 1);
+			}
+			else if (j == 15 && i % 2 == 0)
+			{
+				fprintf(ofp, "%d ", 1);
+				printf("%d ", 1);
+			}
+			else if (j == 9 && i % 2 == 0)
 			{
 				fprintf(ofp, "%d ", 1);
 				printf("%d ", 1);
@@ -237,18 +269,28 @@ int main()
 	printf("\n");
 
 	// 몬스터 수
-	fprintf(ofp, "%d ", 2);
-	printf("%d \n", 2);
+	fprintf(ofp, "%d ", 4);
+	printf("%d \n", 4);
 
 	// 몬스터 좌표
 	fprintf(ofp, "%d %d ", 5, 3);
 	printf("%d %d\n", 5, 3);
 	fprintf(ofp, "%d %d ", 20, 3);
 	printf("%d %d\n", 20, 3);
-	/*fprintf(ofp, "%d %d ", 5, 20);
-	printf("%d %d\n", 5, 20);*/
-	//fprintf(ofp, "%d %d ", 20, 20);
-	//printf("%d %d ", 20, 20);
+	fprintf(ofp, "%d %d ", 5, 20);
+	printf("%d %d\n", 5, 20);
+	fprintf(ofp, "%d %d ", 20, 20);
+	printf("%d %d ", 20, 20);
+
+	// enemy 고정 수
+	fprintf(ofp, "%d ", 2);
+	printf("%d \n", 2);
+
+	// enemy 고정 좌표
+	fprintf(ofp, "%d %d ", 5, 3);
+	printf("%d %d \n", 5, 3);
+	fprintf(ofp, "%d %d ", 20, 20);
+	printf("%d %d \n", 20, 20);
 
 	fclose(ofp);
 }

@@ -11,7 +11,7 @@
 
 extern bool gameOver;
 
-
+#define MAX_ENEMY_NUM 5
 
 int main(void) 
 {
@@ -20,8 +20,11 @@ int main(void)
 	bool gameStart = false;
 	bool gameOver = false;
 	bool gameClear = false;
-	newq[0] = (QUEUE**)calloc(size[0], sizeof(QUEUE*));
 
+	for (int i = 0; i < MAX_ENEMY_NUM; i++) 
+	{
+		newq[i] = (QUEUE**)calloc(size[i], sizeof(QUEUE*));
+	}
 	init();
 
 	while (1) {

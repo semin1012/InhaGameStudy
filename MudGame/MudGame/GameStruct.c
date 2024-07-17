@@ -17,7 +17,8 @@ extern int coinAllCnt;
 extern int enemyNum;
 extern ENEMY enemysPos[10];
 
-
+extern int enemyFixedNum;
+extern ENEMY enemysFixedPos[10];
 
 extern QUEUE* Q[10];
 extern VERTEX s[10];
@@ -73,25 +74,14 @@ void init()
 	//print_character();
 
 
-	for (int i = 0; i < enemyNum; i++)
+	for (int i = 0; i < 1; i++)
 	{
-		for (int j = 0; j < count[i]; j++)
-		{
-			free(newq[i][j]);
-		}
-
-		count[i] = 0;
-
 		e.x = player.x;
 		e.y = player.y;
 		s[i].x = enemysPos[i].x;
 		s[i].y = enemysPos[i].y;
 
 		Q[i] = NULL;
-
-		memset(g[i], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		memset(pre[i], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		memset(visit[i], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
 
 		for (int j = 0; j < MAPSIZE_Y; j++)
 		{
@@ -213,6 +203,11 @@ void render()
 	for (int i = 0; i < enemyNum; i++)
 	{
 		ScreenPrint(enemysPos[i].x * 2 + MAP_VERTICAL_ALIGN, enemysPos[i].y, "※");
+	}
+
+	for (int i = 0; i < enemyFixedNum; i++)
+	{
+		ScreenPrint(enemysFixedPos[i].x * 2 + MAP_VERTICAL_ALIGN, enemysFixedPos[i].y, "※");
 	}
 
 	char coin_print[30] = "Coin: ";

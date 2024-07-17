@@ -16,6 +16,9 @@ extern int enemyNum;
 extern ENEMY enemysPos[10];
 extern int maxCoinNum;
 
+extern int enemyFixedNum;
+extern ENEMY enemysFixedPos[10];
+
 extern MCI_OPEN_PARMS openBgm;
 extern int dwID;
 
@@ -283,18 +286,26 @@ bool readStageFromFile(int stage)
 			fscanf(ifp, "%d%d", &enemysPos[i].x, &enemysPos[i].y);
 		}
 
+		// 고정된 몬스터 수
+		fscanf(ifp, "%d", &enemyFixedNum);
+
+		for (int i = 0; i < enemyFixedNum; i++)
+		{
+			fscanf(ifp, "%d%d", &enemysFixedPos[i].x, &enemysFixedPos[i].y);
+		}
+
 		fclose(ifp);
 	}
 
 
-	if (stage == 1 )
-	{
-		coinAllCnt = coinNum;
-	}
-	else 
-	{
-		coinAllCnt += coinNum;
-	}
+	//if (stage == 1 )
+	//{
+	//	coinAllCnt = coinNum;
+	//}
+	//else 
+	//{
+	//	coinAllCnt += coinNum;
+	//}
 
 	return true;
 }
@@ -466,6 +477,16 @@ void changeStage(int nextStage)
 	pauseBgm(&clearSound, dwID);
 	playingSceneBgm();
 
+	//for (int i = 0; i < enemyNum; i++)
+	//{
+	//	for (int j = 0; j < count[i]; j++)
+	//	{
+	//		free(newq[i][j]);
+	//	}
+
+	//	count[i] = 0;
+	//}
+
 	if (!readStageFromFile(nextStage)) {	// 읽기 실패하면 종료
 		exit(0);
 	}
@@ -474,9 +495,6 @@ void changeStage(int nextStage)
 
 	/*     A* 알고리즘      */
 	// 벽
-
-	for ( int i = 0; i < enemyNum; i++ )
-		newq[i] = (QUEUE**)calloc(size[i], sizeof(QUEUE*));
 
 	for (int i = 0; i < 1; i++)
 	{
@@ -494,6 +512,7 @@ void changeStage(int nextStage)
 			}
 		}
 	}
+
 }
 
 
@@ -578,10 +597,6 @@ void printGameAllStageClear(bool* gameStart, bool* gameClear, int* stage)
 		*stage = 0;
 		player.coin = 0;
 		coinAllCnt = 0;
-		for (int i = 0; i < enemyNum; i++)
-		{
-			count[i] = 0;
-		}
 		changeStage(*stage);
 		UpdateFPS();
 
@@ -637,21 +652,9 @@ void printGameClearAtStage(bool* gameStart, bool* gameClear, int* stage, int nex
 		// TODO: 디버깅 때문에 해둠
 		*stage = nextStage;
 		*gameClear = false;
-		for (int i = 0; i < enemyNum; i++)
-		{
-			// 여기이상함
-			if (count[i] != 0)
-			{
-				for (int j = 0; j < count[i]; j++)
-				{
-					//free(newq[i][j]);
-				}
-			}
-			count[i] = 0;
-		}
 		changeStage(*stage);
 		UpdateFPS();
-		cnt = 0;
+		//cnt = 0;
 		playSound = false;
 	}
 
@@ -709,8 +712,6 @@ void printGameOver(bool *gameStart, bool *gameOver, int stage)
 		initToReplay(stage);
 		UpdateFPS();
 		//*gameStart = false;
-		for ( int i = 0; i < 10; i++)
-			count[i] = 0;
 	}
 
 	Sleep(75);

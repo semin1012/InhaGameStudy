@@ -31,14 +31,20 @@ void UpdateFPS()
 	timeElapsed += timeDelta;
 
 	//if (timeElapsed >= 1000.0f)
-	if(timeElapsed >= 500.0f)
+	if(timeElapsed >= 1000.0f)
 	{
-		for (int j = 0; j < count[cnt]; j++)
+		for (int i = 0; i <= cnt; i++)
 		{
-			free(newq[cnt][j]);
+			for (int j = 0; j < count[i]; j++)
+			{
+				if (newq[i][j] != NULL)
+				{
+					free(newq[i][j]);
+					newq[i][j] = NULL;
+				}
+			}
+			count[i] = 0;
 		}
-		count[cnt] = 0;
-
 		e.x = player.x;
 		e.y = player.y;
 		s[cnt].x = enemysPos[cnt].x;
@@ -68,10 +74,11 @@ void UpdateFPS()
 		//if (cnt == enemyNum)
 		//	cnt = 0;
 
-		timeElapsed = 0.0f;
 		if (cnt + 1 < enemyNum)
 			cnt++;
 		else cnt = 0;
+
+		timeElapsed = 0.0f;
 	}
 
 	lastTime = curTime;
@@ -106,13 +113,16 @@ void enqueue(VERTEX v, QUEUE** Q, int i)
 	f[i] = *Q;
 	newq[i][count[i]] = (QUEUE*)calloc(2, sizeof(QUEUE));
 	VERTEX temp;
-	int cnt = 0;
 	int key;
 	newq[i][count[i]]->v= v;
 	newq[i][count[i]]->next = NULL;
 	if (f[i] == NULL)
 	{
 		*Q = newq[i][count[i]];
+		if (count[i] != 0)
+		{
+			count[i] = 0;
+		}
 		return;
 	}
 
@@ -132,8 +142,20 @@ void enqueue(VERTEX v, QUEUE** Q, int i)
 	count[i]++;
 	if (count[i] == size[i])
 	{
-		size[i] += 5;
-		newq[i] = (QUEUE**)realloc(newq[i], sizeof(*newq[i]) * size[i]);
+		// buffer 백업
+		QUEUE* backupBuffer = newq[i];
+		size[i] += 20;
+
+		if (NULL == (newq[i] = (QUEUE**)realloc(newq[i], sizeof(*newq[i]) * size[i])))
+		{
+			// 종료 시
+			free(backupBuffer);
+			fprintf(stderr, "Memory allocation is failed");
+			exit(1);
+
+			// 프로그램 계속 진행할 시 주소 복구
+			// buffer = backupBuffer;
+		}
 	}
 }
 
@@ -161,7 +183,6 @@ int calc_heuristic(VERTEX v, int c, int r, int* gx)
 void add_openlist(VERTEX v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre[][MAPSIZE_X], VERTEX* e, QUEUE** Q, int num)
 {
 	VERTEX temp;
-	int cnt = 0;
 	int i, j, w, gx;
 
 	// 가까운 지점들 탐색한다
