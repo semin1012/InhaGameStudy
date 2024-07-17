@@ -4,40 +4,67 @@
 #include <cstring>
 using namespace std;
 
-// 자료구조 p.33 8번, 9번
+/*
+Q2. p.42, 17, 18
+    
+    Q.17
+         * * * * *
+           * * *
+             *
+           * * *
+         * * * * *
+    Q.18
+         1 1 1 1 1
+           2 2 2
+             3
+           2 2 2
+         1 1 1 1 1
 
-int GaussAdd(int n)
+*/
+
+void spira(int n)
 {
-    int sum;
-    sum = (1 + n) * (n / 2);
-    if (n % 2 != 0)
-        sum += (n / 2) + 1;
-    return sum;
+    int a = n / 2;
+    for (int i = 0; i < n; i++)
+    {
+        int temp = abs((n / a * i / 2) - n /2 );
+        for (int j = 0; j < n / 2 - temp; j++)
+        {
+            cout << "  ";
+        }
+        for (int j = 0; j < (n - ( n / 2 - temp) * 2); j++ )
+        {
+            cout << "* ";
+        }
+        cout << "\n";
+    }
 }
 
-int sumof(int a, int b)
+void nrpira(int n)
 {
-    int sum = 0;
-    for (int i = a; i <= b; i++)
+    int a = n / 2;
+    for (int i = 0; i < n; i++)
     {
-        sum += i;
+        int temp = abs((n / a * i / 2) - n / 2);
+        for (int j = 0; j < n / 2 - temp; j++)
+        {
+            cout << "  ";
+        }
+        for (int j = 0; j < (n - (n / 2 - temp) * 2); j++)
+        {
+            cout << temp + 1 << " ";
+        }
+        cout << "\n";
     }
-    return sum;
 }
 
 int main()
 {
-    int n, n2;
-    cout << "***** 가우스 덧셈 ***** " << endl;
-    cout << "> n을 입력하세요: ";
+    int n;
+    cout << " > n을 입력하세요: ";
     cin >> n;
+    
+    spira(n);
 
-    cout << "> 1부터 n까지의 합: " << GaussAdd(n) << endl << endl;
-
-
-    cout << "***** sumof(int, int) ***** " << endl;
-    cout << "> 1부터 n까지의 합: " << sumof(1, n) << endl << endl;
-    cout << "> 정수 두 개를 입력하세요: ";
-    cin >> n >> n2;
-    cout << "> " << n << "부터 "<< n2 << "까지의 합 : " << sumof(n, n2) << endl;
+    nrpira(n);
 }
