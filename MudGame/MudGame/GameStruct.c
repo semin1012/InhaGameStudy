@@ -45,35 +45,6 @@ void init()
 
 	lastTime = clock();
 
-	/*     A* 알고리즘      */
-	// 벽
-	//for (int i = 0; i < MAPSIZE_Y; i++)
-	//{
-	//	for (int j = 0; j < MAPSIZE_X; j++)
-	//	{
-	//		if (map[i][j] == 1)
-	//			visit[0][i][j] = -2;	// WALL = -2
-	//	}
-	//}
-
-	//e.x = player.x;
-	//e.y = player.y;
-	//s.x = enemy.x;
-	//s.y = enemy.y;
-
-
-	//count = 0;
-
-	//Q = NULL;
-
-	//memset(g, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-	//memset(pre, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-	//memset(visit, 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-
-	//astar(pre, &s, visit, &Q, g, &e, 0);
-	//print_character();
-
-
 	for (int i = 0; i < 1; i++)
 	{
 		e.x = player.x;
@@ -99,13 +70,6 @@ void init()
 }
 
 
-// TODO: 저장
-void saveData()
-{
-
-}
-
-
 void inputDebugKey()
 {
 	for (int i = 0; i < MAPSIZE_Y; i++)
@@ -117,6 +81,77 @@ void inputDebugKey()
 				map[i][j] = 0;
 			}
 		}
+	}
+}
+
+void saveCurrentDate()
+{
+	extern int coinNum;
+	extern int enemySpeed;
+
+	FILE* ofp;
+	ofp = fopen("../data/saveData.txt", "wb,ccs=UTF-8");
+
+	for (int i = 0; i < MAPSIZE_Y; i++)
+	{
+		for (int j = 0; j < MAPSIZE_X; j++)
+		{
+			fprintf(ofp, "%d ", map[i][j]);
+		}
+		fprintf(ofp, "\n");
+	}
+	fprintf(ofp, "%d ", coinNum);
+	fprintf(ofp, "\n");
+
+	fprintf(ofp, "%d %d ", player.x, player.y);
+	fprintf(ofp, "\n");
+
+	fprintf(ofp, "%d %d ", enemy.x, enemy.y);
+	fprintf(ofp, "\n");
+
+	// 몬스터 스피드 
+	fprintf(ofp, "%d ", enemySpeed);
+	fprintf(ofp, "\n");
+
+	fprintf(ofp, "%d ", enemyNum);
+	fprintf(ofp, "\n");
+
+
+	for (int i = 0; i < enemyNum; i++)
+		fprintf(ofp, "%d %d ", enemysPos[i].x, enemysPos[i].y);
+
+	fprintf(ofp, "\n");
+	fprintf(ofp, "%d ", enemyFixedNum);
+
+	fprintf(ofp, "\n");
+	for (int i = 0; i < enemyFixedNum; i++)
+		fprintf(ofp, "%d %d ", enemysFixedPos[i].x, enemysFixedPos[i].y);
+
+	fprintf(ofp, "\n");
+	fprintf(ofp, "%d ", player.coin);
+
+
+	lastTime = clock();
+
+	for (int i = 0; i < 1; i++)
+	{
+		e.x = player.x;
+		e.y = player.y;
+		s[i].x = enemysPos[i].x;
+		s[i].y = enemysPos[i].y;
+
+		Q[i] = NULL;
+
+		for (int j = 0; j < MAPSIZE_Y; j++)
+		{
+			for (int z = 0; z < MAPSIZE_X; z++)
+			{
+				if (map[j][z] == 1)
+					visit[i][j][z] = -2;	// WALL = -2
+			}
+		}
+		astar(pre[i], &s[i], visit[i], &Q[i], g[i], &e, 0);
+		print_character(i);
 	}
 }
 
@@ -145,7 +180,7 @@ void update(bool* gameOver) {
 
 		if (GetAsyncKeyState('S') & 0x8000) {
 			// TODO: 저장
-			saveData();
+			saveCurrentDate();
 		}
 
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
@@ -194,8 +229,6 @@ void render()
 		}
 		ScreenPrint(player.x * 2 + MAP_VERTICAL_ALIGN, player.y, "●");
 	}
-
-
 
 	setColor(RED);
 	//ScreenPrint(enemy.x * 2 + MAP_VERTICAL_ALIGN, enemy.y, "※");

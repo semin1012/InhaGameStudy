@@ -33,10 +33,8 @@ extern int size[10];
 
 extern int cnt;
  
-void printTextGameStart(int i, int j)
+void printTextGameStart(int i, int j, int select)
 {
-	static int select = 0;
-
 	if (j % 2 == 0) {
 		ScreenPrint(44, 1, "        :$@@@@#;.");
 		ScreenPrint(44, 2, "     .*@@@@@@@@##$,     ");
@@ -48,18 +46,6 @@ void printTextGameStart(int i, int j)
 		ScreenPrint(44, 8, "     ;@@@@@@@@@@@@$;     ");
 		ScreenPrint(44, 9, "     .=@@@@@@@@@@@#,   ");
 		ScreenPrint(44, 10, "       .:$@@@@#;.    ");
-
-
-		//ScreenPrint(44, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀⠀⣴⣶⡄⠀⣶⣶⡄⠀⣴⣶⡄\n");
-		//ScreenPrint(44, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠙⠋⠁⠀⠉⠋⠁⠀⠙⠋⠀\n");
-		//ScreenPrint(44, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
 	}
 	else {
 		ScreenPrint(44, 1, "        :$@@@@#;.");
@@ -72,16 +58,6 @@ void printTextGameStart(int i, int j)
 		ScreenPrint(44, 8, "     ;@@@@@@@@@@@@$;     ");
 		ScreenPrint(44, 9, "     .=@@@@@@@@@@@#,   ");
 		ScreenPrint(44, 10, "       .:$@@@@#;.    ");
-		//ScreenPrint(44, 1, "     ⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 2, "   ⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 3, " ⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 4, " ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 5, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⣶⣶⡄⠀⣴⣶⡄\n");
-		//ScreenPrint(44, 6, " ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠀⠉⠋⠁⠀⠙⠋⠀\n");
-		//ScreenPrint(44, 7, " ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 8, "  ⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 9, "   ⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
-		//ScreenPrint(44, 10, "       ⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n");
 	}
 	setColor(WHITE);
 
@@ -106,15 +82,6 @@ void printTextGameStart(int i, int j)
 		setColor(RED);
 		ScreenPrint(62, 18, "▶");
 		ScreenPrint(65, 18, "불러오기");
-	}
-
-	if ((GetAsyncKeyState(VK_LEFT) & 0x8000) )
-	{
-		select = 0;
-	}
-	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000))
-	{
-		select = 1;
 	}
 
 
@@ -431,9 +398,65 @@ void drawMap()
 	}
 }
 
+void readDataAtSaveFile()
+{
+	FILE* ifp;
+
+	ifp = fopen("../data/saveData.txt", "rb");
+
+	if (ifp == NULL)
+	{
+		printf("%s 파일 읽기를 실패하여 종료합니다.\n", "../data/saveData.txt");
+		return false;
+	}
+	else
+	{
+		for (int i = 0; i < MAPSIZE_Y; i++)
+		{
+			for (int j = 0; j < MAPSIZE_X; j++)
+			{
+				fscanf(ifp, "%d", &map[i][j]);
+			}
+		}
+		// 총 코인 개수
+		fscanf(ifp, "%d", &coinNum);
+
+		// 플레이어 좌표
+		fscanf(ifp, "%d%d", &player.x, &player.y);
+
+		// 몬스터 좌표
+		fscanf(ifp, "%d%d", &enemy.x, &enemy.y);
+
+		// 몬스터 스피드 
+		fscanf(ifp, "%d", &enemySpeed);
+
+		// 몬스터 수
+		fscanf(ifp, "%d", &enemyNum);
+
+		for (int i = 0; i < enemyNum; i++)
+		{
+			fscanf(ifp, "%d%d", &enemysPos[i].x, &enemysPos[i].y);
+		}
+
+		// 고정된 몬스터 수
+		fscanf(ifp, "%d", &enemyFixedNum);
+
+		for (int i = 0; i < enemyFixedNum; i++)
+		{
+			fscanf(ifp, "%d%d", &enemysFixedPos[i].x, &enemysFixedPos[i].y);
+		}
+
+		fscanf(ifp, "%d", &player.coin);
+
+		fclose(ifp);
+	}
+
+}
+
 void gameStartScene(bool* gameStart, bool* bScriptScene)
 {
-	game_start();
+	static int select = 0;
+	game_start(select);
 	*gameStart = false;
 
 	if ((GetAsyncKeyState(VK_RETURN) & 0x8000))
@@ -441,11 +464,24 @@ void gameStartScene(bool* gameStart, bool* bScriptScene)
 		pauseBgm(&openBgm, dwID);
 
 		playingSceneBgm();
+
 		*bScriptScene = true;
 
+		if (select == 1)
+		{
+			readDataAtSaveFile();
+		}
+	}
+	if ((GetAsyncKeyState(VK_LEFT) & 0x8000))
+	{
+		select = 0;
+	}
+	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000))
+	{
+		select = 1;
 	}
 }
-void game_start()
+void game_start(int select)
 {
 	static int i = 0;
 	static int j = 0;
@@ -460,7 +496,7 @@ void game_start()
 		j++;
 	}
 
-	printTextGameStart(i, j);
+	printTextGameStart(i, j, select);
 }
 
 void initToReplay(int stage)
