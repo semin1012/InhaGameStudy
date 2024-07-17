@@ -30,7 +30,6 @@ void UpdateFPS()
 
 	timeElapsed += timeDelta;
 
-	//if (timeElapsed >= 1000.0f)
 	if(timeElapsed >= 1000.0f)
 	{
 		for (int i = 0; i <= cnt; i++)
@@ -67,12 +66,6 @@ void UpdateFPS()
 
 		astar(pre[cnt], &s[cnt], visit[cnt], &Q[cnt], g[cnt], &e, cnt);
 		print_character(cnt);
-
-		//if ( cnt + 1<= enemyNum )
-		//	cnt++;
-
-		//if (cnt == enemyNum)
-		//	cnt = 0;
 
 		if (cnt + 1 < enemyNum)
 			cnt++;
@@ -152,9 +145,6 @@ void enqueue(VERTEX v, QUEUE** Q, int i)
 			free(backupBuffer);
 			fprintf(stderr, "Memory allocation is failed");
 			exit(1);
-
-			// 프로그램 계속 진행할 시 주소 복구
-			// buffer = backupBuffer;
 		}
 	}
 }
@@ -215,7 +205,6 @@ void add_openlist(VERTEX v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre[
 
 		}
 	}
-	//printf("eee (%d, %d) 방문\n", enemy.x, enemy.y);
 }
 
 

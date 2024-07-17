@@ -20,6 +20,7 @@ int main(void)
 	bool gameStart = false;
 	bool gameOver = false;
 	bool gameClear = false;
+	bool gameClose = false;
 
 	for (int i = 0; i < MAX_ENEMY_NUM; i++) 
 	{
@@ -27,11 +28,22 @@ int main(void)
 	}
 	init();
 
+	bool bScriptScene = false;
+
 	while (1) {
+		if (gameClose == true)
+		{
+			// TODO
+			// closeGame();
+		}
+
 		// 게임 시작 화면 
-		if (gameStart == false) {
-			//printGameClearAtStage(&gameStart, &gameOver, 0);
-			gameStartScene(&gameStart);
+		if (gameStart == false) 
+		{
+			if (bScriptScene == false )
+				gameStartScene(&gameStart, &bScriptScene);
+			// TODO
+			else scriptScene(&gameStart, &bScriptScene);
 		}
 
 		// 플레이 화면
@@ -63,8 +75,7 @@ int main(void)
 		}
 	}
 
-
 	_CrtDumpMemoryLeaks();
-	ScreenRelease(); 
+	ScreenRelease();
 	return 0;
 }

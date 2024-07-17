@@ -35,6 +35,8 @@ extern int cnt;
  
 void printTextGameStart(int i, int j)
 {
+	static int select = 0;
+
 	if (j % 2 == 0) {
 		ScreenPrint(44, 1, "        :$@@@@#;.");
 		ScreenPrint(44, 2, "     .*@@@@@@@@##$,     ");
@@ -89,8 +91,32 @@ void printTextGameStart(int i, int j)
 	ScreenPrint(35, 15, "C    O   O  I  N  NN    R R   U   U N  NN ");
 	ScreenPrint(35, 16, " CCC  OOO  III N   N    R  RR  UUU  N   N ");
 
-	setColor(RED);
-	ScreenPrint(44, 20, "Press Enter to Start");
+	if (select == 0)
+	{
+		setColor(RED);
+		ScreenPrint(38, 18, "▶");
+		ScreenPrint(40, 18, " 새로 시작");
+		setColor(GRAY);
+		ScreenPrint(65, 18, "불러오기");
+	}
+	else
+	{
+		setColor(GRAY);
+		ScreenPrint(40, 18, " 새로 시작");
+		setColor(RED);
+		ScreenPrint(62, 18, "▶");
+		ScreenPrint(65, 18, "불러오기");
+	}
+
+	if ((GetAsyncKeyState(VK_LEFT) & 0x8000) )
+	{
+		select = 0;
+	}
+	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000))
+	{
+		select = 1;
+	}
+
 
 	setColor(YELLOW);
 	ScreenPrint(0, 18 + 4, "     ● ");
@@ -101,7 +127,7 @@ void printTextGameStart(int i, int j)
 	setColor(DARKGREEN);
 	ScreenPrint(0, 22 + 4, "△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△△\n");
 	setColor(BLUE);
-	ScreenPrint(0, 23 + 4, "〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓\n");
+	ScreenPrint(0, 23 + 4, "〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓\n");
 
 	ScreenFlipping();
 
@@ -236,6 +262,58 @@ void printTextGameOver(int i)
 }
 
 
+void scriptScene(bool* gameStart, bool* bScriptScene)
+{
+	ScreenClear();
+
+	setColor(WHITE);
+	ScreenPrint(15, 1 + 1, "┌─────────────────────────────────────────────────────────────────────────────────────★\n");
+	ScreenPrint(15, 2 + 1, "☆  ⊂⌒(　･ω･)                                                                      │ \n");
+	ScreenPrint(15, 2 + 2, "│ 　   ＼_ っ♥c  .oO ( 이 편지는 개발원에서 시작되어… )                             │ \n");
+	ScreenPrint(15, 3 + 2, "│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│ \n");
+	ScreenPrint(15, 4 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 5 + 2, "│   당신은 부자가 되고 싶다는 욕망이 있습니다.                                        │ \n");
+	ScreenPrint(15, 6 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 7 + 2, "│   길에 놓인 코인을 줍기로 했고                                                      │ \n");
+	ScreenPrint(15, 8 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 9 + 2, "│   분실물을 찾던 경찰이 당신을 추적하기 시작했습니다!                                │ \n");
+	ScreenPrint(15, 10 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 11 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 12 + 2, "│   경찰을 피해 코인을 획득해 부자가 되세요.                                          │ \n");
+	ScreenPrint(15, 13 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 14 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 15 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 16 + 2, "│   ");
+	setColor(YELLOW);
+	ScreenPrint(18, 16 + 2, " * 화살표 : 이동");
+	setColor(WHITE);
+	ScreenPrint(40, 16 + 2, "                                                             │ \n");
+	ScreenPrint(15, 17 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 18 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 19 + 2, "│   경찰에게 잡힐 시 보석금을 내야 하니 주의하세요.                                   │ \n");
+	ScreenPrint(15, 20 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 21 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 22 + 2, "│   ");
+	setColor(SKYBLUE);
+	ScreenPrint(18, 22 + 2, " 스페이스바를 누르면 시작합니다!");
+	setColor(WHITE);
+	ScreenPrint(70, 22 + 2, "                               │ \n");
+	//ScreenPrint(15, 21+2, "│   스페이스바를 누르면 시작합니다!                                                   │ \n");
+	ScreenPrint(15, 23 + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 24 + 2, "└─────────────────────────────────────────────────────────────────────────────────────★ \n");
+
+	ScreenFlipping();
+
+	if ((GetAsyncKeyState(VK_SPACE) & 0x8000))
+	{
+		pauseBgm(&openBgm, dwID);
+
+		playingSceneBgm();
+		*bScriptScene = false;
+		*gameStart = true;
+	}
+}
+
 bool readStageFromFile(int stage)
 {
 	FILE* ifp;
@@ -353,7 +431,7 @@ void drawMap()
 	}
 }
 
-void gameStartScene(bool* gameStart)
+void gameStartScene(bool* gameStart, bool* bScriptScene)
 {
 	game_start();
 	*gameStart = false;
@@ -363,7 +441,7 @@ void gameStartScene(bool* gameStart)
 		pauseBgm(&openBgm, dwID);
 
 		playingSceneBgm();
-		*gameStart = true;
+		*bScriptScene = true;
 
 	}
 }
@@ -432,6 +510,14 @@ void initToReplay(int stage)
 		for (int i = 0; i < enemyNum; i++)
 		{
 			fscanf(ifp, "%d%d", &enemysPos[i].x, &enemysPos[i].y);
+		}
+
+		// 고정된 몬스터 수
+		fscanf(ifp, "%d", &enemyFixedNum);
+
+		for (int i = 0; i < enemyFixedNum; i++)
+		{
+			fscanf(ifp, "%d%d", &enemysFixedPos[i].x, &enemysFixedPos[i].y);
 		}
 
 		fclose(ifp);
