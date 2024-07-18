@@ -155,7 +155,7 @@ void saveCurrentDate()
 	}
 }
 
-void update(bool* gameOver) {
+void update(bool* gameOver, bool* gameClose) {
 
 	if (*gameOver == false ) {
 		// 몬스터와 닿았다면 게임오버
@@ -170,7 +170,10 @@ void update(bool* gameOver) {
 		Sleep(50);
 
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)	// ESC 눌렀을 때 바로 종료
-			exit(0);
+		{
+			*gameClose = true;
+			// exit(0);
+		}
 
 
 		// 디버깅 키

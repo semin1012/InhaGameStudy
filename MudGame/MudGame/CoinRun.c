@@ -49,11 +49,15 @@ int main(void)
 		// 플레이 화면
 		else if (gameStart == true) 
 		{			
+			if (gameClose == true)
+			{
+				break;
+			}
 			if (gameOver == false) 
 			{
 				if (gameClear == false)
 				{
-					update(&gameOver);		// gameOver 여부에 따라 수행 동작이 다름
+					update(&gameOver, &gameClose);		// gameOver 여부에 따라 수행 동작이 다름
 					render();
 				}
 				if (countCointNuminMap() == 0)
@@ -75,7 +79,20 @@ int main(void)
 		}
 	}
 
-	_CrtDumpMemoryLeaks();
 	ScreenRelease();
+	printf(" > 게임을 종료합니다.\n\n\n");
+	for (int i = 0; i <= enemyNum; i++)
+	{
+		for (int j = 0; j < count[i]; j++)
+		{
+			if (newq[i][j] != NULL)
+			{
+				free(newq[i][j]);
+				newq[i][j] = NULL;
+			}
+		}
+		count[i] = 0;
+	}
+	_CrtDumpMemoryLeaks();
 	return 0;
 }

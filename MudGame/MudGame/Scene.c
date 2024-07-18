@@ -234,16 +234,16 @@ void scriptScene(bool* gameStart, bool* bScriptScene)
 	ScreenClear();
 
 	setColor(WHITE);
-	ScreenPrint(15, 1 + 1, "┌─────────────────────────────────────────────────────────────────────────────────────★\n");
-	ScreenPrint(15, 2 + 1, "☆  ⊂⌒(　･ω･)                                                                      │ \n");
-	ScreenPrint(15, 2 + 2, "│ 　   ＼_ っ♥c  .oO ( 이 편지는 개발원에서 시작되어… )                             │ \n");
-	ScreenPrint(15, 3 + 2, "│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│ \n");
-	ScreenPrint(15, 4 + 2, "│                                                                                     │ \n");
-	ScreenPrint(15, 5 + 2, "│   당신은 부자가 되고 싶다는 욕망이 있습니다.                                        │ \n");
-	ScreenPrint(15, 6 + 2, "│                                                                                     │ \n");
-	ScreenPrint(15, 7 + 2, "│   길에 놓인 코인을 줍기로 했고                                                      │ \n");
-	ScreenPrint(15, 8 + 2, "│                                                                                     │ \n");
-	ScreenPrint(15, 9 + 2, "│   분실물을 찾던 경찰이 당신을 추적하기 시작했습니다!                                │ \n");
+	ScreenPrint(15, 1  + 1, "┌─────────────────────────────────────────────────────────────────────────────────────★\n");
+	ScreenPrint(15, 2  + 1, "☆  ⊂⌒(　･ω･)                                                                      │ \n");
+	ScreenPrint(15, 2  + 2, "│ 　   ＼_ っ♥c  .oO ( 이 편지는 개발원에서 시작되어… )                             │ \n");
+	ScreenPrint(15, 3  + 2, "│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━│ \n");
+	ScreenPrint(15, 4  + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 5  + 2, "│   당신은 부자가 되고 싶다는 욕망이 있습니다.                                        │ \n");
+	ScreenPrint(15, 6  + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 7  + 2, "│   길에 놓인 코인을 줍기로 했고                                                      │ \n");
+	ScreenPrint(15, 8  + 2, "│                                                                                     │ \n");
+	ScreenPrint(15, 9  + 2, "│   분실물을 찾던 경찰이 당신을 추적하기 시작했습니다!                                │ \n");
 	ScreenPrint(15, 10 + 2, "│                                                                                     │ \n");
 	ScreenPrint(15, 11 + 2, "│                                                                                     │ \n");
 	ScreenPrint(15, 12 + 2, "│   경찰을 피해 코인을 획득해 부자가 되세요.                                          │ \n");
@@ -252,9 +252,9 @@ void scriptScene(bool* gameStart, bool* bScriptScene)
 	ScreenPrint(15, 15 + 2, "│                                                                                     │ \n");
 	ScreenPrint(15, 16 + 2, "│   ");
 	setColor(YELLOW);
-	ScreenPrint(18, 16 + 2, " * 화살표 : 이동");
+	ScreenPrint(18, 16 + 2, " * 화살표 : 이동  /  S: 현재 진행 상황 저장  /  ESC: 종료 ");
 	setColor(WHITE);
-	ScreenPrint(40, 16 + 2, "                                                             │ \n");
+	ScreenPrint(90, 16 + 2, "           │ \n");
 	ScreenPrint(15, 17 + 2, "│                                                                                     │ \n");
 	ScreenPrint(15, 18 + 2, "│                                                                                     │ \n");
 	ScreenPrint(15, 19 + 2, "│   경찰에게 잡힐 시 보석금을 내야 하니 주의하세요.                                   │ \n");
@@ -265,7 +265,6 @@ void scriptScene(bool* gameStart, bool* bScriptScene)
 	ScreenPrint(18, 22 + 2, " 스페이스바를 누르면 시작합니다!");
 	setColor(WHITE);
 	ScreenPrint(70, 22 + 2, "                               │ \n");
-	//ScreenPrint(15, 21+2, "│   스페이스바를 누르면 시작합니다!                                                   │ \n");
 	ScreenPrint(15, 23 + 2, "│                                                                                     │ \n");
 	ScreenPrint(15, 24 + 2, "└─────────────────────────────────────────────────────────────────────────────────────★ \n");
 
