@@ -32,6 +32,7 @@ extern int count[10];
 extern int size[10];
 
 extern int cnt;
+extern int stage;
  
 void printTextGameStart(int i, int j, int select)
 {
@@ -447,6 +448,7 @@ void readDataAtSaveFile()
 
 		fscanf(ifp, "%d", &player.coin);
 
+		fscanf(ifp, "%d", &stage);
 		fclose(ifp);
 	}
 

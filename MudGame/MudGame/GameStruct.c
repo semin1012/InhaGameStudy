@@ -130,29 +130,34 @@ void saveCurrentDate()
 	fprintf(ofp, "\n");
 	fprintf(ofp, "%d ", player.coin);
 
+	// 스테이지 저장
+	fprintf(ofp, "\n");
+	fprintf(ofp, "%d ", stage);
 
-	lastTime = clock();
+	fclose(ofp);
+	
+	//lastTime = clock();
 
-	for (int i = 0; i < 1; i++)
-	{
-		e.x = player.x;
-		e.y = player.y;
-		s[i].x = enemysPos[i].x;
-		s[i].y = enemysPos[i].y;
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	e.x = player.x;
+	//	e.y = player.y;
+	//	s[i].x = enemysPos[i].x;
+	//	s[i].y = enemysPos[i].y;
 
-		Q[i] = NULL;
+	//	Q[i] = NULL;
 
-		for (int j = 0; j < MAPSIZE_Y; j++)
-		{
-			for (int z = 0; z < MAPSIZE_X; z++)
-			{
-				if (map[j][z] == 1)
-					visit[i][j][z] = -2;	// WALL = -2
-			}
-		}
-		astar(pre[i], &s[i], visit[i], &Q[i], g[i], &e, 0);
-		print_character(i);
-	}
+	//	for (int j = 0; j < MAPSIZE_Y; j++)
+	//	{
+	//		for (int z = 0; z < MAPSIZE_X; z++)
+	//		{
+	//			if (map[j][z] == 1)
+	//				visit[i][j][z] = -2;	// WALL = -2
+	//		}
+	//	}
+	//	astar(pre[i], &s[i], visit[i], &Q[i], g[i], &e, 0);
+	//	print_character(i);
+	//}
 }
 
 void update(bool* gameOver, bool* gameClose) {
