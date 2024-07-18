@@ -35,7 +35,7 @@ void movePlayer(int x, int y, bool* gameOver)
 	}
 	else if (map[y][x] == 2)
 	{
-		//playingGetCoinSound();
+		playingGetCoinSound();
 		player.coin++;
 		map[y][x] = 0;
 		player.x = x;
