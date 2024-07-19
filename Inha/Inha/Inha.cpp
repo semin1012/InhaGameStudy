@@ -1,10 +1,10 @@
-#define _CRT_SECURE_NO_WARNINGS
+﻿#define _CRT_SECURE_NO_WARNINGS
 /*
+*/
 #include <iostream>
 #include <string>
 #include <cstring>
 using namespace std;
-*/
 /*
 Q3. 1~10 사이의 정수를 입력 받아 다음과 같은 형태로 출력하는 프로그램을 작성하라.
 
@@ -53,6 +53,7 @@ int main()
 }
 */
 /*
+*/
 struct Car
 {
     string company;
@@ -111,7 +112,6 @@ int main()
 
     cout << endl << "총 " << cnt << " 단어가 입력되었습니다.\n";
 }
-*/
 
 /* 
 Q5. 10진수를 각 진수로 변환하는 프로그램을 작성하라. 
@@ -120,7 +120,6 @@ Q5. 10진수를 각 진수로 변환하는 프로그램을 작성하라.
     
     16진수 3B -> 2진수 ?
     2진수 1001 -> 16진수 ?
-*/
 
 #include <stdio.h>
 #include <string.h>
@@ -228,3 +227,4 @@ int main()
         printf("\n\n");
     }
 }
+*/
