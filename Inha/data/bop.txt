@@ -1,0 +1,20 @@
+Wimp Macho
+Trainee analyst
+HMM
+0
+Raki Rhodes
+Trainer
+AGOGO
+1
+Celia Laiter
+CEO
+MIPS
+2
+Hoppy Hipman
+Teacher
+LOOPY
+2
+Pat hand
+Junior Programmer
+JJAN-GO
+2
