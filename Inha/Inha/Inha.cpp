@@ -65,7 +65,6 @@ int main()
 		if (password.length() < 8)
 		{
 			cout << "#Invalid Password: 비밀번호는 적어도 8개의 문자여야 합니다.\n\n";
-			isValid = false;
 			continue;
 		}
 
@@ -82,14 +81,13 @@ int main()
 			if (isdigit(c)) numCnt++;
 		}
 
+		if (isValid == false) continue;
+
 		if (numCnt < 2)
 		{
 			cout << "#Invalid Password: 비밀번호는 적어도 두 개의 숫자가 포함되어야 합니다.\n\n";
-			isValid = false;
 			continue;
 		}
-
-		if (isValid == false) continue;
 
 		cout << "Valid Password\n";
 		return 0;
