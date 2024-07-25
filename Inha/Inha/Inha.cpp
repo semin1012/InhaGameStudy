@@ -6,72 +6,41 @@
 #include <math.h>
 using namespace std;
 
-/*
-// p.406 Listing 07.8
-const int ArSize = 8;
-int sum_arr(const int* begin, const int* end);
-int main()
-{
-	int cookies[ArSize] = { 1, 2, 4, 8, 16, 32, 64, 128 };
+/**/
+// p.465 Q.10
+#define OPTION_NUM 2
 
-	int sum = sum_arr(cookies, cookies + ArSize);
-	cout << "먹은 과자 수 합계: " << sum << endl;
-	sum = sum_arr(cookies, cookies + 3);
-	cout << "처음 세 사람은 과자 " << sum << "개를 먹었습니다.\n";
-	sum = sum_arr(cookies + 4, cookies + 8);
-	cout << "마지막 네 사람은 과자 " << sum << "개를 먹었습니다.\n";	// 과자 240개 너무하는거아님?
-	
-	return 0;
-}
-
-int sum_arr(const int* begin, const int* end)
-{
-	const int* pt;
-	int total = 0;
-
-	for (pt = begin; pt != end; pt++)
-		total = total + *pt;
-	
-	return total;
-}
-*/
-
-// case 1. 함수 포인터로 하고 싶은 동작 변경하기
-void (*update)(void);	// 함수 포인터로 쓰면 하고 싶은 내용 변경시키기 유용하다
-void lobby();
-void menu();
+double add(double x, double y);
+double sub(double x, double y);
+double calculate(double x, double y, double (*option)(double, double));
 
 int main()
 {
-	update = menu;
-	while (1)
-		update();
-	update = lobby;
-}
+	double x, y;
+	double (*options[OPTION_NUM])(double, double) = { add, sub };
 
-void lobby()
-{
-	update = menu;
-}
+	cout << "> x, y 입력: ";
+	cin >> x >> y;
 
-void menu()
-{
-	update = lobby;
-}
-
-/*
-// case 2. switch-case 문으로 하고 싶은 동작 변경하기
-int main()
-{
-	int select;
-	switch (select)
+	for (int i = 0; i < OPTION_NUM; i++)
 	{
-	case 1:
-		menu();
-		break;
-	case 2:
-		lobby();
-		break;
+		cout << calculate(x, y, options[i]) << endl;
 	}
 }
-*/
+
+double add(double x, double y)
+{
+	cout << "x + y: ";
+	return x + y;
+}
+
+double sub(double x, double y)
+{
+	cout << "x - y: ";
+	return x - y;
+}
+
+double calculate(double x, double y, double(*option)(double, double))
+{
+	return option(x, y);
+}
