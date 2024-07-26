@@ -6,41 +6,143 @@
 #include <math.h>
 using namespace std;
 
-/**/
-// p.465 Q.10
-#define OPTION_NUM 2
+/* 
+Q1. 선형 검색을 하기 위한 기본 순서도와 이를 바탕으로
+	선형 검색 프로그램을 작성컴퓨터 바탕화면 키우기하라.
+	ex > 데이터 입력: 6 5 2 1 8 9 7 4
+	검색 데이터 > 9
+	> 자료 중에 9가 있습니다.
+	검색 데이터 > 3
+	> 자료 중에 3은 없습니다. 
 
-double add(double x, double y);
-double sub(double x, double y);
-double calculate(double x, double y, double (*option)(double, double));
+	1. 선형 검색으로만
+	2. p.120 Q2와 같은 형태로 검색 과정을 표시하라.
+	3. 보초법을 이용하여 선형 검색을 수정하고 성능을 비교하라.
+*/
+
+/*
+*/
+#define SIZE 200'000'000
+
+int nums[SIZE + 1];
+
+void LinearSearch(int nums[], int find_num);
+void SentinelLinearSearch(int nums[], int find_num);
 
 int main()
 {
-	double x, y;
-	double (*options[OPTION_NUM])(double, double) = { add, sub };
+	int find_num;
+	clock_t start, end;
+	float res;
 
-	cout << "> x, y 입력: ";
-	cin >> x >> y;
-
-	for (int i = 0; i < OPTION_NUM; i++)
+	for (int i = 0; i < SIZE; i++)
 	{
-		cout << calculate(x, y, options[i]) << endl;
+		nums[i] = i;	// 그냥 0부터 99'999까지 넣는다 
+	}
+
+	while (1)
+	{
+		cout << "검색 데이터 > ";
+		cin >> find_num;
+
+		// 1. 일반 선형 검색 
+		start = clock();
+		LinearSearch(nums, find_num);	
+		end = clock();
+		res = (float)(end - start) / CLOCKS_PER_SEC;
+		printf("선형 검색 소요 시간: %.7f\n", res);
+
+
+		// 2. 보초법
+		nums[SIZE] = find_num;	// 보초법
+
+		start = clock();
+		SentinelLinearSearch(nums, find_num);
+		end = clock();
+		res = (float)(end - start) / CLOCKS_PER_SEC;
+		printf("보초법 소요 시간: %.7f\n", res);
+
+		cout << "\n\n";
 	}
 }
 
-double add(double x, double y)
+void LinearSearch(int nums[], int find_num)
 {
-	cout << "x + y: ";
-	return x + y;
+	for (int i = 0; i < SIZE; i++)
+	{
+		if (nums[i] == find_num)
+		{
+			cout << "> 자료 중에 " << find_num << "이(가) 있습니다.\n";
+			return;
+		}
+
+		if (i == SIZE - 1)
+		{
+			cout << "> 자료 중에 " << find_num << "은(는) 없습니다.\n";
+			return;
+		}
+	}
 }
 
-double sub(double x, double y)
+void SentinelLinearSearch(int nums[], int find_num)
 {
-	cout << "x - y: ";
-	return x - y;
+	int i = 0;
+	for (i; i <= SIZE; i++)
+	{
+		if (nums[i] == find_num)
+		{
+			break;
+		}
+	}
+
+	if ( i == SIZE ) cout << "> 자료 중에 " << find_num << "은(는) 없습니다.\n";
+	else cout << "> 자료 중에 " << find_num << "이(가) 있습니다.\n";
 }
 
-double calculate(double x, double y, double(*option)(double, double))
+/*
+#define SIZE 8
+
+void LinearSearch(int nums[], int find_num);
+
+int main()
 {
-	return option(x, y);
+	int nums[SIZE] = { 6, 4, 3, 2, 1, 9, 8, 7 };
+	int find_num;
+
+	cout << "> 검색 데이터: ";
+	cin >> find_num;
+	
+	LinearSearch(nums, find_num);
 }
+
+void LinearSearch(int nums[], int find_num)
+{
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < SIZE; j++)
+		{
+			if (i == j) cout << "* ";
+			else cout << "  ";
+		}
+		cout << "\n";
+
+		for (int j = 0; j < SIZE; j++)
+		{
+			cout << nums[j] << " ";
+		}
+		cout << "\n";
+
+		if (nums[i] == find_num)
+		{
+			cout << find_num << "은(는) nums[" << i  << "]에 존재합니다.\n";
+			return;
+		}
+
+		if (i == SIZE - 1)
+		{
+			cout << "> 자료 중에 " << find_num << "은(는) 없습니다.\n";
+			return;
+		}
+	}
+}
+*/
