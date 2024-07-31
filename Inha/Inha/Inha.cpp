@@ -4,126 +4,191 @@
 #include <string>
 #include <cstring>
 #include <math.h>
+#include <time.h>
+#include <chrono>
 #include <limits>
 using namespace std;
 
 /*
 Q1. p.557 문제 5, 6
-*/
-// 문제 5번 
-#define MAX 5
-template<class T>
-T max5(T nums[]);
-template<class T>
-void show(T nums[]);
 
-// 문제 6번 
-template<class T>
-T maxn(T nums[], int n);
-template<class T>
-void shown(T nums[], int n);
-template<>
-const char* maxn<const char*>(const char* str[], int n);
-template<>
-void shown<const char*>(const char* str[], int n);
+Q2. 이진 검색 프로그램을 작성하라.
+	p.122 연습 문제 4처럼 이진 검색 과정을 자세히 출력하라. 
+	순서도 포함.
+	선형검색과 이진검색의 속도를 비교하라.
+*/
+
+#define MAX 100'000
+
+void LinearSearch(int nums[], long long find_num);
+void BinarySearch(int nums[], long long find_num);
+
+void ShowLinearSearch(int nums[], long long find_num);
+void ShowBinarySearch(int nums[], long long find_num);
+
+int nums[MAX];
 
 int main()
 {
-	int a[5] = { 0, 1, 2, 3, 4 };
-	double b[5] = { 0.0, 1.1, 2.2, 3.3, 4.4 };
+	clock_t start, end;
+	long long find_num;
 
-	// 5번
-	cout << "5번\n";
-	cout << "int형 배열: ";
-	show(a);
-	cout << "int형 배열의 최댓값: " << max5(a) << endl;
-	cout << "double형 배열: ";
-	show(b);
-	cout << "double형 배열의 최댓값: " << max5(b) << endl << endl;
-
-	// 6번
-	cout << "6번\n";
-	int a2[6] = { 0, 1, 2, 3, 4, 5 };
-	double b2[4] = { 0.0, 1.1, 2.2, 3.3 };
-	const char* c[5] = {"aa aa", "bb", "c", "ddd ddd", "eee"};
-
-	cout << "a2(int)의 배열: ";
-	shown(a2, 6);
-	cout << "a2(int)의 최댓값: " << maxn(a2, 6) << endl;
-	cout << "b2(double)의 배열: ";
-	shown(b2, 4);
-	cout << "b2(double)의 최댓값 : " << maxn(b2, 4) << endl;
-	cout << "c(const char*)의 배열: ";
-	shown(c, 5);
-	cout << "c(const char*)의 가장 긴 문자열: " << maxn(c, 5) << endl;
-}
-
-template<class T>
-T max5(T nums[])
-{
-	T max = nums[0];
-	for (int i = 1; i < MAX; i++)
+	// 0~MAX-1 인덱스까지 1~MAX의 값을 넣는다 
+	for (int i = 0; i < MAX; i++)
 	{
-		if (nums[i] > max)
-			max = nums[i];
+		nums[i] = i + 1;
 	}
-	return max;
+
+	/*========================Binary Search========================*/
+	start = clock();
+	for (int i = 0; i < MAX; i++)
+	{
+		find_num = i + 1;
+		BinarySearch(nums, find_num);
+	}
+	end = clock();
+	cout << "Binary Search 시간: " << (double)(end - start)/CLOCKS_PER_SEC << " ms" << endl;
+
+
+	clock_t start1, end1;
+	/*========================Linear Search========================*/
+	start1 = clock();
+	for (int i = 0; i < MAX; i++)
+	{
+		find_num = i + 1;
+		LinearSearch(nums, find_num);
+	}
+	end1 = clock();
+	cout << "Linear Search 시간: " << (double)(end1 - start1) / CLOCKS_PER_SEC << " ms" << endl << endl;
+
 }
 
-template<class T>
-void show(T nums[])
+void LinearSearch(int nums[], long long find_num)
 {
 	for (int i = 0; i < MAX; i++)
 	{
-		cout << nums[i] << " ";
-	}
-	cout << endl;
-}
-
-template<class T>
-T maxn(T nums[], int n)
-{
-	T max = nums[0];
-	for (int i = 1; i < n; i++)
-	{
-		if (nums[i] > max)
-			max = nums[i];
-	}
-	return max;
-}
-
-template<class T>
-void shown(T nums[], int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		cout << nums[i] << " ";
-	}
-	cout << endl;
-}
-
-template<>
-const char* maxn<const char*>(const char* str[], int n)
-{
-	int max_len = 0;
-	int max_idx = 0;
-	for (int i = 0; i < n; i++)
-	{
-		if (strlen(str[i]) > max_len)
+		if (nums[i] == find_num)
 		{
-			max_len = strlen(str[i]);
-			max_idx = i;
+			//cout << find_num << "은 nums[" << i << "]에 존재합니다.\n";
+			return;
 		}
 	}
-	return str[max_idx];
+	//cout << find_num << "은 nums에 존재하지 않습니다.\n";
 }
 
-template<>
-void shown(const char* str[], int n)
+void BinarySearch(int nums[], long long find_num)
 {
-	for (int i = 0; i < n; i++)
+	int start = 0, end = MAX-1;
+
+	while (start <= end)
 	{
-		cout << str[i] << " / ";
+		int middle = (start + end) / 2;
+		if (nums[middle] == find_num)
+		{
+			//cout << find_num << "은 nums[" << middle << "]에 존재합니다.\n";
+			break;
+		}
+		else if (start == end)
+		{
+			//cout << find_num << "은 nums에 존재하지 않습니다.\n";
+			break;
+		}
+		else if (find_num > nums[middle])
+		{
+			start = middle+1;
+		}
+		else if (find_num < nums[middle])
+		{
+			end = middle-1;
+		}
 	}
-	cout << endl;
 }
+
+void ShowLinearSearch(int nums[], long long find_num)
+{
+	cout << "# LinearSearch #\n";
+	for (int i = 0; i < MAX; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			cout << "  ";
+		}
+		cout << "*\n";
+		for (int j = 0; j < MAX; j++)
+			cout << nums[j] << " ";
+		cout << endl;
+		if (nums[i] == find_num)
+		{
+			cout << find_num << "은 nums[" << i << "]에 존재합니다.\n";
+			return;
+		}
+	}
+	cout << find_num << "은 nums에 존재하지 않습니다.\n";
+}
+
+void ShowBinarySearch(int nums[], long long find_num)
+{
+	cout << "# BinarySearch #\n";
+	int start = 0, middle = (MAX) / 2, end = MAX - 1;
+	
+
+	while (start <= end)
+	{
+		
+		middle = (start + end) / 2;
+		for (int i = 0; i < middle; i++)
+		{
+			cout << "   ";
+		}
+		cout << "*\n";
+		for (int i = 0; i < MAX; i++)
+		{
+			printf("%2d ", nums[i]);
+			//cout << nums[i] << " ";
+		}
+		cout << endl;
+		if (nums[middle] == find_num)
+		{
+			cout << find_num << "은 nums[" << middle << "]에 존재합니다.\n";
+			break;
+		}
+		else if (start == end)
+		{
+			cout << find_num << "은 nums에 존재하지 않습니다.\n";
+			break;
+		}
+		else if (find_num > nums[middle])
+		{
+			start = middle + 1;
+		}
+		else if (find_num < nums[middle])
+		{
+			end = middle - 1;
+		}
+	}
+}
+
+
+	//while (start < end)
+	//{
+	//	if (nums[middle] == find_num)
+	//	{
+	//		cout << find_num << "은 nums[" << middle << "]에 존재합니다.\n";
+	//		break;
+	//	}
+	//	else if (start == end)
+	//	{
+	//		cout << find_num << "은 nums에 존재하지 않습니다.\n";
+	//		break;
+	//	}
+	//	else if (find_num > nums[middle])
+	//	{
+	//		start = middle;
+	//		middle = middle + (end - middle+1) / 2;
+	//	}
+	//	else if (find_num < nums[middle])
+	//	{
+	//		end = middle;
+	//		middle = start + (middle - start+1) / 2;
+	//	}
+	//}

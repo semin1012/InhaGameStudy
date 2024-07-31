@@ -7,12 +7,6 @@
       "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\Inha.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\istream||{3B902123-F8A7-4915-9F01-361F908088D0}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\iostream||{3B902123-F8A7-4915-9F01-361F908088D0}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
@@ -26,7 +20,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,50 +32,31 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "istream",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\istream",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\istream",
-              "ViewState": "AQIAACADAAAAAAAAAAAYwDADAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-07-18T05:40:31.125Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "iostream",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\iostream",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\iostream",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-07-16T01:25:26.416Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Inha.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
               "RelativeDocumentMoniker": "Inha\\Inha.cpp",
               "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp*",
               "RelativeToolTip": "Inha\\Inha.cpp*",
-              "ViewState": "AQIAAFQAAAAAAAAAAAArwHYAAAABAAAA",
+              "ViewState": "AQIAAAcAAAAAAAAAAAArwBQAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-06-26T00:26:54.034Z",
+              "WhenOpened": "2024-07-31T06:37:23.582Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "yvals_core.h",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h",
               "ViewState": "AQIAAAQAAAAAAAAAAAAgwBYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-07-04T06:02:33.734Z"
+              "WhenOpened": "2024-07-04T06:02:33.734Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "string",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string",
