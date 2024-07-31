@@ -4,150 +4,126 @@
 #include <string>
 #include <cstring>
 #include <math.h>
+#include <limits>
 using namespace std;
 
 /*
-// P.514 Listing 08.10
-unsigned long left(unsigned long num, unsigned ct);
-char* left(const char* str, int n = 1);
-
-int main() 
-{
-	char* trip = new char[9];
-	strcpy(trip, "Hawaii!!");
-	// 위의 두 줄을 
-	// const char* trip = "Hawaii!!"; // 라고 써도 됨
-	unsigned long n = 12345678;
-	int i;
-	char* temp;
-	for (i = 1; i < 10; i++)
-	{
-		cout << left(n, i) << endl;
-		temp = left(trip, i);
-		cout << temp << endl;
-		delete[] temp;
-	}
-	return 0;
-}
-
-unsigned long left(unsigned long num, unsigned ct)
-{
-	unsigned digits = 1;
-	unsigned long n = num;
-
-	if (ct == 0 || num == 0)
-		return 0;
-	while (n /= 10)
-		digits++;
-	if (digits > ct)
-	{
-		ct = digits - ct;
-		while (ct--)
-			num /= 10;
-		return num;
-	}
-	else return num;
-}
-
-char* left(const char* str, int n)
-{
-	if (n < 0)
-		n = 0;
-	char* p = new char[n + 1];
-	int i;
-	for (i = 0; i < n && str[i]; i++)
-		p[i] = str[i];
-	while (i <= n)
-		p[i++] = '\0';
-	return p;
-}
+Q1. p.557 문제 5, 6
 */
-/*
-// p.520 Listing 08.11
-template <class T>
-void Swap(T& a, T& b);
-template <class T>
-void Swap(T a[], T b[], int n);
-void Show(int a[]);
-const int Lim = 8;
+// 문제 5번 
+#define MAX 5
+template<class T>
+T max5(T nums[]);
+template<class T>
+void show(T nums[]);
+
+// 문제 6번 
+template<class T>
+T maxn(T nums[], int n);
+template<class T>
+void shown(T nums[], int n);
+template<>
+const char* maxn<const char*>(const char* str[], int n);
+template<>
+void shown<const char*>(const char* str[], int n);
 
 int main()
 {
-	int i = 10;
-	int j = 20;
-	cout << "i, j = " << i << ", " << j << ".\n";
-	cout << "컴파일러가 생성한 int형 교환기를 사용하면\n";
-	Swap(i, j);
-	cout << "이제 i, j = " << i << ", " << j << ".\n";
+	int a[5] = { 0, 1, 2, 3, 4 };
+	double b[5] = { 0.0, 1.1, 2.2, 3.3, 4.4 };
 
-	int d1[Lim] = { 0, 7, 0, 4, 1, 7, 7, 6 };
-	int d2[Lim] = { 0, 6, 2, 0, 1, 9, 6, 9};
+	// 5번
+	cout << "5번\n";
+	cout << "int형 배열: ";
+	show(a);
+	cout << "int형 배열의 최댓값: " << max5(a) << endl;
+	cout << "double형 배열: ";
+	show(b);
+	cout << "double형 배열의 최댓값: " << max5(b) << endl << endl;
 
-	cout << "원본 배열: \n";
-	Show(d1);
-	Show(d2);
-	Swap(d1, d2, Lim);
-	cout << "교환된 배열: \n";
-	Show(d1);
-	Show(d2);
-	return 0;
+	// 6번
+	cout << "6번\n";
+	int a2[6] = { 0, 1, 2, 3, 4, 5 };
+	double b2[4] = { 0.0, 1.1, 2.2, 3.3 };
+	const char* c[5] = {"aa aa", "bb", "c", "ddd ddd", "eee"};
+
+	cout << "a2(int)의 배열: ";
+	shown(a2, 6);
+	cout << "a2(int)의 최댓값: " << maxn(a2, 6) << endl;
+	cout << "b2(double)의 배열: ";
+	shown(b2, 4);
+	cout << "b2(double)의 최댓값 : " << maxn(b2, 4) << endl;
+	cout << "c(const char*)의 배열: ";
+	shown(c, 5);
+	cout << "c(const char*)의 가장 긴 문자열: " << maxn(c, 5) << endl;
 }
 
 template<class T>
-void Swap(T& a, T& b)
+T max5(T nums[])
 {
-	T temp;
-	temp = a;
-	a = b;
-	b = temp;
-}
-
-template<class T>
-void Swap(T a[], T b[], int n)
-{
-	T temp;
-	for (int i = 0; i < n; i++)
+	T max = nums[0];
+	for (int i = 1; i < MAX; i++)
 	{
-		temp = a[i];
-		a[i] = b[i];
-		b[i] = temp;
+		if (nums[i] > max)
+			max = nums[i];
 	}
+	return max;
 }
 
-void Show(int a[])
+template<class T>
+void show(T nums[])
 {
-	cout << a[0] << a[1] << "/";
-	cout << a[2] << a[3] << "/";
-	for (int i = 4; i < Lim; i++)
-		cout << a[i];
+	for (int i = 0; i < MAX; i++)
+	{
+		cout << nums[i] << " ";
+	}
 	cout << endl;
 }
-*/
-/*
-// p.542 listing 08.15
-template <class T>
-T lesser(T a, T b)
+
+template<class T>
+T maxn(T nums[], int n)
 {
-	return a < b ? a : b;
+	T max = nums[0];
+	for (int i = 1; i < n; i++)
+	{
+		if (nums[i] > max)
+			max = nums[i];
+	}
+	return max;
 }
 
-int lesser(int a, int b)
+template<class T>
+void shown(T nums[], int n)
 {
-	a = a < 0 ? -a : a;
-	b = b < 0 ? -b : b;
-	return a < b ? a : b;
+	for (int i = 0; i < n; i++)
+	{
+		cout << nums[i] << " ";
+	}
+	cout << endl;
 }
 
-int main()
+template<>
+const char* maxn<const char*>(const char* str[], int n)
 {
-	int m = 20;
-	int n = -30;
-	double x = 15.5;
-	double y = 25.9;
-
-	cout << lesser(m, n) << endl;
-	cout << lesser(x, y) << endl;
-	cout << lesser<>(m, n) << endl;
-	cout << lesser<int>(x, y) << endl;
+	int max_len = 0;
+	int max_idx = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (strlen(str[i]) > max_len)
+		{
+			max_len = strlen(str[i]);
+			max_idx = i;
+		}
+	}
+	return str[max_idx];
 }
-*/
+
+template<>
+void shown(const char* str[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		cout << str[i] << " / ";
+	}
+	cout << endl;
+}
