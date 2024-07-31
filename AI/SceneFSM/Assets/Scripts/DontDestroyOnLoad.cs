@@ -10,7 +10,7 @@ public class DontDestroyOnLoad : MonoBehaviour
     {
         if ( s_instance)
         {
-            DestroyImmediate(this.gameObject);
+            Destroy(this.gameObject);
             return;
         }
 
