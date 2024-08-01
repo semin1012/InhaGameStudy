@@ -2,193 +2,143 @@
 
 #include <iostream>
 #include <string>
-#include <cstring>
 #include <math.h>
-#include <time.h>
-#include <chrono>
 #include <limits>
+#include <cmath>
 using namespace std;
 
 /*
-Q1. p.557 문제 5, 6
+Q1. 두 개의 원에 대해 중심점 좌표와 반지름을 입력받아
+	두 번째 원이 첫 번째 원의 내부에 있는지
+	첫 번째 원과 겹치는지를 결정하는 프로그램을 작성하라.
+	
+	ex>
+	첫 번째 원 x,y,r: 0.5 5.1 13
+	두 번째 원 x,y,r: 1 1.7 4.5
+	두 번째 원은 첫 번째 원의 내부에 있다. 
 
-Q2. 이진 검색 프로그램을 작성하라.
-	p.122 연습 문제 4처럼 이진 검색 과정을 자세히 출력하라. 
-	순서도 포함.
-	선형검색과 이진검색의 속도를 비교하라.
+Q2. 두 직사각형에 대해 중심점 (x,y), 폭 w, 높이 h를 입력받아
+	두 번째 직사각형이 첫 번째 직사각형의 내부에 있는지,
+	첫 번째 직사각형과 겹치는지를 결정하는 프로그램을 작성하라. 
+	ex>
+	첫 번째 사각형 x,y,w,h: 1 2 3 5.5
+	두 번째 사각형 x,y,w,h: 3 4 4.5 5
+	>> 두 번째 사각형은 첫 번째 사각형과 겹쳤다.
+	ex 2>
+	...
+	>> 내부에 있다.
+	ex 3>
+	...
+	>> 겹치지 않는다. 
 */
 
-#define MAX 100'000
 
-void LinearSearch(int nums[], long long find_num);
-void BinarySearch(int nums[], long long find_num);
+struct Circle
+{
+	double x, y, r;
+};
 
-void ShowLinearSearch(int nums[], long long find_num);
-void ShowBinarySearch(int nums[], long long find_num);
+struct Rectangle
+{
+	double x, y, w, h;
+};
 
-int nums[MAX];
+struct RectanglePos
+{
+	double left, right, top, bottom;
+};
+
+int isCollided(Circle c1, Circle c2);
+int isCollided(Rectangle r1, Rectangle r2);
 
 int main()
 {
-	clock_t start, end;
-	long long find_num;
-
-	// 0~MAX-1 인덱스까지 1~MAX의 값을 넣는다 
-	for (int i = 0; i < MAX; i++)
+	// Q1
+	cout << "원의 세 가지 케이스와 사각형의 다섯 가지 케이스를 입력받습니다.\n";
+	Circle c1, c2;
+	for (int i = 0; i < 3; i++)
 	{
-		nums[i] = i + 1;
-	}
+		cout << "> 첫번째 원 x, y, r: ";
+		cin >> c1.x >> c1.y >> c1.r;
+		cout << "> 두번째 원 x, y, r: ";
+		cin >> c2.x >> c2.y >> c2.r;
 
-	/*========================Binary Search========================*/
-	start = clock();
-	for (int i = 0; i < MAX; i++)
-	{
-		find_num = i + 1;
-		BinarySearch(nums, find_num);
-	}
-	end = clock();
-	cout << "Binary Search 시간: " << (double)(end - start)/CLOCKS_PER_SEC << " ms" << endl;
-
-
-	clock_t start1, end1;
-	/*========================Linear Search========================*/
-	start1 = clock();
-	for (int i = 0; i < MAX; i++)
-	{
-		find_num = i + 1;
-		LinearSearch(nums, find_num);
-	}
-	end1 = clock();
-	cout << "Linear Search 시간: " << (double)(end1 - start1) / CLOCKS_PER_SEC << " ms" << endl << endl;
-
-}
-
-void LinearSearch(int nums[], long long find_num)
-{
-	for (int i = 0; i < MAX; i++)
-	{
-		if (nums[i] == find_num)
+		switch (isCollided(c1, c2))
 		{
-			//cout << find_num << "은 nums[" << i << "]에 존재합니다.\n";
-			return;
-		}
-	}
-	//cout << find_num << "은 nums에 존재하지 않습니다.\n";
-}
-
-void BinarySearch(int nums[], long long find_num)
-{
-	int start = 0, end = MAX-1;
-
-	while (start <= end)
-	{
-		int middle = (start + end) / 2;
-		if (nums[middle] == find_num)
-		{
-			//cout << find_num << "은 nums[" << middle << "]에 존재합니다.\n";
+		case -1:
+			cout << "두 번째 원은 첫 번째 원과 닿지 않는다.\n\n";
+			break;
+		case 0:
+			cout << "두 번째 원은 첫 번째 원과 겹친다.\n\n";
+			break;
+		case 1:
+			cout << "두 번째 원은 첫 번째 원의 내부에 있다.\n\n";
 			break;
 		}
-		else if (start == end)
+	}
+
+	// Q2
+	for ( int i = 0; i < 5; i++ )
+	{
+		Rectangle r1, r2;
+		cout << "> 첫 번째 사각형 x,y,w,h: ";
+		cin >> r1.x >> r1.y >> r1.w >> r1.h;
+		cout << "> 두 번째 사각형 x,y,w,h: ";
+		cin >> r2.x >> r2.y >> r2.w >> r2.h;
+
+		switch (isCollided(r1, r2))
 		{
-			//cout << find_num << "은 nums에 존재하지 않습니다.\n";
+		case -1:
+			cout << "두 번째 사각형은 첫 번째 사각형과 닿지 않는다.\n\n";
+			break;
+		case 0:
+			cout << "두 번째 사각형은 첫 번째 사각형과 겹친다.\n\n";
+			break;
+		case 1:
+			cout << "두 번째 사각형은 첫 번째 사각형의 내부에 있다.\n\n";
 			break;
 		}
-		else if (find_num > nums[middle])
-		{
-			start = middle+1;
-		}
-		else if (find_num < nums[middle])
-		{
-			end = middle-1;
-		}
 	}
 }
 
-void ShowLinearSearch(int nums[], long long find_num)
+int isCollided(Circle c1, Circle c2)
 {
-	cout << "# LinearSearch #\n";
-	for (int i = 0; i < MAX; i++)
+	float d = pow((c1.x - c2.x), 2) + pow((c1.y - c2.y), 2);	// 제곱된 거
+
+	if (d < pow((c1.r + c2.r), 2)) // 닿음
 	{
-		for (int j = 0; j < i; j++)
-		{
-			cout << "  ";
-		}
-		cout << "*\n";
-		for (int j = 0; j < MAX; j++)
-			cout << nums[j] << " ";
-		cout << endl;
-		if (nums[i] == find_num)
-		{
-			cout << find_num << "은 nums[" << i << "]에 존재합니다.\n";
-			return;
-		}
+		if (d < c1.r * c1.r)	// 내부에 있음
+			return 1;
+
+		return 0;
 	}
-	cout << find_num << "은 nums에 존재하지 않습니다.\n";
+
+	return -1;
 }
 
-void ShowBinarySearch(int nums[], long long find_num)
+int isCollided(Rectangle r1, Rectangle r2)
 {
-	cout << "# BinarySearch #\n";
-	int start = 0, middle = (MAX) / 2, end = MAX - 1;
+	RectanglePos rp1, rp2;
+	rp1.left	= r1.x - (r1.w / 2);
+	rp1.right	= r1.x + (r1.w / 2);
+	rp1.top		= r1.y + (r1.h / 2);
+	rp1.bottom	= r1.y - (r1.h / 2);
+
+	rp2.right	= r2.x + (r2.w / 2);
+	rp2.left	= r2.x - (r2.w / 2);
+	rp2.top		= r2.y + (r2.h / 2);
+	rp2.bottom	= r2.y - (r2.h / 2);
 	
+	// 안 닿는 경우에 대해서 조건 검사
+	if (rp1.left > rp2.right) return -1;
+	if (rp1.right < rp2.left) return -1;
+	if (rp1.top < rp2.bottom) return -1;
+	if (rp1.bottom > rp2.top) return -1;
 
-	while (start <= end)
-	{
-		
-		middle = (start + end) / 2;
-		for (int i = 0; i < middle; i++)
-		{
-			cout << "   ";
-		}
-		cout << "*\n";
-		for (int i = 0; i < MAX; i++)
-		{
-			printf("%2d ", nums[i]);
-			//cout << nums[i] << " ";
-		}
-		cout << endl;
-		if (nums[middle] == find_num)
-		{
-			cout << find_num << "은 nums[" << middle << "]에 존재합니다.\n";
-			break;
-		}
-		else if (start == end)
-		{
-			cout << find_num << "은 nums에 존재하지 않습니다.\n";
-			break;
-		}
-		else if (find_num > nums[middle])
-		{
-			start = middle + 1;
-		}
-		else if (find_num < nums[middle])
-		{
-			end = middle - 1;
-		}
-	}
+	// 완전 겹치는 경우에 대해서 조건 검사
+	if (rp1.left < rp2.left && rp1.right > rp2.right && rp1.top > rp2.top && rp1.bottom < rp2.bottom)
+		return 1;
+
+	// 그 외의 경우는 그냥 겹치는 것
+	return 0;
 }
-
-
-	//while (start < end)
-	//{
-	//	if (nums[middle] == find_num)
-	//	{
-	//		cout << find_num << "은 nums[" << middle << "]에 존재합니다.\n";
-	//		break;
-	//	}
-	//	else if (start == end)
-	//	{
-	//		cout << find_num << "은 nums에 존재하지 않습니다.\n";
-	//		break;
-	//	}
-	//	else if (find_num > nums[middle])
-	//	{
-	//		start = middle;
-	//		middle = middle + (end - middle+1) / 2;
-	//	}
-	//	else if (find_num < nums[middle])
-	//	{
-	//		end = middle;
-	//		middle = start + (middle - start+1) / 2;
-	//	}
-	//}
