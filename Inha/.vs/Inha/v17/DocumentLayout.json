@@ -7,6 +7,18 @@
       "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\Inha.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|D:\\InhaGameStudy\\Inha\\Inha\\usenmsp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\usenmsp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|D:\\InhaGameStudy\\Inha\\Inha\\namesp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\namesp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|D:\\InhaGameStudy\\Inha\\Inha\\namesp.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\namesp.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
@@ -20,7 +32,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -32,20 +44,58 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "usenmsp.cpp",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\usenmsp.cpp",
+              "RelativeDocumentMoniker": "Inha\\usenmsp.cpp",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\usenmsp.cpp",
+              "RelativeToolTip": "Inha\\usenmsp.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-08-01T02:59:04.236Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "namesp.cpp",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\namesp.cpp",
+              "RelativeDocumentMoniker": "Inha\\namesp.cpp",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\namesp.cpp",
+              "RelativeToolTip": "Inha\\namesp.cpp",
+              "ViewState": "AQIAAAkAAAAAAAAAAAArwB4AAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-08-01T02:55:14.175Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "namesp.h",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\namesp.h",
+              "RelativeDocumentMoniker": "Inha\\namesp.h",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\namesp.h",
+              "RelativeToolTip": "Inha\\namesp.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-08-01T02:53:17.028Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Inha.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
               "RelativeDocumentMoniker": "Inha\\Inha.cpp",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
-              "RelativeToolTip": "Inha\\Inha.cpp",
-              "ViewState": "AQIAAGAAAAAAAAAAAAAAAHwAAAAgAAAA",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp*",
+              "RelativeToolTip": "Inha\\Inha.cpp*",
+              "ViewState": "AQIAAEcAAAAAAAAAAAAAAFsAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-07-31T06:37:23.582Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "yvals_core.h",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h",
@@ -55,7 +105,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "string",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string",

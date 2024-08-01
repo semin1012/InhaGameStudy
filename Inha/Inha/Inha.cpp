@@ -4,6 +4,7 @@
 #include <string>
 #include <math.h>
 #include <limits>
+#include <iomanip>
 #include <cmath>
 using namespace std;
 
@@ -30,115 +31,118 @@ Q2. 두 직사각형에 대해 중심점 (x,y), 폭 w, 높이 h를 입력받아
 	ex 3>
 	...
 	>> 겹치지 않는다. 
+
+Q3. 동전을 백만 번 던지는 것을 시뮬레이션 하고
+	앞면과 뒷면이 나오는 수를 출력하는 프로그램을 작성하라. 
+	다음과 같이 각각 앞뒤삭 몇 %씩 나오는지 계산해 출력하라.
+	ex> 
+		100			번째일 때 ... 앞면 00 % 뒷면 00 %
+		1'000		번째일 때 ... 앞면 00 % 뒷면 00 %
+		10'000		번째일 때 ... 앞면 00 % 뒷면 00 %
+		100'000		번째일 때 ... 앞면 00 % 뒷면 00 %
+		1'000'000	번째일 때 ... 앞면 00 % 뒷면 00 %
+
+Q4. 아이템 목록이 다음과 같을 때
+	등급		아이템		확률		아이템		확률
+	-----------------------------------------------------
+	5star		A-Item		1%
+	-----------------------------------------------------
+	4star		B-Item		3%			C-Item		 3%
+	-----------------------------------------------------
+	3star		D-Item		5%			E-Item		 5%
+				F-Item		5%
+	-----------------------------------------------------
+	2star		G-Item		10%			H-Item		10%
+				I-Item		10%			J-Item		10%
+	-----------------------------------------------------
+	1star		K-Item		38%
+	-----------------------------------------------------
+	각 아이템이 지정된 확률에 맞게 정확히 나올 수 있도록 프로그램을 작성하시오.
+	ex> 횟수 ? 100		A : 1, B : 3, C : 3, D : 5 .....................
+		횟수 ? 1000		A : 10, B : 30, C : 30, D : 50 .................
 */
 
+#define ITEM_COUNT	11
 
-struct Circle
+struct Item
 {
-	double x, y, r;
+	char type;
+	int count = 0;
 };
 
-struct Rectangle
-{
-	double x, y, w, h;
-};
+const int itemPercent[ITEM_COUNT] = { 1, 3, 3, 5, 5, 5, 10, 10, 10, 10, 38 };
 
-struct RectanglePos
-{
-	double left, right, top, bottom;
-};
-
-int isCollided(Circle c1, Circle c2);
-int isCollided(Rectangle r1, Rectangle r2);
+void setItemPercentage(int item[]);
 
 int main()
 {
-	// Q1
-	cout << "원의 세 가지 케이스와 사각형의 다섯 가지 케이스를 입력받습니다.\n";
-	Circle c1, c2;
-	for (int i = 0; i < 3; i++)
-	{
-		cout << "> 첫번째 원 x, y, r: ";
-		cin >> c1.x >> c1.y >> c1.r;
-		cout << "> 두번째 원 x, y, r: ";
-		cin >> c2.x >> c2.y >> c2.r;
-
-		switch (isCollided(c1, c2))
-		{
-		case -1:
-			cout << "두 번째 원은 첫 번째 원과 닿지 않는다.\n\n";
-			break;
-		case 0:
-			cout << "두 번째 원은 첫 번째 원과 겹친다.\n\n";
-			break;
-		case 1:
-			cout << "두 번째 원은 첫 번째 원의 내부에 있다.\n\n";
-			break;
-		}
-	}
-
-	// Q2
-	for ( int i = 0; i < 5; i++ )
-	{
-		Rectangle r1, r2;
-		cout << "> 첫 번째 사각형 x,y,w,h: ";
-		cin >> r1.x >> r1.y >> r1.w >> r1.h;
-		cout << "> 두 번째 사각형 x,y,w,h: ";
-		cin >> r2.x >> r2.y >> r2.w >> r2.h;
-
-		switch (isCollided(r1, r2))
-		{
-		case -1:
-			cout << "두 번째 사각형은 첫 번째 사각형과 닿지 않는다.\n\n";
-			break;
-		case 0:
-			cout << "두 번째 사각형은 첫 번째 사각형과 겹친다.\n\n";
-			break;
-		case 1:
-			cout << "두 번째 사각형은 첫 번째 사각형의 내부에 있다.\n\n";
-			break;
-		}
-	}
-}
-
-int isCollided(Circle c1, Circle c2)
-{
-	float d = pow((c1.x - c2.x), 2) + pow((c1.y - c2.y), 2);	// 제곱된 거
-
-	if (d < pow((c1.r + c2.r), 2)) // 닿음
-	{
-		if (d < c1.r * c1.r)	// 내부에 있음
-			return 1;
-
-		return 0;
-	}
-
-	return -1;
-}
-
-int isCollided(Rectangle r1, Rectangle r2)
-{
-	RectanglePos rp1, rp2;
-	rp1.left	= r1.x - (r1.w / 2);
-	rp1.right	= r1.x + (r1.w / 2);
-	rp1.top		= r1.y + (r1.h / 2);
-	rp1.bottom	= r1.y - (r1.h / 2);
-
-	rp2.right	= r2.x + (r2.w / 2);
-	rp2.left	= r2.x - (r2.w / 2);
-	rp2.top		= r2.y + (r2.h / 2);
-	rp2.bottom	= r2.y - (r2.h / 2);
+	int item[100];
+	int idx = 0;
+	int rand_num;
+	int unit = 100;
+	Item itemCnt[ITEM_COUNT] = { {'A', 0},{'B', 0},{'C', 0},{'D', 0},{'E', 0},{'F', 0},{'G', 0},{'H', 0},{'I', 0},{'J', 0},{'K', 0}};
 	
-	// 안 닿는 경우에 대해서 조건 검사
-	if (rp1.left > rp2.right) return -1;
-	if (rp1.right < rp2.left) return -1;
-	if (rp1.top < rp2.bottom) return -1;
-	if (rp1.bottom > rp2.top) return -1;
+	setItemPercentage(item);
 
-	// 완전 겹치는 경우에 대해서 조건 검사
-	if (rp1.left < rp2.left && rp1.right > rp2.right && rp1.top > rp2.top && rp1.bottom < rp2.bottom)
-		return 1;
+	for (int i = 1; i <= 1'000'000; i++)
+	{
+		while (1)
+		{
+			rand_num = rand() % 100;
+			if (item[rand_num] != 99)	// 이미 뽑힌 공간이 아니라면 랜덤 돌리는 거 그만함
+				break;
+		}
 
-	// 그 외의 경우는 그냥 겹치는 것
-	return 0;
+		itemCnt[item[rand_num]].count++;
+		item[rand_num] = 99;			// 이미 뽑힌 공간이라는 의미로 99 넣음
+
+		if (i % 100 == 0) setItemPercentage(item);
+
+		if (i == unit)
+		{
+			cout << "횟수 " << std::left << setw(7) << i << "  A: " << itemCnt[0].count << "  B: " << itemCnt[1].count <<
+				"  C: " << itemCnt[2].count << "  D: " << itemCnt[3].count << "  E: " << itemCnt[4].count << "  F: " << itemCnt[5].count << 
+				"  G: " << itemCnt[6].count << "  H: " << itemCnt[7].count << "  I: " << itemCnt[8].count << "  J: " << itemCnt[9].count << 
+				"  K: " << itemCnt[10].count << endl;
+			unit *= 10;
+		}
+	}
 }
+
+void setItemPercentage(int item[])
+{
+	int idx = 0;
+	for (int i = 0; i < ITEM_COUNT; i++)
+	{
+		for (int j = 0; j < itemPercent[i]; j++)
+		{
+			item[idx++] = i;
+		}
+	}
+}
+
+
+
+/*
+int main()
+{
+	srand(time(NULL));
+
+	int front = 0, back = 0;
+	bool randNum;
+	int unit = 100;
+
+	for (int i = 1; i <= 1'000'000; i++)
+	{
+		randNum = rand() % 2;
+		if (randNum == 1) front++;
+		else back++;
+		if (i == unit)
+		{
+			//cout << front << " , " << back << endl;
+			cout << setw(6) << i << "번째일 때 앞면 " << (front / (float)unit) * 100 << " %  뒷면 " << (back/(float)unit)*100 << "%\n";
+			unit *= 10;
+		}
+	}
+}
+*/
