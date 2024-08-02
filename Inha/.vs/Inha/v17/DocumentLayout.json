@@ -52,8 +52,7 @@
               "RelativeToolTip": "Inha\\usenmsp.cpp",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-01T02:59:04.236Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-01T02:59:04.236Z"
             },
             {
               "$type": "Document",
@@ -65,8 +64,7 @@
               "RelativeToolTip": "Inha\\namesp.cpp",
               "ViewState": "AQIAAAkAAAAAAAAAAAArwB4AAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-01T02:55:14.175Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-01T02:55:14.175Z"
             },
             {
               "$type": "Document",
@@ -86,9 +84,9 @@
               "Title": "Inha.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
               "RelativeDocumentMoniker": "Inha\\Inha.cpp",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
-              "RelativeToolTip": "Inha\\Inha.cpp",
-              "ViewState": "AQIAAEUAAAAAAAAAAAAAAGoAAAAAAAAA",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp*",
+              "RelativeToolTip": "Inha\\Inha.cpp*",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAawCQAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-07-31T06:37:23.582Z",
               "EditorCaption": ""
