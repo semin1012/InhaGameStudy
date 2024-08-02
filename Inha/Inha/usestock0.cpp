@@ -17,7 +17,7 @@ int main()
 	fluffy_the_cat.show();
 }
 */
-
+/*
 int main()
 {
 	using std::cout;
@@ -41,3 +41,4 @@ int main()
 
 	return 0;
 }
+*/
