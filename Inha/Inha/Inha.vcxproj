@@ -134,10 +134,13 @@
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</SDLCheck>
     </ClCompile>
     <ClCompile Include="namesp.cpp" />
+    <ClCompile Include="stock00.cpp" />
     <ClCompile Include="usenmsp.cpp" />
+    <ClCompile Include="usestock0.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="namesp.h" />
+    <ClInclude Include="stock00.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

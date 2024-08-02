@@ -24,9 +24,18 @@
     <ClCompile Include="usenmsp.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="stock00.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="usestock0.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="namesp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="stock00.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

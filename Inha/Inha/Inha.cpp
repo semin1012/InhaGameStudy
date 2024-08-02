@@ -16,35 +16,5 @@ Q1. 학교에 100개의 사물함과 100명의 학생이 있다.
 	열려있는 모든 사물함의 번호를 출력하는 프로그램을 작성하라.
 */
 
-#define COUNT 100
-
-bool SetLocker(bool locker);
-void PrintLocker(bool locker[]);
-
-int main()
-{
-	bool locker[100] = { 0 };		// false는 닫힘, true는 열림 
-
-	for (int i = 0; i < COUNT; i++)
-	{
-		for (int j = i; j < COUNT; j += (i + 1)) 
-			locker[j] = SetLocker(locker[j]);
-	}
-
-	PrintLocker(locker);
-}
-
-bool SetLocker(bool locker)
-{
-	if (locker == false)
-		return true;
-	return false;
-}
-
-void PrintLocker(bool locker[])
-{
-	for (int i = 0; i < COUNT; i++)
-	{
-		if (locker[i] == true) cout << i+1<< endl;
-	}
-}
+/**/
+// p.639 Listing 10.1
