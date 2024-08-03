@@ -1,48 +1,67 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <stdio.h>
+#include "IntStack.h"
 using namespace std;
-
-/*
-Q1. 학교에 100개의 사물함과 100명의 학생이 있다.
-	모든 사물함이 첫날에는 닫혀 있다.
-	학생이 교실로 들어가면서
-		s1이라는 첫번째 학생은 모든 사물함을 연다.
-		s2라는 두번째 학생은 L2부터 시작하여 1개씩 건너뛰면서 사물함을 닫는다.
-		s3라는 세번째 학생은 L3부터 시작하여 2개씩 건너뛰면서 사물함의 상태를 변경한다. 
-		( 열림 <-> 닫힘 )
-		...
-	학생 s100이 L100 사물함을 변경할 때까지 계속된다. 
-	모든 학생이 교실을 통과하고 난 다음, 어떤 사물함이 열려있는지 
-	열려있는 모든 사물함의 번호를 출력하는 프로그램을 작성하라.
-
-Q2. 점 p0(x0, y0)로부터 점 p1(x1, y1)까지의 직선이 주어졌을 때 
-	점 p2(x2, y2)가 선의 왼쪽 또는 오른쪽에 있는지 판단할 수 있다.	
-
-	점 p0, p1, p2를 입력받아 p2가 어디에 위치하는지 판단하는 프로그램을 작성하라.
-
-	ex> p0, p1, p2: 4.4, 2 6.5 9.5 -5 4
-		>> p2는 선의 왼쪽에 있다
-	ex> p0, p1, p2: 1 1 5 5 2 2
-		>> p2는 선상에 있다.
-	ex> p0, p1, p2: 3.4 2 6.5 9.5 5 2.5
-		>> p2는 선의 오른쪽에 있다
-*/
-
-struct POINT
-{
-	float x, y;
-};
 
 int main()
 {
-	POINT p0, p1, p2;
-	int result;
-	cout << "p0, p1, p2: ";
-	cin >> p0.x >> p0.y >> p1.x >> p1.y >> p2.x >> p2.y;
+	IntStack s;
+	if (Initialize(&s, 5) == -1)
+	{
+		puts("스택 생성에 실패했습니다.\n");
+		return 1;
+	}
 
-	result = ((p1.x - p0.x) * (p2.y - p0.y) - (p2.x - p0.x) * (p1.y - p0.x));
+	while (1)
+	{
+		int menu, x;
+		printf("현재 데이터 수: %d / %d\n", Size(&s), Capacity(&s));
+		printf("(1)푸시 (2)팝 (3)피크 (4)출력 (5)검색 (6)클리어 (0)종료: ");
+		scanf("%d", &menu);
 
-	if (result > 0) cout << "p2는 선의 왼쪽에 있다.\n";
-	else if (result < 0)cout << "p2는 선의 오른쪽에 있다.\n";
-	else cout << "p2는 직선 위에 있다.\n";
+		if (menu == 0) break;
+		switch (menu)
+		{
+		case 1:
+			printf("데이터: ");
+			scanf("%d", &x);
+			if (Push(&s, x) == -1)
+				puts("\a오류: 푸시에 실패했습니다.\n");
+			break;
+		case 2:
+			if (Pop(&s, &x) == -1)
+				puts("\a오류: 팝에 실패했습니다.\n");
+			else printf("팝 데이터는 %d입니다.\n", x);
+			break;
+		case 3:
+			if (Peek(&s, &x) == -1)
+				puts("\a오류: 피크에 실패했습니다.\n");
+			else
+				printf("피크 데이터는 %d입니다.\n", x);
+			break;
+		case 4:
+			Print(&s);
+			break;
+		case 5:
+			int find;
+			printf("검색 데이터: ");
+			scanf("%d", &find);
+			int idx;
+			idx = Search(&s, find);
+			if (idx == -1)
+				puts("\a오류: 검색 데이터가 존재하지 않습니다.\n");
+			else printf("검색 데이터는 %d번째에 존재합니다.\n", idx);
+			break;
+		case 6:
+			Clear(&s);
+			printf("클리어했습니다.\n");
+			break;
+		default:
+			printf("다시 입력하세요.\n");
+			break;
+		}
+	}
+	Terminate(&s);
+	return 0;
 }
