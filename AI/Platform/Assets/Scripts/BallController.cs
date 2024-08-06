@@ -1,22 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class BallController : MonoBehaviour
 {
 	Vector3 playerDir;
 	GameObject player;
+	private float time = 0.0f;
 
-    public void Shoot()
+	public void Shoot()
     {
-        GetComponent<Rigidbody>().AddForce(transform.forward * 300f);
+		GetComponent<Rigidbody>().AddForce(transform.forward * 500f);
     }
     void Start()
     {
         Application.targetFrameRate = 60;
         player = GameObject.FindWithTag("Player");
-		SetRotateEnermyToPlayer();
         Shoot();
+	}
+
+	void Update()
+	{
+		time += Time.deltaTime;
+
+		if (time > 3.0f)
+		{
+			Destroy(gameObject);
+		}
 	}
 
 	void SetRotateEnermyToPlayer()

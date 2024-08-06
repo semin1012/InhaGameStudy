@@ -17,7 +17,7 @@ public class EnermyController : MonoBehaviour
 	{
 		FAR = 10,
 		MIDDLE = 7,
-		CLOSE = 5
+		CLOSE = 3
 	}
 
 	private Dictionary<STATE, IState<EnermyController>> dicState = new Dictionary<STATE, IState<EnermyController>>();

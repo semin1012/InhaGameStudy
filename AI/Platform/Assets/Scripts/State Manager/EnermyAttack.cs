@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnermyAttack : MonoBehaviour, IState<EnermyController>
 {
@@ -45,6 +46,7 @@ public class EnermyAttack : MonoBehaviour, IState<EnermyController>
 		GameObject ball = Instantiate(sender.ballPrefab);
 		ball.transform.position = sender.transform.position;
 		ball.transform.forward = sender.transform.forward;
+		ball.transform.LookAt(player.transform);
 		ball.GetComponent<BallController>().Shoot();
 		time = 0;
 	}

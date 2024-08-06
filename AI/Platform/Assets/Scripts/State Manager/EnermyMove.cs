@@ -29,6 +29,7 @@ public class EnermyMove : MonoBehaviour, IState<EnermyController>
 			TurnEnermy(sender);
 			bTurn = false;
 		}
+
 		if (IsEndOfPlatform(sender))	// ÇÃ·§ÆûÀÇ ³¡ÀÌ¸é Turn
 			TurnEnermy(sender);
 
