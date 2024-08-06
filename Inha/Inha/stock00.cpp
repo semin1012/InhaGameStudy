@@ -3,7 +3,6 @@
 
 Stock::Stock()
 {
-	std::cout << "디폴트 생성자가 호출되었습니다.\n";
 	company = "no name";
 	shares = 0;
 	share_val = 0.0;
@@ -12,7 +11,6 @@ Stock::Stock()
 
 Stock::Stock(const std::string& co, long n, double pr)
 {
-	std::cout << co << "를 사용하는 생성자가 호출되었습니다.\n";
 	company = co;
 
 	if (n < 0)
@@ -27,7 +25,6 @@ Stock::Stock(const std::string& co, long n, double pr)
 
 Stock::~Stock()
 {
-	std::cout << "안녕, " << company << "!\n";
 }
 
 //void Stock::acquire(const std::string& co, long n, double pr)
@@ -82,7 +79,7 @@ void Stock::update(double price)
 	set_tot();
 }
 
-void Stock::show()
+void Stock::show() const
 {
 	using std::cout;
 	using std::ios_base;
@@ -98,4 +95,12 @@ void Stock::show()
 	
 	cout.setf(orig, ios_base::floatfield);
 	cout.precision(prec);
+}
+
+const Stock& Stock::topval(const Stock& s) const
+{
+	if (s.total_val > total_val)
+		return s;
+	else
+		return *this;
 }
