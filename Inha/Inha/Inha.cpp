@@ -33,151 +33,55 @@ Q2. p.705 1번
 	4, 5번 보류
 	4. 총 예금주 명단 출력
 	5. 총 예금액 출력
+
+Q3. p.706 6번
+	M1(0, 0), M2(5, 5)
+	M1.add(M2) -> M1.showmove();
 */
 
-#include "BankAccount.h"
-#define ACCOUNT_MAX_NUM 10
-
-void PrintMenu();
-void AddAccount(BankAccount& account, int& idx);
-void InputDeposit(BankAccount account[], int& idx);
-void InputWithdraw(BankAccount account[], int& idx);
-void PrintAllName(BankAccount account[], int& idx);
-void PrintAllAccount(BankAccount account[], int& idx);
+class Move
+{
+private:
+	double x;
+	double y;
+public:
+	Move(double a = 0, double b = 0);
+	void showmove() const;
+	Move add(const Move& m);
+	void reset(double a = 0, double b = 0);
+};
 
 int main()
 {
-	BankAccount *account = new BankAccount[ACCOUNT_MAX_NUM];
-	int idx = 0;
-	int menu;
-
-	AddAccount(account[idx], idx);
-
-	while (1)
-	{
-		PrintMenu();
-		cin >> menu;
-
-		switch (menu)
-		{
-		case 1:
-			AddAccount(account[idx], idx);
-			break;
-		case 2:
-			InputDeposit(account, idx);
-			break;
-		case 3:
-			InputWithdraw(account, idx);
-			break;
-		case 4:
-			PrintAllName(account, idx);
-			break;
-		case 5:
-			PrintAllAccount(account, idx);
-			break;
-		default:
-			cout << "메뉴를 다시 입력하세요.\n";
-		}
-	}
+	Move m1 = Move();
+	cout << "m1: ";
+	m1.showmove();
+	Move m2 = Move(5, 5);
+	cout << "m2: ";
+	m2.showmove();
+	(m1.add(m2)).showmove();
 }
 
-void PrintMenu()
+Move::Move(double a, double b)
 {
-	cout << "1. 예금 새로 만들기\n";
-	cout << "2. 예금 입력\n";
-	cout << "3. 예금 출력\n";
-	cout << "4. 총 예금주 명단 출력\n";
-	cout << "5. 총 예금액 출력\n";
-	cout << "=================================\n";
-	cout << "메뉴를 입력해 주세요: ";
+	x = a;
+	y = b;
 }
 
-void AddAccount(BankAccount& account, int& idx)
+void Move::showmove() const
 {
-	string name, num;
-
-	cout << "예금주 이름, 초기 입금액을 입력해 주세요: ";
-	cin >> name >> num;
-	account = BankAccount(name, num, stod(num));
-	idx++;
+	cout << "x = " << x << ", y = " << y << '\n';
 }
 
-void InputDeposit(BankAccount account[], int& idx)
+Move Move::add(const Move& m)
 {
-	double num;
-	string name;
-	bool find = false;
-	cout << "입금할 예금주의 이름을 입력하세요: ";
-	cin >> name;
-	int i = 0;
-
-	for (i; i < idx; i++)
-	{
-		// 맞는 이름 찾으면 break
-		if (account[i].isItSameName(name))
-		{
-			find = true;
-			break;
-		}
-	}
-
-	if (find == false)
-	{
-		cout << "해당하는 예금주가 없습니다.\n";
-		return;
-	}
-
-	cout << "예금할 금액을 입력하세요: ";
-	cin >> num;
-
-	account[i].deposit(num);
-	account[i].show();
+	x += m.x;
+	y += m.y;
+	return *this;
 }
 
-void InputWithdraw(BankAccount account[], int& idx)
+void Move::reset(double a, double b)
 {
-	double num;
-	string name;
-	bool find = false;
-	cout << "출력할 예금주의 이름을 입력하세요: ";
-	cin >> name;
-	int i = 0;
-
-	for (i; i < idx; i++)
-	{
-		// 맞는 이름 찾으면 break
-		if (account[i].isItSameName(name))
-		{
-			find = true;
-			break;
-		}
-	}
-
-	if (find == false)
-	{
-		cout << "해당하는 예금주가 없습니다.\n";
-		return;
-	}
-
-	cout << "출금할 금액을 입력하세요: ";
-	cin >> num;
-
-	account[i].withdraw(num);
-	account[i].show();
-}
-
-void PrintAllName(BankAccount account[], int& idx)
-{
-	for (int i = 0; i < idx; i++)
-	{
-		account[i].showName();
-	}
-}
-
-void PrintAllAccount(BankAccount account[], int& idx)
-{
-	for (int i = 0; i < idx; i++)
-	{
-		account[i].show();
-	}
+	x = a;
+	y = b;
 }
