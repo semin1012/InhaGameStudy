@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "D:\\InhaGameStudy\\Inha\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|D:\\InhaGameStudy\\Inha\\Inha\\IntQueue.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\IntQueue.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|D:\\InhaGameStudy\\Inha\\Inha\\IntQueueTest.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\IntQueueTest.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|D:\\InhaGameStudy\\Inha\\Inha\\IntQueue.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\IntQueue.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|solutionrelative:Inha\\Inha.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -60,7 +72,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -73,32 +85,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BankAccount.cpp",
-              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\BankAccount.cpp",
-              "RelativeDocumentMoniker": "Inha\\BankAccount.cpp",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\BankAccount.cpp",
-              "RelativeToolTip": "Inha\\BankAccount.cpp",
-              "ViewState": "AQIAABUAAAAAAAAAAAAAABsAAAABAAAA",
+              "Title": "IntQueueTest.cpp",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\IntQueueTest.cpp",
+              "RelativeDocumentMoniker": "Inha\\IntQueueTest.cpp",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\IntQueueTest.cpp",
+              "RelativeToolTip": "Inha\\IntQueueTest.cpp",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAACgAAAAHAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-06T02:23:13.37Z",
+              "WhenOpened": "2024-08-06T06:03:18.517Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "BankAccount.h",
-              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\BankAccount.h",
-              "RelativeDocumentMoniker": "Inha\\BankAccount.h",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\BankAccount.h",
-              "RelativeToolTip": "Inha\\BankAccount.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-08-06T02:19:15.691Z",
+              "DocumentIndex": 0,
+              "Title": "IntQueue.cpp",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\IntQueue.cpp",
+              "RelativeDocumentMoniker": "Inha\\IntQueue.cpp",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\IntQueue.cpp*",
+              "RelativeToolTip": "Inha\\IntQueue.cpp*",
+              "ViewState": "AQIAABcAAAAAAAAAAAAAADEAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-08-06T06:02:40.252Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "IntStack.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\IntStack.cpp",
               "RelativeDocumentMoniker": "Inha\\IntStack.cpp",
@@ -111,7 +123,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 13,
               "Title": "IntStack.h",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\IntStack.h",
               "RelativeDocumentMoniker": "Inha\\IntStack.h",
@@ -124,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "usestock0.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\usestock0.cpp",
               "RelativeDocumentMoniker": "Inha\\usestock0.cpp",
@@ -137,7 +149,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "stock00.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\stock00.cpp",
               "RelativeDocumentMoniker": "Inha\\stock00.cpp",
@@ -150,7 +162,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "stock00.h",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\stock00.h",
               "RelativeDocumentMoniker": "Inha\\stock00.h",
@@ -163,7 +175,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "usenmsp.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\usenmsp.cpp",
               "RelativeDocumentMoniker": "Inha\\usenmsp.cpp",
@@ -176,7 +188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "namesp.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\namesp.cpp",
               "RelativeDocumentMoniker": "Inha\\namesp.cpp",
@@ -190,6 +202,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "Inha.cpp",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
+              "RelativeDocumentMoniker": "Inha\\Inha.cpp",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
+              "RelativeToolTip": "Inha\\Inha.cpp",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAqwCgAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-07-31T06:37:23.582Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BankAccount.cpp",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\BankAccount.cpp",
+              "RelativeDocumentMoniker": "Inha\\BankAccount.cpp",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\BankAccount.cpp",
+              "RelativeToolTip": "Inha\\BankAccount.cpp",
+              "ViewState": "AQIAABUAAAAAAAAAAAAAABsAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-08-06T02:23:13.37Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "BankAccount.h",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\BankAccount.h",
+              "RelativeDocumentMoniker": "Inha\\BankAccount.h",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\BankAccount.h",
+              "RelativeToolTip": "Inha\\BankAccount.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-08-06T02:19:15.691Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "namesp.h",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\namesp.h",
               "RelativeDocumentMoniker": "Inha\\namesp.h",
@@ -202,20 +253,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Inha.cpp",
-              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
-              "RelativeDocumentMoniker": "Inha\\Inha.cpp",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
-              "RelativeToolTip": "Inha\\Inha.cpp",
-              "ViewState": "AQIAADkAAAAAAAAAAAAkwFMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-31T06:37:23.582Z",
+              "DocumentIndex": 2,
+              "Title": "IntQueue.h",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\IntQueue.h",
+              "RelativeDocumentMoniker": "Inha\\IntQueue.h",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\IntQueue.h",
+              "RelativeToolTip": "Inha\\IntQueue.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-08-06T05:57:47.948Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "yvals_core.h",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\yvals_core.h",
@@ -225,7 +276,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 15,
               "Title": "string",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string",

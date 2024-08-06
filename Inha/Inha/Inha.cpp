@@ -37,51 +37,8 @@ Q2. p.705 1번
 Q3. p.706 6번
 	M1(0, 0), M2(5, 5)
 	M1.add(M2) -> M1.showmove();
+
+Q4. 원형큐 구현 p.164 코드를 기반으로 해서 작성
+	clear, search 메뉴도 추가
 */
 
-class Move
-{
-private:
-	double x;
-	double y;
-public:
-	Move(double a = 0, double b = 0);
-	void showmove() const;
-	Move add(const Move& m);
-	void reset(double a = 0, double b = 0);
-};
-
-int main()
-{
-	Move m1 = Move();
-	cout << "m1: ";
-	m1.showmove();
-	Move m2 = Move(5, 5);
-	cout << "m2: ";
-	m2.showmove();
-	(m1.add(m2)).showmove();
-}
-
-Move::Move(double a, double b)
-{
-	x = a;
-	y = b;
-}
-
-void Move::showmove() const
-{
-	cout << "x = " << x << ", y = " << y << '\n';
-}
-
-Move Move::add(const Move& m)
-{
-	x += m.x;
-	y += m.y;
-	return *this;
-}
-
-void Move::reset(double a, double b)
-{
-	x = a;
-	y = b;
-}

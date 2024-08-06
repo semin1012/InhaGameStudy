@@ -5,11 +5,11 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
 	Vector3 playerDir;
-	
 	GameObject player;
+
     public void Shoot()
     {
-        GetComponent<Rigidbody>().AddForce(transform.forward * 200f);
+        GetComponent<Rigidbody>().AddForce(transform.forward * 300f);
     }
     void Start()
     {

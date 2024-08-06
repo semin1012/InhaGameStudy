@@ -36,6 +36,12 @@
     <ClCompile Include="BankAccount.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="IntQueue.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="IntQueueTest.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="namesp.h">
@@ -48,6 +54,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="BankAccount.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="IntQueue.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

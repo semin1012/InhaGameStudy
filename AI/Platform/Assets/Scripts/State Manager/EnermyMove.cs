@@ -48,7 +48,7 @@ public class EnermyMove : MonoBehaviour, IState<EnermyController>
 
 	bool FindPlayer(EnermyController sender)
 	{
-		Collider[] colliders = Physics.OverlapSphere(sender.transform.position, 7f);
+		Collider[] colliders = Physics.OverlapSphere(sender.transform.position, (float)EnermyController.DISTANCE.FAR);
 
 		if (colliders.Length > 0)
 		{

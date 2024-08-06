@@ -33,7 +33,7 @@ public class EnermyWatch : IState<EnermyController>
 
 	bool IsClosedPlayer(EnermyController sender)
 	{
-		Collider[] colliders = Physics.OverlapSphere(sender.transform.position, 2f);
+		Collider[] colliders = Physics.OverlapSphere(sender.transform.position, (float)EnermyController.DISTANCE.MIDDLE);
 
 		if (colliders.Length > 0)
 		{
@@ -50,7 +50,7 @@ public class EnermyWatch : IState<EnermyController>
 
 	bool IsBecomeDistanceToPlayer(EnermyController sender)
 	{
-		Collider[] colliders = Physics.OverlapSphere(sender.transform.position, 8.5f);
+		Collider[] colliders = Physics.OverlapSphere(sender.transform.position, (float)EnermyController.DISTANCE.FAR+1);
 
 		if (colliders.Length > 0)
 		{
@@ -65,6 +65,7 @@ public class EnermyWatch : IState<EnermyController>
 		}
 		return true;
 	}
+
 	void SetRotateEnermyToPlayer(EnermyController sender)
 	{
 		// 플레이어 방향을 바라보도록 회전

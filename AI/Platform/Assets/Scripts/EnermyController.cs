@@ -13,6 +13,13 @@ public class EnermyController : MonoBehaviour
 		Attack
 	}
 
+	public enum DISTANCE
+	{
+		FAR = 10,
+		MIDDLE = 7,
+		CLOSE = 5
+	}
+
 	private Dictionary<STATE, IState<EnermyController>> dicState = new Dictionary<STATE, IState<EnermyController>>();
 	private StateMachine<EnermyController> sm;
 	public GameObject ballPrefab;
