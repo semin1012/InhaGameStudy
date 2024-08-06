@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BankAccount.cpp" />
     <ClCompile Include="Inha.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -140,6 +141,7 @@
     <ClCompile Include="usestock0.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BankAccount.h" />
     <ClInclude Include="IntStack.h" />
     <ClInclude Include="namesp.h" />
     <ClInclude Include="stock00.h" />

@@ -19,88 +19,165 @@ Q1. 임의의 한 단어를 생성하고 사용자가 한번에
 	> 단어 중 한 글자를 입력하시오. a**** > a
 	>> a는 이미 단어에 포함되어 있습니다.
 	>> 총 xx 번 실패, 00 번 만에 정답! apple
-#define STR_COUNT 5
 
-void PrintInputSentence(char* c, char answer[]);
-bool CheckInputCharacter(char* c, string* str, char answer[]);
+Q2. p.705 1번
+	예금주 설정, 예금 입/출금 합수, 잔액 표시 함수
+
+	1. 예금 새로 만들기 
+		예금주 이름, 초기 입금액, 잔액
+	2. 예금 입력 
+		2.1. 잔액 표시
+	3. 예금 출력
+		3.1. 잔액 표시
+
+	4, 5번 보류
+	4. 총 예금주 명단 출력
+	5. 총 예금액 출력
+*/
+
+#include "BankAccount.h"
+#define ACCOUNT_MAX_NUM 10
+
+void PrintMenu();
+void AddAccount(BankAccount& account, int& idx);
+void InputDeposit(BankAccount account[], int& idx);
+void InputWithdraw(BankAccount account[], int& idx);
+void PrintAllName(BankAccount account[], int& idx);
+void PrintAllAccount(BankAccount account[], int& idx);
 
 int main()
 {
-	string strs[STR_COUNT] = { "apple", "banana", "grape", "blueberry", "tomato" };
-	char answer[32] = {};
-	char c;
-	int rand_num, fail_count = 0, try_count = 0;
+	BankAccount *account = new BankAccount[ACCOUNT_MAX_NUM];
+	int idx = 0;
+	int menu;
 
-	srand(time(NULL));
-	rand_num = rand() % STR_COUNT;
-
-	cout << "생성된 단어: " << strs[rand_num] << "\n";
-
-	for (int i = 0; i < strs[rand_num].length(); i++)
-		answer[i] = '*';
+	AddAccount(account[idx], idx);
 
 	while (1)
 	{
-		PrintInputSentence(&c, answer);
+		PrintMenu();
+		cin >> menu;
 
-		// 알파벳 입력 받기
-		cout << " > ";
-		cin >> c;
-		
-		try_count++;
-
-		// 입력받은 것 체크, 실패라면 실패 횟수 증가
-		if (CheckInputCharacter(&c, &strs[rand_num], answer) == false)
-			fail_count++;
-
-		cout << ">> " << answer << '\n';
-
-		// 아직 정답이 아니라면 continue
-		if (strs[rand_num] != answer) continue;
-
-		// 정답이라면 시도 횟수 출력
-		cout << "총 " << fail_count << "번 실패, " << try_count << "번 만에 정답! " << answer << '\n';
-
-		cout << "다시 하려면 y를 입력하세요.\n";
-		cin >> c;
-
-		if (c == 'y' || c == 'Y')
+		switch (menu)
 		{
-			// 다시 한다면 랜덤 단어로 다시 시작하기
-			rand_num = rand() % STR_COUNT;
-			cout << "생성된 단어: " << strs[rand_num] << "\n";
+		case 1:
+			AddAccount(account[idx], idx);
+			break;
+		case 2:
+			InputDeposit(account, idx);
+			break;
+		case 3:
+			InputWithdraw(account, idx);
+			break;
+		case 4:
+			PrintAllName(account, idx);
+			break;
+		case 5:
+			PrintAllAccount(account, idx);
+			break;
+		default:
+			cout << "메뉴를 다시 입력하세요.\n";
 		}
-		else break;
 	}
 }
 
-void PrintInputSentence(char* c, char answer[])
+void PrintMenu()
 {
-	cout << "> 단어 중 한 글자를 입력하시오. ";
-	cout << answer;
+	cout << "1. 예금 새로 만들기\n";
+	cout << "2. 예금 입력\n";
+	cout << "3. 예금 출력\n";
+	cout << "4. 총 예금주 명단 출력\n";
+	cout << "5. 총 예금액 출력\n";
+	cout << "=================================\n";
+	cout << "메뉴를 입력해 주세요: ";
 }
 
-bool CheckInputCharacter(char* c, string* str, char answer[])
+void AddAccount(BankAccount& account, int& idx)
 {
-	bool correct = false;
-	for (int i = 0; i < str->length(); i++)
+	string name, num;
+
+	cout << "예금주 이름, 초기 입금액을 입력해 주세요: ";
+	cin >> name >> num;
+	account = BankAccount(name, num, stod(num));
+	idx++;
+}
+
+void InputDeposit(BankAccount account[], int& idx)
+{
+	double num;
+	string name;
+	bool find = false;
+	cout << "입금할 예금주의 이름을 입력하세요: ";
+	cin >> name;
+	int i = 0;
+
+	for (i; i < idx; i++)
 	{
-		if (answer[i] == *c)
+		// 맞는 이름 찾으면 break
+		if (account[i].isItSameName(name))
 		{
-			cout << *c << "는 이미 단어에 포함되어 있습니다.\n";
-			return false;
-		}
-		if ((*str)[i] == *c)
-		{
-			answer[i] = *c;
-			correct = true;
-		}
-		else if (i == str->length() - 1 && correct == false)
-		{
-			cout << *c << "는 단어에 포함되지 않습니다.\n";
-			return false;
+			find = true;
+			break;
 		}
 	}
-	return true;
+
+	if (find == false)
+	{
+		cout << "해당하는 예금주가 없습니다.\n";
+		return;
+	}
+
+	cout << "예금할 금액을 입력하세요: ";
+	cin >> num;
+
+	account[i].deposit(num);
+	account[i].show();
 }
-*/
+
+void InputWithdraw(BankAccount account[], int& idx)
+{
+	double num;
+	string name;
+	bool find = false;
+	cout << "출력할 예금주의 이름을 입력하세요: ";
+	cin >> name;
+	int i = 0;
+
+	for (i; i < idx; i++)
+	{
+		// 맞는 이름 찾으면 break
+		if (account[i].isItSameName(name))
+		{
+			find = true;
+			break;
+		}
+	}
+
+	if (find == false)
+	{
+		cout << "해당하는 예금주가 없습니다.\n";
+		return;
+	}
+
+	cout << "출금할 금액을 입력하세요: ";
+	cin >> num;
+
+	account[i].withdraw(num);
+	account[i].show();
+}
+
+void PrintAllName(BankAccount account[], int& idx)
+{
+	for (int i = 0; i < idx; i++)
+	{
+		account[i].showName();
+	}
+}
+
+void PrintAllAccount(BankAccount account[], int& idx)
+{
+	for (int i = 0; i < idx; i++)
+	{
+		account[i].show();
+	}
+}
