@@ -127,32 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BankAccount.cpp" />
     <ClCompile Include="Inha.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</SDLCheck>
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</SDLCheck>
     </ClCompile>
-    <ClCompile Include="IntQueue.cpp">
-      <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</SDLCheck>
-      <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</SDLCheck>
-      <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</SDLCheck>
-      <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</SDLCheck>
-    </ClCompile>
-    <ClCompile Include="IntQueueTest.cpp" />
-    <ClCompile Include="IntStack.cpp" />
-    <ClCompile Include="namesp.cpp" />
-    <ClCompile Include="stock00.cpp" />
-    <ClCompile Include="usenmsp.cpp" />
-    <ClCompile Include="usestock0.cpp" />
+    <ClCompile Include="mytime.cpp" />
+    <ClCompile Include="usetime.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BankAccount.h" />
-    <ClInclude Include="IntQueue.h" />
-    <ClInclude Include="IntStack.h" />
-    <ClInclude Include="namesp.h" />
-    <ClInclude Include="stock00.h" />
+    <ClInclude Include="mytime.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

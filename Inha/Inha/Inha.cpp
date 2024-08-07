@@ -1,44 +1,52 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <stdio.h>
+#include "cVector3.h"
 using namespace std;
 
 /*
-Q1. 임의의 한 단어를 생성하고 사용자가 한번에
-	한 문자만 추측하도록 해서 단어를 맞추는 게임.
-	단어의 각 문자는 '*'으로 표시된다.
-	사용자가 올바른 추측을 했을 때는 실제 문자가 화면에
-	표시된다. 
-	사용자가 단어를 맞추기를 끝냈을 때 실수한 횟수를 
-	표시하고, 다른 단어를 계속할 것인지를 묻도록 한다.
-	ex> 생성된 단어: apple
-	> 단어 중 한 글자를 입력하시오. ***** > a
-	>> a****
-	> 단어 중 한 글자를 입력하시오. a**** > r
-	>> r은 단어에 포함되지 않습니다.
-	> 단어 중 한 글자를 입력하시오. a**** > a
-	>> a는 이미 단어에 포함되어 있습니다.
-	>> 총 xx 번 실패, 00 번 만에 정답! apple
+Q1. 다음과 같은 형태로 출력하는 프로그램을 작성하라.
+	n을 입력받아 다음과 같이 2^n 형태의 값들을 
+	출력하도록 프로그램을 작성하라.
+	ex> n = 3
+				1
+			1	2	1
+		1	2	4	2	1
+	1	2	4	8	4	2	1
 
-Q2. p.705 1번
-	예금주 설정, 예금 입/출금 합수, 잔액 표시 함수
+Q2. cVector3 클래스 정의	-> 교과서 3차원으로 바꿀 것
+	
+	static float Dot(cVector3& v1, cVector3& v2);
+	static Vector Cross(cVector3& v1, cVector3& v2);
+	float Length();
+	cVector3 Normalize();
+	static float Angle(cVector3& v1, cVector3& v2);
 
-	1. 예금 새로 만들기 
-		예금주 이름, 초기 입금액, 잔액
-	2. 예금 입력 
-		2.1. 잔액 표시
-	3. 예금 출력
-		3.1. 잔액 표시
-
-	4, 5번 보류
-	4. 총 예금주 명단 출력
-	5. 총 예금액 출력
-
-Q3. p.706 6번
-	M1(0, 0), M2(5, 5)
-	M1.add(M2) -> M1.showmove();
-
-Q4. 원형큐 구현 p.164 코드를 기반으로 해서 작성
-	clear, search 메뉴도 추가
+	cVector3 operator/(double n) const;
 */
+
+int main()
+{
+	int n;
+	cin >> n;
+	bool minus = false;
+
+	for (int i = 0; i <= n; i++)
+	{
+		minus = false;
+		for (int j = 0, k = 1; j <= 2 * n; j++)
+		{
+			if (n - i <= j && n + i >= j)
+			{
+				cout << k << " ";
+				if (k >= pow(2, i) && minus == false) minus = true;
+				if ( minus ) k /= 2;
+				else k *= 2;
+			}
+			else cout << "  ";
+
+		}
+		cout << '\n';
+	}
+}
 
