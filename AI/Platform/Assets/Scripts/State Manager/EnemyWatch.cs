@@ -11,12 +11,14 @@ public class EnemyWatch : MonoBehaviour, IState<EnemyController>
 
 	public void Stay(EnemyController sender)
 	{
-		if ( sender.IsCloseDistance(sender.player.transform.position, EnemyController.DISTANCE.CLOSE)) // 플레이어와 거리가 MIDDLE 이하면 Attack(공격)으로
+		// 플레이어와 거리가 MIDDLE 이하면 Attack(공격)으로
+		if ( sender.IsCloseDistance(sender.player.transform.position, EnemyController.DISTANCE.CLOSE)) 
 		{
 			sender.SetState(EnemyController.STATE.Attack);
 		}
 
-		if ( sender.IsFarDistance(sender.player.transform.position, EnemyController.DISTANCE.FAR + 1))	// 플레이어와 거리가 FAR 이상이면 Move(순찰)로
+		// 플레이어와 거리가 FAR 이상이면 Move(순찰)로
+		if ( sender.IsFarDistance(sender.player.transform.position, EnemyController.DISTANCE.FAR + 1))
 		{
 			sender.SetState(EnemyController.STATE.Move);
 		}
@@ -29,5 +31,5 @@ public class EnemyWatch : MonoBehaviour, IState<EnemyController>
 	{
 		Debug.Log("Enemy Watch Exit");
 	}
-
 }
+

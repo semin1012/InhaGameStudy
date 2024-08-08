@@ -74,6 +74,27 @@ public class EnemyController : MonoBehaviour
 		return false;
 	}
 
+	public bool IsEndOfPlatform()
+	{
+		ray = new Ray(transform.position, transform.forward + rad);
+		Debug.DrawRay(transform.position, (transform.forward + rad) * lineSize, Color.yellow);
+
+		if (!Physics.Raycast(ray, out hit, lineSize))   // ray에 닿는 게 없으면 더 갈 수 없음
+		{
+			return true;
+		}
+
+		return false;
+	}
+	public void Attack()
+	{
+		GameObject ball = Instantiate(ballPrefab);
+		ball.transform.position = transform.position;
+		ball.transform.forward = transform.forward;
+		ball.transform.LookAt(player.transform);
+		ball.GetComponent<BallController>().Shoot();
+	}
+
 	public void SetRotateEnemyToPlayer()
 	{
 		// 플레이어 방향을 바라보도록 회전
@@ -90,31 +111,9 @@ public class EnemyController : MonoBehaviour
 		player = GameObject.FindWithTag("Player");
 	}
 
-	public void Attack()
-	{
-		GameObject ball = Instantiate(ballPrefab);
-		ball.transform.position = transform.position;
-		ball.transform.forward = transform.forward;
-		ball.transform.LookAt(player.transform);
-		ball.GetComponent<BallController>().Shoot();
-	}
-
 	public void TurnEnemy()
 	{
 		transform.Rotate(0, Random.Range(90, 270), 0);
-	}
-
-	public bool IsEndOfPlatform()
-	{
-		ray = new Ray(transform.position, transform.forward + rad);
-		Debug.DrawRay(transform.position, (transform.forward + rad) * lineSize, Color.yellow);
-
-		if (!Physics.Raycast(ray, out hit, lineSize))   // ray에 닿는 게 없으면 더 갈 수 없음
-		{
-			return true;
-		}
-
-		return false;
 	}
 
 	public void MoveForward()

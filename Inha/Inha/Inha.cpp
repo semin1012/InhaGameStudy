@@ -48,21 +48,90 @@ Q2. 다음을 포함하는 Rectangle2D 클래스를 정의하라.
 	세 개의 Rectangle2D 객체 r1(2,2,5.5,4.9), r2(4,5,10.5,3.2), r3(3,5,2.3,5.4)를 
 	생성하고 r1의 면적과 둘레를 출력하며, r1.contains(3,3), r1.contains(r2), 
 	r1.overlaps(r3)의 결과를 화면에 출력하는 테스트 프로그램을 작성하라.
+
+Q3. 하노이 타워 
 */
+
+int Factorial(int n)
+{
+	if (n == 1)
+		return 1;
+	int j = n * Factorial(n - 1);
+	return j;
+}
+
+void Hanoi_top(int n, int from, int temp, int to)
+{
+	if (n == 0)
+		return;
+
+	Hanoi_top(n - 1, from, to, temp);
+
+	cout << n << ", " << from << " " << to << '\n';
+
+	Hanoi_top(n - 1, temp, from, to);
+
+		//Hanoi_top(n - 1, 0, n - 1, from)
+
+	//Hanoi_top(start, middle - 1, middle);
+	//Hanoi_top(target, middle, target - 1);
+
+	//if (start > middle)
+	//	Hanoi_top(start - 1, start, target);
+	//if (start > target)
+	//	Hanoi_top(start - 1, middle, target);
+	//if (middle > start)
+	//	Hanoi_top(middle, middle - 1, target);
+	//if (middle > target)
+	//	Hanoi_top(start, middle - 1, middle);
+	//if (target > start)
+	//	Hanoi_top(target, middle, target - 1);
+	//if (target > middle)
+	//	Hanoi_top(start, target, target - 1);
+
+	//if (start > 0)
+	//{
+	//	if (target == 0 || start > target )
+	//		Hanoi_top(start - 1, middle, start);
+	//	else if (middle == 0 || start > middle)
+	//		Hanoi_top(start - 1, start, target);
+	//}
+	//if (middle > 0)
+	//{
+	//	if (target == 0 || middle > target)
+	//		Hanoi_top(start, middle-1, middle);
+	//	else if (start == 0 || middle > start)
+	//		Hanoi_top(middle, middle-1, target);
+	//}
+	//if ( target > 0 )
+	//{
+	//	if (start == 0 || target > start)
+	//		Hanoi_top(target, middle, target - 1);
+	//	else if (middle == 0 || target > middle)
+	//		Hanoi_top(start, target, target - 1);
+	//}
+
+	//if (start > 0) {
+	//	if (start > target || target == 0)
+	//		Hanoi_top(start - 1, middle, start);
+	//	else if (start > middle || middle == 0)
+	//		Hanoi_top(start - 1, start, target);
+	//}
+	//else if (middle > 0)
+	//{
+	//	if (middle >  target || target == 0)
+	//		Hanoi_top(start, middle-1, middle);
+	//	else if (middle >start || start == 0)
+	//		Hanoi_top(middle, middle-1, target);		
+	//}
+
+}
 
 int main()
 {
-	Rectangle2D r1(2, 2, 5.5, 4.9);
-	Rectangle2D r2(4, 5, 10.5, 3.2);
-	Rectangle2D r3(3, 5, 2.3, 5.4);
+	int n;
+	cin >> n;
 
-	cout << "r1: " << r1 << '\n';
-	cout << "r2: " << r2 << '\n';
-	cout << "r3: " << r3 << '\n';
-
-	cout << "r1의 면적: " << r1.getArea() << '\n';
-	cout << "r1의 둘레: " << r1.getPerimeter() << '\n';
-	cout << boolalpha << "r1.contains(3,3): " << r1.isContains(3, 3) << '\n';
-	cout << "r1.contains(r2): " << r1.isContains(r2) << '\n';
-	cout << "r1.overlaps(r3): " << r1.isOverlaps(r3) << '\n';
+	Hanoi_top(n, 1, 2, 3);
+	//cout << Factorial(4);
 }
