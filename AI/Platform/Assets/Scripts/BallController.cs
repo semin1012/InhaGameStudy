@@ -30,7 +30,7 @@ public class BallController : MonoBehaviour
 		}
 	}
 
-	void SetRotateEnermyToPlayer()
+	void SetRotateEnemyToPlayer()
 	{
 		// 플레이어 방향을 바라보도록 회전
 		playerDir = player.transform.position - transform.position;

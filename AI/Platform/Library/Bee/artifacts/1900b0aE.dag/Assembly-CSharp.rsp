@@ -358,9 +358,9 @@
 "Assets/Scripts/BallController.cs"
 "Assets/Scripts/EnermyController.cs"
 "Assets/Scripts/PlayerController.cs"
-"Assets/Scripts/State Manager/EnermyAttack.cs"
-"Assets/Scripts/State Manager/EnermyMove.cs"
-"Assets/Scripts/State Manager/EnermyWatch.cs"
+"Assets/Scripts/State Manager/EnemyAttack.cs"
+"Assets/Scripts/State Manager/EnemyMove.cs"
+"Assets/Scripts/State Manager/EnemyWatch.cs"
 "Assets/Scripts/State Manager/IState.cs"
 "Assets/Scripts/State Manager/StateMachine.cs"
 -langversion:9.0

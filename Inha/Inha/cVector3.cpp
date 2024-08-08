@@ -76,7 +76,7 @@ namespace VECTOR
 	double cVector3::Angle(cVector3& v)
 	{
 		double temp = Dot(v) / (Length() * v.Length());
-		//temp = std::max(-1.0, std::min(1.0, temp));
+		temp = std::max(-1.0, std::min(1.0, temp));
 		return acos(temp) * (180 / 3.141592);
 	}
 
