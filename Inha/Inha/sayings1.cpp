@@ -3,6 +3,7 @@
 const int ArSize = 10;
 const int MaxLen = 81;
 
+/*
 int main()
 {
 	using std::cout;
@@ -49,3 +50,4 @@ int main()
 	else
 		cout << "입력 금지! 이상\n";
 }
+*/
