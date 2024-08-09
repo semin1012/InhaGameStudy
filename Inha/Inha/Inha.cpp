@@ -21,18 +21,18 @@ Q1. x와 y축의 점을 표시하는 MyPoint 클래스를 설계하라.
 	내부에 있는지 여부를 판단하는 contains 함수를 MyPoint 객체를
 	인자로 하는 프렌드 함수를 구현하라. 
 */
-
-int main()
-{
-	MyPoint p1;
-	MyPoint p2(10, 30.5);
-	Circle2D circle(0, 0, 5.5);
-	Rectangle2D rect(10, 10, 2, 2);
-
-	cout << "p1 = " << p1 << '\n' << "p2 = " << p2 << '\n';
-	cout << "circle = " << circle << '\n' << "rect = " << rect << "\n\n";
-
-	cout << "p1과 p2 사이의 거리: " << p1.distance(p2.getX(), p2.getY()) << '\n';
-	cout << boolalpha << "contains(circle, p1): " << contains(circle, p1) << '\n';
-	cout << "contains(rect, p1): " << contains(rect, p1) << '\n';
-}
+//
+//int main()
+//{
+//	MyPoint p1;
+//	MyPoint p2(10, 30.5);
+//	Circle2D circle(0, 0, 5.5);
+//	Rectangle2D rect(10, 10, 2, 2);
+//
+//	cout << "p1 = " << p1 << '\n' << "p2 = " << p2 << '\n';
+//	cout << "circle = " << circle << '\n' << "rect = " << rect << "\n\n";
+//
+//	cout << "p1과 p2 사이의 거리: " << p1.distance(p2.getX(), p2.getY()) << '\n';
+//	cout << boolalpha << "contains(circle, p1): " << contains(circle, p1) << '\n';
+//	cout << "contains(rect, p1): " << contains(rect, p1) << '\n';
+//}

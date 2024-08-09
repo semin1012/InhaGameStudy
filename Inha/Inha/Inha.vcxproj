@@ -136,12 +136,18 @@
     </ClCompile>
     <ClCompile Include="MyPoint.cpp" />
     <ClCompile Include="Rectangle2D.cpp" />
+    <ClCompile Include="sayings1.cpp" />
     <ClCompile Include="stdx.h" />
+    <ClCompile Include="String.cpp" />
+    <ClCompile Include="StringBad.cpp" />
+    <ClCompile Include="vegnews.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Circle2D.h" />
     <ClInclude Include="MyPoint.h" />
     <ClInclude Include="Rectangle2D.h" />
+    <ClInclude Include="String.h" />
+    <ClInclude Include="StringBad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
