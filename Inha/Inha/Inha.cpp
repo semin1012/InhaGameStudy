@@ -41,7 +41,7 @@ Q1. n-Queen 문제
 //	cout << result << endl;
 //}
 
-#define MAX 4
+#define MAX 5
 
 int board[MAX][MAX]{ true };
 
@@ -62,7 +62,7 @@ void NQueen(int _board[][MAX], int x, int y, int n)
 {
 	static int result = 0;
 	
-	if (x == 1)
+	if (y == n-1)
 	{
 		result++;
 		PrintNQueen();
@@ -75,19 +75,24 @@ void NQueen(int _board[][MAX], int x, int y, int n)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			if (j == x - 1 && _board[i][j] != 1) _board[i][j] = -1;	// 가로 못 가게
-			if (i == y - 1 && _board[i][j] != 1) _board[i][j] = -1;	// 세로 못 가게
-			if (y - 1 + j == x - 1 + i && _board[i][j] != 1) _board[i][j] = -1; // 대각선 못 가게
-			if (y - 1 - j == x - 1 - i && _board[i][j] != 1) _board[i][j] = -1; // 대각선 못 가게
-		}
+			//if (j == x && _board[i][j] != 1) _board[i][j] = -1;	// 가로 못 가게
+			//if (i == y && _board[i][j] != 1) _board[i][j] = -1;	// 세로 못 가게
+			//if ((y - 1 + i == j && x - 1 - j == i) && _board[i][j] != 1) _board[i][j] = -1; // 대각선 못 가게
+			//if ((y - 1 - i == x - 1 - j) && _board[i][j] != 1) _board[i][j] = -1; // 대각선 못 가게
+			if (j + x - 1 == n - 1 - (n - y) - i && _board[i][j] != 1) _board[i][j] = -1;
+		}/*
+		for (int j = 0; j < n; j++ )
+		{
+			if (j + x - 1 == n - 1 - (n-y) - i) _board[i][j] = -1;
+		}*/
 	}
 
-	for (int i = 0; i < n; i++ )
+ 	for (int i = 0; i < n; i++ )
 	{
-		if (_board[i][x-2] == 0) // 갈 수 있음
+		if (_board[i][x+1] == 0) // 갈 수 있음
 		{
-			_board[i][x - 2] = 1;
-			NQueen(_board, x-1, i+1, n);
+			_board[i][x+1] = 1;
+			NQueen(_board, x+1, i, n);
 		}
 	}
 } 
@@ -101,6 +106,7 @@ int main()
 	for (int i = 0; i < n; i++)
 	{
 		fill_n(board[0], MAX * MAX, 0);
-		NQueen(board, n, n-i, n);
+		board[2][1] = 1;
+		NQueen(board, 1, 2, n);
 	}
 }
