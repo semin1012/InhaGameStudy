@@ -39,7 +39,7 @@ double Rectangle2D::getPerimeter()
 	return width * 2 + height * 2;
 }
 
-bool Rectangle2D::isContains(double x, double y)
+bool Rectangle2D::isContains(double x, double y) const
 {
 	if (rect.right < x) return false;
 	if (rect.left > x) return false;
@@ -49,14 +49,14 @@ bool Rectangle2D::isContains(double x, double y)
 	return true;
 }
 
-bool Rectangle2D::isContains(const Rectangle2D& r)
+bool Rectangle2D::isContains(const Rectangle2D& r) const
 {
 	if (rect.right >= r.rect.right && rect.left <= r.rect.left && rect.top >= r.rect.top && rect.bottom <= r.rect.bottom)
 		return true;
 	return false;
 }
 
-bool Rectangle2D::isOverlaps(const Rectangle2D& r)
+bool Rectangle2D::isOverlaps(const Rectangle2D& r) const
 {
 	if (rect.right < r.rect.left) return false;
 	if (rect.left > r.rect.right) return false;

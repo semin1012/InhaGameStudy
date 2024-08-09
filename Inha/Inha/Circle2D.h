@@ -1,10 +1,6 @@
 #pragma once
-
-struct Point
-{
-	double x, y;
-};
-
+#include <iostream>
+#include "stdx.h"
 
 class Circle2D
 {
@@ -23,10 +19,11 @@ public:
 	
 	double		getArea();
 	double		getPerimeter();
-	bool		isContains(Point p);
-	bool		isContains(const Circle2D& circle);
-	bool		isOverlaps(const Circle2D& circle);
+	bool		isContains(Point p) const;
+	bool		isContains(const Circle2D& circle) const;
+	bool		isOverlaps(const Circle2D& circle) const;
 
-	void		printInfo();
-	double		getDistance(const Point& p);
+	double		getDistance(const Point& p) const;
+
+	friend std::ostream& operator<<(std::ostream& os, const Circle2D& r);
 };

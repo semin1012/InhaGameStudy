@@ -1,11 +1,6 @@
 #pragma once
 #include <iostream>
-
-struct Point
-{
-	double x;
-	double y;
-};
+#include "stdx.h"
 
 struct RECT
 {
@@ -36,9 +31,9 @@ public:
 
 	double		getArea();
 	double		getPerimeter();
-	bool		isContains(double x, double y);
-	bool		isContains(const Rectangle2D& r);
-	bool		isOverlaps(const Rectangle2D& r);
+	bool		isContains(double x, double y) const;
+	bool		isContains(const Rectangle2D& r) const;
+	bool		isOverlaps(const Rectangle2D& r) const;
 
 	friend std::ostream& operator<<(std::ostream& os, const Rectangle2D& r);
 };
