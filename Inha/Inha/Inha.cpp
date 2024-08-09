@@ -52,6 +52,8 @@ Q2. 다음을 포함하는 Rectangle2D 클래스를 정의하라.
 Q3. 하노이 타워 
 */
 
+int top[3];
+
 int Factorial(int n)
 {
 	if (n == 1)
@@ -67,64 +69,24 @@ void Hanoi_top(int n, int from, int temp, int to)
 
 	Hanoi_top(n - 1, from, to, temp);
 
+	top[from-1] -= 1;
+	top[to-1] += 1;
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			printf("[%2d] ", top[j] );
+		}
+		cout << '\n';
+	}
+
+	cout << '\n';
+	cout << top[0] << " " << top[1] << " " << top[2] << "   ";
+
 	cout << n << ", " << from << " " << to << '\n';
 
 	Hanoi_top(n - 1, temp, from, to);
-
-		//Hanoi_top(n - 1, 0, n - 1, from)
-
-	//Hanoi_top(start, middle - 1, middle);
-	//Hanoi_top(target, middle, target - 1);
-
-	//if (start > middle)
-	//	Hanoi_top(start - 1, start, target);
-	//if (start > target)
-	//	Hanoi_top(start - 1, middle, target);
-	//if (middle > start)
-	//	Hanoi_top(middle, middle - 1, target);
-	//if (middle > target)
-	//	Hanoi_top(start, middle - 1, middle);
-	//if (target > start)
-	//	Hanoi_top(target, middle, target - 1);
-	//if (target > middle)
-	//	Hanoi_top(start, target, target - 1);
-
-	//if (start > 0)
-	//{
-	//	if (target == 0 || start > target )
-	//		Hanoi_top(start - 1, middle, start);
-	//	else if (middle == 0 || start > middle)
-	//		Hanoi_top(start - 1, start, target);
-	//}
-	//if (middle > 0)
-	//{
-	//	if (target == 0 || middle > target)
-	//		Hanoi_top(start, middle-1, middle);
-	//	else if (start == 0 || middle > start)
-	//		Hanoi_top(middle, middle-1, target);
-	//}
-	//if ( target > 0 )
-	//{
-	//	if (start == 0 || target > start)
-	//		Hanoi_top(target, middle, target - 1);
-	//	else if (middle == 0 || target > middle)
-	//		Hanoi_top(start, target, target - 1);
-	//}
-
-	//if (start > 0) {
-	//	if (start > target || target == 0)
-	//		Hanoi_top(start - 1, middle, start);
-	//	else if (start > middle || middle == 0)
-	//		Hanoi_top(start - 1, start, target);
-	//}
-	//else if (middle > 0)
-	//{
-	//	if (middle >  target || target == 0)
-	//		Hanoi_top(start, middle-1, middle);
-	//	else if (middle >start || start == 0)
-	//		Hanoi_top(middle, middle-1, target);		
-	//}
-
 }
 
 int main()
@@ -132,6 +94,8 @@ int main()
 	int n;
 	cin >> n;
 
+	top[0] = n;
+	top[1] = 0;
+	top[2] = 0;
 	Hanoi_top(n, 1, 2, 3);
-	//cout << Factorial(4);
 }
