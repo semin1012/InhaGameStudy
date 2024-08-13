@@ -1,4 +1,5 @@
 #include <cstring>
+#include <cctype>
 #include "String.h"
 using std::cin;
 using std::cout;
@@ -38,6 +39,35 @@ String::~String()
 {
     --num_strings;
     delete[] str;
+}
+
+void String::stringup()
+{
+    for (int i = 0; i < len; i++)
+    {
+        if (str[i] >= 'a' && str[i] <= 'z')
+            str[i] -= ' ';
+    }
+}
+
+void String::stringlow()
+{
+    for (int i = 0; i < len; i++)
+    {
+        if (str[i] >= 'A' && str[i] <= 'Z')
+            str[i] += ' ';
+    }
+}
+
+int String::has(char c)
+{
+    int result = 0;
+    for (int i = 0; i < len; i++)
+    {
+        if (str[i] == c)
+            result++;
+    }
+    return result;
 }
 
 String& String::operator=(const String& st)
@@ -83,6 +113,34 @@ bool operator>(const String& st1, const String& st2)
 bool operator==(const String& st1, const String& st2)
 {
     return (std::strcmp(st1.str, st2.str) == 0);
+}
+
+const String& operator+(String& st1, const String& st2)
+{
+    char temp[String::CINLIM];
+    strcpy(temp, st1.str);
+
+    delete[] st1.str;
+
+    st1.len = st1.len + st2.len;
+    st1.str = new char[st1.len + 1];
+    std::strcpy(st1.str, temp);
+    std::strcat(st1.str, st2.str);
+    return st1;
+}
+
+const String& operator+(const char* s, String& st2)
+{
+    char temp[String::CINLIM];
+    strcpy(temp, st2.str);
+
+    delete[] st2.str;
+
+    st2.len = strlen(s) + st2.len;
+    st2.str = new char[st2.len + 1];
+    std::strcpy(st2.str, s);
+    std::strcat(st2.str, temp);
+    return st2;
 }
 
 ostream& operator<<(ostream& os, const String& st)

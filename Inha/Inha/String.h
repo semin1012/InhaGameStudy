@@ -17,6 +17,9 @@ public:
 	String(const String& st);
 	~String();
 	int length() const { return len; }
+	void stringup();
+	void stringlow();
+	int has(char c);
 
 	String& operator=(const String& st);
 	String& operator=(const char* s);
@@ -26,6 +29,8 @@ public:
 	friend bool operator<(const String& st1, const String& st2);
 	friend bool operator>(const String& st1, const String& st2);
 	friend bool operator==(const String& st1, const String& st2);
+	friend const String& operator+(String& st1, const String& st2);
+	friend const String& operator+(const char* s, String& st2);
 	friend ostream& operator<<(ostream& os, const String& st);
 	friend istream& operator>>(istream& os, String& st);
 
