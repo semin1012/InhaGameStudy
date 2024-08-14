@@ -1,39 +1,28 @@
 #include "MyPoint.h"
 #include <iostream>
 
-MyPoint::MyPoint()
-{
-    x = 0;
-    y = 0;
-}
-
-MyPoint::MyPoint(double tx, double ty)
-{
-    x = tx;
-    y = ty;
-}
-
-MyPoint::~MyPoint()
-{
-}
-
 double MyPoint::distance(double tx, double ty)
 {
-    return sqrt(pow(x - tx, 2) + pow(y - ty, 2));
+    return sqrt(pow(getX() - tx, 2) + pow(getY() - ty, 2));
 }
 
-bool contains(const Circle2D& circle, const MyPoint& point)
+bool MyPoint::contains(const Circle2D& circle)
 {
-    return circle.isContains({point.x, point.y});
+    return circle.contains(getX(), getY());
 }
 
 bool contains(const Rectangle2D& rect, const MyPoint& point)
 {
-    return rect.isContains(point.x, point.y);
+    return rect.contains(point.getX(), point.getY());
+}
+
+bool contains(const Circle2D& circle, const MyPoint& point)
+{
+    return circle.contains(point.getX(), point.getY());
 }
 
 std::ostream& operator<<(std::ostream& os, const MyPoint& p)
 {
-    os << "ÁÂÇ¥: (" << p.x << ", " << p.y << ")";
+    os << "ÁÂÇ¥: (" << p.getX() << ", " << p.getY() << ")";
     return os;
 }
