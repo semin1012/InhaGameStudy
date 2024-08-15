@@ -131,14 +131,18 @@
     <ClInclude Include="acctabc.h" />
     <ClInclude Include="brass.h" />
     <ClInclude Include="dma.h" />
+    <ClInclude Include="QueueTP.h" />
     <ClInclude Include="tabtenn0.h" />
+    <ClInclude Include="workermi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="acctabc.cpp" />
     <ClCompile Include="brass.cpp" />
     <ClCompile Include="dma.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="QueueTP.cpp" />
     <ClCompile Include="tabtenn0.cpp" />
+    <ClCompile Include="workermi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

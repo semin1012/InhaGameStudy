@@ -1,142 +1,95 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include <stack>
-#include <queue>
-#include <string>
+#include <vector>
+#include "StopWatch.h"
 using namespace std;
 
 /*
-Q1. p.889 연습 문제 2
-
-Q2. 후위표기법을 활용하여 스택 계산기 프로그램을 작성하라.
-	() < +,- < x,/
-	((4x12)x(123+7)
+Q1. StopWatch class 설계
+	다음의 내용을 포함하는 클래스를 설계하라.
+	- get 함수를 갖는 데이터 필드 startTime과 endTime
+	- startTime을 현재 시간으로 초기화하는 인수 없는 생성자
+	- startTime을 현재 시간으로 재설정하는 start() 함수
+	- endTime을 현재 시간으로 설정하는 stop() 함수
+	- 스톱워치의 경과 시간을 밀리초(milliseconds)로 반환하는 
+	  getElpasedTime() 함수
+	- UML 클래스 다이어그램 작성
 */
 
-struct OPERATOR
+vector<int> top[3];
+
+int Factorial(int n)
 {
-	string c;
-	int num;
-};
+	if (n == 1)
+		return 1;
+	int j = n * Factorial(n - 1);
+	return j;
+}
+
+void print_top(int num)
+{
+	vector<int> temptop[3] = { top[0], top[1], top[2] };
+
+	cout << "==============\n";
+
+	for (int i = 0; i < num; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (temptop[j].size() > 0 && i >= num - top[j].size())
+			{
+				printf("[%2d] ", temptop[j].back());
+				temptop[j].pop_back();
+			}
+			else
+			{
+				printf("[%2d] ", 0);
+			}
+		}
+		cout << '\n';
+	}
+	cout << '\n';
+}
+
+
+void Hanoi_top(int n, int from, int temp, int to, int num)
+{
+	static int i = 0;
+
+	if (n == 0)
+		return;
+
+	Hanoi_top(n - 1, from, to, temp, num);
+
+	i++;
+	top[to - 1].push_back(top[from - 1].back());
+	top[from - 1].pop_back();
+
+	cout << i << "번째 이동\n";
+	print_top(num);
+
+	Hanoi_top(n - 1, temp, from, to, num);
+}
 
 int main()
 {
-	string str;
-	stack<string> st;
-	queue<string> q;
-	OPERATOR operators[6] = { {"(", 0}, {")",0}, {"+", 1}, {"-",1}, {"x", 2}, {"/", 2} };
-	bool isOperator = false;
-	string numTemp;
-	int numTempLength = 0;
-	string prevTemp;
-	int prevNum = 0;
+	StopWatch watch;
+	watch.start();
 
-	//str = "(2+2)x(3+3)";
-	cout << "계산식을 입력하세요: \n";
-	cin >> str;
 
-	for (int i = 0; i < str.length(); i++)
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; i++)
 	{
-		isOperator = false;
-
-		for (int j = 0; j < 6; j++)
-		{
-			if (i == 0 && str[i] == '-')
-				break;
-
-			if (operators[j].c[0] == str[i])
-			{
-				isOperator = true;
-
-				if (!st.empty())
-				{
-					if (st.top() == "+" || st.top() == "-")
-						prevNum = 1;
-					else if (st.top() == "x" || st.top() == "/")
-						prevNum = 2;
-				}
-
-				if (numTempLength != 0)
-				{
-					q.push(numTemp);
-					numTempLength = 0;
-					numTemp = "";
-				}
-
-				if (str[i] == '(')
-				{
-					st.push(operators[j].c);
-					break;
-				}
-
-				if (str[i] == ')')
-				{
-					while (st.top() != "(")
-					{
-						q.push(st.top());
-						st.pop();
-					}
-
-					st.pop();	// "(" 삭제
-					break;
-				}
-
-				// 이전 거가 우선순위 더 높다면
-				if (prevNum > operators[j].num && st.top() != "(")
-				{
-					q.push(st.top());
-					st.pop();
-
-					st.push(operators[j].c);
-				}
-				else
-				{
-					st.push(operators[j].c);
-				}
-				break;
-			}
-		}
-
-		if (isOperator == false)	// 숫자
-		{
-			numTempLength++;
-			numTemp += str[i];
-		}
+		top[0].push_back(i + 1);
 	}
 
-	while (!st.empty())
-	{
-		q.push(st.top());
-		st.pop();
-	}
 
-	string top;
+	print_top(n);
+	Hanoi_top(n, 1, 2, 3, n);
 
-	while (!q.empty())
-	{
-		st.push(q.front());
-		q.pop();
 
-		if (st.top() == "x" || st.top() == "+" || st.top() == "-" || st.top() == "/")
-		{
-			top = st.top();
+	watch.stop();
 
-			st.pop();
-			int temp = stoi(st.top());
-			st.pop();
-
-			if (top == "x")
-				temp *= stoi(st.top());
-			else if (top == "+")
-				temp += stoi(st.top());
-			else if (top == "-")
-				temp -= stoi(st.top());
-			else
-				temp /= stoi(st.top());
-			st.pop();
-			st.push(to_string(temp));
-		}
-	}
-
-	cout << "결과: " << st.top() << endl;
+	cout  << "시간: " << watch.getElpasedTime() << " ms" << endl;
 }

@@ -27,6 +27,12 @@
     <ClInclude Include="dma.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="workermi.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueTP.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tabtenn0.cpp">
@@ -42,6 +48,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="dma.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="workermi.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="QueueTP.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

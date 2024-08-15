@@ -1,203 +1,213 @@
 #include <iostream>
-#include "tabtenn0.h"
+#include <cstring>
+#include "workermi.h"
+#include "QueueTP.h"
+const int SIZE = 5;
 
 /*
-int main()
-{
-	using std::cout;
-	using std::endl;
-	TableTennisPlayer player1("Tara", "Boomdea", false);
-	RatedPlayer rplayer1(1140, "Mallory", "Duck", true);
-	rplayer1.Name();
-	if ( rplayer1.HasTable())
-		cout << ": 탁구대가 있다.\n";
-	else
-		cout << ": 탁구대가 없다.\n";
-	player1.Name();
-	if (player1.HasTable())
-		cout << ": 탁구대가 있다.\n";
-	else
-		cout << ": 탁구대가 없다.\n";
+Q2. p.1105 Q3 QueueTP 템플릿 클래스를 정의하라. 각 예제 코드를 바탕으로 코드가 바르게 동작하는지
+	테스트하라.
+	- UML
 
-	cout << "이름: ";
-	rplayer1.Name();
-	cout << "; 랭킹: " << rplayer1.Rating() << endl;
-	RatedPlayer rplayer2(1212, player1);
-	cout << "이름: ";
-	rplayer2.Name();
-	cout << "; 랭킹: " << rplayer2.Rating() << endl;
-	return 0;
-}
+Q3. 버블 정렬 3가지 방법으로 구현
+	p.215 Q2처럼... 현재 비교 데이터끼리 교환 발생 여부를 +, - 기호로
+	정렬을 마친 후 비교횟수와 교환횟수를 출력하라.
+	- StopWatch 클래스를 이용해서 알고리즘 성능을 측정하라.
 */
 
-/*
-#include "brass.h"
+#define MAX 10
+
+void Swap(int& a, int& b)
+{
+	int temp = a;
+	a = b;
+	b = temp;
+}
+
+void printArray(int arr[], int change)
+{
+	for (int i = 0; i < MAX; i++)
+	{
+		cout << arr[i];
+		if (i != MAX - 1)
+		{
+			if (i == change)
+			{
+				if (change == -1)
+					cout << "-";
+				else cout << "+";
+			}
+			else cout << "-";
+		}
+	}
+	cout << "\n";
+}
+
+void bubbleSortBasic(int arr[])
+{
+	int arrTemp[MAX];
+	for (int i = 0; i < MAX; i++)
+	{
+		arrTemp[i] = arr[i];
+	}
+	int path = 1;
+	int change = -1;
+	int compair = 0;
+	for (int i = 0; i <= MAX; i++)
+	{
+		cout << "\n패스" << path << ", 비교: " << compair << "\n";
+		// 앞에서부터
+		for (int j = MAX - 1; j > i; j--)
+		{
+			compair++;
+			if (arrTemp[j] < arrTemp[j - 1])
+			{
+				Swap(arrTemp[j], arrTemp[j - 1]);
+				change = j - 1;
+			}
+			else change = -1;
+			printArray(arrTemp, change);
+		}
+		path++;
+	}
+}
+
+void bubbleSortUpgrade(int arr[])
+{
+	int arrTemp[MAX];
+	for (int i = 0; i < MAX; i++)
+	{
+		arrTemp[i] = arr[i];
+	}
+	int path = 1;
+	int count;
+	int change;
+	int compair = 0;
+
+	for (int i = 0; i < MAX; i++)
+	{
+		cout << "\n패스" << path << ", 비교: " << compair << "\n";
+		count = 0;
+		for (int j = MAX - 1; j > i; j--)
+		{
+			compair++;
+			if (arrTemp[j] < arrTemp[j - 1])
+			{
+				Swap(arrTemp[j], arrTemp[j - 1]);
+				count++;
+				change = j - 1;
+			}
+			else change = -1;
+			printArray(arrTemp, change);
+		}
+		path++;
+		if (count == 0) break;
+	}
+}
+
+void bubbleSortUpgrade2(int arr[])
+{
+	int arrTemp[MAX];
+	for (int i = 0; i < MAX; i++)
+	{
+		arrTemp[i] = arr[i];
+	}
+	int last = MAX-1;
+	int k = MAX-1;
+	int path = 1;
+	int compair = 0;
+	int change;
+
+	while (k > 0)
+	{
+		cout << "\n패스" << path << ", 비교: " << compair << "\n";
+		last = 0;
+		for (int i = k; i > 0; i--)
+		{
+			compair++;
+			if (arrTemp[MAX - i] < arrTemp[MAX - i - 1])
+			{
+				Swap(arrTemp[MAX - i], arrTemp[MAX - i - 1]);
+				last = MAX - i - 1;
+				change = MAX - i - 1;
+			}
+			else change = -1;
+			printArray(arrTemp, change);
+		}
+		path++;
+		k = last;
+	}
+}
 
 int main()
 {
-	using std::cout;
-	using std::endl;
+	int arr[MAX] = { 1,3,9,4,7,8,6 };
 
-	Brass Piggy("Porcelot Pigg", 381299, 4000.00);
-	BrassPlus Hoggy("Horatio Hogg", 382288, 3000.00);
-	Piggy.ViewAcct();
-	cout << endl;
-	Hoggy.ViewAcct();
-	cout << endl;
-	cout << "Hogg 씨의 계좌에 $1000 입금:\n";
-	Hoggy.Deposit(1000.00);
-	cout << "Hogg 씨의 현재 잔액: $" << Hoggy.Balance() << endl;
-	cout << "Pigg 씨의 계좌에서 $4200 인출:\n";
-	Piggy.Withdraw(4200.00);
-	cout << "Pigg 씨의 현재 잔액: $" << Piggy.Balance() << endl;
-	cout << "Hogg 씨의 계좌에서 $4200 인출:\n";
-	Hoggy.Withdraw(4200.00);
-	Hoggy.ViewAcct();
+	//cout << "**버블 소트 기본**\n";
+	//bubbleSortBasic(arr);
+
+	//cout << "\n\n**버블 소트 개선1**\n";
+	//bubbleSortUpgrade(arr);
+
+	cout << "**버블 소트 개선2**\n";
+	bubbleSortUpgrade2(arr);
 }
-*/
+
 
 /*
-#include <string>
-#include "brass.h"
-const int CLIENTS = 4;
-
 int main()
 {
 	using std::cin;
 	using std::cout;
 	using std::endl;
+	using std::strchr;
 
-	Brass* p_clients[CLIENTS];
-	std::string temp;
-	long tempnum;
-	double tempbal;
-	char kind;
+	//Worker* lolas[SIZE];
+	QueueTP<Worker*> lola(SIZE);
 
-	for (int i = 0; i < CLIENTS; i++)
+	int ct;
+	for (ct = 0; ct < SIZE; ct++)
 	{
-		cout << "고객의 이름을 입력하십시오: ";
-		getline(cin, temp);
-		cout << "고객의 계좌 번호를 입력하십시오: ";
-		cin >> tempnum;
-		cout << "계좌 개설 잔액을 입력하십시오: $";
-		cin >> tempbal;
-		cout << "Brass 계좌는 1, " << "BrassPlus 계좌는 2를 입력하십시오: ";
-		while (cin >> kind && (kind != '1' && kind != '2'))
-			cout << "1 아니면 2, 둘 중 하나를 입력하십시오: ";
-		if (kind == '1')
-			p_clients[i] = new Brass(temp, tempnum, tempbal);
-		else
+		char choice;
+		cout << "직종을 입력하십시오:\n" << "w: 웨이터  s: 가수  " << "t: 가수 겸 웨이터  q: 종료\n";
+		cin >> choice;
+		while (strchr("wstq", choice) == NULL)
 		{
-			double tmax, trate;
-			cout << "당좌 대월 한도를 입력하십시오: $";
-			cin >> tmax;
-			cout << "당좌 대월 이자율을 소수점 형식으로 입력하십시오: ";
-			cin >> trate;
-			p_clients[i] = new BrassPlus(temp, tempnum, tempbal, tmax, trate);
+			cout << "w, s, t, q 중에서 하나를 선택하십시오: ";
+			cin >> choice;
 		}
-		while (cin.get() != '\n')
-			continue;
-	}
-	cout << endl;
-	for (int i = 0; i < CLIENTS; i++)
-	{
-		p_clients[i]->ViewAcct();
-		cout << endl;
-	}
-
-	for (int i = 0; i < CLIENTS; i++)
-	{
-		delete p_clients[i];
-	}
-
-	cout << "프로그램을 종료합니다.\n";
-	return 0;
-}*/
-
-/*
-#include <iostream>
-#include <string>
-#include "acctabc.h"
-const int CLIENTS = 4;
-
-int main()
-{
-	using std::cin;
-	using std::cout;
-	using std::endl;
-
-	AcctABC* p_clients[CLIENTS];
-	std::string temp;
-	long tempnum;
-	double tempbal;
-	char kind;
-
-	for (int i = 0; i < CLIENTS; i++)
-	{
-		cout << "고객의 이름을 입력한다: ";
-		getline(cin, temp);
-		cout << "고객의 은행계좌 번호를 입력한다: ";
-		cin >> tempnum;
-		cout << "계좌 개설을 입력한다: $";
-		cin >> tempbal;
-		cout << "Brass 계좌에 1번을 입력한다. 또는, " << "BrassPlus 계좌에 2번을 입력한다: ";
-
-		while (cin >> kind && (kind != '1' && kind != '2'))
-				cout << "1 아니면 2, 둘 중 하나를 입력하십시오: ";
-		if (kind == '1')
-			p_clients[i] = new Brass(temp, tempnum, tempbal);
-		else
+		if (choice == 'q')
+			break;
+		switch (choice)
 		{
-			double tmax, trate;
-			cout << "당좌대월 한계를 입력한다: $";
-			cin >> tmax;
-			cout << "이자율을 입력한다 소수점을 사용한다: ";
-			cin >> trate;
-			p_clients[i] = new BrassPlus(temp, tempnum, tempbal, tmax, trate);
+		case 'w': 
+			lola.push(new Waiter("sss", 40));
+			//lolas[ct] = new Waiter;
+			break;
+		case 's':
+			lola.push(new Singer());
+			//lolas[ct] = new Singer;
+			break;
+		case 't':
+			lola.push(new SingingWatiter());
+			//lolas[ct] = new SingingWatiter;
+			break;
 		}
-		while (cin.get() != '\n')
-			continue;
+		cin.get();
+		
+		lola.getRear()->Set();
+		//lolas[ct]->Set();
 	}
-	cout << endl;
-	for (int i = 0; i < CLIENTS; i++)
+
+	cout << "\n사원 현황은 다음과 같습니다:\n";
+
+	while (!lola.isEmpty())
 	{
-		p_clients[i]->ViewAcct();
 		cout << endl;
+		lola.getFront()->Show();
+		lola.pop();
 	}
-
-	for (int i = 0; i < CLIENTS; i++)
-	{
-		delete p_clients[i];
-	}
-
 	cout << "프로그램을 종료합니다.\n";
 	return 0;
 }
 */
-
-#include "dma.h"
-
-int main()
-{
-	using std::cout;
-	using std::endl;
-
-	baseDMA shirt("Portabelly", 8);
-	lacksDMA balloon("red", "Blimpo", 4);
-	hasDMA map("Mercator", "Buffalo Keys", 5);
-
-	cout << "baseDMA 객체를 출력한다:\n";
-	cout << shirt << endl;
-	cout << "lacksDMA 객체를 출력한다:\n";
-	cout << balloon << endl;
-	cout << "hasDMA 객체를 출력한다:\n";
-	cout << map << endl;
-	lacksDMA balloon2(balloon);
-	cout << "lacksDMA 복사 결과:\n";
-	cout << balloon2 << endl;
-	hasDMA map2;
-	map2 = map;
-	cout << "hasDMA 대입 결과:\n";
-	cout << map2 << endl;
-	return 0;
-}
