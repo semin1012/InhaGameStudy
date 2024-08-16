@@ -1,6 +1,8 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <iomanip>
 #include "StopWatch.h"
 using namespace std;
 
@@ -16,80 +18,151 @@ Q1. StopWatch class 설계
 	- UML 클래스 다이어그램 작성
 */
 
-vector<int> top[3];
 
-int Factorial(int n)
+#define MAX 5
+
+StopWatch watch;
+
+void Swap(int& a, int& b)
 {
-	if (n == 1)
-		return 1;
-	int j = n * Factorial(n - 1);
-	return j;
+	int temp = a;
+	a = b;
+	b = temp;
 }
 
-void print_top(int num)
+void printArray(int arr[], int tempi, int tempj)
 {
-	vector<int> temptop[3] = { top[0], top[1], top[2] };
-
-	cout << "==============\n";
-
-	for (int i = 0; i < num; i++)
+	for (int i = 0; i < MAX; i++)
 	{
-		for (int j = 0; j < 3; j++)
+		if (i == tempi || i == tempj)
+			cout << setw(2) << " * ";
+		else cout << setw(2) << "   ";
+	}
+
+	cout << "\n";
+
+	for (int i = 0; i < MAX; i++)
+	{
+		cout << setw(2) << arr[i] << " ";
+	}
+	cout << "\n";
+}
+
+void printArray(int arr[])
+{
+	for (int i = 0; i < MAX; i++)
+	{
+		cout << arr[i] << " ";
+	}
+	cout << "\n";
+}
+
+void bubbleSortUpgrade(int arr[])
+{
+	int path = 1;
+	int count;
+	int change;
+	int compair = 0;
+
+	for (int i = 0; i < MAX; i++)
+	{
+		//cout << "\n패스" << path << ", 비교: " << compair << "\n";
+		count = 0;
+		for (int j = MAX - 1; j > i; j--)
 		{
-			if (temptop[j].size() > 0 && i >= num - top[j].size())
+			compair++;
+			if (arr[j] < arr[j - 1])
 			{
-				printf("[%2d] ", temptop[j].back());
-				temptop[j].pop_back();
+				Swap(arr[j], arr[j - 1]);
+				count++;
+				change = j - 1;
 			}
-			else
+			else change = -1;
+		}
+		path++;
+		if (count == 0) break;
+	}
+	//printArray(arr);
+}
+
+void insertSort(int arr[])
+{
+	int min;
+	int tempj;
+	for (int i = 0; i < MAX; i++)
+	{
+		min = arr[i];
+		tempj = i;
+		for (int j = i + 1; j < MAX; j++)
+		{
+			if (min > arr[j])
 			{
-				printf("[%2d] ", 0);
+				min = arr[j];
+				tempj = j;
 			}
 		}
-		cout << '\n';
+		printArray(arr, i, tempj);
+		Swap(arr[i], arr[tempj]);
 	}
-	cout << '\n';
+	//printArray(arr);
 }
 
-
-void Hanoi_top(int n, int from, int temp, int to, int num)
+void insertSortUpgrade(int arr[])
 {
-	static int i = 0;
-
-	if (n == 0)
-		return;
-
-	Hanoi_top(n - 1, from, to, temp, num);
-
-	i++;
-	top[to - 1].push_back(top[from - 1].back());
-	top[from - 1].pop_back();
-
-	cout << i << "번째 이동\n";
-	print_top(num);
-
-	Hanoi_top(n - 1, temp, from, to, num);
+	int min;
+	int tempj;
+	for (int i = 0; i < MAX; i++)
+	{
+		for (int j = i + 1; j < MAX; j++)
+		{
+			if (arr[i] > arr[j])
+			{
+				Swap(arr[i], arr[j]);
+				tempj = j;
+				printArray(arr, i, tempj);
+			}
+		}
+	}
+	//printArray(arr);
 }
 
 int main()
 {
-	StopWatch watch;
-	watch.start();
 
+	int arr[MAX];
+	int arrTemp[MAX];
 
-	int n;
-	cin >> n;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < MAX; i++)
 	{
-		top[0].push_back(i + 1);
+		arr[i] = i+1;
 	}
 
+	random_shuffle(begin(arr), end(arr));
 
-	print_top(n);
-	Hanoi_top(n, 1, 2, 3, n);
+	//cout << "원본 데이터:\n";
+	//printArray(arr);
+	cout << "\n\n";
 
-
+	copy(begin(arr), end(arr), begin(arrTemp));
+	cout << "버블 정렬(개선 1):\n";
+	watch.start();
+	bubbleSortUpgrade(arrTemp);
 	watch.stop();
+	cout << "시간: " << watch.getElpasedTime() << " ms" << endl;
 
-	cout  << "시간: " << watch.getElpasedTime() << " ms" << endl;
+	watch.start();
+	cout << "\n\n기존 단순 선택 정렬:\n";
+	insertSort(arrTemp);
+	watch.stop();
+	cout << "시간: " << watch.getElpasedTime() << " ms" << endl;
+
+	copy(begin(arr), end(arr), begin(arrTemp));
+	cout << "\n\n";
+
+	cout << "개선? 단순 선택 정렬:\n";
+	watch.start();
+	insertSortUpgrade(arrTemp);
+	watch.stop();
+	cout << "시간: " << watch.getElpasedTime() << " ms" << endl;
+
 }

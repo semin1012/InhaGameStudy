@@ -1,6 +1,26 @@
-﻿  Inha.cpp
-  mytime.cpp
-D:\InhaGameStudy\Inha\Inha\mytime.cpp(56,23): warning C4244: '초기화 중': 'double'에서 'long'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  usetime.cpp
+﻿  Circle2D.cpp
+  GeometricObject.cpp
+  Inha.cpp
+D:\InhaGameStudy\Inha\Inha\Inha.cpp(112,6): warning C4101: 'min' :참조되지 않은 지역 변수입니다.
+  MyPoint.cpp
+  Rectangle2D.cpp
+  sayings1.cpp
+  stdx.h
+  StopWatch.cpp
+  String.cpp
+D:\InhaGameStudy\Inha\Inha\String.cpp(18,10): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\String.cpp(35,10): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\String.cpp(80,10): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\String.cpp(89,10): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\String.cpp(121,5): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\String.cpp(127,10): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\String.cpp(128,10): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\String.cpp(135,5): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\String.cpp(141,10): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\String.cpp(142,10): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  StringBad.cpp
+D:\InhaGameStudy\Inha\Inha\StringBad.cpp(11,10): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\InhaGameStudy\Inha\Inha\StringBad.cpp(20,10): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  vegnews.cpp
   코드를 생성하고 있습니다...
   Inha.vcxproj -> D:\InhaGameStudy\Inha\Debug\Inha.exe
