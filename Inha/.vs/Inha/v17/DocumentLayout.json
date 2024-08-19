@@ -157,7 +157,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -169,19 +169,6 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "rtti1.cpp",
-              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\chapter15_FriendEct\\rtti1.cpp",
-              "RelativeDocumentMoniker": "chapter15_FriendEct\\rtti1.cpp",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\chapter15_FriendEct\\rtti1.cpp",
-              "RelativeToolTip": "chapter15_FriendEct\\rtti1.cpp",
-              "ViewState": "AQIAABcAAAAAAAAAAAAowEUAAAADAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-16T03:19:22.377Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 6,
               "Title": "error5.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\chapter15_FriendEct\\error5.cpp",
@@ -190,8 +177,7 @@
               "RelativeToolTip": "chapter15_FriendEct\\error5.cpp",
               "ViewState": "AQIAADgAAAAAAAAAAAAgwFEAAAACAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-16T02:45:07.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-16T02:45:07.831Z"
             },
             {
               "$type": "Document",
@@ -203,8 +189,7 @@
               "RelativeToolTip": "chapter15_FriendEct\\main.cpp",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-16T01:32:32.559Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-16T01:32:32.559Z"
             },
             {
               "$type": "Document",
@@ -216,8 +201,7 @@
               "RelativeToolTip": "chapter15_FriendEct\\tv.cpp",
               "ViewState": "AQIAABMAAAAAAAAAAAAowD8AAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-16T01:29:26.477Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-16T01:29:26.477Z"
             },
             {
               "$type": "Document",
@@ -229,8 +213,7 @@
               "RelativeToolTip": "chapter15_FriendEct\\tv.h",
               "ViewState": "AQIAAAgAAAAAAAAAAAAowDYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-08-16T01:20:38.702Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-16T01:20:38.702Z"
             },
             {
               "$type": "Document",
@@ -244,6 +227,31 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Inha.cpp",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
+              "RelativeDocumentMoniker": "Inha\\Inha.cpp",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
+              "RelativeToolTip": "Inha\\Inha.cpp",
+              "ViewState": "AQIAADoAAAAAAAAAAAAowGgAAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-07-31T06:37:23.582Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "rtti1.cpp",
+              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\chapter15_FriendEct\\rtti1.cpp",
+              "RelativeDocumentMoniker": "chapter15_FriendEct\\rtti1.cpp",
+              "ToolTip": "D:\\InhaGameStudy\\Inha\\chapter15_FriendEct\\rtti1.cpp",
+              "RelativeToolTip": "chapter15_FriendEct\\rtti1.cpp",
+              "ViewState": "AQIAABcAAAAAAAAAAAAowEUAAAADAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-08-16T03:19:22.377Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 8,
               "Title": "main.cpp",
               "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Chapter_Class\\main.cpp",
@@ -252,8 +260,7 @@
               "RelativeToolTip": "Chapter_Class\\main.cpp",
               "ViewState": "AQIAABMAAAAAAAAAAAAAADEAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-14T02:03:18.515Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-14T02:03:18.515Z"
             },
             {
               "$type": "Document",
@@ -278,19 +285,6 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-08-15T01:52:10.535Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Inha.cpp",
-              "DocumentMoniker": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
-              "RelativeDocumentMoniker": "Inha\\Inha.cpp",
-              "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp*",
-              "RelativeToolTip": "Inha\\Inha.cpp*",
-              "ViewState": "AQIAAF0AAAAAAAAAAAAAAGcAAAACAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-07-31T06:37:23.582Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -338,8 +332,7 @@
               "RelativeToolTip": "Inha\\MyPoint.cpp",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-08-09T06:21:34.206Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-09T06:21:34.206Z"
             },
             {
               "$type": "Document",
@@ -351,8 +344,7 @@
               "RelativeToolTip": "chapter15_FriendEct\\exc_mean.h",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-08-16T02:23:24.261Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-16T02:23:24.261Z"
             },
             {
               "$type": "Document",
