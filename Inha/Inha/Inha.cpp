@@ -1,5 +1,6 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <algorithm>
 #include "StopWatch.h"
 using namespace std;
 
@@ -29,121 +30,98 @@ Q3. 사용자로부터 소스 파일의 개수, 소스 파일의 이름, 목적 
 		Enter target file: Dest.zip
 		....
 			>> Combine Done.
+
+Q4. Shell Sort 구현
+	비교횟수와 교환횟수 출력하기
+		1. 단순 삽입 정렬의 비교횟수, 교환횟수와 비교
+		2. 단순 삽입 정렬과 속도 비교
 */
 
-#include <fstream>
-#include <filesystem>
+#define MAX 20000
 
-char temp[32768];
+int nums[MAX];
 
-void splitFile()
+void insertSort()
 {
-	string fileName;
-	int fileSize;
-	fstream finout;
+	int compCount = 0;
+	int swapCount = 0;
+	int j = 0;
+	int tempnums[MAX];
 
-	// Q2. 파일 분할
-	cout << "파일 이름 입력: ";
-	cin >> fileName;
-	cout << "크기 입력(2-32,768):";
-	cin >> fileSize;
-
-	finout.open(fileName, ios_base::in | ios_base::out | ios_base::binary);
-
-
-	if (!finout.is_open())
-	{
-		cout << "파일 읽기 실패!\n";
-		exit(EXIT_FAILURE);
-	}
+	copy(begin(nums), end(nums), tempnums);
 	
-	finout.seekg(ios_base::beg);
 
-	int i = 1;
-	while (!finout.eof())
+	cout << "Insert Sort\n";
+
+	StopWatch st;
+	st.start();
+
+	for (int i = 1; i < MAX; i++)
 	{
-		char number[2];
-		string saveName = fileName + '.' + itoa(i, number, 10);
-
-		fstream out;
-		out.open(saveName, ios_base::out | ios_base::binary);
-
-		finout.read((char*)&temp, fileSize);
-
-		out.write(temp, fileSize);
-
-		cout << saveName << " 파일 생성\n";
-		i++;
-
-		out.close();
+		int temp = tempnums[i];
+		for (j = i; j > 0; j--)
+		{
+			compCount++;
+			if (tempnums[j - 1] > temp)
+			{
+				tempnums[j] = tempnums[j - 1];
+				swapCount++;
+			}
+			else break;
+		}
+		tempnums[j] = temp;
 	}
 
-	if (finout.eof())
-		finout.clear();
+	st.stop();
 
-	else
-	{
-		cout << "파일 읽다가 오류 발생\n";
-		exit(EXIT_FAILURE);
-	}
-
-	finout.close();
+	cout << "비교 횟수: " << compCount << ", 교환 횟수: " << swapCount << "\n";
+	cout << "InsertSort 시간: " << st.getElpasedTime() << "\n\n";
 }
 
-void mergeFile()
+void shellSort()
 {
-	int fileNum;
-	string inputName;
-	string targetName;
-	fstream saveTemp;
+	int compCount = 0;
+	int swapCount = 0;
+	int tempnums[MAX];
 
-	cout << "Enter target file name: ";
-	cin >> targetName;
+	copy(begin(nums), end(nums), tempnums);
 
-	saveTemp.open(targetName, ios_base::binary | ios_base::out);
+	cout << "Shell Sort\n";
+	StopWatch st;
 
-	if (!saveTemp.is_open())
+	st.start();
+	for (int h = MAX / 3+1; h > 0; h /= 2)
 	{
-		cout << targetName << " 열기 실패\n";
-		exit(EXIT_FAILURE);
-	}
-
-
-	cout << "Enter File Number: ";
-	cin >> fileNum;
-
-	for (int i = 0; i < fileNum; i++)
-	{
-		cout << "Enter source number: ";
-		fstream fileTemp;
-		cin >> inputName;
-		fileTemp.open(inputName.c_str(), ios_base::binary | ios_base::in | ios_base::out);
-
-		if (!fileTemp.is_open())
+		for (int i = h; i < MAX; i++)
 		{
-			cout << inputName << " 열기 실패\n";
-			exit(EXIT_FAILURE);
+			int temp = tempnums[i];
+			int j;
+			for (j = i - h; j >= 0; j -= h)
+			{
+				compCount++;
+				if (tempnums[j] >= temp)
+				{
+					swapCount++;
+					tempnums[j + h] = tempnums[j];
+				}
+				else break;
+			}
+			tempnums[j + h] = temp;
 		}
-		cout << inputName << " open success\n";
-
-
-		fileTemp.seekg(0, ios::end);
-		int length = fileTemp.tellg();
-		fileTemp.seekg(0, ios::beg);
-
-		while (fileTemp.read((char*)&temp, length))
-		{
-			saveTemp.write(temp, length);
-		}
-		fileTemp.close();
 	}
+	st.stop();
 
-	cout << "저장되었습니다.\n";
-	saveTemp.close();
+	cout << "비교 횟수: " << compCount << ", 교환 횟수: " << swapCount << endl;
+	cout << "shellSort 시간: " << st.getElpasedTime() << '\n';
 }
 
 int main()
 {
-	splitFile();
-	mergeFile();
+	for (int i = 0; i < MAX; i++)
+		nums[i] = i + 1;
+	
+	random_shuffle(begin(nums), end(nums));
+
+	insertSort();
+	shellSort();
 }
