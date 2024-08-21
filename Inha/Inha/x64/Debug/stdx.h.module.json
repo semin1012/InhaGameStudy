@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "x64\\Debug\\stdx.h.obj",
+            "outputs": [
+                "D:\\InhaGameStudy\\Inha\\Inha\\x64\\Debug\\vc143.pdb",
+                "x64\\Debug\\",
+                "D:\\InhaGameStudy\\Inha\\Inha\\x64\\Debug\\stdx.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "stdx.h",
+                    "source-path": "d:\\inhagamestudy\\inha\\inha\\stdx.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}
