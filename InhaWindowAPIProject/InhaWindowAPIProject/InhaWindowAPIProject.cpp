@@ -17,6 +17,13 @@ Q2. 원 그리기
     원의 중점 좌표, 반지름을 인자로 한다.
 
     - void DrawCircle(HDC hdc, POINT center, int radius);
+
+Q3. 해바라기 그리기 함수를 구현하라.
+    원을 그리기 위한 기본 정보에 외각에 그려질 원의 개수를 입력받아
+    해바라기 형식으로 그려지도록 한다.
+
+    - void DrawSunflower(HDC hdc, ...);
+
 */
 
 
@@ -167,6 +174,23 @@ void DrawCircle(HDC hdc, POINT center, int radius)
     Ellipse(hdc, center.x - radius, center.y - radius, center.x + radius, center.y + radius);
 }
 
+#include <math.h>
+
+void DrawSunflower(HDC hdc, POINT center, int radius, int count)
+{
+    DrawCircle(hdc, center, radius);
+
+    float angle = 360.0f / count;
+    float radian = angle * 3.141592 / 180.0f;
+    float p = radius * sin(radian / 2) / (1 - sin(radian / 2));
+
+    for (int i = 0; i < count; i++)
+    {
+        POINT centerEct = { center.x + (radius + p) * cos(radian * i), center.y + (radius + p) * sin(radian * i) };
+        DrawCircle(hdc, centerEct, p);
+    }
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -205,28 +229,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-        SetTextColor(hdc, RGB(0, 0, 0));
-        DrawGrid(hdc, { 390, 370 }, 800, 800, 50);
-        DrawCircle(hdc, { 200, 250 }, 100);
-        //DrawCircle(hdc, { 320, 400 }, 50);
-        DrawCircle(hdc, { 500, 150}, 80);
+        DrawSunflower(hdc, { 350, 350 }, 100, 12);
 
-        DrawCircle(hdc, { 500, 500 }, 150);
-        DrawCircle(hdc, { 440, 470 }, 20);
-        DrawCircle(hdc, { 560, 470 }, 20);
+        //SetTextColor(hdc, RGB(0, 0, 0));
+        //DrawGrid(hdc, { 390, 370 }, 800, 800, 50);
+        //DrawCircle(hdc, { 200, 250 }, 100);
+        ////DrawCircle(hdc, { 320, 400 }, 50);
+        //DrawCircle(hdc, { 500, 150}, 80);
 
-        MoveToEx(hdc, 440, 550, NULL);
-        LineTo(hdc, 560, 550);
+        //DrawCircle(hdc, { 500, 500 }, 150);
+        //DrawCircle(hdc, { 440, 470 }, 20);
+        //DrawCircle(hdc, { 560, 470 }, 20);
 
-        // 앞니
-        MoveToEx(hdc, 500, 550, NULL);
-        LineTo(hdc, 500, 570);
-        MoveToEx(hdc, 480, 550, NULL);
-        LineTo(hdc, 480, 570);
-        MoveToEx(hdc, 520, 550, NULL);
-        LineTo(hdc, 520, 570);
-        MoveToEx(hdc, 480, 570, NULL);
-        LineTo(hdc, 520, 570);
+        //MoveToEx(hdc, 440, 550, NULL);
+        //LineTo(hdc, 560, 550);
+
+        //// 앞니
+        //MoveToEx(hdc, 500, 550, NULL);
+        //LineTo(hdc, 500, 570);
+        //MoveToEx(hdc, 480, 550, NULL);
+        //LineTo(hdc, 480, 570);
+        //MoveToEx(hdc, 520, 550, NULL);
+        //LineTo(hdc, 520, 570);
+        //MoveToEx(hdc, 480, 570, NULL);
+        //LineTo(hdc, 520, 570);
         
         EndPaint(hWnd, &ps);
     }
