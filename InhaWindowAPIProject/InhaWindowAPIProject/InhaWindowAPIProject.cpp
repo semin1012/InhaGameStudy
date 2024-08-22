@@ -139,25 +139,28 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
+#define MAX_STR_LENGTH 100
+#define MAX_STR_COUNT 10
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static TCHAR str[1000];
-    static int count, yPos;
-    RECT rc = { 0, 0, 800, 800};
+    static TCHAR str[MAX_STR_COUNT][MAX_STR_LENGTH];
+    static int count, chatCount;
     static SIZE caretSize;
+    int yPos = 700;
 
     switch (message)
     {
     case WM_CREATE:
         count = 0;
-        yPos = 0;
+        chatCount = 0;
         CreateCaret(hWnd, NULL, 5, 15);
         ShowCaret(hWnd);
         break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
-            // 메뉴 선택을 구문 분석합니다:
             switch (wmId)
             {
             case IDM_ABOUT:
@@ -178,23 +181,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     // 아래처럼 쓰면 이미 쓰고 있던 hdc를 얻어와서 거기에 출력을 하는 코드다.
     // WM_PAINT에서처럼 새로 페인트를 하는 느낌과는 다름
     {
-        if (wParam == VK_BACK)
+        if (chatCount < MAX_STR_COUNT)
         {
-            if (count > 0)
-                count--;
+            if (wParam == VK_BACK)
+            {
+                if (count > 0)
+                    count--;
+            }
+            else if (wParam == VK_RETURN)
+            {
+                count = 0;
+                chatCount++;
+            }
+            else
+            {
+                if (count < MAX_STR_LENGTH - 1)
+                    str[chatCount][count++] = wParam;
+            }
+            str[chatCount][count] = NULL;
         }
-        else if (wParam == VK_RETURN)
-        {
-            count = 0;
-            yPos = yPos + 20;
-        }
-        else
-        {
-            if (count < 1000-1)
-                str[count++] = wParam;
-        }
-        str[count] = NULL;
-
         InvalidateRgn(hWnd, NULL, true);
         // InvalidateRect(hWnd, NULL, true);
         // 위와 아래는 같은 것임. 두번째 인자가 NULL이면 전체를 다시 그리라고 하는 거고
@@ -207,27 +212,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-        // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-
-        TextOut(hdc, 10, 10, _T("Hello World"), _tcslen(_T("Hello World")));
-
-        //SetTextColor(hdc, RGB(150, 110, 120));
-
-        //RECT rect;
-        //rect.left = 100, rect.top = 100, rect.right = 250, rect.bottom = 200;
-        //DrawText(hdc, _T("Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 "),
-        //    _tcslen(_T("Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 Hello World2 ")),
-        //    &rect, DT_WORDBREAK | DT_CENTER | DT_VCENTER);
-
-        TextOut(hdc, 100, yPos, str, _tcslen(str));
-
-        DrawText(hdc, str, _tcslen(str), &rc, DT_TOP | DT_LEFT | DT_WORDBREAK);
-        GetTextExtentPoint(hdc, str, _tcslen(str), &caretSize);
-        SetCaretPos(caretSize.cx, 0);
 
 
-            EndPaint(hWnd, &ps);
+        SetTextColor(hdc, RGB(0, 0, 0));
+        for (int i = 0, j = chatCount; i <= chatCount; i++, j--)
+        {
+            if (i == chatCount)
+                SetTextColor(hdc, RGB(0, 0, 255));
+            TextOut(hdc, 0, yPos - 20 * j, str[i], _tcslen(str[i]));
         }
+
+        GetTextExtentPoint(hdc, str[chatCount], _tcslen(str[chatCount]), &caretSize);
+        SetCaretPos(caretSize.cx, yPos);
+
+        EndPaint(hWnd, &ps);
+    }
         break;
     case WM_DESTROY:
         HideCaret(hWnd);
@@ -240,7 +239,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-// 정보 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
