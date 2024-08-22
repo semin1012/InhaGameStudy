@@ -5,19 +5,12 @@
 #include "InhaWindowAPIProject.h"
 
 /* 
-Q1. 채팅창에 문자열을 입력하고 엔터키를 누르면
-    문자열이 한칸 올라가서 표시되고 그 다음에 입력하는
-    데이터들이 보여지도록 하는 코드를 작성하라.
-    채팅 최대 목록은 10개로 제한한다.
+Q1. 격자 그리기 
+    DrawGrid(...) 함수 구현하라.
+    격자 위치, 격자 Width, Height,
+    격자 개수 또는 격자 간격을 인자로 한다.
 
-    ex> abc (enter)
-
-        abc
-        > asdf (enter)
-
-        abc
-        asdf
-        > ... (enter)
+    - void DrawGrid(HDC hdc, POINT center, int width, int height, int count = 0);
 */
 
 
@@ -143,20 +136,31 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 #define MAX_STR_LENGTH 100
 #define MAX_STR_COUNT 10
 
+void DrawGrid(HDC hdc, POINT center, int width, int height, int count = 0)
+{
+    RECT rect = { center.x - width / 2.0f, center.y - height / 2.0f, center.x + width / 2.0f, center.y + height / 2 };
+
+    float widthLenth = width / (float)count;
+    float heightLenth = height / (float)count;
+    
+    for (int i = 0; i <= count; i++)
+    {
+        MoveToEx(hdc, rect.left, rect.top + i * heightLenth, NULL);
+        LineTo(hdc, rect.right, rect.top + i * heightLenth);
+    }
+
+    for (int i = 0; i <= count; i++)
+    {
+        MoveToEx(hdc, rect.left + i * widthLenth, rect.top, NULL);
+        LineTo(hdc, rect.left + i * widthLenth, rect.bottom);
+    }
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static TCHAR str[MAX_STR_COUNT][MAX_STR_LENGTH];
-    static int count, chatCount;
-    static SIZE caretSize;
-    int yPos = 700;
-
     switch (message)
     {
     case WM_CREATE:
-        count = 0;
-        chatCount = 0;
-        CreateCaret(hWnd, NULL, 5, 15);
-        ShowCaret(hWnd);
         break;
     case WM_COMMAND:
         {
@@ -178,32 +182,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         break;
     case WM_CHAR:
-    // 아래처럼 쓰면 이미 쓰고 있던 hdc를 얻어와서 거기에 출력을 하는 코드다.
-    // WM_PAINT에서처럼 새로 페인트를 하는 느낌과는 다름
     {
-        if (chatCount < MAX_STR_COUNT)
-        {
-            if (wParam == VK_BACK)
-            {
-                if (count > 0)
-                    count--;
-            }
-            else if (wParam == VK_RETURN)
-            {
-                count = 0;
-                chatCount++;
-            }
-            else
-            {
-                if (count < MAX_STR_LENGTH - 1)
-                    str[chatCount][count++] = wParam;
-            }
-            str[chatCount][count] = NULL;
-        }
-        InvalidateRgn(hWnd, NULL, true);
+        //InvalidateRgn(hWnd, NULL, true);
         // InvalidateRect(hWnd, NULL, true);
-        // 위와 아래는 같은 것임. 두번째 인자가 NULL이면 전체를 다시 그리라고 하는 거고
-        // rect 크기를 지정하면 거기만 다시 그리라고 요청함. 세번째 인자는 지우고 다시 그리라는 뜻
     }
         break;
     case WM_KEYUP:
@@ -213,24 +194,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
+        DrawGrid(hdc, { 200, 200 }, 200, 200, 5);
 
         SetTextColor(hdc, RGB(0, 0, 0));
-        for (int i = 0, j = chatCount; i <= chatCount; i++, j--)
-        {
-            if (i == chatCount)
-                SetTextColor(hdc, RGB(0, 0, 255));
-            TextOut(hdc, 0, yPos - 20 * j, str[i], _tcslen(str[i]));
-        }
-
-        GetTextExtentPoint(hdc, str[chatCount], _tcslen(str[chatCount]), &caretSize);
-        SetCaretPos(caretSize.cx, yPos);
-
+        
         EndPaint(hWnd, &ps);
     }
         break;
     case WM_DESTROY:
-        HideCaret(hWnd);
-        DestroyCaret();
         PostQuitMessage(0);
         break;
     default:
