@@ -11,6 +11,12 @@ Q1. 격자 그리기
     격자 개수 또는 격자 간격을 인자로 한다.
 
     - void DrawGrid(HDC hdc, POINT center, int width, int height, int count = 0);
+
+Q2. 원 그리기
+    DrawCircle(...) 함수를 구현하라.
+    원의 중점 좌표, 반지름을 인자로 한다.
+
+    - void DrawCircle(HDC hdc, POINT center, int radius);
 */
 
 
@@ -156,6 +162,11 @@ void DrawGrid(HDC hdc, POINT center, int width, int height, int count = 0)
     }
 }
 
+void DrawCircle(HDC hdc, POINT center, int radius)
+{
+    Ellipse(hdc, center.x - radius, center.y - radius, center.x + radius, center.y + radius);
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -194,9 +205,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-        DrawGrid(hdc, { 200, 200 }, 200, 200, 5);
-
         SetTextColor(hdc, RGB(0, 0, 0));
+        DrawGrid(hdc, { 390, 370 }, 800, 800, 50);
+        DrawCircle(hdc, { 200, 250 }, 100);
+        //DrawCircle(hdc, { 320, 400 }, 50);
+        DrawCircle(hdc, { 500, 150}, 80);
+
+        DrawCircle(hdc, { 500, 500 }, 150);
+        DrawCircle(hdc, { 440, 470 }, 20);
+        DrawCircle(hdc, { 560, 470 }, 20);
+
+        MoveToEx(hdc, 440, 550, NULL);
+        LineTo(hdc, 560, 550);
+
+        // 앞니
+        MoveToEx(hdc, 500, 550, NULL);
+        LineTo(hdc, 500, 570);
+        MoveToEx(hdc, 480, 550, NULL);
+        LineTo(hdc, 480, 570);
+        MoveToEx(hdc, 520, 550, NULL);
+        LineTo(hdc, 520, 570);
+        MoveToEx(hdc, 480, 570, NULL);
+        LineTo(hdc, 520, 570);
         
         EndPaint(hWnd, &ps);
     }
