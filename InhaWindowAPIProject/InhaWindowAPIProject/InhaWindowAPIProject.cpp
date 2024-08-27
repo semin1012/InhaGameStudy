@@ -5,24 +5,7 @@
 #include "InhaWindowAPIProject.h"
 
 /* 
-Q1. 격자 그리기 
-    DrawGrid(...) 함수 구현하라.
-    격자 위치, 격자 Width, Height,
-    격자 개수 또는 격자 간격을 인자로 한다.
-
-    - void DrawGrid(HDC hdc, POINT center, int width, int height, int count = 0);
-
-Q2. 원 그리기
-    DrawCircle(...) 함수를 구현하라.
-    원의 중점 좌표, 반지름을 인자로 한다.
-
-    - void DrawCircle(HDC hdc, POINT center, int radius);
-
-Q3. 해바라기 그리기 함수를 구현하라.
-    원을 그리기 위한 기본 정보에 외각에 그려질 원의 개수를 입력받아
-    해바라기 형식으로 그려지도록 한다.
-
-    - void DrawSunflower(HDC hdc, ...);
+Q1. p.93 문제 7.
 
 */
 
@@ -146,53 +129,21 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 //
 
-#define MAX_STR_LENGTH 100
-#define MAX_STR_COUNT 10
-
-void DrawGrid(HDC hdc, POINT center, int width, int height, int count = 0)
+enum EKeyDown
 {
-    RECT rect = { center.x - width / 2.0f, center.y - height / 2.0f, center.x + width / 2.0f, center.y + height / 2 };
-
-    float widthLenth = width / (float)count;
-    float heightLenth = height / (float)count;
-    
-    for (int i = 0; i <= count; i++)
-    {
-        MoveToEx(hdc, rect.left, rect.top + i * heightLenth, NULL);
-        LineTo(hdc, rect.right, rect.top + i * heightLenth);
-    }
-
-    for (int i = 0; i <= count; i++)
-    {
-        MoveToEx(hdc, rect.left + i * widthLenth, rect.top, NULL);
-        LineTo(hdc, rect.left + i * widthLenth, rect.bottom);
-    }
-}
-
-void DrawCircle(HDC hdc, POINT center, int radius)
-{
-    Ellipse(hdc, center.x - radius, center.y - radius, center.x + radius, center.y + radius);
-}
-
-#include <math.h>
-
-void DrawSunflower(HDC hdc, POINT center, int radius, int count)
-{
-    DrawCircle(hdc, center, radius);
-
-    float angle = 360.0f / count;
-    float radian = angle * 3.141592 / 180.0f;
-    float p = radius * sin(radian / 2) / (1 - sin(radian / 2));
-
-    for (int i = 0; i < count; i++)
-    {
-        POINT centerEct = { center.x + (radius + p) * cos(radian * i), center.y + (radius + p) * sin(radian * i) };
-        DrawCircle(hdc, centerEct, p);
-    }
-}
+    RIGHT = 1,
+    LEFT,
+    DOWN,
+    UP
+};
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    RECT rect[5] = { {300, 300, 400, 400}, {399, 300, 499, 400}, {201, 300, 301, 400}, {300, 399, 400, 499}, {300, 201, 400, 301} };
+    static TCHAR str[5][5] = { {L""}, {L"오른쪽"}, {L"왼쪽"}, {L"아래쪽"}, {L"위쪽"} };
+    HBRUSH hBrush, oldBrush;
+    static int keyDown = -1;
+
     switch (message)
     {
     case WM_CREATE:
@@ -214,46 +165,53 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_KEYDOWN:
-
-        break;
-    case WM_CHAR:
-    {
-        //InvalidateRgn(hWnd, NULL, true);
-        // InvalidateRect(hWnd, NULL, true);
-    }
+        switch (wParam)
+        {
+        case VK_LEFT:
+            keyDown = EKeyDown::LEFT;
+            break;
+        case VK_RIGHT:
+            keyDown = EKeyDown::RIGHT;
+            break;
+        case VK_UP:
+            keyDown = EKeyDown::UP;
+            break;
+        case VK_DOWN:
+            keyDown = EKeyDown::DOWN;
+            break;
+        }
+        InvalidateRect(hWnd, NULL, true);
         break;
     case WM_KEYUP:
+        keyDown = -1;
+        InvalidateRect(hWnd, NULL, true);
+        break;
+    case WM_CHAR:
         break;
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-
-        DrawSunflower(hdc, { 350, 350 }, 100, 12);
-
-        //SetTextColor(hdc, RGB(0, 0, 0));
-        //DrawGrid(hdc, { 390, 370 }, 800, 800, 50);
-        //DrawCircle(hdc, { 200, 250 }, 100);
-        ////DrawCircle(hdc, { 320, 400 }, 50);
-        //DrawCircle(hdc, { 500, 150}, 80);
-
-        //DrawCircle(hdc, { 500, 500 }, 150);
-        //DrawCircle(hdc, { 440, 470 }, 20);
-        //DrawCircle(hdc, { 560, 470 }, 20);
-
-        //MoveToEx(hdc, 440, 550, NULL);
-        //LineTo(hdc, 560, 550);
-
-        //// 앞니
-        //MoveToEx(hdc, 500, 550, NULL);
-        //LineTo(hdc, 500, 570);
-        //MoveToEx(hdc, 480, 550, NULL);
-        //LineTo(hdc, 480, 570);
-        //MoveToEx(hdc, 520, 550, NULL);
-        //LineTo(hdc, 520, 570);
-        //MoveToEx(hdc, 480, 570, NULL);
-        //LineTo(hdc, 520, 570);
         
+        for (int i = 0; i < 5; i++)
+        {
+            if (keyDown != i)
+            {
+                Rectangle(hdc, rect[i].left, rect[i].top, rect[i].right, rect[i].bottom);
+                DrawText(hdc, str[i], _tcslen(str[i]), &rect[i], DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+            }
+            else
+            {
+                hBrush = CreateSolidBrush(RGB(255, 0, 0));
+                oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+
+                Rectangle(hdc, rect[i].left, rect[i].top, rect[i].right, rect[i].bottom);
+
+                SelectObject(hdc, oldBrush);
+                DeleteObject(hBrush);
+            }
+        }
+
         EndPaint(hWnd, &ps);
     }
         break;
