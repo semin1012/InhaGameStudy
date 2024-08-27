@@ -129,24 +129,37 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 //
 
-enum EKeyDown
+#include <math.h>
+
+struct POS
 {
-    RIGHT = 1,
-    LEFT,
-    DOWN,
-    UP
+    int x, y;
 };
+
+#define TIMER_ID1 1
+#define TIMER_ID2 2
+#define CIRCLE_RADIUS 50
+
+BOOL InCircle(int x1, int y1, int x2, int y2, int radius)
+{
+    if (sqrt(((float)x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) <= radius)
+        return TRUE;
+    return FALSE;
+}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    RECT rect[5] = { {300, 300, 400, 400}, {399, 300, 499, 400}, {201, 300, 301, 400}, {300, 399, 400, 499}, {300, 201, 400, 301} };
-    static TCHAR str[5][5] = { {L""}, {L"오른쪽"}, {L"왼쪽"}, {L"아래쪽"}, {L"위쪽"} };
-    HBRUSH hBrush, oldBrush;
-    static int keyDown = -1;
+    static POS pos = { CIRCLE_RADIUS, CIRCLE_RADIUS };
+    static RECT rectView;
+    static bool flag;
+    static bool mouseFlag;
 
     switch (message)
     {
     case WM_CREATE:
+        GetClientRect(hWnd, &rectView);
+        // SetTimer(hWnd, TIMER_ID1, 70, NULL);
+        // SetTimer(hWnd, TIMER_ID2, 100, NULL);
         break;
     case WM_COMMAND:
         {
@@ -165,57 +178,112 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_KEYDOWN:
-        switch (wParam)
+        if (wParam == VK_RIGHT)
         {
-        case VK_LEFT:
-            keyDown = EKeyDown::LEFT;
-            break;
-        case VK_RIGHT:
-            keyDown = EKeyDown::RIGHT;
-            break;
-        case VK_UP:
-            keyDown = EKeyDown::UP;
-            break;
-        case VK_DOWN:
-            keyDown = EKeyDown::DOWN;
-            break;
+            pos.x += 40;
+            if (pos.x + 20 > rectView.right)
+                pos.x -= 40;
         }
+        if (wParam == VK_LEFT)
+        {
+            pos.x -= 40;
+            if (pos.x - 20 < rectView.left)
+                pos.x += 40;
+        }
+        if (wParam == VK_DOWN)
+        {
+            pos.y += 40;
+            if (pos.y + 20 > rectView.bottom)
+                pos.y -= 40;
+        }
+        if (wParam == VK_UP)
+        {
+            pos.y -= 40;
+            if (pos.y - 20 < rectView.top)
+                pos.y += 40;
+        }
+        flag = true;
         InvalidateRect(hWnd, NULL, true);
         break;
     case WM_KEYUP:
-        keyDown = -1;
+        flag = false;
         InvalidateRect(hWnd, NULL, true);
         break;
     case WM_CHAR:
+        break;
+    case WM_LBUTTONDOWN:
+    {
+        int x, y;
+        x = LOWORD(lParam); //x
+        y = HIWORD(lParam); //y
+        if (InCircle(x, y, pos.x, pos.y, CIRCLE_RADIUS))
+            mouseFlag = TRUE;
+        else mouseFlag = FALSE;
+        InvalidateRect(hWnd, NULL, true);
+    }
+        break;
+    case WM_LBUTTONUP:
+        mouseFlag = FALSE;
+        break;
+    case WM_RBUTTONDOWN:
+    {
+        int x, y;
+        x = LOWORD(lParam); //x
+        y = HIWORD(lParam); //y
+        if (InCircle(x, y, pos.x, pos.y, CIRCLE_RADIUS))
+            flag = TRUE;
+        else flag = FALSE;
+        InvalidateRect(hWnd, NULL, true);
+    }
+        break;
+    case WM_RBUTTONUP:
+        break;
+    case WM_MOUSEMOVE:  // 이거 하면 느리다
+        int x, y;
+        x = LOWORD(lParam);
+        y = HIWORD(lParam);
+        if (mouseFlag) 
+        {
+            pos.x = x;
+            pos.y = y;
+        }
+        InvalidateRect(hWnd, NULL, true);
+        break;
+    case WM_SIZE:
+        GetClientRect(hWnd, &rectView);
         break;
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-        
-        for (int i = 0; i < 5; i++)
-        {
-            if (keyDown != i)
-            {
-                Rectangle(hdc, rect[i].left, rect[i].top, rect[i].right, rect[i].bottom);
-                DrawText(hdc, str[i], _tcslen(str[i]), &rect[i], DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-            }
-            else
-            {
-                hBrush = CreateSolidBrush(RGB(255, 0, 0));
-                oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 
-                Rectangle(hdc, rect[i].left, rect[i].top, rect[i].right, rect[i].bottom);
+        if (flag)
+            SelectObject(hdc, GetStockObject(LTGRAY_BRUSH));
 
-                SelectObject(hdc, oldBrush);
-                DeleteObject(hBrush);
-            }
-        }
+        Ellipse(hdc, pos.x - CIRCLE_RADIUS, pos.y - CIRCLE_RADIUS, pos.x + CIRCLE_RADIUS, pos.y + CIRCLE_RADIUS);
 
         EndPaint(hWnd, &ps);
     }
         break;
+    case WM_TIMER:
+        switch (wParam)
+        {
+        case TIMER_ID1:
+            pos.x += 40;
+            if (pos.x + 20 > rectView.bottom)
+                pos.x = rectView.bottom - CIRCLE_RADIUS;
+            break;
+        case TIMER_ID2:
+            pos.x -= 40;
+            if (pos.x > rectView.right + CIRCLE_RADIUS)
+                pos.x = rectView.right - CIRCLE_RADIUS;
+            break;
+        }
+        InvalidateRect(hWnd, NULL, true);
+        break;
     case WM_DESTROY:
+        KillTimer(hWnd, TIMER_ID1);
+        KillTimer(hWnd, TIMER_ID2);
         PostQuitMessage(0);
         break;
     default:
