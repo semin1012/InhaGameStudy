@@ -161,24 +161,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;  
     case WM_LBUTTONDOWN:
         {
-        int x = LOWORD(lParam);
-        int y = HIWORD(lParam);
+        double x = LOWORD(lParam);
+        double y = HIWORD(lParam);
 
         int randomSize  = rand() % 5 + 1;
         int randomType  = rand() % 3;
-        int randomSpeed = rand() % 5 + 1;
+        int randomSpeed = rand() % 3 + 5;
         int randomDir   = rand() % 8;
         int randomDirX  = rand() % 360;
         
-        CObject* object;
-
         switch (randomType)
         {
         case ObjectType::Circle:
-            objects.emplace_back(new CCircle({ x, y }, randomSpeed, randomDirX, ObjectType::Circle, randomSize));
+            objects.emplace_back(new CCircle( { x, y }, randomSpeed, randomDirX, ObjectType::Circle, randomSize));
             break;
         case ObjectType::Rect:
-            objects.emplace_back(new CCircle({ x, y }, randomSpeed, randomDirX, ObjectType::Circle, randomSize));
+            objects.emplace_back(new CRect({ x, y }, randomSpeed, randomDirX, ObjectType::Rect, randomSize));
             break;
         case ObjectType::Star:
             objects.emplace_back(new CCircle({ x, y }, randomSpeed, randomDirX, ObjectType::Circle, randomSize));

@@ -14,7 +14,7 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Inha\\source.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B43760E2-36CC-4F7D-8993-F3B9BB532E7D}|Inha\\Inha.vcxproj|C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\2022\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.40.33807\\INCLUDE\\STRING||{3B902123-F8A7-4915-9F01-361F908088D0}|"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string||{3B902123-F8A7-4915-9F01-361F908088D0}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,8 +42,7 @@
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\string",
               "ViewState": "AQIAAAMAAAAAAAAAAAAQwBgAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-08-21T00:52:03.138Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-21T00:52:03.138Z"
             },
             {
               "$type": "Document",
@@ -55,8 +54,7 @@
               "RelativeToolTip": "Inha\\source.txt",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2024-08-21T00:21:21.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-21T00:21:21.831Z"
             },
             {
               "$type": "Document",
@@ -66,8 +64,7 @@
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\include\\xstring",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-08-20T02:42:38.061Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-20T02:42:38.061Z"
             },
             {
               "$type": "Document",
@@ -77,7 +74,7 @@
               "RelativeDocumentMoniker": "Inha\\Inha.cpp",
               "ToolTip": "D:\\InhaGameStudy\\Inha\\Inha\\Inha.cpp",
               "RelativeToolTip": "Inha\\Inha.cpp",
-              "ViewState": "AQIAAEUAAAAAAAAAAAAgwEYAAAAQAAAA",
+              "ViewState": "AQIAADAAAAAAAAAAAAAAAEgAAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-08-20T02:41:35.081Z",
               "EditorCaption": ""
