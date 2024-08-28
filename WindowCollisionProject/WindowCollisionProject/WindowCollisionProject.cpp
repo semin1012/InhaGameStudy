@@ -131,10 +131,16 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 #define MAX 200
 #define TIMER_ID1 1
 
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static vector<CObject*> objects;
     static RECT rectView;
+    HBRUSH hBrush;
+    HGDIOBJ oldBrush;
+    POINT pts[6];
+    float ct = 90;
 
     switch (message)
     {
@@ -179,7 +185,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             objects.emplace_back(new CRect({ x, y }, randomSpeed, randomDirX, ObjectType::Rect, randomSize));
             break;
         case ObjectType::Star:
-            objects.emplace_back(new CCircle({ x, y }, randomSpeed, randomDirX, ObjectType::Circle, randomSize));
+            objects.emplace_back(new CStar({ x, y }, randomSpeed, randomDirX, ObjectType::Star, randomSize));
             break;
         }
 
@@ -190,23 +196,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
+            hBrush = CreateSolidBrush(RGB(230, 200, 200));
+            oldBrush = SelectObject(hdc, hBrush);
 
             BOOL flag[100] = { false };
 
             for (int i = 0; i < objects.size(); i++)
             {
-                objects[i]->Draw(hdc);
-                flag[i] = true;
 
                 for (int j = 0; j < objects.size(); j++)
                 {
                     if (i != j && flag[j] == false)
-                        objects[i]->Collision(*objects[j]);
+                    {
+                        if (objects[i]->Collision(*objects[j])) 
+                        {
+                            flag[i] = true;
+                        }
+                    }
                 }
+                SelectObject(hdc, oldBrush);
+                if (objects[i]->isCollided)
+                    oldBrush = SelectObject(hdc, hBrush);
+                objects[i]->Draw(hdc);
             }
 
+            DeleteObject(oldBrush);
             EndPaint(hWnd, &ps);
-
         }
         break;
     case WM_TIMER:

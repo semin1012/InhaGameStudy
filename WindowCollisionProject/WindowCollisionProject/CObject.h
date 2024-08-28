@@ -26,24 +26,18 @@ enum ObjectSize
     ExtraLarge
 };
 
-
-
-
 struct Vector2D {
     double x;
     double y;
 
-    // º¤ÅÍ µ¡¼À
     Vector2D operator+(const Vector2D& other) const {
         return { x + other.x, y + other.y };
     }
 
-    // º¤ÅÍ »¬¼À
     Vector2D operator-(const Vector2D& other) const {
         return { x - other.x, y - other.y };
     }
 
-    // ½ºÄ®¶ó °ö¼À
     Vector2D operator*(double scalar) const {
         return { x * scalar, y * scalar };
     }
@@ -58,10 +52,9 @@ struct Vector2D {
         return std::sqrt(x * x + y * y);
     }
 
-    // º¤ÅÍ¸¦ Á¤±ÔÈ­
     Vector2D normalize() const {
         double n = norm();
-        if (n == 0) return { 0, 0 };  // Á¦·Î µðºñÀü ¹æÁö
+        if (n == 0) return { 0, 0 }; 
         return { x / n, y / n };
     }
 
@@ -84,6 +77,7 @@ public:
     float m;
     clock_t startTime; 
     clock_t currentTime;
+    bool isCollided = false;
 
 public:
     CObject(POS pos, float speed, float rad, ObjectType type, int size) : pos(pos), speed(speed), rad(rad), objectType(type), size(size)
@@ -98,11 +92,16 @@ public:
         startTime = clock();
         currentTime = clock();
     };
-    virtual void Update(RECT& rectView) = 0;       // ÁÂÇ¥ °»½Å
-    virtual void Draw(HDC hdc) = 0;         // ±×¸®±â
-    virtual BOOL Collision(CObject& object);    // Ãæµ¹
+    virtual void Update(RECT& rectView) = 0;        // ÁÂÇ¥ °»½Å
+    virtual void Draw(HDC hdc) = 0;                 // ±×¸®±â
+    virtual BOOL Collision(CObject& object);        // Ãæµ¹
     void CheckWindowCollision(RECT& rectView);
     std::pair<Vector2D, Vector2D> calculateReflectionAngle(CObject& v2, double m1, double m2);
+
+    float degreeToRadian(float de)
+    {
+        return de * 3.141592 / 180.0f;
+    }
 };
 
 class CCircle : public CObject
@@ -112,14 +111,19 @@ public:
     CCircle(POS pos, float speed, float rad, ObjectType type, int sizeNum) : CObject(pos, speed, rad, type, sizeNum) {   }
     void Update(RECT& rectView) override;
     void Draw(HDC hdc) override;
-    //BOOL Collision(CObject& object) override;
-    void CheckCircleCollision(CObject& circle);
+};
+
+struct Point
+{
+    double x, y;
 };
 
 class CRect : public CObject
 {
 private:
     RECT rect;
+    float ct = 90;
+    POINT point[4];
 public:
     CRect(POS pos, float speed, float rad, ObjectType type, int size) : CObject(pos, speed, rad, type, size)
     {
@@ -127,19 +131,35 @@ public:
     };
     void Update(RECT& rectView) override;
     void Draw(HDC hdc) override;
-    //BOOL Collision(CObject& object) override;
 
     void SetRectangle();
 };
 
+
+
 class CStar : public CObject
 {
 private:
-private:
+    POINT pts[6] = {};
+    float ct = 90;
+    const double PI = 3.141592;
+
 public:
-    CStar(POS pos, float speed, float rad, ObjectType type, int size) : CObject(pos, speed, rad, type, size) {};
+    CStar(POS pos, float speed, float rad, ObjectType type, int size) : CObject(pos, speed, rad, type, size) 
+    {
+        UpdateToPoint();
+    };
 
     void Update(RECT& rectView) override;
     void Draw(HDC hdc) override;
-   // BOOL Collision(CObject& object) override;
+    void UpdateToPoint()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            pts[i].x = cosf(degreeToRadian(ct + 144 * i)) * this->size + pos.x;
+            pts[i].y = sinf(degreeToRadian(ct + 144 * i)) * this->size + pos.y;
+        }
+
+        ct += 3.0f;
+    }
 };

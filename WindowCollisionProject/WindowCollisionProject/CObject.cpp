@@ -22,23 +22,13 @@ BOOL CObject::Collision(CObject& object)
 {
     currentTime = clock();
 
-    if (currentTime - startTime < 500)
-        return false;
+    if (currentTime - startTime < 200)
+        return isCollided;
+
+    isCollided = false;
 
     if (pow(pos.x - object.pos.x, 2) + pow(pos.y - object.pos.y, 2) < pow(size + object.size, 2))
     {
-        //std::pair<Vector2D, Vector2D> v = calculateReflectionAngle(object, 1, 1);
-
-        //// 충돌 후 각도 계산
-        //double angle_v1_new = v.first.angle() * 180 / 3.141592;
-        //double angle_v2_new = v.second.angle() * 180 / 3.141592;
-
-        //dirX = cos(angle_v1_new);
-        //dirY = sin(angle_v1_new);
-
-        //object.dirX = cos(angle_v2_new);
-        //object.dirY = sin(angle_v2_new);
-
         float tempDirX = dirX, tempDirY = dirY;
         dirX = object.dirX, dirY = object.dirY;
         object.dirX = tempDirY, object.dirY = tempDirY;
@@ -55,10 +45,12 @@ BOOL CObject::Collision(CObject& object)
         object.pos.y = object.pos.y - vec.normalize().y * 5;
 
         startTime = clock();
-        return true;
+        isCollided = true;
+        object.startTime = clock();
+        object.isCollided = true;
     }
 
-    return false;
+    return isCollided;
 }
 
 std::pair<Vector2D, Vector2D> CObject::calculateReflectionAngle(CObject& v2, double m1, double m2)
@@ -85,10 +77,6 @@ std::pair<Vector2D, Vector2D> CObject::calculateReflectionAngle(CObject& v2, dou
     return { v1_new, v2_new };
 }
 
-void CCircle::CheckCircleCollision(CObject& circle)
-{
-}
-
 void CRect::Update(RECT& rectView)
 {
     pos.x += dirX * speed;
@@ -100,7 +88,10 @@ void CRect::Update(RECT& rectView)
 
 void CRect::Draw(HDC hdc)
 {
-    Rectangle(hdc, rect.left, rect.top, rect.right, rect.bottom);
+    Polygon(hdc, point, 4);
+    ct += 3;
+    if (((int)ct) > 360 )
+        ct = 0;
 }
 
 //BOOL CRect::Collision(CObject& object)
@@ -148,14 +139,30 @@ void CRect::SetRectangle()
     rect.right  = pos.x + size / 2;
     rect.top    = pos.y - size / 2;
     rect.bottom = pos.y + size / 2;
-}
+    float angle = 90;
 
+    double tempSin = sin(angle);
+    double tempCos = cos(angle);
+
+    for (int i = 0; i < 4; i++)
+    {
+        point[i].x = cosf(degreeToRadian(angle * i) + ct) * this->size + pos.x;
+        point[i].y = sinf(degreeToRadian(angle * i) + ct) * this->size + pos.y;
+    }
+}                                             
+                                              
 void CStar::Update(RECT& rectView)
 {
+    pos.x += dirX * speed;
+    pos.y += dirY * speed;
+
+    UpdateToPoint();
+    CheckWindowCollision(rectView);
 }
 
 void CStar::Draw(HDC hdc)
 {
+    Polygon(hdc, pts, 6);
 }
 
 void CObject::CheckWindowCollision(RECT& rectView)
