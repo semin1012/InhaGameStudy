@@ -1,4 +1,5 @@
 ﻿#include <vector>
+#include <algorithm>
 using namespace std;
 #include "framework.h"
 #include "WindowCollisionProject.h"
@@ -185,7 +186,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         double x = LOWORD(lParam);
         double y = HIWORD(lParam);
 
-        int randomSize  = rand() % 5 + 1;
+        int randomSize  = rand() % 5 + 1;   // 1~5//
         int randomType  = rand() % 3;
         int randomSpeed = rand() % 3 + 5;
         int randomDir   = rand() % 8;
@@ -223,9 +224,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 {
                     if (i != j && flag[j] == false)
                     {
-                        if (objects[i]->Collision(*objects[j], mode)) 
+                        switch (objects[i]->Collision(*objects[j], mode))
                         {
+                        case 0:
                             flag[i] = true;
+                            break;
+                        case 1:
+                            CObject * ptr = objects[j];
+                            objects.erase(remove(objects.begin(), objects.end(), ptr), objects.end());
+                            break;
                         }
                     }
                 }

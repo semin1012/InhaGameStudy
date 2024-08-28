@@ -81,6 +81,7 @@ public:
     float dirX, dirY;
     ObjectType objectType;
     int size;
+    int objectSize;
     float m;
     clock_t startTime; 
     clock_t currentTime;
@@ -89,6 +90,7 @@ public:
 public:
     CObject(POS pos, float speed, float rad, ObjectType type, int size) : pos(pos), speed(speed), rad(rad), objectType(type), size(size)
     {
+        objectSize = size;
         this->size = size * 10 + 20;
         this->speed = speed;
         dirX = cos(rad);
@@ -101,7 +103,8 @@ public:
     };
     virtual void Update(RECT& rectView) = 0;        // 좌표 갱신
     virtual void Draw(HDC hdc) = 0;                 // 그리기
-    virtual BOOL Collision(CObject& object, Mode mode);        // 충돌
+    virtual int Collision(CObject& object, Mode mode);        // 충돌
+    BOOL CollisionInBasicMode(CObject& object);
     void CheckWindowCollision(RECT& rectView);
     std::pair<Vector2D, Vector2D> calculateReflectionAngle(CObject& v2, double m1, double m2);
 

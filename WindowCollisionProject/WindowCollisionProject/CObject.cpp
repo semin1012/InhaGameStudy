@@ -18,18 +18,23 @@ void CCircle::Draw(HDC hdc)
     Ellipse(hdc, pos.x - size, pos.y - size, pos.x + size, pos.y + size);
 }
 
-BOOL CObject::Collision(CObject& object, Mode mode)
+// 0: 충돌, 1: 상대 삭제, -1: 나 삭제, 그 외: 충돌도 아님
+int CObject::Collision(CObject& object, Mode mode)
 {
     currentTime = clock();
 
     if (currentTime - startTime < 200)
-        return isCollided;
+        return 3;
 
     isCollided = false;
 
     switch (mode)
     {
     case Mode::Basic:
+        if (CollisionInBasicMode(object))
+            return 0;
+        break;
+    case Mode::Merge:
         if (pow(pos.x - object.pos.x, 2) + pow(pos.y - object.pos.y, 2) < pow(size + object.size, 2))
         {
             float tempDirX = dirX, tempDirY = dirY;
@@ -47,19 +52,48 @@ BOOL CObject::Collision(CObject& object, Mode mode)
             object.pos.x = object.pos.x - vec.normalize().x * 5;
             object.pos.y = object.pos.y - vec.normalize().y * 5;
 
-            startTime = clock();
             isCollided = true;
-            object.startTime = clock();
             object.isCollided = true;
+
+            if (objectSize >= 13)
+                return 1;
+            objectSize++;
+            size = objectSize * 10 + 20;
+            startTime = clock();
+            return 1;
         }
-        return isCollided;
-        break;
-    case Mode::Merge:
         break;
     case Mode::Decompose:
         break;
     }
+    return 3;
+}
 
+BOOL CObject::CollisionInBasicMode(CObject& object)
+{
+    if (pow(pos.x - object.pos.x, 2) + pow(pos.y - object.pos.y, 2) < pow(size + object.size, 2))
+    {
+        float tempDirX = dirX, tempDirY = dirY;
+        dirX = object.dirX, dirY = object.dirY;
+        object.dirX = tempDirY, object.dirY = tempDirY;
+
+        vec.x = dirX;
+        vec.y = dirY;
+
+        object.vec.x = object.dirX;
+        object.vec.y = object.dirY;
+
+        pos.x = pos.x - vec.normalize().x * 5;
+        pos.y = pos.y - vec.normalize().y * 5;
+        object.pos.x = object.pos.x - vec.normalize().x * 5;
+        object.pos.y = object.pos.y - vec.normalize().y * 5;
+
+        startTime = clock();
+        isCollided = true;
+        object.startTime = clock();
+        object.isCollided = true;
+    }
+    return isCollided;
 }
 
 std::pair<Vector2D, Vector2D> CObject::calculateReflectionAngle(CObject& v2, double m1, double m2)
