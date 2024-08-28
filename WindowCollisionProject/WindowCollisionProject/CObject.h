@@ -26,6 +26,13 @@ enum ObjectSize
     ExtraLarge
 };
 
+enum class Mode
+{
+    Basic,
+    Merge,
+    Decompose
+};
+
 struct Vector2D {
     double x;
     double y;
@@ -94,7 +101,7 @@ public:
     };
     virtual void Update(RECT& rectView) = 0;        // 좌표 갱신
     virtual void Draw(HDC hdc) = 0;                 // 그리기
-    virtual BOOL Collision(CObject& object);        // 충돌
+    virtual BOOL Collision(CObject& object, Mode mode);        // 충돌
     void CheckWindowCollision(RECT& rectView);
     std::pair<Vector2D, Vector2D> calculateReflectionAngle(CObject& v2, double m1, double m2);
 

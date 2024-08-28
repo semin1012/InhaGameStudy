@@ -137,6 +137,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static vector<CObject*> objects;
     static RECT rectView;
+    static Mode mode = Mode::Basic;
     HBRUSH hBrush;
     HGDIOBJ oldBrush;
     POINT pts[6];
@@ -165,6 +166,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;  
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case '1':
+            mode = Mode::Basic;
+            break;
+        case '2':
+            mode = Mode::Merge;
+            break;
+        case '3':
+            mode = Mode::Decompose;
+            break;
+        }
+        break;
     case WM_LBUTTONDOWN:
         {
         double x = LOWORD(lParam);
@@ -196,7 +211,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            hBrush = CreateSolidBrush(RGB(230, 200, 200));
+            hBrush = CreateSolidBrush(RGB(230, 150, 150));
             oldBrush = SelectObject(hdc, hBrush);
 
             BOOL flag[100] = { false };
@@ -208,7 +223,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 {
                     if (i != j && flag[j] == false)
                     {
-                        if (objects[i]->Collision(*objects[j])) 
+                        if (objects[i]->Collision(*objects[j], mode)) 
                         {
                             flag[i] = true;
                         }
@@ -237,6 +252,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         InvalidateRect(hWnd, NULL, true);
         break;
     case WM_DESTROY:
+        KillTimer(hWnd, TIMER_ID1);
         PostQuitMessage(0);
         break;
     default:
