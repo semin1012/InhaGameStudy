@@ -131,7 +131,6 @@ struct Point
 class CRect : public CObject
 {
 private:
-    RECT rect;
     float ct = 90;
     POINT point[4];
 public:

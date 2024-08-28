@@ -232,6 +232,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                         case 1:
                             CObject * ptr = objects[j];
                             objects.erase(remove(objects.begin(), objects.end(), ptr), objects.end());
+                            EndPaint(hWnd, &ps);
                             break;
                         }
                     }

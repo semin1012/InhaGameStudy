@@ -178,10 +178,6 @@ void CRect::Draw(HDC hdc)
 
 void CRect::SetRectangle()
 {
-    rect.left   = pos.x - size / 2;
-    rect.right  = pos.x + size / 2;
-    rect.top    = pos.y - size / 2;
-    rect.bottom = pos.y + size / 2;
     float angle = 90;
 
     double tempSin = sin(angle);
