@@ -18,59 +18,16 @@ void CCircle::Draw(HDC hdc)
     Ellipse(hdc, pos.x - size, pos.y - size, pos.x + size, pos.y + size);
 }
 
-// 0: 충돌, 1: 상대 삭제, -1: 나 삭제, 그 외: 충돌도 아님
+// 0: 충돌, 1: 상대 삭제, 2: 나 삭제, 3: 분해, 4: 나는 삭제/상대 분해, -1: 충돌도 아님
 int CObject::Collision(CObject& object, Mode mode)
 {
     currentTime = clock();
 
-    if (currentTime - startTime < 200)
-        return 3;
+    if (currentTime - startTime < 500)
+        return -1;
 
     isCollided = false;
 
-    switch (mode)
-    {
-    case Mode::Basic:
-        if (CollisionInBasicMode(object))
-            return 0;
-        break;
-    case Mode::Merge:
-        if (pow(pos.x - object.pos.x, 2) + pow(pos.y - object.pos.y, 2) < pow(size + object.size, 2))
-        {
-            float tempDirX = dirX, tempDirY = dirY;
-            dirX = object.dirX, dirY = object.dirY;
-            object.dirX = tempDirY, object.dirY = tempDirY;
-
-            vec.x = dirX;
-            vec.y = dirY;
-
-            object.vec.x = object.dirX;
-            object.vec.y = object.dirY;
-
-            pos.x = pos.x - vec.normalize().x * 5;
-            pos.y = pos.y - vec.normalize().y * 5;
-            object.pos.x = object.pos.x - vec.normalize().x * 5;
-            object.pos.y = object.pos.y - vec.normalize().y * 5;
-
-            isCollided = true;
-            object.isCollided = true;
-
-            if (objectSize >= 13)
-                return 1;
-            objectSize++;
-            size = objectSize * 10 + 20;
-            startTime = clock();
-            return 1;
-        }
-        break;
-    case Mode::Decompose:
-        break;
-    }
-    return 3;
-}
-
-BOOL CObject::CollisionInBasicMode(CObject& object)
-{
     if (pow(pos.x - object.pos.x, 2) + pow(pos.y - object.pos.y, 2) < pow(size + object.size, 2))
     {
         float tempDirX = dirX, tempDirY = dirY;
@@ -88,12 +45,91 @@ BOOL CObject::CollisionInBasicMode(CObject& object)
         object.pos.x = object.pos.x - vec.normalize().x * 5;
         object.pos.y = object.pos.y - vec.normalize().y * 5;
 
-        startTime = clock();
         isCollided = true;
-        object.startTime = clock();
         object.isCollided = true;
+
+        switch (mode)
+        {
+        case Mode::Basic:
+            if (CollisionInBasicMode(object))
+                return 0;
+            break;
+        case Mode::Merge:
+            return CollisionInMergeMode(object);
+            break;
+        case Mode::Decompose:
+            return CollisionInDecomposeMode(object);
+            break;
+        }
     }
+
+    return -1;
+}
+
+BOOL CObject::CollisionInBasicMode(CObject& object)
+{
+    startTime = clock();
+    object.startTime = clock();
     return isCollided;
+}
+
+int CObject::CollisionInMergeMode(CObject& object)
+{
+    //switch (objectType)
+    //{
+    //case ObjectType::Circle:
+    //    if (object.objectType != ObjectType::Rect)
+    //        return 0;
+    //    break;
+    //case ObjectType::Rect:
+    //    if (object.objectType != ObjectType::Star)
+    //        return 0;
+    //    break;
+    //case ObjectType::Star:
+    //    if (object.objectType != ObjectType::Circle)
+    //        return 0;
+    //    break;
+    //}
+
+    if (objectSize >= 13 )
+        return 2;
+
+    else if (objectSize < object.objectSize)
+    {
+        object.objectSize++;
+        object.size = object.objectSize * 10 + 20;
+        object.startTime = clock();
+    }
+
+    objectSize++;
+    size = objectSize * 10 + 20;
+    startTime = clock();
+    return 1;
+}
+
+int CObject::CollisionInDecomposeMode(CObject& object)
+{
+    //switch (objectType)
+    //{
+    //case ObjectType::Circle:
+    //    if (object.objectType != ObjectType::Rect)
+    //        return 0;
+    //    break;
+    //case ObjectType::Rect:
+    //    if (object.objectType != ObjectType::Star)
+    //        return 0;
+    //    break;
+    //case ObjectType::Star:
+    //    if (object.objectType != ObjectType::Circle)
+    //        return 0;
+    //    break;
+    //}
+
+    if (objectSize <= 1)
+    {
+        return 4;
+    }
+    return 3;
 }
 
 std::pair<Vector2D, Vector2D> CObject::calculateReflectionAngle(CObject& v2, double m1, double m2)

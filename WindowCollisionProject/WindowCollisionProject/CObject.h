@@ -101,10 +101,24 @@ public:
         startTime = clock();
         currentTime = clock();
     };
+    CObject(POS pos, float speed, float dirX, float dirY, ObjectType type, int size, bool isCollided) : pos(pos), speed(speed), dirX(dirX), dirY(dirY), objectType(type), size(size), isCollided(isCollided)
+    {
+        objectSize = size;
+        this->size = size * 10 + 20;
+        this->speed = speed;
+        m = size / (float)10 - 30;
+        vec.x = dirX;
+        vec.y = dirY;
+        this->startTime = clock();
+        currentTime = clock();
+        rad = 0;
+    };
     virtual void Update(RECT& rectView) = 0;        // 좌표 갱신
     virtual void Draw(HDC hdc) = 0;                 // 그리기
     virtual int Collision(CObject& object, Mode mode);        // 충돌
     BOOL CollisionInBasicMode(CObject& object);
+    int CollisionInMergeMode(CObject& object);
+    int CollisionInDecomposeMode(CObject& object);
     void CheckWindowCollision(RECT& rectView);
     std::pair<Vector2D, Vector2D> calculateReflectionAngle(CObject& v2, double m1, double m2);
 
@@ -119,6 +133,7 @@ class CCircle : public CObject
 protected:
 public: 
     CCircle(POS pos, float speed, float rad, ObjectType type, int sizeNum) : CObject(pos, speed, rad, type, sizeNum) {   }
+    CCircle(POS pos, float speed, float dirX, float dirY, ObjectType type, int sizeNum, bool isCollided) : CObject(pos, speed, dirX, dirY, type, sizeNum, isCollided) {   }
     void Update(RECT& rectView) override;
     void Draw(HDC hdc) override;
 };
@@ -135,6 +150,10 @@ private:
     POINT point[4];
 public:
     CRect(POS pos, float speed, float rad, ObjectType type, int size) : CObject(pos, speed, rad, type, size)
+    {
+        SetRectangle();
+    };
+    CRect(POS pos, float speed, float dirX, float dirY, ObjectType type, int size, bool isCollided) : CObject(pos, speed, dirX, dirY, type, size, isCollided)
     {
         SetRectangle();
     };
@@ -155,6 +174,10 @@ private:
 
 public:
     CStar(POS pos, float speed, float rad, ObjectType type, int size) : CObject(pos, speed, rad, type, size) 
+    {
+        UpdateToPoint();
+    };
+    CStar(POS pos, float speed, float dirX, float dirY, ObjectType type, int size, bool isCollided) : CObject(pos, speed, dirX, dirY, type, size, isCollided)
     {
         UpdateToPoint();
     };

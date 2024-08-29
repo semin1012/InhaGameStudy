@@ -188,8 +188,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         int randomSize  = rand() % 5 + 1;   // 1~5//
         int randomType  = rand() % 3;
-        int randomSpeed = rand() % 3 + 5;
-        int randomDir   = rand() % 8;
+        int randomSpeed = rand() % 3 + 5;   // 5~7
         int randomDirX  = rand() % 360;
         
         switch (randomType)
@@ -210,6 +209,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
+            vector<CObject*> removePtrs;
+            vector<pair<CObject*, CObject*>> addPtrs;
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             hBrush = CreateSolidBrush(RGB(230, 150, 150));
@@ -217,11 +218,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             BOOL flag[100] = { false };
 
+            // 0: 충돌, 1: 상대 삭제, 2: 나 삭제, 3: 분해, 4: 상대 분해, -1: 충돌도 아님
             for (int i = 0; i < objects.size(); i++)
             {
-
                 for (int j = 0; j < objects.size(); j++)
                 {
+                    if (objects[i] == NULL || objects[j] == NULL)
+                        break;
+
                     if (i != j && flag[j] == false)
                     {
                         switch (objects[i]->Collision(*objects[j], mode))
@@ -230,9 +234,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                             flag[i] = true;
                             break;
                         case 1:
-                            CObject * ptr = objects[j];
-                            objects.erase(remove(objects.begin(), objects.end(), ptr), objects.end());
-                            EndPaint(hWnd, &ps);
+                            removePtrs.push_back(objects[j]);
+                            flag[i] = true;
+                            break;
+                        case 2:
+                            removePtrs.push_back(objects[i]);
+                            flag[j] = true;
+                            break;
+                        case 3:
+                            if (objects[i]->objectSize >= objects[i]->objectSize)
+                                addPtrs.push_back(make_pair(objects[i], objects[j]));
+                            else addPtrs.push_back(make_pair(objects[j], objects[i]));
+                            flag[i] = true;
+                            flag[j] = true;
+                            break;
+                        case 4:
+                            removePtrs.push_back(objects[i]);
+                            if (objects[j]->objectSize >= 5)
+                                addPtrs.push_back(make_pair(objects[j], objects[j]));
+                            else removePtrs.push_back(objects[j]);
+                            flag[i] = true;
                             break;
                         }
                     }
@@ -240,7 +261,63 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 SelectObject(hdc, oldBrush);
                 if (objects[i]->isCollided)
                     oldBrush = SelectObject(hdc, hBrush);
+
                 objects[i]->Draw(hdc);
+            }
+            
+            for (int i = 0; i < addPtrs.size(); i++)
+            {
+                CObject* first = addPtrs[i].first;
+                CObject* second = addPtrs[i].second;
+                int tempX, tempY;
+
+                if (first->dirX > 0) tempX = 1;
+                else tempX = -1;
+                if (first->dirY > 0) tempY = 1;
+                else tempY = -1;
+                switch (first->objectType)
+                {
+                case ObjectType::Circle:
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (objects.size() > 80) break;
+                        objects.emplace_back(new CCircle({ first->pos.x + (tempX * first->size * 2), first->pos.y + (tempY * first->size) }, first->speed * 1.2, first->dirX * cos(30 * (i+1)),
+                            first->dirY * sin(30 * (i + 1)), first->objectType, first->objectSize - 1, first->isCollided));
+                    }
+                    objects.erase(remove(objects.begin(), objects.end(), addPtrs[i].first), objects.end());
+                    objects.erase(remove(objects.begin(), objects.end(), addPtrs[i].second), objects.end());
+                    break;
+                case ObjectType::Rect:
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (objects.size() > 80) break;
+                        objects.emplace_back(new CRect({ first->pos.x + (tempX * first->size * 2), first->pos.y + (tempY * first->size) }, first->speed * 1.2, first->dirX * cos(30 * (i + 1)),
+                            first->dirY* sin(30 * (i + 1)), first->objectType, first->objectSize - 1, first->isCollided));
+                    }
+                    objects.erase(remove(objects.begin(), objects.end(), addPtrs[i].first), objects.end());
+                    objects.erase(remove(objects.begin(), objects.end(), addPtrs[i].second), objects.end());
+                    break;
+                case ObjectType::Star:
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (objects.size() > 80) break;
+                        objects.emplace_back(new CStar({ first->pos.x + (tempX * first->size * 2), first->pos.y + (tempY * first->size) }, first->speed * 1.2, first->dirX * cos(30 * (i + 1)),
+                            first->dirY* sin(30 * (i + 1)), first->objectType, first->objectSize - 1, first->isCollided));
+                    }
+                    if (second == first)
+                    {
+                        objects.erase(remove(objects.begin(), objects.end(), addPtrs[i].first), objects.end());
+                        continue;
+                    }
+                    objects.erase(remove(objects.begin(), objects.end(), addPtrs[i].first), objects.end());
+                    objects.erase(remove(objects.begin(), objects.end(), addPtrs[i].second), objects.end());
+                    break;
+                }
+            }
+
+            for (int i = 0; i < removePtrs.size(); i++)
+            {
+                objects.erase(remove(objects.begin(), objects.end(), removePtrs[i]), objects.end());
             }
 
             DeleteObject(oldBrush);
