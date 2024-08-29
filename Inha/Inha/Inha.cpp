@@ -3,7 +3,7 @@
 #include <random>
 #include <time.h>
 #include "StopWatch.h"
-#define MAX 500'000
+#define MAX 10
 using namespace std;
 
 int nums[MAX] = { 1, 6, 5, 7, 9, 4, 10, 8, 2, 3 };
@@ -24,29 +24,17 @@ void PrintNums()
 	cout << "\n";
 }
 
-
-void QuickSort(int left, int right)
+void MergeSort(int left, int right)
 {
-	int pivot = (left + right + 1) / 2;
-	int pl = left;
-	int pr = right;
-	
-	//cout << pivot << ", " << nums[pivot] << endl;
-	while (pl <= pr)
-	{
-		while (nums[pl] < nums[pivot]) pl++;
-		while (nums[pr] > nums[pivot]) pr--;
-		if (pl <= pr)
-		{
-			Swap(nums[pl], nums[pr]);
-			pl++;
-			pr--;
-			//PrintNums();
-		}
-	}
+	if (left >= right)
+		return;
 
-	if (left < pr) QuickSort(left, pr);
-	if (right > pl) QuickSort(pl, right);
+	int pivot = (left + right) / 2;
+
+	MergeSort(left, pivot);
+	MergeSort(pivot + 1, right);
+
+	cout << "merge" << endl;
 }
 
 int main()
@@ -61,7 +49,7 @@ int main()
 	StopWatch timer;
 	timer.start();
 	//PrintNums();
-	QuickSort(0, MAX - 1);
+	MergeSort(0, MAX);
 	//PrintNums();
 	timer.stop();
 
