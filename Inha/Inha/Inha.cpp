@@ -1,86 +1,89 @@
 ﻿#include <iostream>
-#include <cmath>
-#include <array>
+#include <algorithm>
+#include <random>
+#include <time.h>
+#include "StopWatch.h"
+#define MAX 50'000
+using namespace std;
 
-// 2D 벡터를 표현하기 위한 구조체
-struct Vector2D {
-    double x;
-    double y;
+int nums[MAX];
 
-    // 벡터 덧셈
-    Vector2D operator+(const Vector2D& other) const {
-        return { x + other.x, y + other.y };
-    }
-
-    // 벡터 뺄셈
-    Vector2D operator-(const Vector2D& other) const {
-        return { x - other.x, y - other.y };
-    }
-
-    // 스칼라 곱셈
-    Vector2D operator*(double scalar) const {
-        return { x * scalar, y * scalar };
-    }
-
-    // 내적 계산
-    double dot(const Vector2D& other) const {
-        return x * other.x + y * other.y;
-    }
-
-    // 벡터의 크기 계산
-    double norm() const {
-        return std::sqrt(x * x + y * y);
-    }
-
-    // 벡터를 정규화
-    Vector2D normalize() const {
-        double n = norm();
-        if (n == 0) return { 0, 0 };  // 제로 디비전 방지
-        return { x / n, y / n };
-    }
-
-    // 벡터의 각도 계산 (라디안)
-    double angle() const {
-        return std::atan2(y, x);
-    }
-};
-
-// 충돌 후 반사각을 계산하는 함수
-std::pair<Vector2D, Vector2D> calculateReflectionAngle(const Vector2D& v1, const Vector2D& v2, double m1, double m2) {
-    // 속도 차이
-    Vector2D relative_velocity = v1 - v2;
-
-    // 법선 벡터 계산
-    Vector2D normal_vector = relative_velocity.normalize();
-
-    // 물체 A의 새로운 속도 (탄성 충돌 가정)
-    Vector2D v1_new = v1 - normal_vector * (2 * m2 / (m1 + m2)) * relative_velocity.dot(normal_vector);
-
-    // 물체 B의 새로운 속도 (탄성 충돌 가정)
-    Vector2D v2_new = v2 - normal_vector * (2 * m1 / (m1 + m2)) * relative_velocity.dot(normal_vector);
-
-    return { v1_new, v2_new };
+void Swap(int& a, int& b)
+{
+	int temp = a;
+	a = b;
+	b = temp;
 }
 
-int main() {
-    // 물체 A와 B의 초기 속도 및 질량
-    Vector2D v1 = { 3, 4 };  // 물체 A의 속도 벡터
-    Vector2D v2 = { -1, -1 };  // 물체 B의 속도 벡터
-    double m1 = 2.0;  // 물체 A의 질량
-    double m2 = 3.0;  // 물체 B의 질량
+void PrintNums()
+{
+	for (int i = 0; i < MAX; i++)
+	{
+		cout << nums[i] << " ";
+	}
+	cout << "\n";
+}
 
-    std::cout << "물체 A의 충돌 후 반사각: " << v1.angle() << "도" << std::endl;
-    std::cout << "물체 B의 충돌 후 반사각: " << v2.angle() << "도" << std::endl;
+void Heap(int idx, int lastIdx, bool isRight)
+{
+	if (idx > lastIdx) return;
 
-    // 충돌 후 속도 벡터 계산
-    std::pair<Vector2D, Vector2D> v = calculateReflectionAngle(v1, v2, m1, m2);
+	else if (idx == lastIdx)
+	{
+		if (nums[0] < nums[lastIdx]) 
+			return;
+		Swap(nums[0], nums[lastIdx]);
+		return;
+	}
 
-    // 충돌 후 각도 계산
-    double angle_v1_new = v.first.angle() * 180 / 3.141592;  // 라디안을 도(degree)로 변환
-    double angle_v2_new = v.second.angle() * 180 / 3.141592;  // 라디안을 도(degree)로 변환
+	Heap(idx * 2 + 1, lastIdx, false);
+	Heap(idx * 2 + 2, lastIdx, true);
 
-    std::cout << "물체 A의 충돌 후 반사각: " << angle_v1_new << "도" << std::endl;
-    std::cout << "물체 B의 충돌 후 반사각: " << angle_v2_new << "도" << std::endl;
+	// 부모가 더 작다면 swap
+	if (nums[(idx - 1) / 2] < nums[idx])
+	{
+		if (isRight)
+		{
+			// 형제가 나보다 더 크다면 형제가 부모랑 바뀌도록
+			if (nums[idx - 1] > nums[idx])
+			{
+				Swap(nums[(idx - 1) / 2], nums[idx - 1]);
+				return;
+			}
+		}
+		Swap(nums[(idx - 1) / 2], nums[idx]);
+	}
+}
 
-    return 0;
+void HeapSort()
+{
+	int maxIdx = 0;
+
+	for (int i = 1; i < MAX; i++)
+		if (nums[maxIdx] < nums[i]) maxIdx = i;
+	
+	Swap(nums[0], nums[maxIdx]);
+
+	for (int i = 0; i < MAX; i++)
+		Heap(0, MAX - 1 - i, false);
+}
+
+int main()
+{
+	srand(time(NULL));
+
+	for (int i = 0; i < MAX; i++)
+		nums[i] = i + 1;
+
+	random_shuffle(begin(nums), end(nums));
+
+	StopWatch timer;
+	timer.start();
+	//PrintNums();
+	HeapSort();
+	//PrintNums();
+	timer.stop();
+
+	cout << "------ 힙정렬 ------\n";
+	cout << "데이터 수: " << MAX << "개, 소요 시간: " << timer.getElpasedTime() << "\n";
 }
