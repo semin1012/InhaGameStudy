@@ -151,6 +151,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         SetTimer(hWnd, TIMER_ID1, 15, NULL);
         GetClientRect(hWnd, &rectView);
         break;
+    case WM_SIZE:
+        GetClientRect(hWnd, &rectView);
+        break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);

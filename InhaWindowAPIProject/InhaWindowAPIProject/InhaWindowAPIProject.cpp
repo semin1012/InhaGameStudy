@@ -3,10 +3,14 @@
 
 #include "framework.h"
 #include "InhaWindowAPIProject.h"
+#include "commdlg.h"
 
 /* 
-Q1. p.93 문제 7.
-
+Q1. 파일 열기, 파일 저장 메뉴를 추가하고 각 기능을 구현하라.
+    1. source.txt  읽어서 화면에 출력하라. 
+    2. 채팅창 구현한 내용에서 채팅으로 입력된 내용을 저장하라.
+        채팅창에 출력 내용은 10줄만
+        채팅 내용은 100개까지 저장하고 있다가 파일에 내용을 저장할 수 있도록 한다.
 */
 
 
@@ -140,6 +144,11 @@ struct POS
 #define TIMER_ID2 2
 #define CIRCLE_RADIUS 50
 
+void DrawCircle(HDC hdc, POINT center, int radius)
+{
+    Ellipse(hdc, center.x - radius, center.y - radius, center.x + radius, center.y + radius);
+}
+
 BOOL InCircle(int x1, int y1, int x2, int y2, int radius)
 {
     if (sqrt(((float)x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) <= radius)
@@ -153,6 +162,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static RECT rectView;
     static bool flag;
     static bool mouseFlag;
+    static bool geometricObj = 0;
+
+    OPENFILENAME ofn;
+    TCHAR str[100], lpstrFile[100] = _T("");
+    TCHAR filter[] = _T("Every File(*.*) \0*.*\0Text File\0*.text;*.doc\0");
 
     switch (message)
     {
@@ -166,11 +180,41 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             int wmId = LOWORD(wParam);
             switch (wmId)
             {
+            case ID_FileOpen:
+                memset(&ofn, 0, sizeof(OPENFILENAME));
+                ofn.lStructSize = sizeof(OPENFILENAME);
+                ofn.hwndOwner = hWnd;
+                ofn.lpstrFilter = filter;
+                ofn.lpstrFile = lpstrFile;
+                ofn.nMaxFile = 100;
+                ofn.lpstrInitialDir = _T("..");      // 열었을 때 위치 지정
+                if (GetOpenFileName(&ofn) != 0)     // 파일 열기를 눌렀을 때
+                {
+                    _stprintf_s(str, _T("%s 파일을 열겠습니까?"), ofn.lpstrFile);
+                    MessageBox(hWnd, str, _T("열기 선택"), MB_OK);
+                }
+                break;
+            case ID_FileSave:
+                break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
+                break;
+            case ID_DrawCircle:
+            {
+                int ans = MessageBox(hWnd, _T("원 그리기 선택"), _T("도형 선택"), MB_OKCANCEL);
+                if (ans == IDOK)
+                    geometricObj = 0;
+            }
+                break;
+            case ID_DrawRectangle:
+            {
+                int ans = MessageBox(hWnd, _T("사각형 그리기 선택"), _T("도형 선택"), MB_OKCANCEL);
+                if (ans == IDOK)
+                    geometricObj = 1;
+            }
                 break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
@@ -214,11 +258,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_LBUTTONDOWN:
     {
         int x, y;
+
         x = LOWORD(lParam); //x
         y = HIWORD(lParam); //y
         if (InCircle(x, y, pos.x, pos.y, CIRCLE_RADIUS))
             mouseFlag = TRUE;
         else mouseFlag = FALSE;
+
+        pos.x = x;
+        pos.y = y;
+
         InvalidateRect(hWnd, NULL, true);
     }
         break;
@@ -260,7 +309,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (flag)
             SelectObject(hdc, GetStockObject(LTGRAY_BRUSH));
 
-        Ellipse(hdc, pos.x - CIRCLE_RADIUS, pos.y - CIRCLE_RADIUS, pos.x + CIRCLE_RADIUS, pos.y + CIRCLE_RADIUS);
+        if ( geometricObj == 0 ) 
+            Ellipse(hdc, pos.x - CIRCLE_RADIUS, pos.y - CIRCLE_RADIUS, pos.x + CIRCLE_RADIUS, pos.y + CIRCLE_RADIUS);
+
+        else 
+            Rectangle(hdc, pos.x - CIRCLE_RADIUS, pos.y - CIRCLE_RADIUS, pos.x + CIRCLE_RADIUS, pos.y + CIRCLE_RADIUS);
 
         EndPaint(hWnd, &ps);
     }
