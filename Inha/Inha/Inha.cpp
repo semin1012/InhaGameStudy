@@ -2,11 +2,15 @@
 #include <algorithm>
 #include <random>
 #include <time.h>
+#include <cstring>
 #include "StopWatch.h"
-#define MAX 10
+
+#define MAX 1'000'000
+#define MAX_INT 10000
 using namespace std;
 
-int nums[MAX] = { 1, 6, 5, 7, 9, 4, 10, 8, 2, 3 };
+int nums[MAX];
+int arr1[MAX], arr2[MAX];
 
 void Swap(int& a, int& b)
 {
@@ -15,26 +19,60 @@ void Swap(int& a, int& b)
 	b = temp;
 }
 
-void PrintNums()
+void PrintNums(int arr[])
 {
 	for (int i = 0; i < MAX; i++)
 	{
-		cout << nums[i] << " ";
+		cout << arr[i] << " ";
 	}
 	cout << "\n";
 }
 
-void MergeSort(int left, int right)
+void QuickSort(int arr[], int left, int right)
 {
-	if (left >= right)
-		return;
+	int pivot = arr[(left + right + 1) / 2];
+	int pl = left;
+	int pr = right;
 
-	int pivot = (left + right) / 2;
+	while (pl <= pr)
+	{
+		while (arr[pl] < pivot) pl++;
+		while (arr[pr] > pivot) pr--;
+		if (pl <= pr)
+		{
+			Swap(arr[pl], arr[pr]);
+			pl++;
+			pr--;
+		}
+	}
 
-	MergeSort(left, pivot);
-	MergeSort(pivot + 1, right);
+	if (left < pr) QuickSort(arr, left, pr);
+	if (right > pl) QuickSort(arr, pl, right);
+}
 
-	cout << "merge" << endl;
+void PrintCountingSort(int arr[])
+{
+	for (int i = 0; i < MAX_INT; i++)
+	{
+		for (int j = 0; j < arr[i]; j++)
+		{
+			//cout << i+1 << " ";
+		}
+	}
+	//cout << "\n";
+}
+
+void CountingSort(int arr[])
+{
+	int *newArr = new int[MAX_INT];
+	memset(newArr, 0, sizeof(int) * MAX_INT);
+
+	for (int i = 0; i < MAX; i++)
+	{
+		newArr[arr[i] - 1] += 1;
+	}
+
+	PrintCountingSort(newArr);
 }
 
 int main()
@@ -42,17 +80,25 @@ int main()
 	srand(time(NULL));
 
 	for (int i = 0; i < MAX; i++)
-		nums[i] = i + 1;
-
-	random_shuffle(begin(nums), end(nums));
+		nums[i] = rand() % 5 + 1;
 
 	StopWatch timer;
+	copy(nums, nums + MAX, arr1);
+	copy(nums, nums + MAX, arr2);
+
+	cout << "Quick Sort\n";
 	timer.start();
-	//PrintNums();
-	MergeSort(0, MAX);
-	//PrintNums();
+	QuickSort(arr1, 0, MAX - 1);
 	timer.stop();
 
 	cout << "------ 퀵 정렬 ------\n";
 	cout << "데이터 수: " << MAX << "개, 소요 시간: " << timer.getElpasedTime() << "\n";
+	
+	cout << "\nCounting Sort\n";
+	timer.start();
+	CountingSort(arr2);
+	timer.stop();
+
+	cout << "------ 계수 정렬 ------\n";
+	cout << "데이터 수: " << MAX << "개, 1부터 " << MAX_INT << "의 값까지, 소요 시간: " << timer.getElpasedTime() << "\n";
 }
