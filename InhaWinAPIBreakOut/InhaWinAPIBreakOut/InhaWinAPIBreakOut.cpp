@@ -102,6 +102,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 #include "GameObject.h"
 #include "Player.h"
 #include "Obstacle.h"
+#include "Item.h"
 #include <vector>
 using namespace std;
 
@@ -220,12 +221,23 @@ VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
         {
             for (int j = 0; j < balls.size(); j++) 
             {
-                // -1이면 삭제
+                // TODO: 0.25 확률 바꾸기
+                int random = 0;
+
                 switch (objects[i]->Collision(*balls[j]))
                 {
+                // -1이면 삭제
                 case -1:
                     player->AddScore(objects[i]->GetScore());
                     removeObj.push_back(objects[i]);
+
+                    if (random == 0)
+                    {
+                        POINT objectPos = objects[i]->GetPos();
+                        Item* item = new Item({ objectPos.x, objectPos.y + HEIGHT_HALF_SIZE * 2 }, 10, EObjectType::Item);
+                        objects.push_back(item);
+                    }
+
                     break;
                 case 1:
                     player->AddScore(objects[i]->GetScore());
@@ -233,6 +245,7 @@ VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
                 }
             }
         }
+
         if (objects[i]->GetType() == EObjectType::Player)
         {
             for (int j = 0; j < balls.size(); j++)

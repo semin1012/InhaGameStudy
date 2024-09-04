@@ -6,18 +6,23 @@ enum class EItemType
 {
 	PlusBallCount,
 	AttachBall,
-	Length
+	Length,
+	None
 };
 
 class Item : public GameObject
 {
 private:
-	EItemType type;
+	EItemType	itemType;
+	int			speed;
 
 public:
-	Item(POINT pos, int halfSize, EObjectType type)
+	Item(POINT pos, int halfSize, EObjectType type);
 	void Draw(HDC& hdc) override;
 	void Update(RECT rectView) override;
 	int Collision(GameObject& object) override;
+
+	void SetCollisionRect() override;
+	void MoveTo();
 };
 

@@ -135,6 +135,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InhaWinAPIBreakOut.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InhaWinAPIBreakOut.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
