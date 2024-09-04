@@ -139,6 +139,7 @@
     <ResourceCompile Include="InhaWindowAPIProject.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="bitmap1.bmp" />
     <Image Include="icon.png" />
     <Image Include="icon1.ico" />
     <Image Include="InhaWindowAPIProject.ico" />

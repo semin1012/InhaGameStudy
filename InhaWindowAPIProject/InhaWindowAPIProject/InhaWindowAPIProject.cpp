@@ -4,15 +4,7 @@
 #include "framework.h"
 #include "InhaWindowAPIProject.h"
 #include "commdlg.h"
-
-/* 
-Q1. 파일 열기, 파일 저장 메뉴를 추가하고 각 기능을 구현하라.
-    1. source.txt  읽어서 화면에 출력하라. 
-    2. 채팅창 구현한 내용에서 채팅으로 입력된 내용을 저장하라.
-        채팅창에 출력 내용은 10줄만
-        채팅 내용은 100개까지 저장하고 있다가 파일에 내용을 저장할 수 있도록 한다.
-*/
-
+#pragma comment(lib, "Msimg32.lib")
 
 #define MAX_LOADSTRING 100
 
@@ -20,6 +12,8 @@ Q1. 파일 열기, 파일 저장 메뉴를 추가하고 각 기능을 구현하�
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+
+void Update();
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -53,13 +47,37 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
-    // 기본 메시지 루프입니다:
+    // 기본 메시지 루프입니다: 무조건 메시지 넘김
+    /*
     while (GetMessage(&msg, nullptr, 0, 0))
     {
         if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+        }
+    }
+    */
+
+    // 메시지가 있으면 넘어가고 아니면 Update
+    while (true)
+    {
+        if ((PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)))
+        {
+            if (msg.message == WM_QUIT)
+            {
+                break;
+            }
+            else {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+        }
+        else
+        {
+            // : Update and drawing
+            // : to do something
+            Update();
         }
     }
 
@@ -131,156 +149,204 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_PAINT    - 주 창을 그립니다.
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
-//
 
-#include <fstream>
+// >> : image
+
+// : background image
+HBITMAP hBackImage;
+BITMAP bitBack;
+
+// : sigong image
+HBITMAP hTransParentImage;
+BITMAP bitTransParent;
+RECT rectView;
+
+// : animation image
+HBITMAP hAniImage;
+BITMAP bitAni;
+const int SPRITE_SIZE_X = 57; // 크기 계산 후 넣은 상태
+const int SPRITE_SIZE_Y = 52;
+const int SPRITE_COUNT = 16; // 달리기 스프라이트 개수
+const int SPRITE_DIRECTION = 2; // 달리기 방향
+
+int Run_Frame_Max = 0;
+int Run_Frame_Min = 0;
+int curFrame = Run_Frame_Min;
+POINT ptAni = { 400, 400 };
+
+
+void UpdateFrame(HWND hwnd);
+
+// TIMER
+VOID CALLBACK AniProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
+VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
+
+// << : image
+
+// >> : double buffering
+HBITMAP hDoubleBufferBitmap;
+HBITMAP hDoubleBufferImage;
+HBITMAP hOldDoubleBufferBitmap;
+// << : double buffering
+
+TCHAR sKeyState[128];
+
+
+void CreateBitmap();
+void DrawBitmap(HWND hWnd, HDC hdc);
+void DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc);
+void DeleteBitmap();
+
+
+#define TIMER_ID1 1
+#define TIMER_ID2 2
+#define TIMER_ANI 3
+#define TIMER_KEYSTATE 4
 
 #define CIRCLE_RADIUS 50
-#define MAX_STR_LENGTH 100
-#define MAX_STR_COUNT 100
-#define MAX_SHOW_COUNT 10
-
-void OutFromFile(TCHAR filename[], HWND hwnd, TCHAR buffer[MAX_STR_COUNT][MAX_STR_LENGTH])
-{
-    FILE* fptr;
-    HDC hdc;
-    int line;
-    line = 0;
-    hdc = GetDC(hwnd);
-#ifdef _UNICODE
-    _tfopen_s(&fptr, filename, _T("r, ccs = UNICODE"));
-#else
-    _tfopen_s(&fptr, filename, _T("r"));
-#endif
-    while (_fgetts(buffer[line], MAX_STR_LENGTH, fptr) != NULL)
-    {
-        if (buffer[line][_tcslen(buffer[line]) - 1] == _T('\n'))
-            buffer[line][_tcslen(buffer[line]) - 1] = NULL;
-        TextOut(hdc, 0, line * 20, buffer[line], _tcslen(buffer[line]));
-        line++;
-    }
-    fclose(fptr);
-    ReleaseDC(hwnd, hdc);
-}
-
-void SaveFile(TCHAR filename[], TCHAR buffer[MAX_STR_COUNT][MAX_STR_LENGTH])
-{
-    FILE* fptr;
-    int line = 0;
-
-    _tfopen_s(&fptr, filename, _T("w, ccs = UNICODE"));
-
-    while (buffer[line][0] != NULL)
-    {
-        _fputts(buffer[line++], fptr);
-        _fputts(_T("\n"), fptr);
-    }
-
-    fclose(fptr);
-}
-
-void InitializeFile(OPENFILENAME& fn, HWND hWnd, TCHAR lpstrFile[])
-{
-    static TCHAR filter[] = _T("Every File(*.*) \0*.*\0Text File\0*.txt;*.doc\0");
-    memset(&fn, 0, sizeof(OPENFILENAME));
-    fn.lStructSize = sizeof(OPENFILENAME);
-    fn.hwndOwner = hWnd;
-    fn.lpstrFile = lpstrFile;
-    fn.lpstrFilter = filter;
-    fn.nMaxFile = 100;
-    fn.lpstrInitialDir = _T("../Text");      // 열었을 때 위치 지정
-}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static RECT rectView;
+    POINT pos;
+    static bool flag;
+    static bool mouseFlag;
+    static bool geometricObj = 0;
 
-    OPENFILENAME ofn, sfn;
-    TCHAR scriptStr[MAX_STR_LENGTH], lpstrFile[MAX_STR_LENGTH] = _T("");
-    static TCHAR buffer[MAX_STR_COUNT][MAX_STR_LENGTH];
-    static TCHAR chatBuffer[MAX_STR_COUNT][MAX_STR_LENGTH];
-
-    static int count, chatCount;
-    static SIZE caretSize;
-    int yPos = 700;
-
+    OPENFILENAME ofn;
+    TCHAR str[100], lpstrFile[100] = _T("");
+    TCHAR filter[] = _T("Every File(*.*) \0*.*\0Text File\0*.text;*.doc\0");
 
     switch (message)
     {
     case WM_CREATE:
+        pos.x = CIRCLE_RADIUS; pos.y = CIRCLE_RADIUS;
         GetClientRect(hWnd, &rectView);
-        count = 0;
-        chatCount = 0;
-        CreateCaret(hWnd, NULL, 5, 15);
-        ShowCaret(hWnd);
+        CreateBitmap();
+        SetTimer(hWnd, TIMER_ANI, 33, AniProc);
+        SetTimer(hWnd, TIMER_KEYSTATE, 100, KeyStateProc);
         break;
     case WM_COMMAND:
+    {
+        int wmId = LOWORD(wParam);
+        switch (wmId)
         {
-            int wmId = LOWORD(wParam);
-            switch (wmId)
+        case ID_FileOpen:
+            memset(&ofn, 0, sizeof(OPENFILENAME));
+            ofn.lStructSize = sizeof(OPENFILENAME);
+            ofn.hwndOwner = hWnd;
+            ofn.lpstrFilter = filter;
+            ofn.lpstrFile = lpstrFile;
+            ofn.nMaxFile = 100;
+            ofn.lpstrInitialDir = _T("..");      // 열었을 때 위치 지정
+            if (GetOpenFileName(&ofn) != 0)     // 파일 열기를 눌렀을 때
             {
-            case ID_FileOpen:
-                InitializeFile(ofn, hWnd, lpstrFile);
-
-                if (GetOpenFileName(&ofn) != 0)     // 파일 열기를 눌렀을 때
-                {
-                    OutFromFile(ofn.lpstrFile, hWnd, buffer);
-                }
-                break;
-            case ID_FileSave:
-                InitializeFile(sfn, hWnd, lpstrFile);
-
-                if (GetSaveFileName(&sfn) != 0)
-                {
-                    _stprintf_s(scriptStr, _T("%s 파일로 저장하겠습니까?"), sfn.lpstrFile);
-                    MessageBox(hWnd, scriptStr, _T("저장하기"), MB_OK);
-                    SaveFile(sfn.lpstrFile, chatBuffer);
-                }
-                break;
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            case ID_DrawCircle:
-                break;
-            case ID_DrawRectangle:
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
+                _stprintf_s(str, _T("%s 파일을 열겠습니까?"), ofn.lpstrFile);
+                MessageBox(hWnd, str, _T("열기 선택"), MB_OK);
             }
+            break;
+        case ID_FileSave:
+            break;
+        case IDM_ABOUT:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+            break;
+        case IDM_EXIT:
+            DestroyWindow(hWnd);
+            break;
+        case ID_DrawCircle:
+        {
+            int ans = MessageBox(hWnd, _T("원 그리기 선택"), _T("도형 선택"), MB_OKCANCEL);
+            if (ans == IDOK)
+                geometricObj = 0;
         }
         break;
+        case ID_DrawRectangle:
+        {
+            int ans = MessageBox(hWnd, _T("사각형 그리기 선택"), _T("도형 선택"), MB_OKCANCEL);
+            if (ans == IDOK)
+                geometricObj = 1;
+        }
+        break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
+        }
+    }
+    break;
     case WM_KEYDOWN:
-        InvalidateRect(hWnd, NULL, true);
+        //if (wParam == VK_RIGHT)
+        //{
+        //    pos.x += 40;
+        //    if (pos.x + 20 > rectView.right)
+        //        pos.x -= 40;
+        //}
+        //if (wParam == VK_LEFT)
+        //{
+        //    pos.x -= 40;
+        //    if (pos.x - 20 < rectView.left)
+        //        pos.x += 40;
+        //}
+        //if (wParam == VK_DOWN)
+        //{
+        //    pos.y += 40;
+        //    if (pos.y + 20 > rectView.bottom)
+        //        pos.y -= 40;
+        //}
+        //if (wParam == VK_UP)
+        //{
+        //    pos.y -= 40;
+        //    if (pos.y - 20 < rectView.top)
+        //        pos.y += 40;
+        //}
+        flag = true;
+        //InvalidateRect(hWnd, NULL, false);
         break;
     case WM_KEYUP:
-        InvalidateRect(hWnd, NULL, true);
+        flag = false;
+        //InvalidateRect(hWnd, NULL, false);
         break;
     case WM_CHAR:
+        break;
+    case WM_LBUTTONDOWN:
     {
-        if (chatCount < MAX_STR_COUNT)
-        {
-            if (wParam == VK_BACK)
-            {
-                if (count > 0)
-                    count--;
-            }
-            else if (wParam == VK_RETURN)
-            {
-                count = 0;
-                chatCount++;
-            }
-            else
-            {
-                if (count < MAX_STR_LENGTH - 1)
-                    chatBuffer[chatCount][count++] = wParam;
-            }
-            chatBuffer[chatCount][count] = NULL;
-        }
-        InvalidateRgn(hWnd, NULL, true);
+        int x, y;
+
+        x = LOWORD(lParam); //x
+        y = HIWORD(lParam); //y
+        //if (InCircle(x, y, pos.x, pos.y, CIRCLE_RADIUS))
+        //    mouseFlag = TRUE;
+        //else mouseFlag = FALSE;
+
+        pos.x = x;
+        pos.y = y;
+
+        //InvalidateRect(hWnd, NULL, false);
     }
+    break;
+    case WM_LBUTTONUP:
+        mouseFlag = FALSE;
+        break;
+    case WM_RBUTTONDOWN:
+    {
+        int x, y;
+        x = LOWORD(lParam); //x
+        y = HIWORD(lParam); //y
+        //if (InCircle(x, y, pos.x, pos.y, CIRCLE_RADIUS))
+        //    flag = TRUE;
+        //else flag = FALSE;
+        //InvalidateRect(hWnd, NULL, false);
+    }
+    break;
+    case WM_RBUTTONUP:
+        break;
+    case WM_MOUSEMOVE:  // 이거 하면 느리다
+        int x, y;
+        x = LOWORD(lParam);
+        y = HIWORD(lParam);
+        //if (mouseFlag)
+        //{
+        //    pos.x = x;
+        //    pos.y = y;
+        //}
+        //InvalidateRect(hWnd, NULL, false);
         break;
     case WM_SIZE:
         GetClientRect(hWnd, &rectView);
@@ -290,28 +356,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
+        // DrawBitmap(hWnd, hdc);
+        DrawBitmapDoubleBuffering(hWnd, hdc);
 
-        SetTextColor(hdc, RGB(0, 0, 0));
-
-        for (int i = chatCount - MAX_SHOW_COUNT; i <= chatCount; i++)
-        {
-            if (i == chatCount)
-                SetTextColor(hdc, RGB(0, 0, 255));
-            TextOut(hdc, 0, yPos - 20 * (chatCount-i), chatBuffer[i], _tcslen(chatBuffer[i]));
-        }
-
-        GetTextExtentPoint(hdc, chatBuffer[chatCount], _tcslen(chatBuffer[chatCount]), &caretSize);
-        SetCaretPos(caretSize.cx, yPos);
+        TextOut(hdc, 10, 10, sKeyState, _tcslen(sKeyState));
 
         EndPaint(hWnd, &ps);
     }
-        break;
-    case WM_TIMER:
-        InvalidateRect(hWnd, NULL, true);
+    break;
+  /*  case WM_TIMER:
+        switch (wParam)
+        {
+        case TIMER_ANI:
+            break;
+        case TIMER_KEYSTATE:
+            break;
+        }
+
+    //    InvalidateRe*///ct(hWnd, NULL, FALSE);
         break;
     case WM_DESTROY:
-        HideCaret(hWnd);
-        DestroyCaret();
+        DeleteBitmap();
         PostQuitMessage(0);
         break;
     default:
@@ -337,4 +402,204 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+
+// 비트맵
+void CreateBitmap()
+{
+    // >> background image
+    hBackImage = (HBITMAP)LoadImage(NULL, TEXT("../Data/arsene.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+    if (hBackImage == NULL)
+    {
+        DWORD dwError = GetLastError();
+        MessageBox(NULL, _T("배경 이미지 파일을 열 수 없습니다."), _T("에러"), MB_OK);
+    }
+    else
+    {
+        GetObject(hBackImage, sizeof(BITMAP), &bitBack);
+    }
+    // <<
+
+    // >> : sigong image
+    hTransParentImage = (HBITMAP)LoadImage(NULL, TEXT("../Data/images/sigong.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+    if (hTransParentImage == NULL)
+    {
+        DWORD dwError = GetLastError();
+        MessageBox(NULL, _T("시공 이미지 파일을 열 수 없습니다."), _T("에러"), MB_OK);
+    }
+    else
+    {
+        GetObject(hTransParentImage, sizeof(BITMAP), &bitTransParent);
+    }
+    // <<
+
+    // >> : animation image
+    hAniImage = (HBITMAP)LoadImage(NULL, TEXT("../Data/images/zero_run.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+    if (hAniImage == NULL)
+    {
+        DWORD dwError = GetLastError();
+        MessageBox(NULL, _T("애니메이션 이미지 파일을 열 수 없습니다."), _T("에러"), MB_OK);
+    }
+    else
+    {
+        GetObject(hAniImage, sizeof(BITMAP), &bitAni);
+    }
+    Run_Frame_Max = bitAni.bmWidth / SPRITE_SIZE_X - 1;
+    Run_Frame_Min = 2; // 달리기 프레임 최소 프레임(시작?)
+    curFrame = Run_Frame_Min;
+    // <<
+}
+
+void DrawBitmap(HWND hWnd, HDC hdc)
+{
+    HDC hMemDC;
+    HBITMAP hOldBitmap;
+    int bx, by;
+
+    // >> : 배경
+    {
+        hMemDC = CreateCompatibleDC(hdc); // hdc와 호환되는 메모리 DC 생성
+        hOldBitmap = (HBITMAP)SelectObject(hMemDC, hBackImage); // hMemDC에 hBackImage를 선택 -> 이미지가 올라와 있는 상태
+        bx = bitBack.bmWidth;
+        by = bitBack.bmHeight;
+
+        BitBlt(hdc, 0, 0, bx, by, hMemDC, 0, 0, SRCCOPY); // hMemDC의 이미지를 hdc로 복사
+        //BitBlt(hdc, 100, 100, bx - 100, by - 100, hMemDC, 100, 100, SRCCOPY); // hMemDC의 이미지를 hdc로 복사
+
+        StretchBlt(hdc, bx, 0, bx / 4, by / 4, hMemDC, 0, 0, bx, by, SRCCOPY); // hMemDC의 이미지를 hdc로 복사
+
+        SelectObject(hMemDC, hOldBitmap); // hMemDC에 선택된 이미지를 해제
+        DeleteDC(hMemDC); // 메모리 DC 삭제
+    }
+    // <<
+    // >> : sigong image
+    {
+        hMemDC = CreateCompatibleDC(hdc); // hdc와 호환되는 메모리 DC 생성
+        hOldBitmap = (HBITMAP)SelectObject(hMemDC, hTransParentImage); // hMemDC에 hTransParentImage를 선택 -> 이미지가 올라와 있는 상태
+        bx = bitTransParent.bmWidth;
+        by = bitTransParent.bmHeight;
+
+        TransparentBlt(hdc, 130, 30, bx, by, hMemDC, 0, 0, bx, by, RGB(255, 0, 255)); // hMemDC의 이미지를 hdc로 복사 , 해당 색을 제외하고 전부 전송됨
+
+        SelectObject(hMemDC, hOldBitmap); // hMemDC에 선택된 이미지를 해제
+        DeleteDC(hMemDC); // 메모리 DC 삭제
+
+    }
+    // >> : sigong image
+    // >> : animation image
+    {
+        hMemDC = CreateCompatibleDC(hdc); // hdc와 호환되는 메모리 DC 생성
+        hOldBitmap = (HBITMAP)SelectObject(hMemDC, hAniImage); // hMemDC에 hAniImage를 선택 -> 이미지가 올라와 있는 상태
+        /*bx = bitAni.bmWidth / SPRITE_COUNT;
+        by = bitAni.bmHeight / SPRITE_DIRECTION;*/
+        bx = SPRITE_SIZE_X;
+        by = SPRITE_SIZE_Y;
+
+        int xStart = curFrame * bx;
+        int yStart = 0;
+        // hMemDC의 이미지를 hdc로 복사 , 해당 색을 제외하고 전부 전송됨
+        TransparentBlt(hdc, ptAni.x, ptAni.y, bx, by, hMemDC, xStart, yStart, bx, by, RGB(255, 0, 255));
+
+
+        SelectObject(hMemDC, hOldBitmap); // hMemDC에 선택된 이미지를 해제
+        DeleteDC(hMemDC); // 메모리 DC 삭제
+    }
+    // << : animation image
+}
+
+void DeleteBitmap()
+{
+    DeleteObject(hBackImage);
+    DeleteObject(hTransParentImage);
+    DeleteObject(hAniImage);
+    DeleteObject(hDoubleBufferImage);
+}
+
+void Update()
+{
+    DWORD newTime = GetTickCount();
+    static DWORD oldTime = newTime;
+
+    if (newTime - oldTime < 100)
+        return;
+
+    oldTime = newTime;
+    
+    //시간 보정
+    //oldTime = newTime - ((newTime - oldTime) % 100);
+
+    if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+    {
+        ptAni.x -= 10;
+    }
+    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    {
+        ptAni.x += 10;
+    }
+    else if (GetAsyncKeyState(VK_UP) & 0x8000)
+    {
+        ptAni.y -= 10;
+    }
+    else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    {
+        ptAni.y += 10;
+    }
+}
+void UpdateFrame(HWND hwnd)
+{
+    curFrame++;
+    if (curFrame > Run_Frame_Max)
+        curFrame = Run_Frame_Min;
+}
+
+VOID CALLBACK AniProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
+{
+    UpdateFrame(hwnd);
+    InvalidateRect(hwnd, NULL, false);
+}
+
+VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
+{
+    if (GetKeyState('A') & 0x8000)
+    {
+        wsprintf(sKeyState, TEXT("%s"), _T("A-Key pressed"));
+    }
+    else if (GetKeyState('D') & 0x8000)
+    {
+        wsprintf(sKeyState, TEXT("%s"), _T("D-Key pressed"));
+    }
+    else if (GetKeyState('W') & 0x8000)
+    {
+        wsprintf(sKeyState, TEXT("%s"), _T("W-Key pressed"));
+    }
+    else if (GetKeyState('S') & 0x8000)
+    {
+        wsprintf(sKeyState, TEXT("%s"), _T("S-Key pressed"));
+    }
+    else
+    {
+        wsprintf(sKeyState, TEXT(""));
+    }
+
+    UpdateFrame(hwnd);
+    InvalidateRect(hwnd, NULL, false);
+}
+
+void DrawBitmapDoubleBuffering(HWND hwnd, HDC hdc)
+{
+    HDC hDoubleBufferDC;
+    HBITMAP hDoubleBufferBitmap;
+    
+    hDoubleBufferDC = CreateCompatibleDC(hdc);
+    if ( hDoubleBufferImage == NULL )
+        hDoubleBufferImage = CreateCompatibleBitmap(hdc, rectView.right, rectView.bottom);
+    hOldDoubleBufferBitmap = (HBITMAP)SelectObject(hDoubleBufferDC,
+        hDoubleBufferImage);
+
+    DrawBitmap(hwnd, hDoubleBufferDC);
+
+    BitBlt(hdc, 0, 0, rectView.right, rectView.bottom, hDoubleBufferDC, 0, 0, SRCCOPY);
+    SelectObject(hDoubleBufferDC, hOldDoubleBufferBitmap);
+    DeleteDC(hDoubleBufferDC);
 }
