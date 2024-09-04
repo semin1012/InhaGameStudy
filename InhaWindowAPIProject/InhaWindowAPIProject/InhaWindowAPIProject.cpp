@@ -484,7 +484,6 @@ void DrawBitmap(HWND hWnd, HDC hdc)
 
         SelectObject(hMemDC, hOldBitmap); // hMemDC에 선택된 이미지를 해제
         DeleteDC(hMemDC); // 메모리 DC 삭제
-
     }
     // >> : sigong image
     // >> : animation image
