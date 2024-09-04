@@ -15,8 +15,9 @@ public:
 	
 	virtual void Draw(HDC& hdc) override;
 	virtual void Update(RECT rectView) override;
-	virtual void Collision(GameObject& object) override;
+	virtual bool Collision(GameObject& object) override;
 	
+	void	SetCollisionRect();
 	int		GetScore();
 	int		GetLevel();
 };

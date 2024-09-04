@@ -141,12 +141,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         {
             CreateDoubbleBuffering(hWnd);
-
             for (auto obj : objects)
             {
                 obj->Draw(hdc);
             }
-
             EndDoubleBuffering(hWnd);
         }
         break;
@@ -186,12 +184,45 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 {
-    for (auto obj : objects)
+    vector <bool> flag(objects.size(), false);
+    GameObject* ball = NULL;
+
+    for (int i = 0; i < objects.size(); i++)
     {
-        obj->Update(rectView);
+        objects[i]->Update(rectView);
+
+        if (objects[i]->GetType() == EObjectType::Ball)
+        {
+            ball = objects[i];
+        }
     }
 
     InvalidateRect(hwnd, NULL, false);
+
+    if (ball == NULL) return;
+
+    vector<GameObject*> removeObj;
+
+    for (int i = 0; i < objects.size(); i++)
+    {
+        if (objects[i]->GetType() == EObjectType::Obstacle)
+        {
+            // 삭제해야 함
+            if (objects[i]->Collision(*ball))
+            {
+                removeObj.push_back(objects[i]);
+            }
+        }
+        if (objects[i]->GetType() == EObjectType::Player)
+        {
+            objects[i]->Collision(*ball);
+        }
+    }
+
+    for (int i = 0; i < removeObj.size(); i++)
+    {
+        objects.erase(remove(objects.begin(), objects.end(), removeObj[i]), objects.end());
+    }
 }
 
 VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)

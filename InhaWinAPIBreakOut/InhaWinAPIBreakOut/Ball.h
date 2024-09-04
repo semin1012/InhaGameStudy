@@ -7,18 +7,16 @@
 class Ball : public GameObject
 {
 private:
-	float speed = 3;
-	float dirX;
-	float dirY;
+	float speed = 2;
 	float radius = 10;
 
 public:
-	Ball(POINT pos, int halfSize);
+	Ball(POINT pos, int radius);
 	virtual void	SetCollisionRect();
 
 	void Draw(HDC& hdc) override;
 	void Update(RECT rectView) override;
-	void Collision(GameObject& object) override;
+	bool Collision(GameObject& object) override;
 
 	void MoveTo(RECT rectView);
 };

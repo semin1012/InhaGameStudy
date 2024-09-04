@@ -14,8 +14,34 @@ void Player::Update(RECT rectView)
 	SetCollisionRect();
 }
 
-void Player::Collision(GameObject& object)
+void Player::SetCollisionRect()
 {
+	rect.left = pos.x - halfSize;
+	rect.right = pos.x + halfSize;
+	rect.top = pos.y - HEIGHT_HALF_SIZE + 10;
+	rect.bottom = pos.y + HEIGHT_HALF_SIZE - 10;
+}
+
+bool Player::Collision(GameObject& object)
+{
+	if (object.GetType() == EObjectType::Obstacle)
+		return false;
+
+	// ballÀÌ ºÎµúÈùÁö 1ÃÊ ¾È Áö³µÀ¸¸é return
+	if (clock() - object.GetCollisedTime() < 1000)
+		return false;
+
+	switch (object.GetType())
+	{
+	case EObjectType::Ball:
+		if (IsCollised(object) == true)
+		{
+			object.SetReverseDirY();
+			object.SetCollisedTime(clock());
+		}
+		break;
+	}
+	return false;
 }
 
 Ball* Player::Attack()
@@ -23,7 +49,7 @@ Ball* Player::Attack()
 	if (useBallCount < maxBallCount)
 	{
 		useBallCount++;
-		Ball* attackBall = new Ball({ pos.x, pos.y - HEIGHT_HALF_SIZE * 2}, 40);
+		Ball* attackBall = new Ball({ pos.x, pos.y - HEIGHT_HALF_SIZE * 2}, 10);
 		return attackBall;
 	}
 

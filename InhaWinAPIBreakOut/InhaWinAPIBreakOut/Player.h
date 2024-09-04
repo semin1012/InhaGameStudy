@@ -19,10 +19,10 @@ public:
 
 	virtual void Draw(HDC& hdc);
 	virtual void Update(RECT rectView);
-	virtual void Collision(GameObject& object);
-	
-	Ball*	Attack();
+	virtual bool Collision(GameObject& object);
+	virtual void SetCollisionRect();
 
+	Ball*	Attack();
 	int		GetSpeed();
 	void	SetSpeed(int speed);
 	void	MoveTo(RECT rectView, POINT pos);

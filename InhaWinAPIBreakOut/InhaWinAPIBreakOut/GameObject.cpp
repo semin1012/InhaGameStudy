@@ -8,6 +8,25 @@ void GameObject::SetCollisionRect()
 	rect.bottom = pos.y + halfSize;
 }
 
+RECT& GameObject::GetCollisionRect()
+{
+	return rect;
+}
+
+bool GameObject::IsCollised(GameObject& object)
+{
+	if (this->rect.left >= object.GetCollisionRect().right)
+		return false;
+	if (this->rect.right <= object.GetCollisionRect().left)
+		return false;
+	if (this->rect.top >= object.GetCollisionRect().bottom)
+		return false;
+	if (this->rect.bottom <= object.GetCollisionRect().top)
+		return false;
+
+	return true;
+}
+
 POINT GameObject::GetPos()
 {
 	return pos;
@@ -32,4 +51,19 @@ void GameObject::SetHalfSize(int halfSize)
 EObjectType GameObject::GetType()
 {
 	return type;
+}
+
+void GameObject::SetReverseDirY()
+{
+	dirY *= -1;
+}
+
+void GameObject::SetCollisedTime(clock_t time)
+{
+	collisedTime = time;
+}
+
+clock_t GameObject::GetCollisedTime()
+{
+	return collisedTime;
 }

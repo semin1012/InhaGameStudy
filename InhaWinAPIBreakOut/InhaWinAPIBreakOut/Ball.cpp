@@ -1,18 +1,18 @@
 #include "Ball.h"
 
-Ball::Ball(POINT pos, int halfSize) : GameObject(pos, halfSize, EObjectType::Ball)
+Ball::Ball(POINT pos, int radius) : GameObject(pos, radius, EObjectType::Ball), radius(radius)
 {
 	SetCollisionRect();
-	this->dirX = cos((rand() % 180) * 3.141592 / 180) * 10;
+	this->dirX = cos((rand() % 90 + 45) * 3.141592 / 180) * 10;
 	this->dirY = sin((rand() % 90 + 180) * 3.141592 / 180) * 10;
 }
 
 void Ball::SetCollisionRect()
 {
-	rect.left	= pos.x - radius;
-	rect.right	= pos.x + radius;
-	rect.top	= pos.y - radius;
-	rect.bottom = pos.y + radius;
+	rect.left	= pos.x - radius - 7;
+	rect.right	= pos.x + radius + 7;
+	rect.top	= pos.y - radius - 7;
+	rect.bottom = pos.y + radius + 7;
 }
 
 void Ball::Draw(HDC& hdc)
@@ -29,10 +29,12 @@ void Ball::Draw(HDC& hdc)
 void Ball::Update(RECT rectView)
 {
 	MoveTo(rectView);
+	SetCollisionRect();
 }
 
-void Ball::Collision(GameObject& object)
+bool Ball::Collision(GameObject& object)
 {
+	return false;
 }
 
 void Ball::MoveTo(RECT rectView)

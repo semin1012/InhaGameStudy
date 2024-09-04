@@ -28,13 +28,40 @@ void Obstacle::Draw(HDC& hdc)
 	DeleteObject(hBrush);
 }
 
-void Obstacle::Update(RECT rectView)
+void Obstacle::SetCollisionRect()
 {
-	SetCollisionRect();
+	rect.left	= pos.x - halfSize;
+	rect.right	= pos.x + halfSize;
+	rect.top	= pos.y - HEIGHT_HALF_SIZE + 10;
+	rect.bottom = pos.y + HEIGHT_HALF_SIZE - 10;
 }
 
-void Obstacle::Collision(GameObject& object)
+void Obstacle::Update(RECT rectView)
 {
+	// SetCollisionRect();
+}
+
+bool Obstacle::Collision(GameObject& object)
+{
+	if (object.GetType() != EObjectType::Ball)
+		return false;
+
+	// ball이 부딪힌지 1초 안 지났으면 return
+	if (clock() - object.GetCollisedTime() < 1000)
+		return false;
+
+	if (IsCollised(object) == true)
+	{
+		object.SetReverseDirY();
+		object.SetCollisedTime(clock());
+		level--;
+		if (level <= 0)
+		{
+			// 사라져야 할 경우 true를 리턴
+			return true;
+		}
+	}
+	return false;
 }
 
 int Obstacle::GetScore()
