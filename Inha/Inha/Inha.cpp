@@ -1,104 +1,149 @@
 ﻿#include <iostream>
-#include <algorithm>
-#include <random>
-#include <time.h>
-#include <cstring>
+#include <string>
+#include <vector>
 #include "StopWatch.h"
-
-#define MAX 1'000'000
-#define MAX_INT 10000
 using namespace std;
 
-int nums[MAX];
-int arr1[MAX], arr2[MAX];
-
-void Swap(int& a, int& b)
+vector<int> GetPatternTable(string find)
 {
-	int temp = a;
-	a = b;
-	b = temp;
-}
+	int findLength = find.length();
+	int begin = 1, match = 0;
 
-void PrintNums(int arr[])
-{
-	for (int i = 0; i < MAX; i++)
+	vector<int> table(findLength, 0);
+
+	while (begin + match < findLength)
 	{
-		cout << arr[i] << " ";
-	}
-	cout << "\n";
-}
-
-void QuickSort(int arr[], int left, int right)
-{
-	int pivot = arr[(left + right + 1) / 2];
-	int pl = left;
-	int pr = right;
-
-	while (pl <= pr)
-	{
-		while (arr[pl] < pivot) pl++;
-		while (arr[pr] > pivot) pr--;
-		if (pl <= pr)
+		if (find[begin + match] == find[match])
 		{
-			Swap(arr[pl], arr[pr]);
-			pl++;
-			pr--;
+			match++;
+			table[begin + match - 1] = match;
+		}
+
+		else
+		{
+			if (match == 0)
+				begin++;
+
+			else
+			{
+				begin += match - table[match-1];
+				match -= table[match-1];
+			}
 		}
 	}
 
-	if (left < pr) QuickSort(arr, left, pr);
-	if (right > pl) QuickSort(arr, pl, right);
+	return table;
 }
 
-void PrintCountingSort(int arr[])
+void KMP(string source, string find)
 {
-	for (int i = 0; i < MAX_INT; i++)
+	int sourceLength = source.length();
+	int findLength = find.length();
+	
+	int begin = 0, match = 0;
+
+	int count = 0;
+
+	vector<int> table = GetPatternTable(find);
+
+	while (begin < sourceLength - findLength)
 	{
-		for (int j = 0; j < arr[i]; j++)
+		count++;
+
+		if (match < findLength && source[begin + match] == find[match])
 		{
-			//cout << i+1 << " ";
+			/* ------------ 출력 ------------ */
+			cout << source << "\n";
+			for (int i = 0; i < begin + match; i++)
+				cout << " ";
+			cout << "+\n";
+			for (int i = 0; i < begin; i++)
+				cout << " ";
+			cout << find << "\n";
+			/* ------------ 출력 ------------ */
+
+			match++;
+
+			if (match == findLength)
+				break;
+		}
+
+		else
+		{
+			/* ------------ 출력 ------------ */
+			cout << source << "\n";
+			for (int i = 0; i < begin + match; i++)
+				cout << " ";
+			cout << "|\n";
+			for (int i = 0; i < begin; i++)
+				cout << " ";
+			cout << find << "\n";
+			/* ------------ 출력 ------------ */
+
+			if (match == 0)
+				begin++;
+
+			else
+			{
+				begin += match - table[match - 1];
+				match -= table[match - 1];
+			}
 		}
 	}
-	//cout << "\n";
+
+	cout << "총 비교 횟수: " << count << "\n";
 }
 
-void CountingSort(int arr[])
+void BruteForce(string source, string find)
 {
-	int *newArr = new int[MAX_INT];
-	memset(newArr, 0, sizeof(int) * MAX_INT);
+	int sourceLength = source.length();
+	int findLength = find.length();
+	int begin = 0, match = 0;
 
-	for (int i = 0; i < MAX; i++)
+	int count = 0;
+
+	while (begin < sourceLength - findLength)
 	{
-		newArr[arr[i] - 1] += 1;
+		count++;
+		if (source[begin + match] == find[match])
+		{
+			cout << source << "\n";
+			for (int i = 0; i < begin + match; i++)
+				cout << " ";
+			cout << "+\n";
+			for (int i = 0; i < begin; i++)
+				cout << " ";
+			cout << find << "\n";
+
+			match++;
+
+			if (match == findLength)
+				break;
+		}
+		
+		else 
+		{
+			cout << source << "\n";
+			for (int i = 0; i < begin + match; i++)
+				cout << " ";
+			cout << "|\n";
+			for (int i = 0; i < begin; i++)
+				cout << " ";
+			cout << find << "\n";
+
+			match = 0;
+			begin++;
+		}
 	}
 
-	PrintCountingSort(newArr);
+	cout << "총 비교 횟수: " << count << "\n";
 }
 
 int main()
 {
-	srand(time(NULL));
+	string source = "ABABCDEFGHA";
+	string find = "ABC";
 
-	for (int i = 0; i < MAX; i++)
-		nums[i] = rand() % 5 + 1;
-
-	StopWatch timer;
-	copy(nums, nums + MAX, arr1);
-	copy(nums, nums + MAX, arr2);
-
-	cout << "Quick Sort\n";
-	timer.start();
-	QuickSort(arr1, 0, MAX - 1);
-	timer.stop();
-
-	cout << "------ 퀵 정렬 ------\n";
-	cout << "데이터 수: " << MAX << "개, 소요 시간: " << timer.getElpasedTime() << "\n";
-	
-	cout << "\nCounting Sort\n";
-	timer.start();
-	CountingSort(arr2);
-	timer.stop();
-
-	cout << "------ 계수 정렬 ------\n";
-	cout << "데이터 수: " << MAX << "개, 1부터 " << MAX_INT << "의 값까지, 소요 시간: " << timer.getElpasedTime() << "\n";
+	BruteForce(source, find);
+	// KMP(source, find);
 }
