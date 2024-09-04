@@ -67,3 +67,18 @@ clock_t GameObject::GetCollisedTime()
 {
 	return collisedTime;
 }
+
+bool GameObject::GetIsOver()
+{
+	return isOver;
+}
+
+int GameObject::GetScore()
+{
+	return score;
+}
+
+void GameObject::SetScore(int score)
+{
+	this->score = score;
+}

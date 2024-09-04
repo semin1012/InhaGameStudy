@@ -32,7 +32,7 @@ void Ball::Update(RECT rectView)
 	SetCollisionRect();
 }
 
-bool Ball::Collision(GameObject& object)
+int Ball::Collision(GameObject& object)
 {
 	return false;
 }
@@ -49,15 +49,15 @@ void Ball::MoveTo(RECT rectView)
 		dirX *= -1;
 		return;
 	}
-	if (this->pos.y + radius + speed * dirY > rectView.bottom)
-	{
-		dirY *= -1;
-		return;
-	}
 	if (this->pos.y - radius + speed * dirY < rectView.top)
 	{
 		dirY *= -1;
 		return;
+	}
+
+	if (this->pos.y + radius > rectView.bottom)
+	{
+		isOver = true;
 	}
 
 	pos.x += speed * dirX;

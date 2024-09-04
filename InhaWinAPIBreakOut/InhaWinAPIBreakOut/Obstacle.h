@@ -4,20 +4,19 @@
 class Obstacle : public GameObject
 {
 private:
-	int		score;
 	int		level;
 
 public:
-	Obstacle(POINT pos, int halfSize, int score, int level) : GameObject(pos, halfSize, EObjectType::Obstacle), score(score), level(level)
+	Obstacle(POINT pos, int halfSize, int level) : GameObject(pos, halfSize, EObjectType::Obstacle), level(level)
 	{
 		SetCollisionRect();
+		SetScore(level * 10);
 	}
 	
 	virtual void Draw(HDC& hdc) override;
 	virtual void Update(RECT rectView) override;
-	virtual bool Collision(GameObject& object) override;
+	virtual int  Collision(GameObject& object) override;
 	
 	void	SetCollisionRect();
-	int		GetScore();
 	int		GetLevel();
 };

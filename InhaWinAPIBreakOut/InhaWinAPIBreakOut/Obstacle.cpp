@@ -41,14 +41,14 @@ void Obstacle::Update(RECT rectView)
 	// SetCollisionRect();
 }
 
-bool Obstacle::Collision(GameObject& object)
+int Obstacle::Collision(GameObject& object)
 {
 	if (object.GetType() != EObjectType::Ball)
-		return false;
+		return 0;
 
 	// ball이 부딪힌지 1초 안 지났으면 return
 	if (clock() - object.GetCollisedTime() < 1000)
-		return false;
+		return 0;
 
 	if (IsCollised(object) == true)
 	{
@@ -58,15 +58,12 @@ bool Obstacle::Collision(GameObject& object)
 		if (level <= 0)
 		{
 			// 사라져야 할 경우 true를 리턴
-			return true;
+			return -1;
 		}
+		// 그게 아니고 일반 충돌이면 1
+		else return 1;
 	}
-	return false;
-}
-
-int Obstacle::GetScore()
-{
-	return score;
+	return 0;
 }
 
 int Obstacle::GetLevel()

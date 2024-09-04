@@ -117,12 +117,16 @@ HBITMAP             BackBit, oldBackBit;
 RECT                bufferRT;
 PAINTSTRUCT         ps;
 
+BOOL                bGameOver = FALSE;
+
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 
 void InitObjects();
 void CreateDoubbleBuffering(HWND hWnd);
 void EndDoubleBuffering(HWND hWnd);
+void CheckGameOver(vector<GameObject*>);
+void DrawTextInGame(HDC hdc);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -141,6 +145,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         {
             CreateDoubbleBuffering(hWnd);
+            DrawTextInGame(hdc);
             for (auto obj : objects)
             {
                 obj->Draw(hdc);
@@ -185,7 +190,9 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 {
     vector <bool> flag(objects.size(), false);
-    GameObject* ball = NULL;
+    vector<GameObject*> balls;
+
+    vector<GameObject*> removeObj;
 
     for (int i = 0; i < objects.size(); i++)
     {
@@ -193,29 +200,43 @@ VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 
         if (objects[i]->GetType() == EObjectType::Ball)
         {
-            ball = objects[i];
+            balls.push_back(objects[i]);
+            if (objects[i]->GetIsOver())
+            {
+                removeObj.push_back(objects[i]);
+            }
         }
     }
 
     InvalidateRect(hwnd, NULL, false);
 
-    if (ball == NULL) return;
+    CheckGameOver(balls);
 
-    vector<GameObject*> removeObj;
+    if (balls.size() == 0) return;
 
     for (int i = 0; i < objects.size(); i++)
     {
         if (objects[i]->GetType() == EObjectType::Obstacle)
         {
-            // 삭제해야 함
-            if (objects[i]->Collision(*ball))
+            for (int j = 0; j < balls.size(); j++) 
             {
-                removeObj.push_back(objects[i]);
+                // -1이면 삭제
+                switch (objects[i]->Collision(*balls[j]))
+                {
+                case -1:
+                    player->AddScore(objects[i]->GetScore());
+                    removeObj.push_back(objects[i]);
+                    break;
+                case 1:
+                    player->AddScore(objects[i]->GetScore());
+                    break;
+                }
             }
         }
         if (objects[i]->GetType() == EObjectType::Player)
         {
-            objects[i]->Collision(*ball);
+            for (int j = 0; j < balls.size(); j++)
+                objects[i]->Collision(*balls[j]);
         }
     }
 
@@ -227,6 +248,9 @@ VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 
 VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 {
+    if (bGameOver == TRUE)
+        return;
+
     if (GetKeyState('A') & 0x8000 || GetAsyncKeyState(VK_LEFT) & 0x8000)
     {
         player->MoveTo(rectView, { -10, 0 });
@@ -261,7 +285,7 @@ void InitObjects()
     {
         for (int j = 0; j < 4; j++)
         {
-            Obstacle* obstacle = new Obstacle({ 0 + 80 * i + 40, 200 - j * HEIGHT_HALF_SIZE * 2 }, 40, 10 * (j + 1), j + 1);
+            Obstacle* obstacle = new Obstacle({ 0 + 80 * i + 40, 200 - j * HEIGHT_HALF_SIZE * 2 }, 40, j + 1);
             objects.push_back(obstacle);
         }
     }
@@ -292,4 +316,24 @@ void EndDoubleBuffering(HWND hWnd)
     DeleteObject(BackBit);
     DeleteDC(MemDC);
     EndPaint(hWnd, &ps);
+}
+
+void CheckGameOver(vector<GameObject*> balls)
+{
+    if (player->GetBallCount() <= 0 && balls.size() == 0)
+    {
+        player->SetPos({ 1000, 1000 });
+    }
+}
+
+void DrawTextInGame(HDC hdc)
+{
+    wchar_t ballCountText[32];
+    wchar_t scoreText[32];
+
+    swprintf_s(ballCountText, L"남은 Ball 개수: %d", player->GetBallCount());
+    swprintf_s(scoreText, L"점수: %d", player->GetScore());
+
+    TextOut(hdc, 50, 50, ballCountText, _tcsclen(ballCountText));
+    TextOut(hdc, 50, 70, scoreText, _tcsclen(scoreText));
 }

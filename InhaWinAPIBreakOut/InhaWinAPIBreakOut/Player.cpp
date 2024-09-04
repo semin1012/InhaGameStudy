@@ -22,14 +22,14 @@ void Player::SetCollisionRect()
 	rect.bottom = pos.y + HEIGHT_HALF_SIZE - 10;
 }
 
-bool Player::Collision(GameObject& object)
+int Player::Collision(GameObject& object)
 {
 	if (object.GetType() == EObjectType::Obstacle)
-		return false;
+		return 0;
 
 	// ballÀÌ ºÎµúÈùÁö 1ÃÊ ¾È Áö³µÀ¸¸é return
 	if (clock() - object.GetCollisedTime() < 1000)
-		return false;
+		return 0;
 
 	switch (object.GetType())
 	{
@@ -41,20 +41,19 @@ bool Player::Collision(GameObject& object)
 		}
 		break;
 	}
-	return false;
+	return 0;
 }
 
 Ball* Player::Attack()
 {
-	if (useBallCount < maxBallCount)
+	if (ballCount > 0)
 	{
-		useBallCount++;
+		ballCount--;
 		Ball* attackBall = new Ball({ pos.x, pos.y - HEIGHT_HALF_SIZE * 2}, 10);
 		return attackBall;
 	}
 
 	return NULL;
-
 }
 
 int Player::GetSpeed()
@@ -89,7 +88,22 @@ void Player::MoveTo(RECT rectView, POINT pos)
 	this->pos.y += pos.y;
 }
 
-void Player::SetMaxBallCount(int maxCount)
+void Player::SetBallCount(int maxCount)
 {
-	this->maxBallCount = maxCount;
+	this->ballCount = maxCount;
+}
+
+int Player::GetBallCount()
+{
+	return ballCount;
+}
+
+void Player::AddScore(int value)
+{
+	gameScore += value;
+}
+
+int Player::GetScore()
+{
+	return gameScore;
 }

@@ -7,7 +7,8 @@ enum class EObjectType
 {
 	Player = 0,
 	Obstacle,
-	Ball
+	Ball,
+	Item
 };
 
 class GameObject
@@ -20,6 +21,8 @@ protected:
 	float		dirX = 0;
 	float		dirY = 0;
 	clock_t		collisedTime = 0.0f;
+	bool		isOver = false;
+	int			score = 10;
 
 public:
 	GameObject(POINT pos, int halfSize, EObjectType type) : pos(pos), halfSize(halfSize), type(type)
@@ -29,7 +32,7 @@ public:
 
 	virtual void	Draw(HDC& hdc) = 0;
 	virtual void	Update(RECT rectView) = 0;
-	virtual bool	Collision(GameObject& object) = 0;
+	virtual int		Collision(GameObject& object) = 0;
 	virtual void	SetCollisionRect();
 	virtual RECT&	GetCollisionRect();
 	virtual bool	IsCollised(GameObject& object);
@@ -42,5 +45,8 @@ public:
 	void		SetReverseDirY();
 	void		SetCollisedTime(clock_t time);
 	clock_t		GetCollisedTime();
+	bool		GetIsOver();
+	virtual int	GetScore();
+	void		SetScore(int score);
 };
 

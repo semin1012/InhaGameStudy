@@ -8,8 +8,9 @@ class Player : public GameObject
 {
 private:
 	int		speed;
-	int		maxBallCount = 1;
-	int		useBallCount = 0;
+	int		ballCount = 1;
+	bool	isDeath = false;
+	int		gameScore = 0;
 
 public:
 	Player(POINT pos, int halfSize, int speed) : GameObject(pos, halfSize, EObjectType::Player), speed(speed)
@@ -19,13 +20,16 @@ public:
 
 	virtual void Draw(HDC& hdc);
 	virtual void Update(RECT rectView);
-	virtual bool Collision(GameObject& object);
+	virtual int  Collision(GameObject& object);
 	virtual void SetCollisionRect();
 
 	Ball*	Attack();
 	int		GetSpeed();
 	void	SetSpeed(int speed);
 	void	MoveTo(RECT rectView, POINT pos);
-	void	SetMaxBallCount(int maxCount);
+	void	SetBallCount(int maxCount);
+	int		GetBallCount();
+	void	AddScore(int value);
+	virtual int GetScore();
 };
 
