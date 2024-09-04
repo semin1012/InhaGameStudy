@@ -8,7 +8,7 @@ class Player : public GameObject
 {
 private:
 	int		speed;
-	int		maxBallCount = 0;
+	int		maxBallCount = 1;
 	int		useBallCount = 0;
 
 public:
@@ -17,9 +17,9 @@ public:
 		SetCollisionRect();
 	}
 
-	virtual void Draw(HDC hdc, HBRUSH hBrush);
-	virtual void Update();
-	virtual void Collision();
+	virtual void Draw(HDC& hdc);
+	virtual void Update(RECT rectView);
+	virtual void Collision(GameObject& object);
 	
 	Ball*	Attack();
 

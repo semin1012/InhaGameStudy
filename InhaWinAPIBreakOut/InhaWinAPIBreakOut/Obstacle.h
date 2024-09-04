@@ -13,9 +13,9 @@ public:
 		SetCollisionRect();
 	}
 	
-	virtual void Draw(HDC hdc, HBRUSH hBrush) override;
-	virtual void Update() override;
-	virtual void Collision() override;
+	virtual void Draw(HDC& hdc) override;
+	virtual void Update(RECT rectView) override;
+	virtual void Collision(GameObject& object) override;
 	
 	int		GetScore();
 	int		GetLevel();

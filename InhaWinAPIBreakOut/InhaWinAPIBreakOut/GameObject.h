@@ -23,9 +23,9 @@ public:
 		SetCollisionRect();
 	}
 
-	virtual void	Draw(HDC hdc, HBRUSH hBrush) = 0;
-	virtual void	Update() = 0;
-	virtual void	Collision() = 0;
+	virtual void	Draw(HDC& hdc) = 0;
+	virtual void	Update(RECT rectView) = 0;
+	virtual void	Collision(GameObject& object) = 0;
 	virtual void	SetCollisionRect();
 
 	POINT		GetPos();

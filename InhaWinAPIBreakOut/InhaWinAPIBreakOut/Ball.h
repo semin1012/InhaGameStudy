@@ -1,24 +1,25 @@
 #pragma once
 #include "framework.h"
 #include "GameObject.h"
+#include <math.h>
+
+
 class Ball : public GameObject
 {
 private:
-	float speed = 1;
+	float speed = 3;
 	float dirX;
 	float dirY;
 	float radius = 10;
 
 public:
-	Ball(POINT pos, int halfSize, float dirX, float dirY) : GameObject(pos, halfSize, EObjectType::Ball), dirX(dirX), dirY(dirY)
-	{
-		SetCollisionRect();
-	}
-
+	Ball(POINT pos, int halfSize);
 	virtual void	SetCollisionRect();
 
-	void Draw(HDC hdc, HBRUSH hBrush) override;
-	void Update() override;
-	void Collision() override;
+	void Draw(HDC& hdc) override;
+	void Update(RECT rectView) override;
+	void Collision(GameObject& object) override;
+
+	void MoveTo(RECT rectView);
 };
 

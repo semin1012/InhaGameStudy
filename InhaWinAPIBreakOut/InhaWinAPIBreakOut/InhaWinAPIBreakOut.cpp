@@ -109,21 +109,30 @@ using namespace std;
 #define TIMER_KEYSTATE 2
 
 vector<GameObject*> objects;
-Player* player = new Player({ 400, 700 }, 50, 1);
-RECT rectView;
+Player*             player = new Player({ 400, 700 }, 50, 1);
+RECT                rectView;
+
+HDC                 hdc, MemDC, tmpDC;
+HBITMAP             BackBit, oldBackBit;
+RECT                bufferRT;
+PAINTSTRUCT         ps;
 
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
+
 void InitObjects();
+void CreateDoubbleBuffering(HWND hWnd);
+void EndDoubleBuffering(HWND hWnd);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    HBRUSH hBrush;
-    HGDIOBJ oldBrush;
+    static HBRUSH hBrush;
+    static HGDIOBJ oldBrush;
 
     switch (message)
     {
     case WM_CREATE:
+        srand(time(NULL));
         SetTimer(hWnd, TIMER_UPDATE, 33, (TIMERPROC)UpdateProc);
         SetTimer(hWnd, TIMER_KEYSTATE, 33, (TIMERPROC)KeyStateProc);
         GetClientRect(hWnd, &rectView);
@@ -131,21 +140,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            hdc = GetDC(hWnd); 
-
-            HDC hMemdc = CreateCompatibleDC(hdc);
-            hBrush = CreateSolidBrush(RGB(0, 0, 0));
+            CreateDoubbleBuffering(hWnd);
 
             for (auto obj : objects)
             {
-                obj->Draw(hdc, hBrush);
+                obj->Draw(hdc);
             }
-            
-            ReleaseDC(hWnd, hMemdc);
-            ReleaseDC(hWnd, hdc); 
-            EndPaint(hWnd, &ps);
+
+            EndDoubleBuffering(hWnd);
         }
         break;
     case WM_SIZE:
@@ -186,36 +188,38 @@ VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 {
     for (auto obj : objects)
     {
-        obj->Update();
+        obj->Update(rectView);
     }
 
-    InvalidateRect(hwnd, NULL, true);
+    InvalidateRect(hwnd, NULL, false);
 }
 
 VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 {
-    if (GetKeyState('A') & 0x8000)
+    if (GetKeyState('A') & 0x8000 || GetAsyncKeyState(VK_LEFT) & 0x8000)
     {
         player->MoveTo(rectView, { -10, 0 });
     }
-    if (GetKeyState('D') & 0x8000)
+    if (GetKeyState('D') & 0x8000 || GetAsyncKeyState(VK_RIGHT) & 0x8000)
     {
         player->MoveTo(rectView, { 10, 0 });
     }
-    if (GetKeyState('W') & 0x8000)
+    if (GetKeyState('W') & 0x8000 || GetAsyncKeyState(VK_UP) & 0x8000)
     {
         player->MoveTo(rectView, { 0, -10 });
     }
-    if (GetKeyState('S') & 0x8000)
+    if (GetKeyState('S') & 0x8000 || GetAsyncKeyState(VK_DOWN) & 0x8000)
     {
         player->MoveTo(rectView, { 0, 10 });
     }
     if (GetAsyncKeyState(VK_SPACE) & 0x8000)
     {
-        player->Attack();
+        Ball* ball = player->Attack();
+        if ( ball != NULL )
+            objects.push_back(ball);
     }
     
-    InvalidateRect(hwnd, NULL, true);
+    InvalidateRect(hwnd, NULL, false);
 }
 
 void InitObjects()
@@ -230,4 +234,31 @@ void InitObjects()
             objects.push_back(obstacle);
         }
     }
+}
+
+void CreateDoubbleBuffering(HWND hWnd)
+{
+    hdc = BeginPaint(hWnd, &ps);
+
+    GetClientRect(hWnd, &bufferRT);
+    MemDC = CreateCompatibleDC(hdc);
+    BackBit = CreateCompatibleBitmap(hdc, bufferRT.right, bufferRT.bottom);
+    oldBackBit = (HBITMAP)SelectObject(MemDC, BackBit);
+    PatBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);
+    tmpDC = hdc;
+    hdc = MemDC;
+    MemDC = tmpDC;
+}
+
+void EndDoubleBuffering(HWND hWnd)
+{
+    tmpDC = hdc;
+    hdc = MemDC;
+    MemDC = tmpDC;
+    GetClientRect(hWnd, &bufferRT);
+    BitBlt(hdc, 0, 0, bufferRT.right, bufferRT.bottom, MemDC, 0, 0, SRCCOPY);
+    SelectObject(MemDC, oldBackBit);
+    DeleteObject(BackBit);
+    DeleteDC(MemDC);
+    EndPaint(hWnd, &ps);
 }

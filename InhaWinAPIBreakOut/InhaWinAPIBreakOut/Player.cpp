@@ -1,18 +1,20 @@
 #include "Player.h"
 
-void Player::Draw(HDC hdc, HBRUSH hBrush)
+void Player::Draw(HDC& hdc)
 {
+	HBRUSH hBrush;
 	hBrush = CreateSolidBrush(RGB(255, 255, 255));
 	SelectObject(hdc, hBrush);
 	Rectangle(hdc, pos.x - halfSize, pos.y - HEIGHT_HALF_SIZE, pos.x + halfSize, pos.y + HEIGHT_HALF_SIZE);
+	DeleteObject(hBrush);
 }
 
-void Player::Update()
+void Player::Update(RECT rectView)
 {
 	SetCollisionRect();
 }
 
-void Player::Collision()
+void Player::Collision(GameObject& object)
 {
 }
 
@@ -20,7 +22,8 @@ Ball* Player::Attack()
 {
 	if (useBallCount < maxBallCount)
 	{
-		Ball* attackBall = new Ball({ pos.x, pos.y }, 40, 0, 0);
+		useBallCount++;
+		Ball* attackBall = new Ball({ pos.x, pos.y - HEIGHT_HALF_SIZE * 2}, 40);
 		return attackBall;
 	}
 
