@@ -4,32 +4,43 @@
 #include "StopWatch.h"
 using namespace std;
 
-vector<int> GetPatternTableBoyerMoore(string find)
+void Print(string source, string find, int begin, int match, bool isMatch)
+{
+	cout << source << "\n";
+	for (int i = 0; i < begin + match; i++)
+		cout << " ";
+	if (isMatch)
+		cout << "+\n";
+	else
+		cout << "|\n";
+	for (int i = 0; i < begin; i++)
+		cout << " ";
+	cout << find << "\n";
+}
+
+vector<int> GetBadMatchTable(string find)
 {
 	int findLength = find.length();
 	int begin = findLength - 1, match = 0;
 
-	vector<int> table(findLength, 0);
+	vector<int> table(26, 0);
 
-	while (begin - match > 0)
+
+	// 뒤에서부터 검사
+
+	for (int i = findLength - 1; i >= 0; i--)
 	{
-		if (find[begin - match - 1] == find[findLength - match - 1])
+		// table 값이 0이라면 지금 구하는 게 최솟값임
+		if (table[(int)find[i] - 'A'] == 0)
 		{
-			match++;
-			table[begin - match] = match;
+			table[(int)find[i] - 'A'] = findLength - i - 1;
 		}
+	}
 
-		else
-		{
-			if (match == 0)
-				begin--;
-
-			else
-			{
-				begin -= match + table[match - 1];
-				match -= table[match - 1];
-			}
-		}
+	for (int i = 0; i < 26; i++)
+	{
+		if (table[i] == 0)
+			table[i] = findLength;
 	}
 
 	return table;
@@ -42,7 +53,7 @@ vector<int> GetPatternTable(string find)
 
 	vector<int> table(findLength, 0);
 
-	while (begin + match > 0)
+	while (begin + match < findLength)
 	{
 		if (find[begin + match] == find[match])
 		{
@@ -57,8 +68,8 @@ vector<int> GetPatternTable(string find)
 
 			else
 			{
-				begin += match - table[match-1];
-				match -= table[match-1];
+				begin += match - table[match - 1];
+				match -= table[match - 1];
 			}
 		}
 	}
@@ -71,29 +82,25 @@ void BoyerMoore(string source, string find)
 	int sourceLength = source.length();
 	int findLength = find.length();
 
-	int begin = sourceLength, match = 0;
+	int begin = 0, match = 0;
 
 	int count = 0;
 
-	vector<int> table = GetPatternTableBoyerMoore(find);
+	vector<int> table = GetBadMatchTable(find);
 
-	while (begin - findLength - 1 > 0)
+	while (begin + match < sourceLength)
 	{
 		count++;
 
-		if (match < findLength && source[begin - match - 1] == find[findLength - match - 1])
+		if (match < findLength && source[begin + findLength - 1 - match] == find[findLength - match - 1])
 		{
-			/* ------------ 출력 ------------ */
-			/*
-			cout << source << "\n";
-			for (int i = 0; i < begin + match; i++)
-				cout << " ";
-			cout << "+\n";
-			for (int i = 0; i < begin; i++)
-				cout << " ";
-			cout << find << "\n";
-			*/
-			/* ------------ 출력 ------------ */
+			//cout << source << "\n";
+			//for (int i = 0; i < begin + findLength - 1 - match; i++)
+			//	cout << " ";
+			//cout << "+\n";
+			//for (int i = 0; i < begin; i++)
+			//	cout << " ";
+			//cout << find << "\n";
 
 			match++;
 
@@ -103,44 +110,29 @@ void BoyerMoore(string source, string find)
 
 		else
 		{
-			/* ------------ 출력 ------------ */
-			/*
-			cout << source << "\n";
-			for (int i = 0; i < begin + match; i++)
-				cout << " ";
-			cout << "|\n";
-			for (int i = 0; i < begin; i++)
-				cout << " ";
-			cout << find << "\n";
-			*/
-			/* ------------ 출력 ------------ */
+			//cout << source << "\n";
+			//for (int i = 0; i < begin + findLength - 1- match; i++)
+			//	cout << " ";
+			//cout << "|\n";
+			//for (int i = 0; i < begin; i++)
+			//	cout << " ";
+			//cout << find << "\n";
 
-			if (match == 0)
-				begin--;
-
-			else
 			{
-				begin -= match + table[match];
-				match -= table[match];
+				begin += table[(int)source[begin + findLength - 1] - 'A'];
+				match = 0;
 			}
 		}
 	}
 
-	for (int i = begin - findLength; i < begin; i++)
-	{
-		cout << source[i];
-	}
-	cout << endl;
-
-	cout << begin << ", " << match << endl;
-	cout << "총 비교 횟수: " << count << "\n";
+	cout << "BoyerMoore 총 비교 횟수: " << count << "\n";
 }
 
 void KMP(string source, string find)
 {
 	int sourceLength = source.length();
 	int findLength = find.length();
-	
+
 	int begin = 0, match = 0;
 
 	int count = 0;
@@ -153,15 +145,6 @@ void KMP(string source, string find)
 
 		if (match < findLength && source[begin + match] == find[match])
 		{
-			/* ------------ 출력 ------------ */
-			cout << source << "\n";
-			for (int i = 0; i < begin + match; i++)
-				cout << " ";
-			cout << "+\n";
-			for (int i = 0; i < begin; i++)
-				cout << " ";
-			cout << find << "\n";
-			/* ------------ 출력 ------------ */
 
 			match++;
 
@@ -171,15 +154,6 @@ void KMP(string source, string find)
 
 		else
 		{
-			/* ------------ 출력 ------------ */
-			cout << source << "\n";
-			for (int i = 0; i < begin + match; i++)
-				cout << " ";
-			cout << "|\n";
-			for (int i = 0; i < begin; i++)
-				cout << " ";
-			cout << find << "\n";
-			/* ------------ 출력 ------------ */
 
 			if (match == 0)
 				begin++;
@@ -192,7 +166,7 @@ void KMP(string source, string find)
 		}
 	}
 
-	cout << "총 비교 횟수: " << count << "\n";
+	cout << "KMP 총 비교 횟수: " << count << "\n";
 }
 
 void BruteForce(string source, string find)
@@ -208,14 +182,6 @@ void BruteForce(string source, string find)
 		count++;
 		if (source[begin + match] == find[match])
 		{
-			cout << source << "\n";
-			for (int i = 0; i < begin + match; i++)
-				cout << " ";
-			cout << "+\n";
-			for (int i = 0; i < begin; i++)
-				cout << " ";
-			cout << find << "\n";
-
 			match++;
 
 			if (match == findLength)
@@ -224,30 +190,22 @@ void BruteForce(string source, string find)
 		
 		else 
 		{
-			cout << source << "\n";
-			for (int i = 0; i < begin + match; i++)
-				cout << " ";
-			cout << "|\n";
-			for (int i = 0; i < begin; i++)
-				cout << " ";
-			cout << find << "\n";
-
 			match = 0;
 			begin++;
 		}
 	}
 
-	cout << "총 비교 횟수: " << count << "\n";
+	cout << "BruteForce 총 비교 횟수: " << count << "\n";
 }
 
 
 
 int main()
 {
-	string source = "ABABCDABBAAEFGHA";
-	string find = "ABBAA";
+	string source = "ASDFSDFSDFSFABCABEWAFEWFDS";
+	string find = "ABCAB";
 
-	// BruteForce(source, find);
-	// KMP(source, find);
+	BruteForce(source, find);
+	KMP(source, find);
 	BoyerMoore(source, find);
 }
