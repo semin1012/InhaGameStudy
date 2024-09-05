@@ -53,6 +53,11 @@ EObjectType GameObject::GetType()
 	return type;
 }
 
+EItemType GameObject::GetItemType()
+{
+	return itemType;
+}
+
 void GameObject::SetReverseDirY()
 {
 	dirY *= -1;
@@ -81,4 +86,9 @@ int GameObject::GetScore()
 void GameObject::SetScore(int score)
 {
 	this->score = score;
+}
+
+void GameObject::SetAttach(bool isAttack)
+{
+	this->isAttach = isAttack;
 }

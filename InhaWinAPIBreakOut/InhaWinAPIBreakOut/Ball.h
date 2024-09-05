@@ -7,8 +7,8 @@
 class Ball : public GameObject
 {
 private:
-	float	speed = 2;
-	float	radius = 10;
+	float	speed;
+	float	radius;
 
 public:
 	Ball(POINT pos, int radius);

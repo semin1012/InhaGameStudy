@@ -16,10 +16,10 @@ void Player::Update(RECT rectView)
 
 void Player::SetCollisionRect()
 {
-	rect.left = pos.x - halfSize;
-	rect.right = pos.x + halfSize;
-	rect.top = pos.y - HEIGHT_HALF_SIZE + 10;
-	rect.bottom = pos.y + HEIGHT_HALF_SIZE - 10;
+	rect.left	= pos.x - halfSize;
+	rect.right	= pos.x + halfSize;
+	rect.top	= pos.y - HEIGHT_HALF_SIZE - 5;
+	rect.bottom = pos.y + HEIGHT_HALF_SIZE + 5;
 }
 
 int Player::Collision(GameObject& object)
@@ -28,7 +28,7 @@ int Player::Collision(GameObject& object)
 		return 0;
 
 	// ballÀÌ ºÎµúÈùÁö 1ÃÊ ¾È Áö³µÀ¸¸é return
-	if (clock() - object.GetCollisedTime() < 1000)
+	if (clock() - object.GetCollisedTime() < 500)
 		return 0;
 
 	switch (object.GetType())
@@ -36,11 +36,57 @@ int Player::Collision(GameObject& object)
 	case EObjectType::Ball:
 		if (IsCollised(object) == true)
 		{
-			object.SetReverseDirY();
+			if (canHasBall == true && attachBall == NULL)
+			{
+				attachBall = &object;
+				attachBall->SetAttach(true);
+				ballCount++;
+				canHasBall = false;
+			}
+
+			else {
+				object.SetReverseDirY();
+				object.SetCollisedTime(clock());
+			}
+		}
+		break;
+	case EObjectType::Item:
+		if (IsCollised(object) == true)
+		{
 			object.SetCollisedTime(clock());
+
+			switch (object.GetItemType())
+			{
+			case EItemType::PlusBallCount:
+				ballCount++;
+				break;
+			case EItemType::AttachBall:
+				canHasBall = true;
+				break;
+			case EItemType::Length:
+				halfSize += 10;
+				break;
+			}
+
+			return 1;
 		}
 		break;
 	}
+	return 0;
+}
+
+int Player::Collision(Item& item)
+{
+	// ballÀÌ ºÎµúÈùÁö 1ÃÊ ¾È Áö³µÀ¸¸é return
+	if (clock() - item.GetCollisedTime() < 1000)
+		return 0;
+
+	if (IsCollised(item) == true)
+	{
+		item.SetCollisedTime(clock());
+		return 1;
+	}
+
 	return 0;
 }
 
@@ -48,9 +94,27 @@ Ball* Player::Attack()
 {
 	if (ballCount > 0)
 	{
-		ballCount--;
-		Ball* attackBall = new Ball({ pos.x, pos.y - HEIGHT_HALF_SIZE * 2}, 10);
-		return attackBall;
+		if (clock() - attackDelayTime < 1000)
+			return NULL;
+
+		if (attachBall != NULL)
+		{
+			attachBall->SetPos({ this->pos.x, this->pos.y - HEIGHT_HALF_SIZE * 2 - 30 });
+			attachBall->SetReverseDirY();
+			attachBall->SetAttach(false);
+			attachBall->SetCollisedTime(clock());
+			attachBall = NULL;
+			ballCount--;
+			attackDelayTime = clock();
+			return NULL;
+		}
+		else
+		{
+			ballCount--;
+			Ball* attackBall = new Ball({ pos.x, pos.y - HEIGHT_HALF_SIZE * 2 - 20 }, 10);
+			attackDelayTime = clock();
+			return attackBall;
+		}
 	}
 
 	return NULL;
@@ -86,6 +150,11 @@ void Player::MoveTo(RECT rectView, POINT pos)
 
 	this->pos.x += pos.x;
 	this->pos.y += pos.y;
+
+	if (attachBall != NULL)
+	{
+		attachBall->SetPos({this->pos.x, this->pos.y - HEIGHT_HALF_SIZE * 2});
+	}
 }
 
 void Player::SetBallCount(int maxCount)

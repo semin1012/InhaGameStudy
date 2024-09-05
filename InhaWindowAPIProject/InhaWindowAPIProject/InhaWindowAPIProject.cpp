@@ -13,6 +13,19 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
+
+// User Define
+HINSTANCE   g_hInst;
+HWND        g_hWnd;
+
+#define TIMER_ID1 1
+#define TIMER_ID2 2
+#define TIMER_ANI 3
+#define TIMER_KEYSTATE 4
+
+#define CIRCLE_RADIUS 50
+
+
 void Update();
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
@@ -134,6 +147,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
+   g_hWnd = hWnd;
+   g_hInst = hInstance;
+
    ShowWindow(hWnd, SW_SHOW);   // SW_MAXIMIZE로 하면 최대창으로 시작
    UpdateWindow(hWnd);
 
@@ -150,11 +166,16 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 
+
 // >> : image
 
 // : background image
 HBITMAP hBackImage;
 BITMAP bitBack;
+
+// : front Image
+HBITMAP hFrontImage;
+BITMAP bitFront;
 
 // : sigong image
 HBITMAP hTransParentImage;
@@ -180,6 +201,7 @@ void UpdateFrame(HWND hwnd);
 // TIMER
 VOID CALLBACK AniProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
+BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 // << : image
 
@@ -196,14 +218,6 @@ void CreateBitmap();
 void DrawBitmap(HWND hWnd, HDC hdc);
 void DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc);
 void DeleteBitmap();
-
-
-#define TIMER_ID1 1
-#define TIMER_ID2 2
-#define TIMER_ANI 3
-#define TIMER_KEYSTATE 4
-
-#define CIRCLE_RADIUS 50
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -326,6 +340,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_RBUTTONDOWN:
     {
+        DialogBox(g_hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, Dialog1_Proc);
+
         int x, y;
         x = LOWORD(lParam); //x
         y = HIWORD(lParam); //y
@@ -448,6 +464,19 @@ void CreateBitmap()
     Run_Frame_Max = bitAni.bmWidth / SPRITE_SIZE_X - 1;
     Run_Frame_Min = 2; // 달리기 프레임 최소 프레임(시작?)
     curFrame = Run_Frame_Min;
+    // << :
+
+    // >> : front Image
+    hFrontImage = (HBITMAP)LoadImage(NULL, TEXT("../Data/front.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+    if (hFrontImage == NULL)
+    {
+        DWORD dwError = GetLastError();
+        MessageBox(NULL, _T("front 이미지 파일을 열 수 없습니다."), _T("에러"), MB_OK);
+    }
+    else
+    {
+        GetObject(hFrontImage, sizeof(BITMAP), &bitFront);
+    }
     // <<
 }
 
@@ -467,7 +496,7 @@ void DrawBitmap(HWND hWnd, HDC hdc)
         BitBlt(hdc, 0, 0, bx, by, hMemDC, 0, 0, SRCCOPY); // hMemDC의 이미지를 hdc로 복사
         //BitBlt(hdc, 100, 100, bx - 100, by - 100, hMemDC, 100, 100, SRCCOPY); // hMemDC의 이미지를 hdc로 복사
 
-        StretchBlt(hdc, bx, 0, bx / 4, by / 4, hMemDC, 0, 0, bx, by, SRCCOPY); // hMemDC의 이미지를 hdc로 복사
+        StretchBlt(hdc, 0, 0, rectView.right, rectView.bottom, hMemDC, 0, 0, bx, by, SRCCOPY); // hMemDC의 이미지를 hdc로 복사
 
         SelectObject(hMemDC, hOldBitmap); // hMemDC에 선택된 이미지를 해제
         DeleteDC(hMemDC); // 메모리 DC 삭제
@@ -486,6 +515,28 @@ void DrawBitmap(HWND hWnd, HDC hdc)
         DeleteDC(hMemDC); // 메모리 DC 삭제
     }
     // >> : sigong image
+
+    // >> : Front Image
+    {
+        hMemDC = CreateCompatibleDC(hdc); // hdc와 호환되는 메모리 DC 생성
+        hOldBitmap = (HBITMAP)SelectObject(hMemDC, hFrontImage); // hMemDC에 hBackImage를 선택 -> 이미지가 올라와 있는 상태
+        bx = bitFront.bmWidth;
+        by = bitFront.bmHeight;
+
+        HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 255));
+        HBRUSH oldBrush = (HBRUSH)SelectObject(hMemDC, hBrush);
+        Ellipse(hMemDC, 50, 250, 400, 470);
+
+        SelectObject(hMemDC, oldBrush);
+        DeleteObject(hBrush);
+
+        TransparentBlt(hdc, 0, 0, rectView.right, rectView.bottom, hMemDC, 0, 0, bx, by, RGB(255, 0, 255));
+
+        SelectObject(hMemDC, hOldBitmap); // hMemDC에 선택된 이미지를 해제
+        DeleteDC(hMemDC); // 메모리 DC 삭제
+    }
+    // << : Front Image
+
     // >> : animation image
     {
         hMemDC = CreateCompatibleDC(hdc); // hdc와 호환되는 메모리 DC 생성
@@ -583,6 +634,48 @@ VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 
     UpdateFrame(hwnd);
     InvalidateRect(hwnd, NULL, false);
+}
+
+BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg)
+    {
+    case WM_INITDIALOG:
+        {
+            HWND btn = GetDlgItem(hDlg, IDC_BTN_PAUSE);
+            EnableWindow(btn, FALSE);
+        }
+        return 1;
+        break;
+
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDC_BTN_START:
+            {
+                HWND btn = GetDlgItem(hDlg, IDC_BTN_START);
+                EnableWindow(btn, FALSE);
+                btn = GetDlgItem(hDlg, IDC_BTN_PAUSE);
+                EnableWindow(btn, TRUE);
+                SetDlgItemText(hDlg, IDC_BTN_INFO, _T("게임 시작"));
+            }
+            break;
+        case IDC_BTN_PAUSE:
+            {
+                HWND btn = GetDlgItem(hDlg, IDC_BTN_START);
+                EnableWindow(btn, TRUE);
+                btn = GetDlgItem(hDlg, IDC_BTN_PAUSE);
+                EnableWindow(btn, FALSE);
+                SetDlgItemText(hDlg, IDC_BTN_INFO, _T("게임 정지"));
+            }
+            break;
+        case IDC_BTN_CLOSE:
+            EndDialog(hDlg, 0);
+            break;
+        }
+        break;
+    }
+    return 0;
 }
 
 void DrawBitmapDoubleBuffering(HWND hwnd, HDC hdc)

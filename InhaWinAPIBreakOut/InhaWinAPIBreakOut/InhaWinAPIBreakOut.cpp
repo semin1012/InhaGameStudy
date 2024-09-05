@@ -192,9 +192,10 @@ VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 {
     vector <bool> flag(objects.size(), false);
     vector<GameObject*> balls;
-
     vector<GameObject*> removeObj;
+    vector<GameObject*> items;
 
+    // ball과 item들 모아두기, 화면 밖을 벗어난 것 삭제 예약해두기
     for (int i = 0; i < objects.size(); i++)
     {
         objects[i]->Update(rectView);
@@ -203,20 +204,28 @@ VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
         {
             balls.push_back(objects[i]);
             if (objects[i]->GetIsOver())
-            {
                 removeObj.push_back(objects[i]);
-            }
+        }
+
+        if (objects[i]->GetType() == EObjectType::Item)
+        {
+            items.push_back(objects[i]);
+            if (objects[i]->GetIsOver())
+                removeObj.push_back(objects[i]);
         }
     }
 
     InvalidateRect(hwnd, NULL, false);
 
+    // 게임 오버 체크
     CheckGameOver(balls);
 
     if (balls.size() == 0) return;
 
+
     for (int i = 0; i < objects.size(); i++)
     {
+        // 오브젝트가 장애물이면
         if (objects[i]->GetType() == EObjectType::Obstacle)
         {
             for (int j = 0; j < balls.size(); j++) 
@@ -234,11 +243,11 @@ VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
                     if (random == 0)
                     {
                         POINT objectPos = objects[i]->GetPos();
-                        Item* item = new Item({ objectPos.x, objectPos.y + HEIGHT_HALF_SIZE * 2 }, 10, EObjectType::Item);
+                        Item* item = new Item({ objectPos.x, objectPos.y + HEIGHT_HALF_SIZE * 2 }, 10);
                         objects.push_back(item);
                     }
-
                     break;
+                // 1이면 Score 올려야 함
                 case 1:
                     player->AddScore(objects[i]->GetScore());
                     break;
@@ -246,13 +255,26 @@ VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
             }
         }
 
+        // 오브젝트가 플레이어라면 ball, item과 닿았는지 검사
         if (objects[i]->GetType() == EObjectType::Player)
         {
             for (int j = 0; j < balls.size(); j++)
                 objects[i]->Collision(*balls[j]);
+
+            for (int j = 0; j < items.size(); j++)
+            {
+                switch (objects[i]->Collision(*items[j]))
+                {
+                case 1:
+                    removeObj.push_back(items[j]);
+                    break;
+                }
+                
+            }
         }
     }
 
+    // 오브젝트 삭제
     for (int i = 0; i < removeObj.size(); i++)
     {
         objects.erase(remove(objects.begin(), objects.end(), removeObj[i]), objects.end());
@@ -343,10 +365,13 @@ void DrawTextInGame(HDC hdc)
 {
     wchar_t ballCountText[32];
     wchar_t scoreText[32];
+    wchar_t objectText[32];
 
     swprintf_s(ballCountText, L"남은 Ball 개수: %d", player->GetBallCount());
     swprintf_s(scoreText, L"점수: %d", player->GetScore());
+    swprintf_s(objectText, L"오브젝트 수: %d", (int)objects.size());
 
-    TextOut(hdc, 50, 50, ballCountText, _tcsclen(ballCountText));
-    TextOut(hdc, 50, 70, scoreText, _tcsclen(scoreText));
+    TextOut(hdc, 50, 40, ballCountText, _tcsclen(ballCountText));
+    TextOut(hdc, 50, 60, scoreText, _tcsclen(scoreText));
+    TextOut(hdc, 50, 80, objectText, _tcsclen(objectText));
 }

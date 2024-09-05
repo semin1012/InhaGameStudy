@@ -1,7 +1,7 @@
 #pragma once
 #include "framework.h"
 #include "time.h"
-#define HEIGHT_HALF_SIZE 10
+#define HEIGHT_HALF_SIZE 13
 
 enum class EObjectType
 {
@@ -11,9 +11,18 @@ enum class EObjectType
 	Item
 };
 
+enum class EItemType
+{
+	PlusBallCount,
+	AttachBall,
+	Length,
+	None
+};
+
 class GameObject
 {
 protected:
+	EItemType	itemType = EItemType::None;
 	POINT		pos;
 	RECT		rect;
 	int			halfSize;
@@ -23,6 +32,7 @@ protected:
 	clock_t		collisedTime = 0.0f;
 	bool		isOver = false;
 	int			score = 10;
+	bool		isAttach = false;
 
 public:
 	GameObject(POINT pos, int halfSize, EObjectType type) : pos(pos), halfSize(halfSize), type(type)
@@ -42,11 +52,13 @@ public:
 	void		SetPos(POINT pos);
 	void		SetHalfSize(int size);
 	EObjectType GetType();
+	EItemType	GetItemType();
 	void		SetReverseDirY();
 	void		SetCollisedTime(clock_t time);
 	clock_t		GetCollisedTime();
 	bool		GetIsOver();
 	virtual int	GetScore();
 	void		SetScore(int score);
+	void		SetAttach(bool isAttack);
 };
 

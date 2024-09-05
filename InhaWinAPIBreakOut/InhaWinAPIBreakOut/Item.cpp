@@ -1,6 +1,6 @@
 #include "Item.h"
 
-Item::Item(POINT pos, int halfSize, EObjectType type) : GameObject(pos, halfSize, type)
+Item::Item(POINT pos, int halfSize) : GameObject(pos, halfSize, EObjectType::Item)
 {
     int random = rand() % 3;
     speed = rand() % 5 + 7;
@@ -29,12 +29,15 @@ void Item::Draw(HDC& hdc)
     switch (itemType)
     {
     case EItemType::PlusBallCount:
+        // 노란색
         hBrush = (HBRUSH)CreateSolidBrush(RGB(255, 255, 100));
         break;
     case EItemType::AttachBall:
+        // 민트색
         hBrush = (HBRUSH)CreateSolidBrush(RGB(100, 255, 255));
         break;
     case EItemType::Length:
+        // 보라색
         hBrush = (HBRUSH)CreateSolidBrush(RGB(255, 100, 255));
         break;
     }
@@ -50,21 +53,26 @@ void Item::Draw(HDC& hdc)
 
 void Item::Update(RECT rectView)
 {
+    MoveTo(rectView);
     SetCollisionRect();
-    MoveTo();
 }
 
 void Item::SetCollisionRect()
 {
-    rect.left   = pos.x - halfSize - 7;
-    rect.right  = pos.x + halfSize + 7;
-    rect.top    = pos.y - halfSize - 7;
-    rect.bottom = pos.y + halfSize + 7;
+    rect.left   = pos.x - halfSize;
+    rect.right  = pos.x + halfSize;
+    rect.top    = pos.y - halfSize;
+    rect.bottom = pos.y + halfSize;
 }
 
-void Item::MoveTo()
+void Item::MoveTo(RECT rectView)
 {
     pos.y += speed;
+
+    if (this->pos.y + halfSize > rectView.bottom)
+    {
+        isOver = true;
+    }
 }
 
 int Item::Collision(GameObject& object)

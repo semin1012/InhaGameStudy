@@ -2,27 +2,18 @@
 #include "GameObject.h"
 #include "framework.h"
 
-enum class EItemType
-{
-	PlusBallCount,
-	AttachBall,
-	Length,
-	None
-};
-
 class Item : public GameObject
 {
 private:
-	EItemType	itemType;
 	int			speed;
 
 public:
-	Item(POINT pos, int halfSize, EObjectType type);
+	Item(POINT pos, int halfSize);
 	void Draw(HDC& hdc) override;
 	void Update(RECT rectView) override;
 	int Collision(GameObject& object) override;
 
 	void SetCollisionRect() override;
-	void MoveTo();
+	void MoveTo(RECT rectView);
 };
 

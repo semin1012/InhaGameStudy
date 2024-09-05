@@ -32,8 +32,8 @@ void Obstacle::SetCollisionRect()
 {
 	rect.left	= pos.x - halfSize;
 	rect.right	= pos.x + halfSize;
-	rect.top	= pos.y - HEIGHT_HALF_SIZE + 10;
-	rect.bottom = pos.y + HEIGHT_HALF_SIZE - 10;
+	rect.top	= pos.y - HEIGHT_HALF_SIZE - 10;
+	rect.bottom = pos.y + HEIGHT_HALF_SIZE + 10;
 }
 
 void Obstacle::Update(RECT rectView)
@@ -47,7 +47,7 @@ int Obstacle::Collision(GameObject& object)
 		return 0;
 
 	// ballÀÌ ºÎµúÈùÁö 1ÃÊ ¾È Áö³µÀ¸¸é return
-	if (clock() - object.GetCollisedTime() < 1000)
+	if (clock() - object.GetCollisedTime() < 700)
 		return 0;
 
 	if (IsCollised(object) == true)

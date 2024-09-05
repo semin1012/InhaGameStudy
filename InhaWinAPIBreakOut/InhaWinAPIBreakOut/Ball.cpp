@@ -3,8 +3,10 @@
 Ball::Ball(POINT pos, int radius) : GameObject(pos, radius, EObjectType::Ball), radius(radius)
 {
 	SetCollisionRect();
-	this->dirX = cos((rand() % 90 + 45) * 3.141592 / 180) * 10;
-	this->dirY = sin((rand() % 90 + 180) * 3.141592 / 180) * 10;
+	this->dirX = cos((rand() % 45 + 80) * 3.141592 / 180) * 5;
+	this->dirY = sin((rand() % 90 + 180) * 3.141592 / 180) * 5;
+	speed = 3;
+	radius = 10;
 }
 
 void Ball::SetCollisionRect()
@@ -28,8 +30,16 @@ void Ball::Draw(HDC& hdc)
 
 void Ball::Update(RECT rectView)
 {
-	MoveTo(rectView);
 	SetCollisionRect();
+
+	if (isAttach == false)
+	{
+		MoveTo(rectView);
+	}
+	else
+	{
+		int aa = 999;
+	}
 }
 
 int Ball::Collision(GameObject& object)
