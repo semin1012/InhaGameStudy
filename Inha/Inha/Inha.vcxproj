@@ -142,6 +142,7 @@
     <ClCompile Include="MyPoint.cpp" />
     <ClCompile Include="Rectangle2D.cpp" />
     <ClCompile Include="sayings1.cpp" />
+    <ClCompile Include="SLinkedList.cpp" />
     <ClCompile Include="stdx.h" />
     <ClCompile Include="StopWatch.cpp" />
     <ClCompile Include="String.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="GeometricObject.h" />
     <ClInclude Include="MyPoint.h" />
     <ClInclude Include="Rectangle2D.h" />
+    <ClInclude Include="SLinkedList.h" />
     <ClInclude Include="StopWatch.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="StringBad.h" />
