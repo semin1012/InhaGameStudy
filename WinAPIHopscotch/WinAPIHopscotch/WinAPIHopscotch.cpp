@@ -125,6 +125,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
+#include "Player.h"
+#include "GameObject.h"
+#include <vector>
+using namespace std;
+
+vector<GameObject*> objects;
+Player *player;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
