@@ -4,9 +4,19 @@
 #include "framework.h"
 #include "InhaWindowAPIProject.h"
 #include "commdlg.h"
+#include <stdio.h>
 #pragma comment(lib, "Msimg32.lib")
 
+
 #define MAX_LOADSTRING 100
+
+/*
+Q1. 
+
+Q2. 갈소패닉 게임을 모작하시오.
+
+
+*/
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
@@ -27,6 +37,17 @@ HWND        g_hWnd;
 
 
 void Update();
+
+// >> : for gid+
+#include <objidl.h>
+#include <gdiplus.h>
+using namespace Gdiplus;
+#pragma comment(lib, "Gdiplus.lib")
+
+ULONG_PTR g_GdipPlusToken;
+void Gdi_Init();
+void Gdi_Draw(HDC hdc);
+void Gdi_End();
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -72,6 +93,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
     */
 
+    Gdi_Init();
+
     // 메시지가 있으면 넘어가고 아니면 Update
     while (true)
     {
@@ -93,6 +116,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             Update();
         }
     }
+
+    Gdi_End();
 
     return (int) msg.wParam;
 }
@@ -219,6 +244,7 @@ void DrawBitmap(HWND hWnd, HDC hdc);
 void DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc);
 void DeleteBitmap();
 
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     POINT pos;
@@ -340,7 +366,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_RBUTTONDOWN:
     {
-        DialogBox(g_hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, Dialog1_Proc);
+        DialogBox(g_hInst, MAKEINTRESOURCE(IDD_DIALOG2), hWnd, Dialog1_Proc);
 
         int x, y;
         x = LOWORD(lParam); //x
@@ -556,6 +582,8 @@ void DrawBitmap(HWND hWnd, HDC hdc)
         DeleteDC(hMemDC); // 메모리 DC 삭제
     }
     // << : animation image
+
+    Gdi_Draw(hdc);
 }
 
 void DeleteBitmap()
@@ -564,6 +592,124 @@ void DeleteBitmap()
     DeleteObject(hTransParentImage);
     DeleteObject(hAniImage);
     DeleteObject(hDoubleBufferImage);
+}
+
+void Gdi_Init()
+{
+    GdiplusStartupInput gpsi;
+
+    GdiplusStartup(&g_GdipPlusToken, &gpsi, NULL);
+}
+
+void Gdi_Draw(HDC hdc)
+{
+    Graphics graphics(hdc);
+    // 원래는 Draw 하고 Load 하면 안 된다, Load 따로 해야 함
+
+    // :
+    SolidBrush brush(Color(255, 255, 0, 0));
+    FontFamily fontFamily(L"Times New Roman");
+    Font font(&fontFamily, 24, FontStyleRegular, UnitPixel);
+    PointF pointF(10.0f, 20.0f);
+    graphics.DrawString(L"Hello GDI+!", -1, &font, pointF, &brush);
+
+    // :
+    Pen pen(Color(255, 0, 255, 255));
+    graphics.DrawLine(&pen, 0, 0, 200, 100);
+
+    // : png 출력
+    Image img((WCHAR*)L"../images/sigong.png");
+    int w = img.GetWidth();
+    int h = img.GetHeight();
+    graphics.DrawImage(&img, 100, 100, w, h);
+
+    // : 컬러 키값 빼고 png 출력
+    Image img2((WCHAR*)L"../images/zero_run.png");
+    w = img2.GetWidth() / SPRITE_COUNT;
+    h = img2.GetHeight() / SPRITE_DIRECTION;
+    int xStart = curFrame * w;
+    int yStart = 0; // 한쪽 방향
+
+    ImageAttributes imgAttr0;
+    imgAttr0.SetColorKey(Color(245, 0, 245), Color(255, 10, 255));  // 블렌드를 해서 색깔 빼줄 수 있음
+    graphics.DrawImage(&img2, Rect(200,100,w,h), xStart, yStart, w, h, UnitPixel, &imgAttr0);
+
+    // :
+    brush.SetColor(Color(64, 255, 0, 0));
+    graphics.FillRectangle(&brush, 100, 100, 200, 300);
+
+    // :
+    Image* pImg = nullptr;
+    pImg = Image::FromFile((WCHAR*)L"../images/sigong.png");
+    int xPos = 300;
+    int yPos = 200;
+    if (pImg)
+    {
+        w = pImg->GetWidth();
+        h = pImg->GetHeight();
+
+        Gdiplus::Matrix mat;
+        static int rot = 0;
+        mat.RotateAt((rot % 360), Gdiplus::PointF(xPos + ((float)w / 2), yPos + ((float)h / 2)));
+        graphics.SetTransform(&mat);
+        graphics.DrawImage(pImg, xPos, yPos, w, h);
+        rot += 10;
+
+        mat.Reset();
+        graphics.SetTransform(&mat);
+    }
+
+    // : 
+    ImageAttributes imgAttr;
+    imgAttr.SetColorKey(Color(245, 0, 245), Color(255, 10, 255));  // 블렌드를 해서 색깔 빼줄 수 있음
+    yPos = 300;
+
+    graphics.DrawImage(pImg, Rect(xPos, yPos, w, h), 0, 0, w, h, UnitPixel, &imgAttr);
+
+    // : 반투명 이미지
+    if (pImg)
+    {
+        REAL transparency = 0.5f;
+        ColorMatrix colorMatrix =
+        {
+            1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, transparency, 0.0f,
+            0.0f, 0.0f, transparency, 0.0f, 1.0f
+        };
+        imgAttr.SetColorMatrix(&colorMatrix);
+        xPos = 400;
+
+        graphics.DrawImage(pImg, Rect(xPos, yPos, w, h), 0, 0, w, h, UnitPixel, &imgAttr);
+
+
+        // : 흑백 이미지
+        ColorMatrix colorMatrix2 =
+        { // R     G     B      
+            0.3f, 0.3f, 0.3f, 0.0f, 0.0f,   // R
+            0.6f, 0.6f, 0.6f, 0.0f, 0.0f,   // G
+            0.1f, 0.1f, 0.1f, 0.0f, 0.0f,   // B
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 1.0f
+        };
+        imgAttr.SetColorMatrix(&colorMatrix2);
+        xPos = 500;
+
+        graphics.DrawImage(pImg, Rect(xPos, yPos, w, h), 0, 0, w, h, UnitPixel, &imgAttr);
+
+        // : x축 반전
+        xPos = 600;
+        pImg->RotateFlip(RotateNoneFlipX);
+        graphics.DrawImage(pImg, Rect(xPos, yPos, w, h), 0, 0, w, h, UnitPixel, &imgAttr);
+    }
+
+    if (pImg) delete pImg;
+}
+
+void Gdi_End()
+{
+    GdiplusShutdown(g_GdipPlusToken);
 }
 
 void Update()
@@ -638,12 +784,19 @@ VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 
 BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+    static int Check[3], Radio;
+    TCHAR hobby[][30] = { _T("독서"), _T("음악 감상"), _T("게임") };
+    TCHAR sex[][30] = { _T("여성"), _T("남성") };
+    TCHAR output[200];
+
     switch (uMsg)
     {
     case WM_INITDIALOG:
         {
             HWND btn = GetDlgItem(hDlg, IDC_BTN_PAUSE);
             EnableWindow(btn, FALSE);
+
+            CheckRadioButton(hDlg, IDC_RADIO_FEMALE, IDC_RADIO_MALE, IDC_RADIO_FEMALE);
         }
         return 1;
         break;
@@ -669,11 +822,48 @@ BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 SetDlgItemText(hDlg, IDC_BTN_INFO, _T("게임 정지"));
             }
             break;
+        case IDC_BTN_COPY:
+            {
+                TCHAR word[100];
+                GetDlgItemText(hDlg, IDC_EDIT_SOURCE, word, _tcsclen(word));
+                SetDlgItemText(hDlg, IDC_EDIT_DEST, word);
+            }
+            break;
+        case IDC_BTN_CLEAR:
+            SetDlgItemText(hDlg, IDC_EDIT_SOURCE, _T(""));
+            SetDlgItemText(hDlg, IDC_EDIT_DEST, _T(""));
+            break;
+        case IDC_CHECK_READING:
+            Check[0] = 1 - Check[0];
+            break;
+        case IDC_CHECK_MUSIC:
+            Check[1] = 1 - Check[1];
+            break;
+        case IDC_CHECK_GAME:
+            Check[2] = 1 - Check[2];
+            break;
+        case IDC_RADIO_FEMALE:
+            Radio = 0;
+            break;
+        case IDC_RADIO_MALE:
+            Radio = 1;
+            break;
+        case IDC_BNT_OUTPUT:
+            _stprintf_s(output, _T("선택한 취미는 %s %s %s 입니다.\r\n")
+                _T("선택한 성별은 %s 입니다."),
+                Check[0] ? hobby[0] : _T(""),
+                Check[1] ? hobby[1] : _T(""),
+                Check[2] ? hobby[2] : _T(""),
+                sex[Radio]);
+            SetDlgItemText(hDlg, IDC_EDIT_OUTPUT, output);
+            break;
+        case IDC_BTN_EXIT:
+            EndDialog(hDlg, 0);
+            break;
         case IDC_BTN_CLOSE:
             EndDialog(hDlg, 0);
             break;
         }
-        break;
     }
     return 0;
 }
