@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-GameObject::GameObject(int x, int y, int halfSize) : x(x), y(y), halfSize(halfSize)
+GameObject::GameObject(int x, int y, int halfSize, EGameObjectType type) : x(x), y(y), halfSize(halfSize), type(type)
 {
     SetCollisionBox();
 }

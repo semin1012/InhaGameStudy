@@ -5,14 +5,10 @@
 class Player : public GameObject
 {
 	float				speed;
-	HBITMAP				hPlayerAnimImg;
-	BITMAP				bitPlayerAnim;
-	int					Run_Frame_Max;
-	int					Run_Frame_Min;
 	Image*				pImg;
 	ImageAttributes		imgAttr;
 	int					curFrame;
-	const int			Frame_Max = 7;
+	const int			Frame_Max = 6;
 	const int			Frame_Min = 0;
 
 

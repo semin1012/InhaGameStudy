@@ -3,8 +3,8 @@
 #include "commdlg.h"
 #include <stdio.h>
 
-#define WINDOW_HEIGHT 800
-#define WINDOW_WIDTH 800
+#define WINDOW_WIDTH_SIZE   400
+#define WINDOW_HEIGHT_SIZE  800
 
 /*
 player
@@ -116,7 +116,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance;
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, WINDOW_WIDTH, WINDOW_HEIGHT, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, WINDOW_WIDTH_SIZE, WINDOW_HEIGHT_SIZE, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -131,12 +131,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 #include "Player.h"
 #include "GameObject.h"
+#include "Map.h"
 #include <vector>
 using namespace std;
 #define TIMER_UPDATE_ID 1
 
 vector<GameObject*> objects;
-Player *player;
+Player* player;
+Map* map;
 
 RECT                rectView;
 
@@ -149,6 +151,7 @@ BOOL                bGameOver = FALSE;
 
 void CreateDoubbleBuffering(HWND hWnd);
 void EndDoubleBuffering(HWND hWnd);
+void Init(HWND hWnd);
 
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 
@@ -157,13 +160,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_CREATE:
-        player = new Player(200, 200, 10);
-        objects.push_back(player);
-        Gdi_Init();
-        for (auto obj : objects)
-            obj->CreateBitmap();
-        SetTimer(hWnd, TIMER_UPDATE_ID, 33, (TIMERPROC)UpdateProc);
-        GetClientRect(hWnd, &rectView);
+        Init(hWnd);
         break;
     case WM_COMMAND:
         {
@@ -225,18 +222,33 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
+void Init(HWND hWnd)
+{
+    GetClientRect(hWnd, &rectView);
+
+    map = new Map();
+    map->SetRectView(rectView);
+    player = new Player(200, 200, 10);
+    objects.push_back(map);
+    objects.push_back(player);
+
+    Gdi_Init();
+
+    for (auto obj : objects)
+        obj->CreateBitmap();
+
+    SetTimer(hWnd, TIMER_UPDATE_ID, 33, (TIMERPROC)UpdateProc);
+}
+
 void Update()
 {
     DWORD newTime = GetTickCount();
     static DWORD oldTime = newTime;
 
-    if (newTime - oldTime < 100)
+    if (newTime - oldTime < 50)
         return;
 
     oldTime = newTime;
-
-    //시간 보정
-    //oldTime = newTime - ((newTime - oldTime) % 100);
 
     if (GetAsyncKeyState(VK_LEFT) & 0x8000)
     {
