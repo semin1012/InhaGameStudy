@@ -3,6 +3,7 @@
 #include "commdlg.h"
 #include <stdio.h>
 
+
 #define WINDOW_WIDTH_SIZE   1280
 #define WINDOW_HEIGHT_SIZE  800
 
@@ -153,7 +154,6 @@ BOOL                bGameOver = FALSE;
 void CreateDoubbleBuffering(HWND hWnd);
 void EndDoubleBuffering(HWND hWnd);
 void Init(HWND hWnd);
-void MapDraw(HWND hWnd, HDC hdc);
 vector<POINT> points;
 
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
@@ -182,13 +182,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-    case WM_KEYUP:
+    case WM_KEYLAST:
         if ( wParam == VK_UP || wParam == VK_DOWN || wParam == VK_LEFT || wParam == VK_RIGHT )
-            points.push_back({ player->GetX(), player->GetY() });
+            points.push_back({ player->GetCenterX(), player->GetCenterY() });
         break;
-    case WM_KEYDOWN:
+    case WM_KEYFIRST:
         if (wParam == VK_UP || wParam == VK_DOWN || wParam == VK_LEFT || wParam == VK_RIGHT)
-            points.push_back({ player->GetX(), player->GetY() });
+            points.push_back({ player->GetCenterX(), player->GetCenterY() });
         break;
     case WM_PAINT:
         {
@@ -241,12 +241,12 @@ void Init(HWND hWnd)
     map = new Map();
     map->SetRectView(rectView);
 
-    player = new Player(rectView.right / 2, rectView.bottom / 2, 10);
+    player = new Player(rectView.left + 10, rectView.top + 10, 10);
     
     objects.push_back(map);
     objects.push_back(player);
 
-    points.push_back({ player->GetX(), player->GetY() });
+    points.push_back({ player->GetCenterX(), player->GetCenterY() });
 
     Gdi_Init();
 
@@ -272,15 +272,15 @@ void Update()
     {
         player->MoveTo(rectView, -1, 0);
     }
-    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
     {
         player->MoveTo(rectView, 1, 0);
     }
-    if (GetAsyncKeyState(VK_UP) & 0x8000)
+    else if (GetAsyncKeyState(VK_UP) & 0x8000)
     {
         player->MoveTo(rectView, 0, -1);
     }
-    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
     {
         player->MoveTo(rectView, 0, 1);
     }
@@ -362,17 +362,16 @@ VOID KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
     {
         player->MoveTo(rectView, -1, 0);
     }
-    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-    {
-        player->MoveTo(rectView, 1, 0);
-    }
-    if (GetAsyncKeyState(VK_UP) & 0x8000)
+    else if (GetAsyncKeyState(VK_UP) & 0x8000)
     {
         player->MoveTo(rectView, 0, -1);
     }
-    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    {
+        player->MoveTo(rectView, 1, 0);
+    }
+    else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
     {
         player->MoveTo(rectView, 0, 1);
     }
-
 }

@@ -10,7 +10,7 @@ void GameObject::SetX(int x)
     this->x = x;
 }
 
-void GameObject::setY(int y)
+void GameObject::SetY(int y)
 {
     this->y = y;
 }

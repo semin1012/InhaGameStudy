@@ -28,7 +28,7 @@ void Map::Draw(HDC hdc)
 	int bx = bitMap.bmWidth;
 	int by = bitMap.bmHeight;
 
-	TransparentBlt(hdc, 0, 0, rectView->right, rectView->bottom, hMemDC, 0, 0, bx, by, RGB(255, 0, 255));
+	TransparentBlt(hdc, 0, 0, bx, by, hMemDC, 0, 0, rectView->right, rectView->bottom, RGB(255, 0, 255));
 	//BitBlt(hdc, 0, 0, bx, by, hMemDC, 0, 0, SRCCOPY);
 
 	SelectObject(hMemDC, hOldBitmap);
@@ -41,7 +41,6 @@ void Map::Draw(HDC hdc)
 		bx = bitFrontMap.bmWidth;
 		by = bitFrontMap.bmHeight;
 		
-		//hMemDC = CreateCompatibleDC(hdc);
 		hOldBitmap = (HBITMAP)SelectObject(hMemDC, hFrontMapImg);
 		HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 255));
 		HBRUSH oldBrush = (HBRUSH)SelectObject(hMemDC, hBrush);
@@ -55,9 +54,10 @@ void Map::Draw(HDC hdc)
 		}
 		Polygon(hMemDC, pts, points.size());
 
+
 		SelectObject(hMemDC, oldBrush);
 		DeleteObject(hBrush);
-		TransparentBlt(hdc, 0, 0, rectView->right, rectView->bottom, hMemDC, 0, 0, bx, by, RGB(255, 0, 255));
+		TransparentBlt(hdc, 0, 0, bx, by, hMemDC, 0, 0, rectView->right, rectView->bottom, RGB(255, 0, 255));
 
 
 		delete[] pts;

@@ -25,7 +25,7 @@ public:
 	virtual void	CreateBitmap() = 0;
 
 	void			SetX(int x);
-	void			setY(int y);
+	void			SetY(int y);
 	int				GetX();
 	int				GetY();
 	void			SetCollisionBox();
