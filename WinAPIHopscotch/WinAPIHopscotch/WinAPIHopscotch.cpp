@@ -2,13 +2,9 @@
 #include "WinAPIHopscotch.h"
 #include "commdlg.h"
 #include <stdio.h>
-#pragma comment(lib, "Msimg32.lib")
 
-// >> : for gid+
-#include <objidl.h>
-#include <gdiplus.h>
-using namespace Gdiplus;
-#pragma comment(lib, "Gdiplus.lib")
+#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 800
 
 /*
 player
@@ -39,6 +35,11 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 // 사용자 정의
 void Update();
+void Gdi_Init();
+void Gdi_Draw(HDC hdc);
+void Gdi_End();
+
+ULONG_PTR g_GdipPlusToken;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -61,6 +62,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
+    Gdi_Init();
+
     while (true)
     {
         if ((PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)))
@@ -80,6 +83,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
+    Gdi_End();
 
     return (int) msg.wParam;
 }
@@ -112,7 +116,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance;
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, WINDOW_WIDTH, WINDOW_HEIGHT, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -129,14 +133,38 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 #include "GameObject.h"
 #include <vector>
 using namespace std;
+#define TIMER_UPDATE_ID 1
 
 vector<GameObject*> objects;
 Player *player;
+
+RECT                rectView;
+
+HDC                 hdc, MemDC, tmpDC;
+HBITMAP             BackBit, oldBackBit;
+RECT                bufferRT;
+PAINTSTRUCT         ps;
+
+BOOL                bGameOver = FALSE;
+
+void CreateDoubbleBuffering(HWND hWnd);
+void EndDoubleBuffering(HWND hWnd);
+
+VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_CREATE:
+        player = new Player(200, 200, 10);
+        objects.push_back(player);
+        Gdi_Init();
+        for (auto obj : objects)
+            obj->CreateBitmap();
+        SetTimer(hWnd, TIMER_UPDATE_ID, 33, (TIMERPROC)UpdateProc);
+        GetClientRect(hWnd, &rectView);
+        break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -155,14 +183,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
+            CreateDoubbleBuffering(hWnd);
+
+            Gdi_Draw(hdc);
+
+            EndDoubleBuffering(hWnd);
 
             EndPaint(hWnd, &ps);
         }
         break;
+    case WM_SIZE:
+        GetClientRect(hWnd, &rectView);
+        break;
     case WM_DESTROY:
         PostQuitMessage(0);
+        KillTimer(hWnd, TIMER_UPDATE_ID);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -205,18 +240,76 @@ void Update()
 
     if (GetAsyncKeyState(VK_LEFT) & 0x8000)
     {
-        // ptAni.x -= 10;
+        player->MoveTo(rectView, -1, 0);
     }
-    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
     {
-        // ptAni.x += 10;
+        player->MoveTo(rectView, 1, 0);
     }
-    else if (GetAsyncKeyState(VK_UP) & 0x8000)
+    if (GetAsyncKeyState(VK_UP) & 0x8000)
     {
-        // ptAni.y -= 10;
+        player->MoveTo(rectView, 0, -1);
     }
-    else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
     {
-        // ptAni.y += 10;
+        player->MoveTo(rectView, 0, 1);
     }
+}
+
+void Gdi_Init()
+{
+    GdiplusStartupInput gpsi;
+    if (GdiplusStartup(&g_GdipPlusToken, &gpsi, NULL) != Ok)
+    {
+        MessageBox(NULL, TEXT("GDI+ 라이브러리를 초기화할 수 없습니다."), TEXT("알림"), MB_OK);
+    }
+}
+
+void Gdi_Draw(HDC hdc)
+{
+    Graphics graphics(hdc);
+
+    for (int i = 0; i < objects.size(); i++)
+        objects[i]->Draw(hdc);
+}
+
+void Gdi_End()
+{
+    GdiplusShutdown(g_GdipPlusToken);
+}
+
+
+void CreateDoubbleBuffering(HWND hWnd)
+{
+    hdc = BeginPaint(hWnd, &ps);
+
+    GetClientRect(hWnd, &bufferRT);
+    MemDC = CreateCompatibleDC(hdc);
+    BackBit = CreateCompatibleBitmap(hdc, bufferRT.right, bufferRT.bottom);
+    oldBackBit = (HBITMAP)SelectObject(MemDC, BackBit);
+    PatBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);
+    tmpDC = hdc;
+    hdc = MemDC;
+    MemDC = tmpDC;
+}
+
+void EndDoubleBuffering(HWND hWnd)
+{
+    tmpDC = hdc;
+    hdc = MemDC;
+    MemDC = tmpDC;
+    GetClientRect(hWnd, &bufferRT);
+    BitBlt(hdc, 0, 0, bufferRT.right, bufferRT.bottom, MemDC, 0, 0, SRCCOPY);
+    SelectObject(MemDC, oldBackBit);
+    DeleteObject(BackBit);
+    DeleteDC(MemDC);
+    EndPaint(hWnd, &ps);
+}
+
+VOID UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
+{
+    for (auto obj : objects)
+        obj->Update();
+
+    InvalidateRect(hwnd, NULL, false);
 }

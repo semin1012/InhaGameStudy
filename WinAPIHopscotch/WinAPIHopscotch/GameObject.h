@@ -15,6 +15,7 @@ public:
 	virtual void	Update() = 0;
 	virtual void	Draw(HDC hdc) = 0;
 	virtual void	Collision() = 0;
+	virtual void	CreateBitmap() = 0;
 
 	void			SetX(int x);
 	void			setY(int y);
