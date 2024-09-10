@@ -36,6 +36,12 @@
 #define IDC_RADIO_MALE                  1019
 #define IDC_BNT_OUTPUT                  1020
 #define IDC_EDIT_OUTPUT                 1021
+#define IDC_COMBO_LIST                  1022
+#define IDC_EDIT_NAME                   1023
+#define IDC_BTN_INSERT                  1024
+#define IDC_BTN_DELETE                  1025
+#define IDC_LIST_NAME                   1027
+#define IDC_LIST_NAMES                  1027
 #define ID_DrawRectangle                32774
 #define ID_DrawCircle                   32775
 #define ID_FileOpen                     32776
@@ -49,7 +55,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        135
 #define _APS_NEXT_COMMAND_VALUE         32782
-#define _APS_NEXT_CONTROL_VALUE         1022
+#define _APS_NEXT_CONTROL_VALUE         1029
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif
