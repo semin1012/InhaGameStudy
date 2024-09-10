@@ -3,8 +3,12 @@
 Map::Map() : GameObject(0, 0, 0, EGameObjectType::Map)
 {
 	stage = 0;
-	pImg = nullptr;
 	rectView = nullptr;
+}
+
+Map::~Map()
+{
+	if (rectView) delete rectView;
 }
 
 void Map::Update()
@@ -15,15 +19,58 @@ void Map::Draw(HDC hdc)
 {
 	Graphics graphics(hdc);
 
-	if (pImg)
-	{
-		int w = pImg->GetWidth() / 3;
-		int h = pImg->GetHeight();
+	HDC hMemDC;
+	HBITMAP hOldBitmap;
 
-		graphics.DrawImage(pImg, Rect(0, 0, rectView->right, rectView->bottom + rectView->bottom / 3), 0, 0, w, h, UnitPixel);
-		graphics.DrawImage(pImg, Rect(0, 0, rectView->right, rectView->bottom + rectView->bottom / 3), w, 0, w, h, UnitPixel);
-		graphics.DrawImage(pImg, Rect(0, 0, rectView->right, rectView->bottom + rectView->bottom / 3), w * 2, 0, w, h, UnitPixel);
+	hMemDC = CreateCompatibleDC(hdc);
+	hOldBitmap = (HBITMAP)SelectObject(hMemDC, hMapImg);
+
+	int bx = bitMap.bmWidth;
+	int by = bitMap.bmHeight;
+
+	TransparentBlt(hdc, 0, 0, rectView->right, rectView->bottom, hMemDC, 0, 0, bx, by, RGB(255, 0, 255));
+	//BitBlt(hdc, 0, 0, bx, by, hMemDC, 0, 0, SRCCOPY);
+
+	SelectObject(hMemDC, hOldBitmap);
+	DeleteDC(hMemDC);
+
+	{
+		hMemDC = CreateCompatibleDC(hdc);
+		hOldBitmap = (HBITMAP)SelectObject(hMemDC, hFrontMapImg);
+
+		bx = bitFrontMap.bmWidth;
+		by = bitFrontMap.bmHeight;
+		
+		//hMemDC = CreateCompatibleDC(hdc);
+		hOldBitmap = (HBITMAP)SelectObject(hMemDC, hFrontMapImg);
+		HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 255));
+		HBRUSH oldBrush = (HBRUSH)SelectObject(hMemDC, hBrush);
+
+		int size = points.size();
+		POINT* pts = new POINT[size];
+
+		for (int i = 0; i < size; i++)
+		{
+			pts[i] = points[i];
+		}
+		Polygon(hMemDC, pts, points.size());
+
+		SelectObject(hMemDC, oldBrush);
+		DeleteObject(hBrush);
+		TransparentBlt(hdc, 0, 0, rectView->right, rectView->bottom, hMemDC, 0, 0, bx, by, RGB(255, 0, 255));
+
+
+		delete[] pts;
 	}
+
+	SelectObject(hMemDC, hOldBitmap);
+	DeleteDC(hMemDC);
+}
+
+void Map::Draw(HDC hdc, std::vector<POINT>& points)
+{
+	
+	
 }
 
 void Map::Collision()
@@ -32,15 +79,35 @@ void Map::Collision()
 
 void Map::CreateBitmap()
 {
-	pImg = Image::FromFile((WCHAR*)L"../data/images/background.png");
-	if (pImg == NULL)
+	hFrontMapImg = (HBITMAP)LoadImage(NULL, TEXT("../data/images/City3_pale_small.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+	if (hFrontMapImg == NULL)
 	{
 		DWORD dwError = GetLastError();
-		MessageBox(NULL, _T("배경 이미지 파일을 열 수 없습니다."), _T("에러"), MB_OK);
+		MessageBox(NULL, _T("맵 이미지1 파일을 열 수 없습니다."), _T("에러"), MB_OK);
+	}
+	else
+	{
+		GetObject(hFrontMapImg, sizeof(BITMAP), &bitFrontMap);
+	}
+
+	hMapImg = (HBITMAP)LoadImage(NULL, TEXT("../data/images/City3_small.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+	if (hMapImg == NULL)
+	{
+		DWORD dwError = GetLastError();
+		MessageBox(NULL, _T("맵 이미지1 파일을 열 수 없습니다."), _T("에러"), MB_OK);
+	}
+	else
+	{
+		GetObject(hMapImg, sizeof(BITMAP), &bitMap);
 	}
 }
 
 void Map::SetRectView(RECT& rectView)
 {
 	this->rectView = &rectView;
+}
+
+void Map::SetPoints(std::vector<POINT>& points)
+{
+	this->points = points;
 }

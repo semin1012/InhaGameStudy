@@ -50,7 +50,7 @@ void Player::Draw(HDC hdc)
 		int yStart = 0;
 
 		imgAttr.SetColorKey(Color(255, 116, 110), Color(255, 116, 110));
-		graphics.DrawImage(pImg, Rect(GetX() - w/2, GetY() - h/2, w, h), xStart, yStart, w, h, UnitPixel, &imgAttr);
+		graphics.DrawImage(pImg, Rect(GetX() - w, GetY() - h, w, h), xStart, yStart, w, h, UnitPixel, &imgAttr);
 	}
 }
 

@@ -3,7 +3,7 @@
 #include "commdlg.h"
 #include <stdio.h>
 
-#define WINDOW_WIDTH_SIZE   400
+#define WINDOW_WIDTH_SIZE   1280
 #define WINDOW_HEIGHT_SIZE  800
 
 /*
@@ -135,6 +135,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 #include <vector>
 using namespace std;
 #define TIMER_UPDATE_ID 1
+#define TIMER_KEY_STATE_ID 2
 
 vector<GameObject*> objects;
 Player* player;
@@ -152,8 +153,11 @@ BOOL                bGameOver = FALSE;
 void CreateDoubbleBuffering(HWND hWnd);
 void EndDoubleBuffering(HWND hWnd);
 void Init(HWND hWnd);
+void MapDraw(HWND hWnd, HDC hdc);
+vector<POINT> points;
 
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
+VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -177,6 +181,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
         }
+        break;
+    case WM_KEYUP:
+        if ( wParam == VK_UP || wParam == VK_DOWN || wParam == VK_LEFT || wParam == VK_RIGHT )
+            points.push_back({ player->GetX(), player->GetY() });
+        break;
+    case WM_KEYDOWN:
+        if (wParam == VK_UP || wParam == VK_DOWN || wParam == VK_LEFT || wParam == VK_RIGHT)
+            points.push_back({ player->GetX(), player->GetY() });
         break;
     case WM_PAINT:
         {
@@ -228,9 +240,13 @@ void Init(HWND hWnd)
 
     map = new Map();
     map->SetRectView(rectView);
-    player = new Player(200, 200, 10);
+
+    player = new Player(rectView.right / 2, rectView.bottom / 2, 10);
+    
     objects.push_back(map);
     objects.push_back(player);
+
+    points.push_back({ player->GetX(), player->GetY() });
 
     Gdi_Init();
 
@@ -238,6 +254,7 @@ void Init(HWND hWnd)
         obj->CreateBitmap();
 
     SetTimer(hWnd, TIMER_UPDATE_ID, 33, (TIMERPROC)UpdateProc);
+    SetTimer(hWnd, TIMER_KEY_STATE_ID, 33, (TIMERPROC)KeyStateProc);
 }
 
 void Update()
@@ -250,6 +267,7 @@ void Update()
 
     oldTime = newTime;
 
+    // 눌렀을 때 
     if (GetAsyncKeyState(VK_LEFT) & 0x8000)
     {
         player->MoveTo(rectView, -1, 0);
@@ -281,8 +299,11 @@ void Gdi_Draw(HDC hdc)
 {
     Graphics graphics(hdc);
 
+    map->SetPoints(points);
     for (int i = 0; i < objects.size(); i++)
+    {
         objects[i]->Draw(hdc);
+    }
 }
 
 void Gdi_End()
@@ -324,4 +345,34 @@ VOID UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
         obj->Update();
 
     InvalidateRect(hwnd, NULL, false);
+}
+
+VOID KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
+{
+    DWORD newTime = GetTickCount();
+    static DWORD oldTime = newTime;
+
+    if (newTime - oldTime < 50)
+        return;
+
+    oldTime = newTime;
+
+    // 눌렀을 때 
+    if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+    {
+        player->MoveTo(rectView, -1, 0);
+    }
+    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    {
+        player->MoveTo(rectView, 1, 0);
+    }
+    if (GetAsyncKeyState(VK_UP) & 0x8000)
+    {
+        player->MoveTo(rectView, 0, -1);
+    }
+    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    {
+        player->MoveTo(rectView, 0, 1);
+    }
+
 }
