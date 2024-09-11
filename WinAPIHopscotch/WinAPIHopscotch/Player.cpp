@@ -37,12 +37,12 @@ void Player::CheckArea(std::vector<POINT>& points)
 
 int Player::GetCenterX()
 {
-	return GetX() + GetHalfSize();
+	return GetX() + (bitPlayer.bmWidth / 7) /2 ;
 }
 
 int Player::GetCenterY()
 {
-	return GetY() - bitPlayer.bmHeight / 2;
+	return GetY() + (bitPlayer.bmHeight) / 2;
 }
 
 bool Player::GetPressed()
@@ -82,7 +82,7 @@ void Player::Draw(HDC hdc)
 	int xStart = curFrame * bx;
 	int yStart = 0;
 
-	TransparentBlt(hdc, GetX() - GetHalfSize(), GetY() - GetHalfSize(), bx, by, hMemDC, xStart, yStart, bx, by, RGB(255, 116, 110));
+	TransparentBlt(hdc, GetX(), GetY(), bx, by, hMemDC, xStart, yStart, bx, by, RGB(255, 116, 110));
 	//BitBlt(hdc, 0, 0, bx, by, hMemDC, 0, 0, SRCCOPY);
 
 	SelectObject(hMemDC, hOldBitmap);

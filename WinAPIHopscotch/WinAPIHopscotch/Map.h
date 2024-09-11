@@ -14,6 +14,7 @@ private:
 	BITMAP				bitMap;
 	BITMAP				bitFrontMap;
 	std::vector<POINT>	points;
+	std::vector<POINT>	area;
 
 public:
 	Map();
@@ -25,6 +26,6 @@ public:
 	void CreateBitmap() override;
 	
 	void SetRectView(RECT& rectView);
-	void SetPoints(std::vector<POINT>& points);
+	void SetPoints(std::vector<POINT>& points, std::vector<POINT>& area);
 };
 

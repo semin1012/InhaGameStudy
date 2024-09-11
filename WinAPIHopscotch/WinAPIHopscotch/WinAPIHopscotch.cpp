@@ -139,6 +139,8 @@ const int UpdateBoardTime = 1000;
 vector<GameObject*> objects;
 Player* player;
 Map* map;
+vector<POINT> points;
+vector<POINT> area;
 
 short board[BOARD_SIZE_Y][BOARD_SIZE_X];
 short visit[BOARD_SIZE_Y][BOARD_SIZE_X];
@@ -155,7 +157,6 @@ BOOL                bGameOver = FALSE;
 void CreateDoubbleBuffering(HWND hWnd);
 void EndDoubleBuffering(HWND hWnd);
 void Init(HWND hWnd);
-vector<POINT> points;
 
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 VOID CALLBACK UpdateBoardProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
@@ -231,6 +232,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             if (points.back().x != temp.x || points.back().y != temp.y)
                 points.push_back({ player->GetCenterX(), player->GetCenterY() });
         }
+        if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+        {
+            player->SetPressed(true);
+        }
         break;
     case WM_KEYUP:
         if (wParam == VK_SPACE)
@@ -284,7 +289,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 void Init(HWND hWnd)
-{
+{   
     GetClientRect(hWnd, &rectView);
 
     map = new Map();
@@ -323,7 +328,7 @@ void Gdi_Draw(HDC hdc)
 {
     Graphics graphics(hdc);
 
-    map->SetPoints(points);
+    map->SetPoints(points, area);
     for (int i = 0; i < objects.size(); i++)
     {
         objects[i]->Draw(hdc);
@@ -377,6 +382,14 @@ VOID UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 VOID UpdateBoardProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 {
     DFS();
+    if (player->CollisionWindow())
+    {
+        for (auto v : points)
+        {
+            area.push_back(v);
+        }
+        points.clear();
+    }
 }
 
 VOID KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
@@ -389,6 +402,12 @@ VOID KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 
     oldTime = newTime;
 
+    
+
+    if (player->CollisionWindow())
+    {
+
+    }
     if (GetAsyncKeyState(VK_SPACE) & 0x8000)
     {
         player->SetPressed(true);
@@ -397,7 +416,7 @@ VOID KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
     {
         if (player->MoveTo(rectView, -1, 0))
         {
-            if ( !player->GetPressed() )
+            if (!player->GetPressed())
                 board[player->GetY() / 10][player->GetX() / 10] = 1;
         }
     }
@@ -424,10 +443,5 @@ VOID KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
             if (player->GetPressed())
                 board[player->GetY() / 10][player->GetX() / 10] = 1;
         }
-    }
-
-    if (player->CollisionWindow())
-    {
-
     }
 }
