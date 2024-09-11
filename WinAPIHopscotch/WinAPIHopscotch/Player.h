@@ -12,6 +12,8 @@ class Player : public GameObject
 	const int			Frame_Min = 0;
 	HBITMAP				hPlayerImg;
 	BITMAP				bitPlayer;
+	bool				isPressed;
+	RECT*				rectView;
 
 
 public:
@@ -21,12 +23,18 @@ public:
 	void		Update() override;
 	void		Draw(HDC hdc) override;
 	void		Collision() override;
+	bool		CollisionWindow();
 	void		CreateBitmap() override;
 
-	void		MoveTo(RECT& rectView, int x, int y);
+	void		SetRectView(RECT& rectView);
+
+	bool		MoveTo(RECT& rectView, int x, int y);
 
 	void		CheckArea(std::vector<POINT>& points);
 
 	int			GetCenterX();
 	int			GetCenterY();
+
+	bool		GetPressed();
+	void		SetPressed(bool pressed);
 };

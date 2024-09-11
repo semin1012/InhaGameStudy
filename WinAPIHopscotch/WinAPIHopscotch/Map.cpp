@@ -45,14 +45,23 @@ void Map::Draw(HDC hdc)
 		HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 255));
 		HBRUSH oldBrush = (HBRUSH)SelectObject(hMemDC, hBrush);
 
-		int size = points.size();
-		POINT* pts = new POINT[size];
+		// int size = points.size();
+		// POINT* pts = new POINT[size];
 
-		for (int i = 0; i < size; i++)
+		if (points.size() > 2)
 		{
-			pts[i] = points[i];
+			for (int i = 0; i < points.size() - 1; i++)
+			{
+				MoveToEx(hMemDC, points[i].x, points[i].y, NULL);
+				LineTo(hMemDC, points[i + 1].x, points[i + 1].y);
+			}
 		}
-		Polygon(hMemDC, pts, points.size());
+
+		//for (int i = 0; i < size; i++)
+		//{
+		//	pts[i] = points[i];
+		//}
+		//Polygon(hMemDC, pts, points.size());
 
 
 		SelectObject(hMemDC, oldBrush);
@@ -60,7 +69,7 @@ void Map::Draw(HDC hdc)
 		TransparentBlt(hdc, 0, 0, bx, by, hMemDC, 0, 0, rectView->right, rectView->bottom, RGB(255, 0, 255));
 
 
-		delete[] pts;
+		//delete[] pts;
 	}
 
 	SelectObject(hMemDC, hOldBitmap);

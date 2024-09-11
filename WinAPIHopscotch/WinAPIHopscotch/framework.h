@@ -21,3 +21,10 @@ using namespace Gdiplus;
 
 #pragma comment(lib, "Msimg32.lib")
 #pragma comment(lib, "Gdiplus.lib")
+
+
+#define WINDOW_WIDTH_SIZE   1280
+#define WINDOW_HEIGHT_SIZE  800
+
+#define BOARD_SIZE_X (WINDOW_WIDTH_SIZE / 10)
+#define BOARD_SIZE_Y (WINDOW_HEIGHT_SIZE / 10)

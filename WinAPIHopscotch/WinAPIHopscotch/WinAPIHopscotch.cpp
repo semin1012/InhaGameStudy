@@ -3,10 +3,6 @@
 #include "commdlg.h"
 #include <stdio.h>
 
-
-#define WINDOW_WIDTH_SIZE   1280
-#define WINDOW_HEIGHT_SIZE  800
-
 /*
 player
     - 이동
@@ -23,29 +19,29 @@ obstance
     - 날라오는 장애물
 */
 
-#define MAX_LOADSTRING 100
-
-HINSTANCE hInst;                               
-WCHAR szTitle[MAX_LOADSTRING];                 
-WCHAR szWindowClass[MAX_LOADSTRING];           
-
-ATOM                MyRegisterClass(HINSTANCE hInstance);
-BOOL                InitInstance(HINSTANCE, int);
-LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-
 // 사용자 정의
-void Update();
 void Gdi_Init();
 void Gdi_Draw(HDC hdc);
 void Gdi_End();
 
 ULONG_PTR g_GdipPlusToken;
 
+#pragma region WinMain
+#define MAX_LOADSTRING 100
+
+HINSTANCE hInst;
+WCHAR szTitle[MAX_LOADSTRING];
+WCHAR szWindowClass[MAX_LOADSTRING];
+
+ATOM                MyRegisterClass(HINSTANCE hInstance);
+BOOL                InitInstance(HINSTANCE, int);
+LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPWSTR    lpCmdLine,
+    _In_ int       nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -54,7 +50,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     LoadStringW(hInstance, IDC_WINAPIHOPSCOTCH, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
-    if (!InitInstance (hInstance, nCmdShow))
+    if (!InitInstance(hInstance, nCmdShow))
     {
         return FALSE;
     }
@@ -78,15 +74,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 DispatchMessage(&msg);
             }
         }
-        else
-        {
-            Update();
-        }
     }
 
     Gdi_End();
 
-    return (int) msg.wParam;
+    return (int)msg.wParam;
 }
 
 
@@ -96,17 +88,17 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WINAPIHOPSCOTCH));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WINAPIHOPSCOTCH);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WINAPIHOPSCOTCH));
+    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_WINAPIHOPSCOTCH);
+    wcex.lpszClassName = szWindowClass;
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
 }
@@ -114,33 +106,42 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance;
+    hInst = hInstance;
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, WINDOW_WIDTH_SIZE, WINDOW_HEIGHT_SIZE, nullptr, nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, 0, WINDOW_WIDTH_SIZE, WINDOW_HEIGHT_SIZE, nullptr, nullptr, hInstance, nullptr);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    if (!hWnd)
+    {
+        return FALSE;
+    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
 
-   return TRUE;
+    return TRUE;
 }
+#pragma endregion
 
 #include "Player.h"
 #include "GameObject.h"
 #include "Map.h"
 #include <vector>
+#include <queue>
 using namespace std;
 #define TIMER_UPDATE_ID 1
 #define TIMER_KEY_STATE_ID 2
+#define TIMER_UPDATE_BOARD_ID 3
+
+const int UpdateDeltaTime = 33;
+const int UpdateBoardTime = 1000;
 
 vector<GameObject*> objects;
 Player* player;
 Map* map;
+
+short board[BOARD_SIZE_Y][BOARD_SIZE_X];
+short visit[BOARD_SIZE_Y][BOARD_SIZE_X];
 
 RECT                rectView;
 
@@ -157,7 +158,48 @@ void Init(HWND hWnd);
 vector<POINT> points;
 
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
+VOID CALLBACK UpdateBoardProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
+
+void DFS()
+{
+    static const short dirX[4] = { 0, 0, 1, -1 };
+    static const short dirY[4] = { 1, -1, 0, 0 };
+
+    queue<pair<int, int>> q;
+    int count = 0;
+
+    for (int i = 0; i < BOARD_SIZE_Y / 10; i++)
+    {
+        for (int j = 0; j < BOARD_SIZE_X / 10; j++)
+        {
+            if (board[i][j] == 1 && visit[i][j] == 0)
+            {
+                // 1이면 들른 곳
+                visit[i][j] = ++count;
+                q.push({ j, i });   // x, y 순서
+
+                while (!q.empty())
+                {
+                    pair<int, int> cur = q.front();
+                    q.pop();
+
+                    for (int z = 0; z < 4; z++)
+                    {
+                        int dx = cur.first + dirX[z];
+                        int dy = cur.second + dirY[z];
+
+                        if (dy < 0 || dx < 0 || dy >= BOARD_SIZE_Y || dx >= BOARD_SIZE_X ) continue;
+                        if (board[dy][dx] == 0 || visit[dy][dx] != 0 ) continue;
+
+                        visit[dy][dx] = count;
+                        q.push({ dx, dy });
+                    }
+                }
+            }
+        }
+    }
+}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -182,13 +224,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-    case WM_KEYLAST:
-        if ( wParam == VK_UP || wParam == VK_DOWN || wParam == VK_LEFT || wParam == VK_RIGHT )
-            points.push_back({ player->GetCenterX(), player->GetCenterY() });
+    case WM_KEYDOWN:
+        if (player->GetPressed())
+        {
+            POINT temp = { player->GetCenterX(), player->GetCenterY() };
+            if (points.back().x != temp.x || points.back().y != temp.y)
+                points.push_back({ player->GetCenterX(), player->GetCenterY() });
+        }
         break;
-    case WM_KEYFIRST:
-        if (wParam == VK_UP || wParam == VK_DOWN || wParam == VK_LEFT || wParam == VK_RIGHT)
+    case WM_KEYUP:
+        if (wParam == VK_SPACE)
+        {
+            player->SetPressed(false);
             points.push_back({ player->GetCenterX(), player->GetCenterY() });
+        }
         break;
     case WM_PAINT:
         {
@@ -197,8 +246,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             Gdi_Draw(hdc);
 
             EndDoubleBuffering(hWnd);
-
-            EndPaint(hWnd, &ps);
         }
         break;
     case WM_SIZE:
@@ -207,6 +254,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         KillTimer(hWnd, TIMER_UPDATE_ID);
+        KillTimer(hWnd, TIMER_KEY_STATE_ID);
+        KillTimer(hWnd, TIMER_UPDATE_BOARD_ID);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -241,7 +290,8 @@ void Init(HWND hWnd)
     map = new Map();
     map->SetRectView(rectView);
 
-    player = new Player(rectView.left + 10, rectView.top + 10, 10);
+    player = new Player(50, 50, 10);
+    player->SetRectView(rectView);
     
     objects.push_back(map);
     objects.push_back(player);
@@ -253,38 +303,12 @@ void Init(HWND hWnd)
     for (auto obj : objects)
         obj->CreateBitmap();
 
-    SetTimer(hWnd, TIMER_UPDATE_ID, 33, (TIMERPROC)UpdateProc);
-    SetTimer(hWnd, TIMER_KEY_STATE_ID, 33, (TIMERPROC)KeyStateProc);
+    SetTimer(hWnd, TIMER_UPDATE_ID, UpdateDeltaTime, (TIMERPROC)UpdateProc);
+    SetTimer(hWnd, TIMER_KEY_STATE_ID, UpdateDeltaTime, (TIMERPROC)KeyStateProc);
+    SetTimer(hWnd, TIMER_UPDATE_BOARD_ID, UpdateBoardTime, (TIMERPROC)UpdateBoardProc);
 }
 
-void Update()
-{
-    DWORD newTime = GetTickCount();
-    static DWORD oldTime = newTime;
-
-    if (newTime - oldTime < 50)
-        return;
-
-    oldTime = newTime;
-
-    // 눌렀을 때 
-    if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-    {
-        player->MoveTo(rectView, -1, 0);
-    }
-    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-    {
-        player->MoveTo(rectView, 1, 0);
-    }
-    else if (GetAsyncKeyState(VK_UP) & 0x8000)
-    {
-        player->MoveTo(rectView, 0, -1);
-    }
-    else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-    {
-        player->MoveTo(rectView, 0, 1);
-    }
-}
+#pragma region Gdi
 
 void Gdi_Init()
 {
@@ -311,7 +335,9 @@ void Gdi_End()
     GdiplusShutdown(g_GdipPlusToken);
 }
 
+#pragma endregion
 
+#pragma region Double Buffering
 void CreateDoubbleBuffering(HWND hWnd)
 {
     hdc = BeginPaint(hWnd, &ps);
@@ -338,6 +364,7 @@ void EndDoubleBuffering(HWND hWnd)
     DeleteDC(MemDC);
     EndPaint(hWnd, &ps);
 }
+#pragma endregion
 
 VOID UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 {
@@ -345,6 +372,11 @@ VOID UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
         obj->Update();
 
     InvalidateRect(hwnd, NULL, false);
+}
+
+VOID UpdateBoardProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
+{
+    DFS();
 }
 
 VOID KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
@@ -357,21 +389,45 @@ VOID KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 
     oldTime = newTime;
 
-    // 눌렀을 때 
+    if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+    {
+        player->SetPressed(true);
+    }
     if (GetAsyncKeyState(VK_LEFT) & 0x8000)
     {
-        player->MoveTo(rectView, -1, 0);
+        if (player->MoveTo(rectView, -1, 0))
+        {
+            if ( !player->GetPressed() )
+                board[player->GetY() / 10][player->GetX() / 10] = 1;
+        }
     }
     else if (GetAsyncKeyState(VK_UP) & 0x8000)
     {
-        player->MoveTo(rectView, 0, -1);
+        if (player->MoveTo(rectView, 0, -1))
+        {
+            if (player->GetPressed())
+                board[player->GetY() / 10][player->GetX() / 10] = 1;
+        }
     }
     else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
     {
-        player->MoveTo(rectView, 1, 0);
+        if (player->MoveTo(rectView, 1, 0))
+        {
+            if (player->GetPressed())
+                board[player->GetY() / 10][player->GetX() / 10] = 1;
+        }
     }
     else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
     {
-        player->MoveTo(rectView, 0, 1);
+        if (player->MoveTo(rectView, 0, 1))
+        {
+            if (player->GetPressed())
+                board[player->GetY() / 10][player->GetX() / 10] = 1;
+        }
+    }
+
+    if (player->CollisionWindow())
+    {
+
     }
 }

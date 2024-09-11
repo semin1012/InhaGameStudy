@@ -2,26 +2,32 @@
 
 Player::Player(int x, int y, int halfSize) : GameObject(x, y, halfSize, EGameObjectType::Player)
 {
-	speed = 5;
+	speed = 10;
 	curFrame = Frame_Min;
+	hPlayerImg = nullptr;
+	isPressed = false;
 }
 
 Player::~Player()
 {
 }
 
-void Player::MoveTo(RECT& rectView, int x, int y)
+bool Player::MoveTo(RECT& rectView, int x, int y)
 {
 	int moveX = this->GetX() + speed * x;
 	int moveY = this->GetY() + speed * y;
 
-	if (moveX >= rectView.right + GetHalfSize())	return;
-	if (moveX <= rectView.left - GetHalfSize() * 2)	return;
-	if (moveY >= rectView.bottom + GetHalfSize())	return;
-	if (moveY <= rectView.top - GetHalfSize() * 2)	return;
+	if (moveX >= rectView.right + GetHalfSize())	return false;
+	if (moveX <= rectView.left - GetHalfSize() * 2)	return false;
+	if (moveY >= rectView.bottom + GetHalfSize())	return false;
+	if (moveY <= rectView.top - GetHalfSize() * 2)	return false;
 
 	this->SetX(moveX);
 	this->SetY(moveY);
+
+	Collision();
+
+	return true;
 }
 
 void Player::CheckArea(std::vector<POINT>& points)
@@ -37,6 +43,16 @@ int Player::GetCenterX()
 int Player::GetCenterY()
 {
 	return GetY() - bitPlayer.bmHeight / 2;
+}
+
+bool Player::GetPressed()
+{
+	return isPressed;
+}
+
+void Player::SetPressed(bool pressed)
+{
+	isPressed = pressed;
 }
 
 void Player::Update()
@@ -75,6 +91,21 @@ void Player::Draw(HDC hdc)
 
 void Player::Collision()
 {
+}
+
+bool Player::CollisionWindow()
+{
+	if (   GetCenterX()	<= rectView->left 
+		|| GetCenterX() >= rectView->right  
+		|| GetCenterY() <= rectView->top   
+		|| GetCenterY() >= rectView->bottom)
+		return true;
+	return false;
+}
+
+void Player::SetRectView(RECT &rectView)
+{
+	this->rectView = &rectView;
 }
 
 void Player::CreateBitmap()
