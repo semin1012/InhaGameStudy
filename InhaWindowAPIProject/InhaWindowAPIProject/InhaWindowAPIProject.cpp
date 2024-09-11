@@ -3,7 +3,8 @@
 
 #include "framework.h"
 #include "InhaWindowAPIProject.h"
-#include "commdlg.h"
+#include <commdlg.h>
+#include <CommCtrl.h>
 #include <stdio.h>
 #pragma comment(lib, "Msimg32.lib")
 
@@ -49,7 +50,12 @@ void Gdi_Init();
 void Gdi_Draw(HDC hdc);
 void Gdi_End();
 
-// 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
+// >> : Modeless Window
+HWND g_hDlg = nullptr;
+void MakeColumn(HWND hDlg);
+void InsertData(HWND hDlg);
+// << : Modeless Window
+
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -121,7 +127,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     return (int) msg.wParam;
 }
-
 
 
 //
@@ -227,6 +232,7 @@ void UpdateFrame(HWND hwnd);
 VOID CALLBACK AniProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+BOOL CALLBACK Dialog2_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 // << : image
 
@@ -312,53 +318,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     break;
     case WM_KEYDOWN:
-        //if (wParam == VK_RIGHT)
-        //{
-        //    pos.x += 40;
-        //    if (pos.x + 20 > rectView.right)
-        //        pos.x -= 40;
-        //}
-        //if (wParam == VK_LEFT)
-        //{
-        //    pos.x -= 40;
-        //    if (pos.x - 20 < rectView.left)
-        //        pos.x += 40;
-        //}
-        //if (wParam == VK_DOWN)
-        //{
-        //    pos.y += 40;
-        //    if (pos.y + 20 > rectView.bottom)
-        //        pos.y -= 40;
-        //}
-        //if (wParam == VK_UP)
-        //{
-        //    pos.y -= 40;
-        //    if (pos.y - 20 < rectView.top)
-        //        pos.y += 40;
-        //}
         flag = true;
-        //InvalidateRect(hWnd, NULL, false);
         break;
     case WM_KEYUP:
         flag = false;
-        //InvalidateRect(hWnd, NULL, false);
         break;
     case WM_CHAR:
         break;
     case WM_LBUTTONDOWN:
     {
         int x, y;
-
-        x = LOWORD(lParam); //x
-        y = HIWORD(lParam); //y
-        //if (InCircle(x, y, pos.x, pos.y, CIRCLE_RADIUS))
-        //    mouseFlag = TRUE;
-        //else mouseFlag = FALSE;
-
-        pos.x = x;
-        pos.y = y;
-
-        //InvalidateRect(hWnd, NULL, false);
     }
     break;
     case WM_LBUTTONUP:
@@ -366,29 +335,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_RBUTTONDOWN:
     {
-        DialogBox(g_hInst, MAKEINTRESOURCE(IDD_DIALOG2), hWnd, Dialog1_Proc);
-
-        int x, y;
-        x = LOWORD(lParam); //x
-        y = HIWORD(lParam); //y
-        //if (InCircle(x, y, pos.x, pos.y, CIRCLE_RADIUS))
-        //    flag = TRUE;
-        //else flag = FALSE;
-        //InvalidateRect(hWnd, NULL, false);
+        // DialogBox(g_hInst, MAKEINTRESOURCE(IDD_DIALOG2), hWnd, Dialog1_Proc);
+        if (!IsWindow(g_hDlg))
+        {
+            g_hDlg = CreateDialog(hInst, MAKEINTRESOURCE(IDD_MODELESS), hWnd, Dialog2_Proc);
+            ShowWindow(g_hDlg, SW_SHOW);
+        }
     }
     break;
     case WM_RBUTTONUP:
-        break;
-    case WM_MOUSEMOVE:  // 이거 하면 느리다
-        int x, y;
-        x = LOWORD(lParam);
-        y = HIWORD(lParam);
-        //if (mouseFlag)
-        //{
-        //    pos.x = x;
-        //    pos.y = y;
-        //}
-        //InvalidateRect(hWnd, NULL, false);
         break;
     case WM_SIZE:
         GetClientRect(hWnd, &rectView);
@@ -406,16 +361,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         EndPaint(hWnd, &ps);
     }
     break;
-  /*  case WM_TIMER:
-        switch (wParam)
-        {
-        case TIMER_ANI:
-            break;
-        case TIMER_KEYSTATE:
-            break;
-        }
-
-    //    InvalidateRe*///ct(hWnd, NULL, FALSE);
         break;
     case WM_DESTROY:
         DeleteBitmap();
@@ -448,6 +393,8 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 // 비트맵
+#pragma region DoubleBuffering & Bitmap
+
 void CreateBitmap()
 {
     // >> background image
@@ -749,6 +696,10 @@ void UpdateFrame(HWND hwnd)
         curFrame = Run_Frame_Min;
 }
 
+#pragma endregion
+
+#pragma region  Timer Proc
+
 VOID CALLBACK AniProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 {
     UpdateFrame(hwnd);
@@ -781,6 +732,8 @@ VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
     UpdateFrame(hwnd);
     InvalidateRect(hwnd, NULL, false);
 }
+#pragma endregion
+
 
 BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -897,6 +850,73 @@ BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             break;
         // << : Combo
         }
+    }
+    return 0;
+}
+
+
+void MakeColumn(HWND hDlg)
+{
+    LPCTSTR name[2] = { _T("이름"), _T("전화번호") };
+    LVCOLUMN lvCol = { 0, };
+    HWND hList;
+
+    hList = GetDlgItem(hDlg, IDC_LIST_CTRL);
+    lvCol.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
+    lvCol.fmt = LVCFMT_LEFT;
+    
+    for (int i = 0; i < 2; i++)
+    {
+        lvCol.cx = 90;
+        lvCol.iSubItem = i;
+        lvCol.pszText = (LPWSTR)name[i];
+        SendMessage(hList, LVM_INSERTCOLUMN, (WPARAM)i, (LPARAM)&lvCol);
+    }
+}
+
+void InsertData(HWND hDlg)
+{
+    LVITEM item;
+    LPCTSTR name[20] = { _T("홍길동"), _T("카리나") };
+    LPCTSTR phone[20] = { _T("000-0000-0000"), _T("010-9384-3189") };
+
+    HWND hList = GetDlgItem(hDlg, IDC_LIST_CTRL);
+
+    for (int i = 0; i < 2; i++)
+    {
+        item.mask = LVIF_TEXT;
+        item.iItem = i;
+        item.iSubItem = 0;
+        item.pszText = (LPWSTR)name[i];
+        ListView_InsertItem(hList, &item);
+        ListView_SetItemText(hList, i, 1, (LPWSTR)phone[i]);
+    }
+}
+
+BOOL CALLBACK Dialog2_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg)
+    {
+    case WM_INITDIALOG:
+        SetDlgItemText(hDlg, IDC_STATIC, _T("모달리스 대화상자"));
+        MakeColumn(hDlg);
+        break;
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+        {
+            DestroyWindow(hDlg);
+            g_hDlg = nullptr;
+            return 0;
+        }
+
+        switch (LOWORD(wParam))
+        {
+        case IDC_BTN_LIST_INSERT:
+            InsertData(hDlg);
+            return 0;
+            break;
+        }
+        break;
     }
     return 0;
 }

@@ -6,6 +6,7 @@
 #define IDOK2                           3
 #define IDCANCEL2                       3
 #define IDOK3                           4
+#define IDD_MODELESS                    9
 #define IDD_INHAWINDOWAPIPROJECT_DIALOG 102
 #define IDS_APP_TITLE                   103
 #define IDD_ABOUTBOX                    103
@@ -18,9 +19,11 @@
 #define IDB_BITMAP1                     132
 #define IDD_DIALOG1                     133
 #define IDD_DIALOG                      133
-#define IDD_DIALOG2                     134
+#define IDD_DIALOG2                     134 
+#define IDD_MODURLESS                   135
 #define IDC_BUTTON1                     1006
 #define IDC_BTN_CLOSE                   1006
+#define IDC_BTN_LIST_INSERT             1006
 #define IDC_BTN_START                   1007
 #define IDC_BTN_PAUSE                   1008
 #define IDC_BTN_INFO                    1009
@@ -42,6 +45,8 @@
 #define IDC_BTN_DELETE                  1025
 #define IDC_LIST_NAME                   1027
 #define IDC_LIST_NAMES                  1027
+#define IDC_LIST1                       1029
+#define IDC_LIST_CTRL                   1029
 #define ID_DrawRectangle                32774
 #define ID_DrawCircle                   32775
 #define ID_FileOpen                     32776
@@ -53,9 +58,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        135
+#define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32782
-#define _APS_NEXT_CONTROL_VALUE         1029
+#define _APS_NEXT_CONTROL_VALUE         1030
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif
