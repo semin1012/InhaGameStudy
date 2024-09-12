@@ -36,6 +36,8 @@ HWND        g_hWnd;
 
 #define CIRCLE_RADIUS 50
 
+#define IDC_CHILD2_BTN 100
+
 
 void Update();
 
@@ -87,18 +89,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
-    // 기본 메시지 루프입니다: 무조건 메시지 넘김
-    /*
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-    }
-    */
-
     Gdi_Init();
 
     // 메시지가 있으면 넘어가고 아니면 Update
@@ -129,31 +119,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 }
 
 
-//
-//  함수: MyRegisterClass()
-//
-//  용도: 창 클래스를 등록합니다.
-//
-ATOM MyRegisterClass(HINSTANCE hInstance)
-{
-    WNDCLASSEXW wcex;
-
-    wcex.cbSize = sizeof(WNDCLASSEX);
-
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_INHAWINDOWAPIPROJECT));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_CROSS);
-    wcex.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255)); //RGB(230, 210, 210));// GetStockObject(DKGRAY_BRUSH);//(COLOR_WINDOW+3);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_INHAWINDOWAPIPROJECT);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(NULL, IDI_QUESTION);
-
-    return RegisterClassExW(&wcex);
-}
 
 //
 //   함수: InitInstance(HINSTANCE, int)
@@ -185,17 +150,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    return TRUE;
 }
-
-//
-//  함수: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  용도: 주 창의 메시지를 처리합니다.
-//
-//  WM_COMMAND  - 애플리케이션 메뉴를 처리합니다.
-//  WM_PAINT    - 주 창을 그립니다.
-//  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
-//
-
 
 // >> : image
 
@@ -250,6 +204,50 @@ void DrawBitmap(HWND hWnd, HDC hdc);
 void DrawBitmapDoubleBuffering(HWND hWnd, HDC hdc);
 void DeleteBitmap();
 
+// >> : Window Split ...
+HWND ChildWnd[3];
+LRESULT CALLBACK ChildWndProc1(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK ChildWndProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK ChildWndProc3(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+// << : Window Split
+
+ATOM MyRegisterClass(HINSTANCE hInstance)
+{
+    WNDCLASSEXW wcex;
+
+    wcex.cbSize = sizeof(WNDCLASSEX);
+
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_INHAWINDOWAPIPROJECT));
+    wcex.hCursor = LoadCursor(nullptr, IDC_CROSS);
+    wcex.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255)); //RGB(230, 210, 210));// GetStockObject(DKGRAY_BRUSH);//(COLOR_WINDOW+3);
+    wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_INHAWINDOWAPIPROJECT);
+    wcex.lpszClassName = szWindowClass;
+    wcex.hIconSm = LoadIcon(NULL, IDI_QUESTION);
+
+    RegisterClassExW(&wcex);
+
+    wcex.lpfnWndProc = ChildWndProc1;
+    wcex.lpszMenuName = NULL;
+    wcex.lpszClassName = _T("Child Window Class 1");
+    RegisterClassExW(&wcex);
+
+    wcex.lpfnWndProc = ChildWndProc2;
+    wcex.lpszMenuName = NULL;
+    wcex.lpszClassName = _T("Child Window Class 2");
+    RegisterClassExW(&wcex);
+
+    wcex.lpfnWndProc = ChildWndProc3;
+    wcex.lpszMenuName = NULL;
+    wcex.lpszClassName = _T("Child Window Class 3");
+    RegisterClassExW(&wcex);
+
+    return NULL;
+}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -268,8 +266,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         pos.x = CIRCLE_RADIUS; pos.y = CIRCLE_RADIUS;
         GetClientRect(hWnd, &rectView);
         CreateBitmap();
-        SetTimer(hWnd, TIMER_ANI, 33, AniProc);
-        SetTimer(hWnd, TIMER_KEYSTATE, 100, KeyStateProc);
+
+        // >> : Child Window
+        ChildWnd[0] = CreateWindowEx(WS_EX_CLIENTEDGE, _T("Child Window Class 1"), NULL,
+            WS_CHILD | WS_VISIBLE, 0, 0, rectView.right, rectView.bottom / 2 - 1, hWnd, NULL, hInst, NULL);
+        ChildWnd[1] = CreateWindowEx(WS_EX_CLIENTEDGE, _T("Child Window Class 2"), NULL,
+            WS_CHILD | WS_VISIBLE, 0, rectView.bottom / 2 + 1, rectView.right / 2 - 1, rectView.bottom, hWnd, NULL, hInst, NULL);
+        ChildWnd[2] = CreateWindowEx(WS_EX_CLIENTEDGE, _T("Child Window Class 3"), NULL,
+            WS_CHILD | WS_VISIBLE, rectView.right / 2 + 1, rectView.bottom / 2 + 1, rectView.right, rectView.bottom, hWnd, NULL, hInst, NULL);
+        // << : Child Window
+
         break;
     case WM_COMMAND:
     {
@@ -348,20 +354,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_SIZE:
         GetClientRect(hWnd, &rectView);
         break;
-    case WM_PAINT:
-    {
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps);
+    //case WM_PAINT:
+    //{
+    //    PAINTSTRUCT ps;
+    //    HDC hdc = BeginPaint(hWnd, &ps);
 
-        // DrawBitmap(hWnd, hdc);
-        DrawBitmapDoubleBuffering(hWnd, hdc);
+    //    // DrawBitmap(hWnd, hdc);
+    //    DrawBitmapDoubleBuffering(hWnd, hdc);
 
-        TextOut(hdc, 10, 10, sKeyState, _tcslen(sKeyState));
+    //    TextOut(hdc, 10, 10, sKeyState, _tcslen(sKeyState));
 
-        EndPaint(hWnd, &ps);
-    }
-    break;
-        break;
+    //    EndPaint(hWnd, &ps);
+    //}
+    //break;
+       // break;
     case WM_DESTROY:
         DeleteBitmap();
         PostQuitMessage(0);
@@ -579,7 +585,7 @@ void Gdi_Draw(HDC hdc)
 
     ImageAttributes imgAttr0;
     imgAttr0.SetColorKey(Color(245, 0, 245), Color(255, 10, 255));  // 블렌드를 해서 색깔 빼줄 수 있음
-    graphics.DrawImage(&img2, Rect(200,100,w,h), xStart, yStart, w, h, UnitPixel, &imgAttr0);
+    graphics.DrawImage(&img2, Rect(200, 100, w, h), xStart, yStart, w, h, UnitPixel, &imgAttr0);
 
     // :
     brush.SetColor(Color(64, 255, 0, 0));
@@ -668,7 +674,7 @@ void Update()
         return;
 
     oldTime = newTime;
-    
+
     //시간 보정
     //oldTime = newTime - ((newTime - oldTime) % 100);
 
@@ -695,8 +701,114 @@ void UpdateFrame(HWND hwnd)
     if (curFrame > Run_Frame_Max)
         curFrame = Run_Frame_Min;
 }
-
 #pragma endregion
+
+LRESULT CALLBACK ChildWndProc1(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_CREATE:
+        SetTimer(hWnd, TIMER_ANI, 33, AniProc);
+        SetTimer(hWnd, TIMER_KEYSTATE, 100, KeyStateProc);
+        break;
+    case WM_COMMAND:
+        break;
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hWnd, &ps);
+
+        // DrawBitmap(hWnd, hdc);
+        DrawBitmapDoubleBuffering(hWnd, hdc);
+
+        TextOut(hdc, 10, 10, sKeyState, _tcslen(sKeyState));
+
+        EndPaint(hWnd, &ps);
+    }
+    break;
+    case WM_DESTROY:
+        KillTimer(hWnd, TIMER_ANI);
+        KillTimer(hWnd, TIMER_KEYSTATE);
+        break;
+    }
+    return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
+LRESULT CALLBACK ChildWndProc2(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    static POINT ptMouse;
+    HWND hBtn;
+    static bool bToggle;
+
+    switch (message)
+    {
+    case WM_CREATE:
+        hBtn = CreateWindow(_T("button"), _T("OK"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 200, 100, 100, 30, hWnd, (HMENU)IDC_CHILD2_BTN, hInst, NULL);
+        break;
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDC_CHILD2_BTN:
+            bToggle = !bToggle;
+            InvalidateRect(hWnd, NULL, true);
+            break;
+        }
+        break;
+    case WM_MOUSEMOVE:
+        // GetCursorPos(&ptMouse);
+        ptMouse.x = LOWORD(lParam);
+        ptMouse.y = HIWORD(lParam);
+        InvalidateRect(hWnd, NULL, false);
+        break;
+    case WM_PAINT:
+        {
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hWnd, &ps);
+
+            // >> : mouse 
+            TCHAR str[128];
+            wsprintf(str, TEXT("World Position : (%04d,%04d)"), ptMouse.x, ptMouse.y);
+            TextOut(hdc, 10, 30, str, lstrlen(str));
+
+            /*ScreenToClient(hWnd, &ptMouse);*/
+            wsprintf(str, TEXT("Local Position : (%04d,%04d)"), ptMouse.x, ptMouse.y);
+            TextOut(hdc, 10, 50, str, lstrlen(str));
+            // << : mouse
+
+            // >> : button text
+            if (bToggle)
+                TextOut(hdc, 200, 50, _T("Button Clicked"), lstrlen(_T("Button Clicked")));
+            // << : button text
+            EndPaint(hWnd, &ps);
+        }
+        break;
+    case WM_DESTROY:
+        break;
+    }
+    return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
+LRESULT CALLBACK ChildWndProc3(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    HWND hBtn;
+    switch (message)
+    {
+    case WM_CREATE:
+        hBtn = CreateWindow(_T("button"), _T("OK"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 200, 100, 100, 30, hWnd, (HMENU)IDC_CHILD2_BTN, hInst, NULL);
+        break;
+    case WM_COMMAND:
+        break;
+    case WM_PAINT:
+    {
+
+    }
+    break;
+    case WM_DESTROY:
+        break;
+    }
+    return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
 
 #pragma region  Timer Proc
 
