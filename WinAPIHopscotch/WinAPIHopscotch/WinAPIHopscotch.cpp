@@ -255,7 +255,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (wParam == VK_SPACE)
         {
             player->SetPressed(false);
-            //points.erase(points.begin(), points.end());
+            points.erase(points.begin(), points.end());
         }
         if (!input.empty())
         {

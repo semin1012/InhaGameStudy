@@ -48,12 +48,12 @@ void Map::Draw(HDC hdc)
 		// int size = points.size();
 		// POINT* pts = new POINT[size];
 
-		if (points.size() > 2)
+		if (points->size() > 2)
 		{
-			for (int i = 0; i < points.size() - 1; i++)
+			for (int i = 0; i < points->size() - 1; i++)
 			{
-				MoveToEx(hMemDC, points[i].x, points[i].y, NULL);
-				LineTo(hMemDC, points[i + 1].x, points[i + 1].y);
+				MoveToEx(hMemDC, points->at(i).x, points->at(i).y, NULL);
+				LineTo(hMemDC, points->at(i+1).x, points->at(i+1).y);
 			}
 		}
 
