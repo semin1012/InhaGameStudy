@@ -13,7 +13,7 @@ private:
 	HBITMAP				hFrontMapImg;
 	BITMAP				bitMap;
 	BITMAP				bitFrontMap;
-	std::vector<POINT>	points;
+	std::vector<POINT>*	points;
 	std::vector<POINT>	area;
 
 public:

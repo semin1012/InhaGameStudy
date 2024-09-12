@@ -136,11 +136,20 @@ using namespace std;
 const int UpdateDeltaTime = 33;
 const int UpdateBoardTime = 1000;
 
+enum class EInput
+{
+    LEFT = 0,
+    RIGHT,
+    UP,
+    DOWN
+};
+
 vector<GameObject*> objects;
 Player* player;
 Map* map;
 vector<POINT> points;
 vector<POINT> area;
+vector<EInput> input;
 
 short board[BOARD_SIZE_Y][BOARD_SIZE_X];
 short visit[BOARD_SIZE_Y][BOARD_SIZE_X];
@@ -157,6 +166,8 @@ BOOL                bGameOver = FALSE;
 void CreateDoubbleBuffering(HWND hWnd);
 void EndDoubleBuffering(HWND hWnd);
 void Init(HWND hWnd);
+void AddInput(EInput input);
+void RemoveInput(EInput input);
 
 VOID CALLBACK UpdateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
 VOID CALLBACK UpdateBoardProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime);
@@ -210,38 +221,60 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         Init(hWnd);
         break;
     case WM_COMMAND:
+    {
+        int wmId = LOWORD(wParam);
+        switch (wmId)
         {
-            int wmId = LOWORD(wParam);
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
+        case IDM_ABOUT:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+            break;
+        case IDM_EXIT:
+            DestroyWindow(hWnd);
+            break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
         }
-        break;
+    }
+    break;
     case WM_KEYDOWN:
-        if (player->GetPressed())
-        {
-            POINT temp = { player->GetCenterX(), player->GetCenterY() };
-            if (points.back().x != temp.x || points.back().y != temp.y)
-                points.push_back({ player->GetCenterX(), player->GetCenterY() });
-        }
+        if (wParam == VK_LEFT)
+            AddInput(EInput::LEFT);
+        if (wParam == VK_RIGHT)
+            AddInput(EInput::RIGHT);
+        if (wParam == VK_UP)
+            AddInput(EInput::UP);
+        if (wParam == VK_DOWN)
+            AddInput(EInput::DOWN);
         if (GetAsyncKeyState(VK_SPACE) & 0x8000)
         {
             player->SetPressed(true);
+            points.push_back({ player->GetCenterX(), player->GetCenterY() });
         }
         break;
     case WM_KEYUP:
         if (wParam == VK_SPACE)
         {
             player->SetPressed(false);
-            points.push_back({ player->GetCenterX(), player->GetCenterY() });
+            //points.erase(points.begin(), points.end());
+        }
+        if (!input.empty())
+        {
+            switch (wParam)
+            {
+            case VK_LEFT:
+                RemoveInput(EInput::LEFT);
+                break;
+            case VK_RIGHT:
+                RemoveInput(EInput::RIGHT);
+                break;
+            case VK_UP:
+                RemoveInput(EInput::UP);
+                break;
+            case VK_DOWN:
+                RemoveInput(EInput::DOWN);
+                break;
+            }
+
         }
         break;
     case WM_PAINT:
@@ -294,14 +327,13 @@ void Init(HWND hWnd)
 
     map = new Map();
     map->SetRectView(rectView);
+    map->SetPoints(points, area);
 
     player = new Player(50, 50, 10);
     player->SetRectView(rectView);
     
     objects.push_back(map);
     objects.push_back(player);
-
-    points.push_back({ player->GetCenterX(), player->GetCenterY() });
 
     Gdi_Init();
 
@@ -311,6 +343,33 @@ void Init(HWND hWnd)
     SetTimer(hWnd, TIMER_UPDATE_ID, UpdateDeltaTime, (TIMERPROC)UpdateProc);
     SetTimer(hWnd, TIMER_KEY_STATE_ID, UpdateDeltaTime, (TIMERPROC)KeyStateProc);
     SetTimer(hWnd, TIMER_UPDATE_BOARD_ID, UpdateBoardTime, (TIMERPROC)UpdateBoardProc);
+}
+
+void AddInput(EInput key)
+{
+    if (input.empty())
+    {
+        if (player->GetPressed())
+            points.push_back({ player->GetCenterX(), player->GetCenterY() });
+        input.push_back(key);
+    }
+    else if (find(input.begin(), input.end(), key) == input.end())
+    {
+        if (player->GetPressed())
+            points.push_back({ player->GetCenterX(), player->GetCenterY() });
+        input.push_back(key);
+    }
+}
+
+void RemoveInput(EInput key)
+{
+    auto v = find(input.begin(), input.end(), key);
+    if (v != input.end())
+    {
+        if (player->GetPressed())
+            points.push_back({ player->GetCenterX(), player->GetCenterY() });
+        input.erase(v);
+    }
 }
 
 #pragma region Gdi
@@ -328,7 +387,6 @@ void Gdi_Draw(HDC hdc)
 {
     Graphics graphics(hdc);
 
-    map->SetPoints(points, area);
     for (int i = 0; i < objects.size(); i++)
     {
         objects[i]->Draw(hdc);
@@ -408,40 +466,46 @@ VOID KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
     {
 
     }
+
     if (GetAsyncKeyState(VK_SPACE) & 0x8000)
     {
         player->SetPressed(true);
     }
-    if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+
+
+    if (!input.empty())
     {
-        if (player->MoveTo(rectView, -1, 0))
+        switch (input.back())
         {
-            if (!player->GetPressed())
-                board[player->GetY() / 10][player->GetX() / 10] = 1;
+        case EInput::DOWN:
+            if (player->MoveTo(rectView, 0, 1))
+            {
+                if (player->GetPressed())
+                    board[player->GetY() / 10][player->GetX() / 10] = 1;
+            }
+            break;
+        case EInput::UP:
+            if (player->MoveTo(rectView, 0, -1))
+            {
+                if (player->GetPressed())
+                    board[player->GetY() / 10][player->GetX() / 10] = 1;
+            }
+            break;
+        case EInput::LEFT:
+            if (player->MoveTo(rectView, -1, 0))
+            {
+                if (player->GetPressed())
+                    board[player->GetY() / 10][player->GetX() / 10] = 1;
+            }
+            break;
+        case EInput::RIGHT:
+            if (player->MoveTo(rectView, 1, 0))
+            {
+                if (player->GetPressed())
+                    board[player->GetY() / 10][player->GetX() / 10] = 1;
+            }
+            break;
         }
     }
-    else if (GetAsyncKeyState(VK_UP) & 0x8000)
-    {
-        if (player->MoveTo(rectView, 0, -1))
-        {
-            if (player->GetPressed())
-                board[player->GetY() / 10][player->GetX() / 10] = 1;
-        }
-    }
-    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-    {
-        if (player->MoveTo(rectView, 1, 0))
-        {
-            if (player->GetPressed())
-                board[player->GetY() / 10][player->GetX() / 10] = 1;
-        }
-    }
-    else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-    {
-        if (player->MoveTo(rectView, 0, 1))
-        {
-            if (player->GetPressed())
-                board[player->GetY() / 10][player->GetX() / 10] = 1;
-        }
-    }
+
 }

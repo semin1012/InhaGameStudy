@@ -18,9 +18,9 @@ bool Player::MoveTo(RECT& rectView, int x, int y)
 	int moveY = this->GetY() + speed * y;
 
 	if (moveX >= rectView.right + GetHalfSize())	return false;
-	if (moveX <= rectView.left - GetHalfSize() * 2)	return false;
+	if (moveX <= rectView.left - GetHalfSize() * 2 - 50)	return false;
 	if (moveY >= rectView.bottom + GetHalfSize())	return false;
-	if (moveY <= rectView.top - GetHalfSize() * 2)	return false;
+	if (moveY <= rectView.top - GetHalfSize() * 2 - 50)	return false;
 
 	this->SetX(moveX);
 	this->SetY(moveY);

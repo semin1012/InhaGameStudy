@@ -118,5 +118,5 @@ void Map::SetRectView(RECT& rectView)
 
 void Map::SetPoints(std::vector<POINT>& points, std::vector<POINT>& area)
 {
-	this->points = points;
+	this->points = &points;
 }
