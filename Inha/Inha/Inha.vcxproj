@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Circle2D.cpp" />
     <ClCompile Include="CLinkedList.cpp" />
+    <ClCompile Include="DLinkedList.cpp" />
     <ClCompile Include="GeometricObject.cpp" />
     <ClCompile Include="Inha.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -153,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="Circle2D.h" />
     <ClInclude Include="CLinkedList.h" />
+    <ClInclude Include="DLinkedList.h" />
     <ClInclude Include="GeometricObject.h" />
     <ClInclude Include="MyPoint.h" />
     <ClInclude Include="Rectangle2D.h" />
