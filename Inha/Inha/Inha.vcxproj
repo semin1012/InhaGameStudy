@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryTree.cpp" />
     <ClCompile Include="Circle2D.cpp" />
     <ClCompile Include="CLinkedList.cpp" />
     <ClCompile Include="DLinkedList.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="vegnews.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryTree.h" />
     <ClInclude Include="Circle2D.h" />
     <ClInclude Include="CLinkedList.h" />
     <ClInclude Include="DLinkedList.h" />

@@ -225,7 +225,10 @@ void DFS()
 
                 if (isArea == true)
                 {
-
+                    if (map != nullptr)
+                    {
+                        map.
+                    }
                 }
             }
         }
