@@ -79,7 +79,6 @@ void Map::Draw(HDC hdc)
 void Map::Draw(HDC hdc, std::vector<POINT>& points)
 {
 	
-	
 }
 
 void Map::Collision()
@@ -119,4 +118,5 @@ void Map::SetRectView(RECT& rectView)
 void Map::SetPoints(std::vector<POINT>& points, std::vector<POINT>& area)
 {
 	this->points = &points;
+	this->area = &area;
 }

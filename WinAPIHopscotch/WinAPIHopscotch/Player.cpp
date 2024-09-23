@@ -12,6 +12,8 @@ Player::~Player()
 {
 }
 
+
+
 bool Player::MoveTo(RECT& rectView, int x, int y)
 {
 	int moveX = this->GetX() + speed * x;
@@ -25,14 +27,23 @@ bool Player::MoveTo(RECT& rectView, int x, int y)
 	this->SetX(moveX);
 	this->SetY(moveY);
 
+	/*if (!points->empty())
+	{
+		int lastIdx = points->size() - 1;
+		if (points[lastIdx] == points[0])
+		{
+
+		}
+	}*/
+
 	Collision();
 
 	return true;
 }
 
-void Player::CheckArea(std::vector<POINT>& points)
+void Player::SetPoints(std::vector<POINT>& points)
 {
-
+	this->points = &points;
 }
 
 int Player::GetCenterX()

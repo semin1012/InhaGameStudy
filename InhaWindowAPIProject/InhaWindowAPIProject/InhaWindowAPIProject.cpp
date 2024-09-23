@@ -8,8 +8,19 @@
 #include <stdio.h>
 #pragma comment(lib, "Msimg32.lib")
 
+#include <winsock.h>
+#pragma comment(lib, "ws2_32.lib")
 
 #define MAX_LOADSTRING 100
+
+#define Buf_Size 1024
+void Error(const char* msg);
+void Log(const char* msg);
+
+char strServerIP[] = "172.30.1.85";
+// char strServerIP[] = "127.0.0.1";    // 내 컴퓨터의 IP
+
+char strPort[] = "12345";   // 8080(인터넷 열때)처럼 많이 알려진 포트는 사용하지 말것
 
 /*
 Q1. 
@@ -664,6 +675,7 @@ void Gdi_End()
 {
     GdiplusShutdown(g_GdipPlusToken);
 }
+
 
 void Update()
 {

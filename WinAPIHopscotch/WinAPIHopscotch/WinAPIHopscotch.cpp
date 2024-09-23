@@ -179,34 +179,37 @@ void DFS()
     static const short dirY[4] = { 1, -1, 0, 0 };
 
     queue<pair<int, int>> q;
+
     int count = 0;
 
     for (int i = 0; i < BOARD_SIZE_Y / 10; i++)
     {
         for (int j = 0; j < BOARD_SIZE_X / 10; j++)
         {
-            if (board[i][j] == 1 && visit[i][j] == 0)
+            // 1이면 들른 곳
+            if (board[i][j] != 1 || visit[i][j] != 0)
+                continue;
+
+            visit[i][j] = ++count;
+            q.push({ j, i });   // x, y 순서
+
+            while (!q.empty())
             {
-                // 1이면 들른 곳
-                visit[i][j] = ++count;
-                q.push({ j, i });   // x, y 순서
+                pair<int, int> cur = q.front();
+                area.push_back({cur.first, cur.second});
+                q.pop();
 
-                while (!q.empty())
+                for (int z = 0; z < 4; z++)
                 {
-                    pair<int, int> cur = q.front();
-                    q.pop();
+                    int dx = cur.first + dirX[z];
+                    int dy = cur.second + dirY[z];
 
-                    for (int z = 0; z < 4; z++)
-                    {
-                        int dx = cur.first + dirX[z];
-                        int dy = cur.second + dirY[z];
+                    if (dy < 0 || dx < 0 || dy >= BOARD_SIZE_Y || dx >= BOARD_SIZE_X ) continue;
+                    if (board[dy][dx] == 0 || visit[dy][dx] != 0 ) continue;
 
-                        if (dy < 0 || dx < 0 || dy >= BOARD_SIZE_Y || dx >= BOARD_SIZE_X ) continue;
-                        if (board[dy][dx] == 0 || visit[dy][dx] != 0 ) continue;
-
-                        visit[dy][dx] = count;
-                        q.push({ dx, dy });
-                    }
+                    visit[dy][dx] = count;
+                    q.push({ dx, dy });
+                    area.push_back({dx, dy});
                 }
             }
         }
@@ -331,6 +334,7 @@ void Init(HWND hWnd)
 
     player = new Player(50, 50, 10);
     player->SetRectView(rectView);
+    player->SetPoints(points);
     
     objects.push_back(map);
     objects.push_back(player);

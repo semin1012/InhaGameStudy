@@ -14,11 +14,13 @@ class Player : public GameObject
 	BITMAP				bitPlayer;
 	bool				isPressed;
 	RECT*				rectView;
+	std::vector<POINT>*	points;
 
 
 public:
 	Player(int x, int y, int halfSize);
 	~Player();
+	void SetPoints(std::vector<POINT>& points);
 
 	void		Update() override;
 	void		Draw(HDC hdc) override;
