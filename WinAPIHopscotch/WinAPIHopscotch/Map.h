@@ -14,18 +14,18 @@ private:
 	BITMAP				bitMap;
 	BITMAP				bitFrontMap;
 	std::vector<POINT>*	points;
-	std::vector<POINT>	area;
+	std::vector<POINT>*	area;
 
 public:
 	Map();
 	~Map();
-	void Update() override;
-	void Draw(HDC hdc) override;
-	void Draw(HDC hdc, std::vector<POINT>& points);
-	void Collision() override;
-	void CreateBitmap() override;
+	void		Update() override;
+	void		Draw(HDC hdc) override;
+	void		Draw(HDC hdc, std::vector<POINT>& points);
+	void		Collision() override;
+	void		CreateBitmap() override;
 	
-	void SetRectView(RECT& rectView);
-	void SetPoints(std::vector<POINT>& points, std::vector<POINT>& area);
+	void		SetRectView(RECT& rectView);
+	void		SetPoints(std::vector<POINT>& points, std::vector<POINT>& area);
 };
 

@@ -175,12 +175,15 @@ VOID CALLBACK KeyStateProc(HWND hwnd, UINT message, UINT iTimerID, DWORD dwTime)
 
 void DFS()
 {
+    memset(visit, 0, sizeof(visit) / sizeof(short));
+
     static const short dirX[4] = { 0, 0, 1, -1 };
     static const short dirY[4] = { 1, -1, 0, 0 };
 
     queue<pair<int, int>> q;
 
     int count = 0;
+    bool isArea = true;
 
     for (int i = 0; i < BOARD_SIZE_Y / 10; i++)
     {
@@ -204,12 +207,25 @@ void DFS()
                     int dx = cur.first + dirX[z];
                     int dy = cur.second + dirY[z];
 
-                    if (dy < 0 || dx < 0 || dy >= BOARD_SIZE_Y || dx >= BOARD_SIZE_X ) continue;
-                    if (board[dy][dx] == 0 || visit[dy][dx] != 0 ) continue;
+                    if (dy < 0 || dx < 0 || dy >= BOARD_SIZE_Y || dx >= BOARD_SIZE_X)
+                    {
+                        isArea = false;
+                        continue;
+                    }
+                    if (board[dy][dx] == 0 || visit[dy][dx] != 0)
+                    {
+                        isArea = false;
+                        continue;
+                    }
 
                     visit[dy][dx] = count;
                     q.push({ dx, dy });
                     area.push_back({dx, dy});
+                }
+
+                if (isArea == true)
+                {
+
                 }
             }
         }
