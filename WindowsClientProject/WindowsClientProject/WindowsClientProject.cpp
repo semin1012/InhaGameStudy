@@ -166,10 +166,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 #pragma endregion
 
+bool isRecvChat = false;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static RECT rectView;
+    static HWND edit;
     switch (message)
     {
     case WM_CREATE:
@@ -193,6 +195,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 #endif
             wcscat_s(chat, msg);
             wcscat_s(chat, _T("\r\n"));
+            SetDlgItemText(edit, IDC_EDIT_CHAT, chat);
+            isRecvChat = true;
             InvalidateRect(hWnd, NULL, true);
             break;
         }
@@ -315,8 +319,8 @@ BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     switch (uMsg)
     {
     case WM_INITDIALOG:
-        SetFocus(GetDlgItem(hDlg, IDC_EDIT_MYCHAT));
         SetTimer(hDlg, 1, 100, NULL);
+        SetFocus(GetDlgItem(hDlg, IDC_EDIT_MYCHAT));
         return 1;
         break;
     case WM_CHAR:
@@ -329,7 +333,7 @@ BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         str[msgCount++] = wParam;
         str[msgCount] = NULL;
         SetDlgItemText(hDlg, IDC_EDIT_MYCHAT, str);
-        InvalidateRect(hDlg, NULL, true);
+        InvalidateRect(hDlg, NULL, false);
         break;
     case WM_COMMAND:
         switch (wParam)
@@ -346,7 +350,12 @@ BOOL CALLBACK Dialog1_Proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_TIMER:
-        SetDlgItemText(hDlg, IDC_EDIT_CHAT, chat);
+        if (isRecvChat == true)
+        {
+            isRecvChat = false;
+            SetDlgItemText(hDlg, IDC_EDIT_CHAT, chat);
+            InvalidateRect(hDlg, NULL, false);
+        }
         break;
     case WM_DESTROY:
         CloseClient();
