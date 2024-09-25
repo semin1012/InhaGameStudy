@@ -5,7 +5,8 @@
 //#include "SLinkedList.h"
 //#include "CLinkedList.h"
 //#include "DLinkedList.h"
-#include "BinaryTree.h"
+//#include "BinaryTree.h"
+#include "Hash.h"
 using namespace std;
 
 /*
@@ -21,6 +22,104 @@ Q1. 이전에 구현했던 학생부 관리 프로그램을 이진트리를 이�
 */
 
 
+void PrintMenu()
+{
+	cout << "=========================================\n";
+	cout << "  1: 학생 정보 입력\n";
+	cout << "  2: 학생 정보 삭제\n";
+	cout << "  3: 학생 정보 출력\n";
+	cout << "  4: 학생 정보 검색\n";
+	cout << "  5: 종료\n";
+	cout << "=========================================\n";
+	cout << ">> 메뉴 입력: ";
+}
+
+void InputStudentData(Hash& hash)
+{
+	Student* data = new Student();
+	cout << "\n저장할 학생 정보를 입력해주세요.\n";
+	cout << ">> 이름: ";
+	cin >> data->name;
+	cout << ">> 번호: ";
+	cin >> data->num;
+
+	hash.Add(data);
+	cout << "저장되었습니다.\n\n";
+}
+void PrintAllData(Hash& hash)
+{
+	cout << "\n모든 학생의 정보를 출력합니다.\n";
+	hash.Dump();
+}
+
+void RemoveStudentData(Hash& hash)
+{
+	int number;
+	cout << "\n삭제할 학생의 번호를 입력해주세요.\n";
+	cout << ">> 삭제할 학생의 번호: ";
+	cin >> number;
+	hash.Remove(number);
+	cout << "\n";
+}
+
+void SearchStudentData(Hash& hash)
+{
+	int number;
+	cout << "\n검색할 학생의 번호를 입력해주세요.\n";
+	cout << ">> 학생 번호: ";
+	cin >> number;
+	Node* node = hash.Search(number);
+	cout << "[결과] 학생 이름: " << node->data.name << ", 학생 번호: " << node->data.num << "\n\n";
+}
+
+int main()
+{
+	Hash hash;
+	hash.Initialize(3);
+	int menu;
+	Student st1("이름1", 2020);
+	hash.Add(&st1);
+	st1 = { "이름2", 2021 };
+	hash.Add(&st1);
+	st1 = { "이름3", 2022 };
+	hash.Add(&st1);
+	st1 = { "이름4", 2023 };
+	hash.Add(&st1);
+
+	hash.Dump();
+
+	while (1)
+	{
+		PrintMenu();
+		cin >> menu;
+
+		switch (menu)
+		{
+		case 1:
+			InputStudentData(hash);
+			break;
+		case 2:
+			RemoveStudentData(hash);
+			break;
+		case 3:
+			PrintAllData(hash);
+			break;
+		case 4:
+			SearchStudentData(hash);
+			break;
+		case 5:
+			cout << "프로그램을 종료합니다.\n";
+			return 0;
+		default:
+			cout << "메뉴를 다시 입력해주세요.\n";
+			break;
+		}
+	}
+}
+
+
+
+/*
 void PrintMenu()
 {
 	cout << "=========================================\n";
@@ -116,7 +215,7 @@ int main()
 	}
 }
 
-
+*/
 
 
 
