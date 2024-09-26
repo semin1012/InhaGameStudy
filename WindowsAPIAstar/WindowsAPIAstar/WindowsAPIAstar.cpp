@@ -99,6 +99,7 @@ vector<Node*> nodes;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static bool isCheck = true;
     switch (message)
     {
     case WM_CREATE:
@@ -122,12 +123,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_LBUTTONDOWN:
         LPPOINT mousePos;
+        mousePos = new POINT;
         GetCursorPos(mousePos);
         for (auto node : nodes)
         {
             if (node->IsOnClick(mousePos->x, mousePos->y))
             {
-
+                isCheck = !isCheck;
+                InvalidateRect(hWnd, NULL, true);
+                break;
             }
         }
         break;
@@ -135,9 +139,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
+
             for (auto node : nodes)
             {
                 node->Draw(hdc);
+            }
+
+            if (isCheck)
+            {
+                TextOut(hdc, 0, 0, _T("check"), _tcslen(_T("check")));
             }
             EndPaint(hWnd, &ps);
         }

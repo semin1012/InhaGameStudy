@@ -88,8 +88,8 @@ void Node::Draw(HDC& hdc)
 
 bool Node::IsOnClick(float x, float y)
 {
-    if (rect.right > x)   return false;
-    if (rect.left < x)    return false;
+    if (rect.right < x)   return false;
+    if (rect.left > x)    return false;
     if (rect.top > y)     return false;
     if (rect.bottom < y)  return false;
 
