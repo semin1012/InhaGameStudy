@@ -154,6 +154,7 @@ int main()
         hThreads[0] = (HANDLE)_beginthreadex(NULL, ulStackSize, (unsigned(__stdcall*)(void*))ThFunc7, NULL, 0, (unsigned*)&dwThID1);
         hThreads[1] = (HANDLE)_beginthreadex(NULL, ulStackSize, (unsigned(__stdcall*)(void*))ThFunc8, NULL, 0, (unsigned*)&dwThID1);
 
+
         // 실행   
         if (hThreads[0]) ResumeThread(hThreads[0]);
         if (hThreads[1]) ResumeThread(hThreads[1]);
