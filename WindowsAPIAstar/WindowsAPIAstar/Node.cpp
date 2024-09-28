@@ -1,4 +1,5 @@
 #include "Node.h"
+#include <string>
 
 Node::Node()
 {
@@ -10,6 +11,9 @@ Node::Node()
     g = -1;
     h = -1;
     f = -1;
+    isStart = false;
+    isEnd = false;
+    type = NodeType::Basic;
 }
 
 Node::Node(int x, int y)
@@ -19,18 +23,26 @@ Node::Node(int x, int y)
     g = -1;
     h = -1;
     f = -1;
+    isStart = false;
+    isEnd = false;
+    type = NodeType::Basic;
     SetRectangle();
 }
 
-Node::Node(int x, int y, int width, int height)
+Node::Node(int x, int y, int width, int height, int indexX, int indexY)
 {
     this->posX = x;
     this->posY = y;
     this->width = width;
     this->height = height;
+    this->indexX = indexX;
+    this->indexY = indexY;
+    type = NodeType::Basic;
     g = -1;
     h = -1;
     f = -1;
+    isStart = false;
+    isEnd = false;
     SetRectangle();
 }
 
@@ -81,9 +93,62 @@ void Node::SetFCost(int f)
     this->f = f;
 }
 
+void Node::SetNodeType(NodeType type)
+{
+    this->type = type;
+}
+
+std::wstring s2ws(const std::string& s)
+{
+    int len;
+    int slength = (int)s.length() + 1;
+    len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+    wchar_t* buf = new wchar_t[len];
+    MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+    std::wstring r(buf);
+    delete[] buf;
+    return r;
+}
+
 void Node::Draw(HDC& hdc)
 {
+    static HBRUSH hBrush;
+    
+    switch (type)
+    {
+    case NodeType::Basic:
+        hBrush = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255));
+        break;
+    case NodeType::StartPoint:
+        hBrush = (HBRUSH)CreateSolidBrush(RGB(255, 100, 100));
+        break;
+    case NodeType::EndPoint:
+        hBrush = (HBRUSH)CreateSolidBrush(RGB(100, 100, 255));
+        break;
+    case NodeType::Obstacle:
+        hBrush = (HBRUSH)CreateSolidBrush(RGB(150, 150, 150));
+        break;
+    }
+
+    HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
     Rectangle(hdc, rect.left, rect.top, rect.right, rect.bottom);
+    SelectObject(hdc, oldBrush);
+    DeleteObject(hBrush);
+
+    // g
+    std::wstring temp = s2ws(std::to_string(g));
+    LPCWSTR text = temp.c_str();
+    TextOut(hdc, rect.left + 1, rect.top + 1, text, _tcslen(text));
+
+    // h
+    temp = s2ws(std::to_string(h));
+    text = temp.c_str();
+    TextOut(hdc, rect.left + 30, rect.top + 1, text, _tcslen(text));
+
+    // f
+    temp = s2ws(std::to_string(f));
+    text = temp.c_str();
+    TextOut(hdc, rect.left + 18, rect.top + 30, text, _tcslen(text));
 }
 
 bool Node::IsOnClick(float x, float y)
@@ -134,4 +199,19 @@ int Node::GetHCost()
 int Node::GetFCost()
 {
     return this->f;
+}
+
+int Node::GetIndexX()
+{
+    return indexX;
+}
+
+int Node::GetIndexY()
+{
+    return indexY;
+}
+
+NodeType Node::GetNodeType()
+{
+    return type;
 }

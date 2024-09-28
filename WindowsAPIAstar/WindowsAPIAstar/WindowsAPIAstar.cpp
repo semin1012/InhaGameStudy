@@ -1,11 +1,14 @@
 ﻿// WindowsAPIAstar.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 
 #include <vector>
+#include <string>
 #include "framework.h"
 #include "WindowsAPIAstar.h"
 #include "Node.h" 
 using namespace std;
 #define MAX_LOADSTRING 100
+#define MAX_WIDTH_COUNT 10
+#define MAX_HEIGHT_COUNT 10
 
 #pragma region WinMain
 
@@ -95,15 +98,26 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 #pragma endregion
 
 void Init();
+
+// -1: 장애물, 1: 시작지점, 2: 끝지점
+int board[MAX_HEIGHT_COUNT][MAX_WIDTH_COUNT];
 vector<Node*> nodes;
+vector<Node*> points;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static bool isCheck = true;
+    static LPPOINT mousePos;
+    static bool bStartPoint = true;
+    static bool bObstacleKeyDown = false;
+
     switch (message)
     {
     case WM_CREATE:
         Init();
+        mousePos = new POINT;
+        mousePos->x = 0;
+        mousePos->y = 0;
         break;
     case WM_COMMAND:
         {
@@ -122,23 +136,74 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_LBUTTONDOWN:
-        LPPOINT mousePos;
-        mousePos = new POINT;
         GetCursorPos(mousePos);
+        ScreenToClient(hWnd, mousePos);
+
         for (auto node : nodes)
         {
             if (node->IsOnClick(mousePos->x, mousePos->y))
             {
+                if (node->GetNodeType() != NodeType::Basic)
+                    break;
+    
+                // 장애물
+                if (bObstacleKeyDown)
+                {
+                    if (node->GetNodeType() != NodeType::Obstacle)
+                    {
+                        node->SetNodeType(NodeType::Obstacle);
+                        board[node->GetIndexY()][node->GetIndexX()] = -1;
+                    }
+                    break;
+                }
+
+                // 시작 / 끝 지점
+                if (bStartPoint)
+                {
+                    node->SetNodeType(NodeType::StartPoint);
+                    board[node->GetIndexY()][node->GetIndexX()] = 1;
+                }
+                else
+                {
+                    node->SetNodeType(NodeType::EndPoint);
+                    board[node->GetIndexY()][node->GetIndexX()] = 2;
+                }
+
+                if (points.size() >= 2)
+                {
+                    while (!points.empty())
+                    {
+                        Node* temp = points.back();
+                        temp->SetNodeType(NodeType::Basic);
+                        board[temp->GetIndexY()][temp->GetIndexX()] = 0;
+                        points.pop_back();
+                    }
+                }
+
+                points.push_back(node);
+
                 isCheck = !isCheck;
-                InvalidateRect(hWnd, NULL, true);
+                bStartPoint = !bStartPoint;
                 break;
             }
         }
+        InvalidateRect(hWnd, NULL, true);
+        break;
+    case WM_KEYDOWN:
+        if (wParam == VK_SHIFT)
+            bObstacleKeyDown = true;
+        break;
+    case WM_KEYUP:
+        if (wParam == VK_SHIFT)
+            bObstacleKeyDown = false;
+        break;
+    case WM_MOUSEMOVE:
         break;
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
+            SetBkMode(hdc, TRANSPARENT);
 
             for (auto node : nodes)
             {
@@ -149,6 +214,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             {
                 TextOut(hdc, 0, 0, _T("check"), _tcslen(_T("check")));
             }
+
             EndPaint(hWnd, &ps);
         }
         break;
@@ -182,11 +248,11 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 void Init()
 {
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < MAX_WIDTH_COUNT; i++)
     {
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < MAX_HEIGHT_COUNT; j++)
         {
-            Node* node = new Node(i * 50, j * 50, 50, 50);
+            Node* node = new Node(i * 50, j * 50, 50, 50, i, j);
             nodes.push_back(node);
         }
     }
