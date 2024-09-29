@@ -8,7 +8,8 @@ enum class NodeType
 	Basic,
 	StartPoint,
 	EndPoint,
-	Obstacle
+	Obstacle,
+	Road
 };
 
 class Node
@@ -18,8 +19,6 @@ private:
 	int			width	= RECT_WIDTH;
 	int			height	= RECT_HEIGHT;
 	RECT		rect;
-	bool		isStart;
-	bool		isEnd;
 	int			indexX;
 	int			indexY;
 	NodeType	type;
@@ -27,12 +26,17 @@ private:
 	int			g;
 	int			h;
 	int			f;
+	std::pair<int, int>	parent;
 
 public:
+
 	Node();
 	Node(int x, int y);
 	Node(int x, int y, int width, int height, int indexX, int indexY);
 
+	void		Initialize();
+
+	void		SetParent(std::pair<int, int> parent);
 	void		SetWidth(int width);
 	void		SetHeight(int height);
 	void		SetPosX(int x);
@@ -42,11 +46,15 @@ public:
 	void		SetGCost(int g);
 	void		SetHCost(int h);
 	void		SetFCost(int f);
+	void		SetFCost();
+	void		SetIndexX(int x);
+	void		SetIndexY(int y);
 	void		SetNodeType(NodeType type);
 
 	void		Draw(HDC& hdc);
 	bool		IsOnClick(float x, float y);
-
+	
+	std::pair<int, int> GetParent();
 	int			GetWidth();
 	int			GetHeight();
 	int			GetPosX();

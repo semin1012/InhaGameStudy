@@ -11,8 +11,6 @@ Node::Node()
     g = -1;
     h = -1;
     f = -1;
-    isStart = false;
-    isEnd = false;
     type = NodeType::Basic;
 }
 
@@ -23,8 +21,6 @@ Node::Node(int x, int y)
     g = -1;
     h = -1;
     f = -1;
-    isStart = false;
-    isEnd = false;
     type = NodeType::Basic;
     SetRectangle();
 }
@@ -41,9 +37,20 @@ Node::Node(int x, int y, int width, int height, int indexX, int indexY)
     g = -1;
     h = -1;
     f = -1;
-    isStart = false;
-    isEnd = false;
     SetRectangle();
+}
+
+void Node::Initialize()
+{
+    type = NodeType::Basic;
+    g = -1;
+    f = -1;
+    h = -1;
+}
+
+void Node::SetParent(std::pair<int, int> parent)
+{
+    this->parent = parent;
 }
 
 void Node::SetWidth(int width)
@@ -81,16 +88,33 @@ void Node::SetCost(int g, int h)
 void Node::SetGCost(int g)
 {
     this->g = g;
+    SetFCost();
 }
 
 void Node::SetHCost(int h)
 {
     this->h = h;
+    SetFCost();
 }
 
 void Node::SetFCost(int f)
 {
     this->f = f;
+}
+
+void Node::SetFCost()
+{
+    f = g + h;
+}
+
+void Node::SetIndexX(int x)
+{
+    indexX = x;
+}
+
+void Node::SetIndexY(int y)
+{
+    indexY = y;
 }
 
 void Node::SetNodeType(NodeType type)
@@ -128,6 +152,9 @@ void Node::Draw(HDC& hdc)
     case NodeType::Obstacle:
         hBrush = (HBRUSH)CreateSolidBrush(RGB(150, 150, 150));
         break;
+    case NodeType::Road:
+        hBrush = (HBRUSH)CreateSolidBrush(RGB(255, 255, 100));
+        break;
     }
 
     HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
@@ -159,6 +186,11 @@ bool Node::IsOnClick(float x, float y)
     if (rect.bottom < y)  return false;
 
     return true;
+}
+
+std::pair<int, int> Node::GetParent()
+{
+    return parent;
 }
 
 int Node::GetWidth()
