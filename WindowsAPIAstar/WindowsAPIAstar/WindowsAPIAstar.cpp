@@ -97,148 +97,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 }
 #pragma endregion
 
-void Init();
-void Astar();
-void InitializeAllNode();
-
-// -1: 장애물, 1: 시작지점, 2: 끝지점
-vector<vector<int>> board(MAX_HEIGHT_COUNT, vector<int>(MAX_WIDTH_COUNT));
-// int board[MAX_HEIGHT_COUNT][MAX_WIDTH_COUNT];
-vector<vector<Node*>> nodes(MAX_HEIGHT_COUNT, vector<Node*>());
-vector<Node*> points;
-
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    static bool isCheck = true;
-    static LPPOINT mousePos;
-    static bool bStartPoint = true;
-    static bool bObstacleKeyDown = false;
-
-    switch (message)
-    {
-    case WM_CREATE:
-        Init();
-        mousePos = new POINT;
-        mousePos->x = 0;
-        mousePos->y = 0;
-        break;
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
-    case WM_LBUTTONDOWN:
-        GetCursorPos(mousePos);
-        ScreenToClient(hWnd, mousePos);
-        
-        for (int i = 0; i < MAX_HEIGHT_COUNT; i++)
-        {
-            for (int j = 0; j < MAX_WIDTH_COUNT; j++)
-            {
-                Node* node = nodes[i][j];
-
-                if (node->IsOnClick(mousePos->x, mousePos->y))
-                {
-                    if (node->GetNodeType() != NodeType::Basic)
-                        break;
-
-                    // 장애물
-                    if (bObstacleKeyDown)
-                    {
-                        if (node->GetNodeType() != NodeType::Obstacle)
-                        {
-                            node->SetNodeType(NodeType::Obstacle);
-                            board[node->GetIndexY()][node->GetIndexX()] = -1;
-                        }
-                        break;
-                    }
-
-                    if (points.size() >= 2)
-                    {
-                        InitializeAllNode();
-                        while (!points.empty())
-                        {
-                            Node* temp = points.back();
-                            board[temp->GetIndexY()][temp->GetIndexX()] = 0;
-                            points.pop_back();
-                        }
-                    }
-
-                    // 시작 / 끝 지점
-                    if (bStartPoint)
-                    {
-                        node->SetNodeType(NodeType::StartPoint);
-                        board[node->GetIndexY()][node->GetIndexX()] = 1;
-                    }
-                    else
-                    {
-                        node->SetNodeType(NodeType::EndPoint);
-                        board[node->GetIndexY()][node->GetIndexX()] = 2;
-                    }
-
-                    points.push_back(node);
-
-                    if (points.size() == 2)
-                        Astar();
-
-                    isCheck = !isCheck;
-                    bStartPoint = !bStartPoint;
-                    break;
-                }
-            }
-        }
-
-        {
-           
-        }
-        InvalidateRect(hWnd, NULL, true);
-        break;
-    case WM_KEYDOWN:
-        if (wParam == VK_SHIFT)
-            bObstacleKeyDown = true;
-        break;
-    case WM_KEYUP:
-        if (wParam == VK_SHIFT)
-            bObstacleKeyDown = false;
-        break;
-    case WM_MOUSEMOVE:
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            SetBkMode(hdc, TRANSPARENT);
-
-            for (int i = 0; i < MAX_HEIGHT_COUNT; i++)
-            {
-                for (int j = 0; j < MAX_WIDTH_COUNT; j++)
-                {
-                    nodes[i][j]->Draw(hdc);
-                }
-            }
-
-            EndPaint(hWnd, &ps);
-        }
-        break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
-}
 
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -258,6 +116,139 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return (INT_PTR)FALSE;
 }
+
+
+void Init();
+void Astar();
+void InitializeAllNode();
+void Draw(HDC& hdc);
+
+// -1: 장애물, 1: 시작지점, 2: 끝지점
+vector<vector<int>> board(MAX_HEIGHT_COUNT, vector<int>(MAX_WIDTH_COUNT));
+vector<vector<Node*>> nodes(MAX_HEIGHT_COUNT, vector<Node*>());
+vector<Node*> points;
+vector<Node*> paths;
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    static bool isCheck = true;
+    static LPPOINT mousePos;
+    static bool bStartPoint = true;
+    static bool bObstacleKeyDown = false;
+   
+
+    switch (message)
+    {
+    case WM_CREATE:
+        Init();
+        SetTimer(hWnd, 0, 150, NULL);
+        mousePos = new POINT;
+        mousePos->x = 0;
+        mousePos->y = 0;
+        break;
+    case WM_LBUTTONDOWN:
+        GetCursorPos(mousePos);
+        ScreenToClient(hWnd, mousePos);
+        
+        for (int i = 0; i < MAX_HEIGHT_COUNT; i++)
+        {
+            for (int j = 0; j < MAX_WIDTH_COUNT; j++)
+            {
+                Node* node = nodes[i][j];
+
+                if (node->IsOnClick(mousePos->x, mousePos->y))
+                {
+                    if (node->GetNodeType() != ENodeType::Basic)
+                        break;
+
+                    // 장애물
+                    if (bObstacleKeyDown)
+                    {
+                        if (node->GetNodeType() != ENodeType::Obstacle)
+                        {
+                            node->SetNodeType(ENodeType::Obstacle);
+                            board[node->GetIndexY()][node->GetIndexX()] = -1;
+                        }
+                        break;
+                    }
+
+                    if (points.size() >= 2)
+                    {
+                        InitializeAllNode();
+                        while (!points.empty())
+                        {
+                            Node* temp = points.back();
+                            board[temp->GetIndexY()][temp->GetIndexX()] = 0;
+                            points.pop_back();
+                        }
+                    }
+
+                    // 시작 / 끝 지점
+                    if (bStartPoint)
+                    {
+                        node->SetNodeType(ENodeType::StartPoint);
+                        board[node->GetIndexY()][node->GetIndexX()] = 1;
+                    }
+                    else
+                    {
+                        node->SetNodeType(ENodeType::EndPoint);
+                        board[node->GetIndexY()][node->GetIndexX()] = 2;
+                    }
+
+                    points.push_back(node);
+
+                    if (points.size() == 2)
+                        Astar();
+
+                    isCheck = !isCheck;
+                    bStartPoint = !bStartPoint;
+                    break;
+                }
+            }
+        }
+
+        InvalidateRect(hWnd, NULL, true);
+        break;
+    case WM_TIMER:
+        {
+            if (paths.size() <= 0)
+                break;
+
+            Node* path = paths.back();
+            path->SetNodeType(ENodeType::Road);
+            paths.pop_back();
+        }
+        InvalidateRect(hWnd, NULL, true);
+        break;
+    case WM_KEYDOWN:
+        if (wParam == VK_SHIFT)
+            bObstacleKeyDown = true;
+        break;
+    case WM_KEYUP:
+        if (wParam == VK_SHIFT)
+            bObstacleKeyDown = false;
+        break;
+    case WM_PAINT:
+        {
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hWnd, &ps);
+            SetBkMode(hdc, TRANSPARENT);
+
+            Draw(hdc);
+
+            EndPaint(hWnd, &ps);
+        }
+        break;
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+    return 0;
+}
+
+
 
 void Init()
 {
@@ -333,8 +324,11 @@ void Astar()
     {
         if (px == visitList.back()->GetIndexX() && py == visitList.back()->GetIndexY())
         {
-            if (nodes[px][py]->GetNodeType() != NodeType::StartPoint && nodes[px][py]->GetNodeType() != NodeType::EndPoint)
-                nodes[px][py]->SetNodeType(NodeType::Road);
+            if (nodes[px][py]->GetNodeType() != ENodeType::StartPoint && nodes[px][py]->GetNodeType() != ENodeType::EndPoint)
+            {
+                //nodes[px][py]->SetNodeType(NodeType::Road);
+                paths.push_back(visitList.back());
+            }
 
             px = visitList.back()->GetParent().second;
             py = visitList.back()->GetParent().first;
@@ -353,6 +347,17 @@ void InitializeAllNode()
         {
             nodes[j][i]->Initialize();
             board[i][j] = 0;
+        }
+    }
+}
+
+void Draw(HDC& hdc)
+{
+    for (int i = 0; i < MAX_HEIGHT_COUNT; i++)
+    {
+        for (int j = 0; j < MAX_WIDTH_COUNT; j++)
+        {
+            nodes[i][j]->Draw(hdc);
         }
     }
 }

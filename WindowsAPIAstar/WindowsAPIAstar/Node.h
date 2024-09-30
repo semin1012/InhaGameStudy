@@ -3,7 +3,7 @@
 #define RECT_WIDTH 50;
 #define RECT_HEIGHT 50;
 
-enum class NodeType
+enum class ENodeType
 {
 	Basic,
 	StartPoint,
@@ -21,7 +21,7 @@ private:
 	RECT		rect;
 	int			indexX;
 	int			indexY;
-	NodeType	type;
+	ENodeType	type;
 
 	int			g;
 	int			h;
@@ -49,7 +49,7 @@ public:
 	void		SetFCost();
 	void		SetIndexX(int x);
 	void		SetIndexY(int y);
-	void		SetNodeType(NodeType type);
+	void		SetNodeType(ENodeType type);
 
 	void		Draw(HDC& hdc);
 	bool		IsOnClick(float x, float y);
@@ -65,6 +65,6 @@ public:
 	int			GetFCost();
 	int			GetIndexX();
 	int			GetIndexY();
-	NodeType	GetNodeType();
+	ENodeType	GetNodeType();
 };
 

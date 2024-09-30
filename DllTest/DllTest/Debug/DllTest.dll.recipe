@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\InhaGameStudy\WindowsAPIAstar\x64\Debug\WindowsAPIAstar.exe</FullPath>
+      <FullPath>D:\InhaGameStudy\DllTest\Debug\DllTest.dll</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

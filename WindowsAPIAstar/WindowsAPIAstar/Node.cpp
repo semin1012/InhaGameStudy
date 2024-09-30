@@ -11,7 +11,7 @@ Node::Node()
     g = -1;
     h = -1;
     f = -1;
-    type = NodeType::Basic;
+    type = ENodeType::Basic;
 }
 
 Node::Node(int x, int y)
@@ -21,7 +21,7 @@ Node::Node(int x, int y)
     g = -1;
     h = -1;
     f = -1;
-    type = NodeType::Basic;
+    type = ENodeType::Basic;
     SetRectangle();
 }
 
@@ -33,7 +33,7 @@ Node::Node(int x, int y, int width, int height, int indexX, int indexY)
     this->height = height;
     this->indexX = indexX;
     this->indexY = indexY;
-    type = NodeType::Basic;
+    type = ENodeType::Basic;
     g = -1;
     h = -1;
     f = -1;
@@ -42,7 +42,7 @@ Node::Node(int x, int y, int width, int height, int indexX, int indexY)
 
 void Node::Initialize()
 {
-    type = NodeType::Basic;
+    type = ENodeType::Basic;
     g = -1;
     f = -1;
     h = -1;
@@ -117,7 +117,7 @@ void Node::SetIndexY(int y)
     indexY = y;
 }
 
-void Node::SetNodeType(NodeType type)
+void Node::SetNodeType(ENodeType type)
 {
     this->type = type;
 }
@@ -140,19 +140,19 @@ void Node::Draw(HDC& hdc)
     
     switch (type)
     {
-    case NodeType::Basic:
+    case ENodeType::Basic:
         hBrush = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255));
         break;
-    case NodeType::StartPoint:
+    case ENodeType::StartPoint:
         hBrush = (HBRUSH)CreateSolidBrush(RGB(255, 100, 100));
         break;
-    case NodeType::EndPoint:
+    case ENodeType::EndPoint:
         hBrush = (HBRUSH)CreateSolidBrush(RGB(100, 100, 255));
         break;
-    case NodeType::Obstacle:
+    case ENodeType::Obstacle:
         hBrush = (HBRUSH)CreateSolidBrush(RGB(150, 150, 150));
         break;
-    case NodeType::Road:
+    case ENodeType::Road:
         hBrush = (HBRUSH)CreateSolidBrush(RGB(255, 255, 100));
         break;
     }
@@ -243,7 +243,7 @@ int Node::GetIndexY()
     return indexY;
 }
 
-NodeType Node::GetNodeType()
+ENodeType Node::GetNodeType()
 {
     return type;
 }
