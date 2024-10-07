@@ -7984,7 +7984,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1386349971}
         m_TargetAssemblyTypeName: Test.DropdownAlignment, Assembly-CSharp
         m_MethodName: OnDropdownEvent
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11956,7 +11956,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1901105285}
         m_TargetAssemblyTypeName: Test.DropdownAlignment, Assembly-CSharp
         m_MethodName: OnDropdownEvent
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
