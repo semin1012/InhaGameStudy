@@ -6,6 +6,11 @@
 
 #define MAX_LOADSTRING 100
 
+// >> :
+HWND        g_hWnd;
+cMainGame*  g_pMainGame;
+#define TIMER_ID 123
+// << : 
 
 HINSTANCE hInst;                               
 WCHAR szTitle[MAX_LOADSTRING];                 
@@ -38,6 +43,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_INHADIRECTXTEST));
 
+    // >> :
+    g_pMainGame = new cMainGame();
+    g_pMainGame->Setup();
+    SetTimer(g_hWnd, TIMER_ID, 10, NULL);
+    // << :
+
     MSG msg;
 
 
@@ -49,6 +60,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }
+
+    // >> :
+    KillTimer(g_hWnd, TIMER_ID);
+    delete g_pMainGame;
+    // << :
 
     return (int) msg.wParam;
 }
@@ -88,6 +104,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
+   g_hWnd = hWnd;
+
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
@@ -97,8 +115,16 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    if (g_pMainGame)
+        g_pMainGame->WndProc(hWnd, message, wParam, lParam);
+
     switch (message)
     {
+    case WM_TIMER:
+        if (g_pMainGame)
+            g_pMainGame->Update();
+        InvalidateRect(g_hWnd, NULL, false);
+        break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -120,6 +146,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
+
+            if (g_pMainGame != NULL)
+                g_pMainGame->Render(hdc);
 
             EndPaint(hWnd, &ps);
         }

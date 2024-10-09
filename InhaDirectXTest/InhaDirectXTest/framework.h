@@ -17,3 +17,5 @@
 #include <vector>
 extern HWND g_hWnd;
 #define PI 3.141592f
+
+using namespace std;
