@@ -44,10 +44,7 @@ public abstract class Weapon : MonoBehaviour
     }
 
     abstract public bool Attack();
-    public bool GetIsConsumable()
-    {
-        return isConsumable;
-    }
+
     public void Destroy()
     {
         Destroy(gameObject);
