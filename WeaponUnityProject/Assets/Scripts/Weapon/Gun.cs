@@ -9,13 +9,13 @@ public class Gun : Weapon
     public void Start()
     {
         Debug.Log("รั ภๅย๘");
-        SetWeaponInfo(30f, 0.5f, 100, true, 3);
+        SetWeaponInfo(30f, 0.5f, 100, true, 3, 35);
     }
 
-    public override void SetWeaponInfo(float strikingPower, float cooldown, int durability, bool isConsumable, int durabilityAmount)
+    public void SetWeaponInfo(float strikingPower, float cooldown, int durability, bool isConsumable, int durabilityAmount, int ammoCount)
     {
-        base.SetWeaponInfo(strikingPower, cooldown, durability, isConsumable, durabilityAmount);
-        ammoCount = 35;
+        SetWeaponInfo(strikingPower, cooldown, durability, isConsumable, durabilityAmount);
+        this.ammoCount = ammoCount;
     }
 
     public override bool Attack()
@@ -36,3 +36,4 @@ public class Gun : Weapon
         return false;
     }
 }
+

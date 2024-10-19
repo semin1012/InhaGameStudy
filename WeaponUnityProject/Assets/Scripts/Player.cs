@@ -5,21 +5,17 @@ using System;
 
 public class Player : MonoBehaviour
 {
+	#region change weapon & consumable
     [SerializeField] public Weapon weaponPrefab;
     [SerializeField] public Consumable consumablePrefab;
     [SerializeField] public int consumableCount;
-    private Weapon prevWeaponPrefab;
-    private Weapon weapon;
+	private Weapon prevWeaponPrefab;
     private Consumable prevConsumablePrefab;
+	#endregion
+    private Weapon weapon;
     private Consumable consumable;
-    private int mp = 100;
-    private bool canUseConsumable = true;
-
-    public int Mp
-    {
-        get { return mp; }
-        set { mp = value; }
-    }
+	private int mp = 100;
+    public int Mp { get { return mp; } set { mp = value; } }
     public event EventHandler OnChangedMp;
 
     private void Reset()
@@ -35,6 +31,7 @@ public class Player : MonoBehaviour
         weapon = Instantiate(weaponPrefab);
         prevWeaponPrefab = weaponPrefab;
         consumable = Instantiate(consumablePrefab);
+        consumable.SetCount(consumableCount);
         prevConsumablePrefab = consumablePrefab;
     }
 
@@ -54,7 +51,8 @@ public class Player : MonoBehaviour
             if (consumable != null)
                 consumable.Destroy();
             consumable = Instantiate(consumablePrefab);
-            prevConsumablePrefab = consumablePrefab;
+			consumable.SetCount(consumableCount);
+			prevConsumablePrefab = consumablePrefab;
         }
         #endregion
 
@@ -62,44 +60,16 @@ public class Player : MonoBehaviour
         {
             if (weapon.Attack())
             {
-                if (OnChangedMp != null)
-                    OnChangedMp(this, EventArgs.Empty);
+			    if (OnChangedMp != null)
+				    OnChangedMp(this, EventArgs.Empty);
             }
+           
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            UseConsumable();
-        }
-    }
-
-    private IEnumerator CoStartConsumableCooldown()
-    {
-        canUseConsumable = false;
-        yield return new WaitForSeconds(consumable.Cooldown);
-        canUseConsumable = true;
-    }
-
-    private void UseConsumable()
-    {
-        if (canUseConsumable)
-        {
-            if (consumableCount > 0)
-            {
-                consumable.Use();
-                StartCoroutine(CoStartConsumableCooldown());
-                consumableCount--;
-                if (consumableCount == 0)
-                {
-                    Debug.Log($"{consumablePrefab.name}을 모두 사용했습니다.");
-                    consumable.Destroy();
-                    consumable = null;
-                }
-            }
-        }
-        else
-        {
             if (consumable != null)
-                Debug.Log($"{consumablePrefab.name}의 쿨타임이 남았습니다.");
+                consumable.Use();
         }
     }
 }
+

@@ -2,26 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour, IAttackable
 {
-    protected float strikingPower;
+	protected float strikingPower;
+	public float StrikingPower { get { return strikingPower; } set { strikingPower = value; } }
     protected float cooldown;
     protected int durability;
     protected bool isConsumable;
     protected bool isActive;
     protected int durabilityAmount;
-
-    public virtual void SetWeaponInfo(float strikingPower, float cooldown, int durability, bool isConsumable, int durabilityAmount)
+	public void SetWeaponInfo(float strikingPower, float cooldown, int durability, bool isConsumable, int durabilityAmount)
     {
-        this.strikingPower = strikingPower;
+		StrikingPower = strikingPower;
         this.cooldown = cooldown;
         this.durability = durability;
         this.isConsumable = isConsumable;
         this.durabilityAmount = durabilityAmount;
         isActive = true;
-    }
-
-    protected IEnumerator CoCheckCooldown()
+	}
+	abstract public bool Attack();
+	protected IEnumerator CoCheckCooldown()
     {
         if (isActive == false)
         {
@@ -42,9 +42,6 @@ public abstract class Weapon : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
         isActive = true;
     }
-
-    abstract public bool Attack();
-
     public void Destroy()
     {
         Destroy(gameObject);

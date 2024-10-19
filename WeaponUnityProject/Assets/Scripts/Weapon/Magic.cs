@@ -6,29 +6,27 @@ using System;
 public class Magic : Weapon
 {
     private int mpAmount;
-
+    public int MpAmount { get { return mpAmount; } }
     public void Start()
     {
-        Debug.Log("마법 사용");
-        SetWeaponInfo(90f, 2.5f, 0, false, 0);
-
+        Debug.Log("마법 장착");
+        SetWeaponInfo(90f, 2.5f, 0, false, 0, 10);
         Player player = FindObjectOfType<Player>();
         player.OnChangedMp -= OnChangedMp;
         player.OnChangedMp += OnChangedMp;
     }
-
-    public override void SetWeaponInfo(float strikingPower, float cooldown, int durability, bool isConsumable, int durabilityAmount)
+    public void SetWeaponInfo(float strikingPower, float cooldown, int durability, bool isConsumable, int durabilityAmount, int mpAmount)
     {
-        base.SetWeaponInfo(strikingPower, cooldown, durability, isConsumable, durabilityAmount);
-        mpAmount = 10;
+        SetWeaponInfo(strikingPower, cooldown, durability, isConsumable, durabilityAmount);
+        this.mpAmount = mpAmount;
     }
 
     public override bool Attack()
-    {
-        Player player = FindObjectOfType<Player>();
-        if (player.Mp < mpAmount)
+	{
+		Player player = FindObjectOfType<Player>();
+        if ( player.Mp < mpAmount)
         {
-            Debug.Log("Mp가 부족합니다.");
+            Debug.Log("MP가 부족합니다.");
             return false;
         }
         if (isActive)
@@ -47,7 +45,7 @@ public class Magic : Weapon
         if (player != null)
         {
             player.Mp -= mpAmount;
-        }
-        Debug.Log($"플레이어 MP: {player.Mp}");
+			Debug.Log($"플레이어 MP: {player.Mp}");
+		}
     }
 }
