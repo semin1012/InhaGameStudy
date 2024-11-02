@@ -7,8 +7,8 @@ namespace Chapter.MyState
 {
 	public interface IState<T>
 	{
-		void Enter(T sender);
-		void Stay(T sender);
-		void Exit(T sender);
+		void Enter();
+		void Stay();
+		void Exit();
 	}
 }

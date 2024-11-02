@@ -26,7 +26,8 @@ namespace Chapter.MyState
 			if (bikeController == null)
 				return;
 			this.bikeController = bikeController;
-			dicState[(int)EBikeState.Stop] = gameObject.AddComponent<BikeStopState>();
+			dicState[EBikeState.Stop] = gameObject.AddComponent<BikeStopState>();
+            dicState[EBikeState.Start] = gameObject.AddComponent<BikeStartState>();
 		}
 
 		private void Update()

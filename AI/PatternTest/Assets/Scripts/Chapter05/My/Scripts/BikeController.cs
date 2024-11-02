@@ -2,11 +2,12 @@ using Chapter.State;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Chapter.Singleton;
 
 namespace Chapter.MyState
 {
 
-	public class BikeController : MonoBehaviour
+	public class BikeController : Singleton<BikeController> 
 	{
 		public float maxSpeed = 2.0f;
 		public float turnDistance = 2.0f;

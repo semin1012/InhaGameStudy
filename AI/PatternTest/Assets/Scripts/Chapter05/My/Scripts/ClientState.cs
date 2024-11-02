@@ -18,5 +18,7 @@ public class ClientState : MonoBehaviour
 			bikeController.ChangeState(EBikeState.Start);
 		if (GUILayout.Button("Stop Bike"))
 			bikeController.ChangeState(EBikeState.Stop);
+        if (GUILayout.Button("Turn Left"))
+            bikeController.ChangeState(EBikeState.Turn);
 	}
 }

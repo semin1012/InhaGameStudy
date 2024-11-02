@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class BikeStartState : MonoBehaviour, IState<BikeController>
 {
-	public void Enter(BikeController sender)
+	public void Enter()
 	{
 		throw new System.NotImplementedException();
 	}
 
-	public void Exit(BikeController sender)
+	public void Exit()
 	{
 		throw new System.NotImplementedException();
 	}
 
-	public void Stay(BikeController sender)
+	public void Stay()
 	{
 		throw new System.NotImplementedException();
 	}
