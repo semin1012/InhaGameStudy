@@ -1,0 +1,5 @@
+sceneSetups:
+- path: Assets/Scripts/Chapter05/Managing Character States with the State pattern/State.unity
+  isLoaded: 1
+  isActive: 1
+  isSubScene: 0
