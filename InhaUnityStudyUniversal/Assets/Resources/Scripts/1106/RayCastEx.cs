@@ -27,13 +27,16 @@ public class RayCastEx : MonoBehaviour
         // 빈 오브젝트가 아니라면 원점에 맞출 경우 자기 자신을 검출할 수도 있음 < 확인 필요
         ray.direction = transform.forward;
         // ray = new Ray(transform.position, transform.forward); // 위 세 줄을 한 줄로 표현
+
+        GameManager.Instance.score = 0;
+        GameManager.Instance.bGameOver = true;
     }
 
     void Update()
     {
         //Ray_1();
         //Ray_2();
-        Ray_3();
+        //Ray_3();
 
         //DrawRay();
     }

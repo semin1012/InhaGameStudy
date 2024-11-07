@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class AutoCar : Car
 {
 	[Range(0, 50)]
-	public float distance = 10.0f;
+	public float distance = 20.0f;
 
 	private RaycastHit rayHit;
 	private Ray ray;
+	private Vector3 reflect;
 	public Camera mainCamera;
 
 	private void Start()
 	{
+		frontWheel = body.transform.Find("FrontWheelParent").GetComponent<Wheel>();
 		ray = new Ray();
 		ray.origin = frontWheel.transform.position + frontWheel.transform.forward * 3f;
 		ray.direction = frontWheel.transform.forward;
@@ -24,17 +28,7 @@ public class AutoCar : Car
 		ray.direction = frontWheel.transform.forward;
 		transform.LookAt(body.transform);
 
-
 		Ray();
-		if (rayHit.collider != null)
-		{
-			frontWheel.isCollided = true;
-			if (rayHit.normal.x > 0)
-				frontWheel.RotateRight();
-			else if (rayHit.normal.x < 0)
-				frontWheel.RotateLeft();
-		}
-		else frontWheel.isCollided = false;
 
 		MoveForward();
 		if (Input.GetKey(KeyCode.DownArrow))
@@ -51,15 +45,37 @@ public class AutoCar : Car
 		Gizmos.DrawLine(ray.origin, ray.origin + ray.direction * distance);
 		Gizmos.DrawSphere(ray.origin, 0.1f);
 
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawLine(rayHit.point, rayHit.point + rayHit.normal);
+		if (rayHit.collider == null)
+			return;
 
-		Vector3 reflect = Vector3.Reflect(transform.forward, rayHit.normal);
-		Gizmos.DrawLine(rayHit.point, rayHit.point + reflect);
+		Gizmos.color = new Color32(0, 255, 255, 255);      
+		Vector3 incomingVector = ray.direction;
+		incomingVector = incomingVector.normalized;
+		Vector3 normalVector = rayHit.normal;
+		reflect = Vector3.Reflect(incomingVector, normalVector); 
+		Gizmos.DrawLine(rayHit.point, rayHit.point + reflect * distance);
+
+		Gizmos.color = new Color32(0, 0, 255, 255);       
+		Vector3 tmpDirection = (rayHit.point + reflect * distance) - ray.origin;
+		Gizmos.DrawLine(ray.origin, ray.origin + tmpDirection);
+		
+		//angle = 90 - angle / 2;
+		//frontWheel.SetAngle(Vector3.Angle(incomingVector, tmpDirection));
+		//frontWheel.tempAngle = Vector3.Angle(incomingVector, tmpDirection);
+		frontWheel.SetDirection(tmpDirection);
 	}
 
 	void Ray()
 	{
-		Physics.Raycast(ray.origin, ray.direction, out rayHit, distance);
+		if (Physics.Raycast(ray.origin, ray.direction, out rayHit, distance))
+		{
+			frontWheel.isTurn = true;
+			Debug.Log("Ray ok");
+		}
+		else
+		{
+			frontWheel.isTurn = false;
+			Debug.Log("Ray not ok");
+		}
 	}
 }

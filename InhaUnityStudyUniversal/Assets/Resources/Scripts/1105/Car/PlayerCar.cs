@@ -11,8 +11,16 @@ public class PlayerCar : Car
 		if ( Input.GetKey(KeyCode.S)) 
 			MoveBack();
 		if (Input.GetKey(KeyCode.A))
+		{
 			frontWheel.RotateLeft();
+			frontWheel.isTurn = true;
+		}
+		else frontWheel.isTurn = false;
 		if (Input.GetKey(KeyCode.D))
+		{
 			frontWheel.RotateRight();
+			frontWheel.isTurn = true;
+		}
+		else frontWheel.isTurn = false;
 	}
 }

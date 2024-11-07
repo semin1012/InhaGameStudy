@@ -5,9 +5,10 @@ public class Car : MonoBehaviour
     public Wheel frontWheel = null;
     public Wheel backWheel = null;
 	public GameObject body = null;
+	public Vector3 direction;
 
 	public float moveSpeed = 5.0f;
-	public float rotateSpeed = 1.2f;
+	public float rotateSpeed = 1.3f;
 
 	private void Reset()
 	{
@@ -20,16 +21,17 @@ public class Car : MonoBehaviour
 	protected void MoveForward()
 	{
 		float moveDelta = moveSpeed * Time.deltaTime;
+		direction = body.transform.up * frontWheel.transform.localRotation.y * rotateSpeed;
 
-		body.transform.Rotate(body.transform.up * frontWheel.transform.localRotation.y * rotateSpeed);
-		transform.Translate(body.transform.forward * moveDelta);
+		transform.Rotate(direction);
+		transform.Translate(transform.forward * moveDelta);
 	}
 
 	protected void MoveBack()
 	{
 		float moveDelta = moveSpeed * Time.deltaTime;
 
-		body.transform.Rotate(body.transform.up * -frontWheel.transform.localRotation.y * rotateSpeed);
+		transform.Rotate(body.transform.up * -frontWheel.transform.localRotation.y * rotateSpeed);
 		transform.Translate(-body.transform.forward * moveDelta);
 	}
 }
