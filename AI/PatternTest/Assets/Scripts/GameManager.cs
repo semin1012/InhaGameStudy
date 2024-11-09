@@ -1,3 +1,5 @@
+using Chapter.Singleton;
+using Chapter.EventBus;
 using System;
 using System.Collections;
 using System.Collections.Generic;

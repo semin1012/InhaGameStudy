@@ -1348,7 +1348,6 @@ GameObject:
   - component: {fileID: 254766884}
   - component: {fileID: 254766883}
   - component: {fileID: 254766882}
-  - component: {fileID: 254766881}
   m_Layer: 0
   m_Name: FrontWheel
   m_TagString: Untagged
@@ -1373,24 +1372,6 @@ Transform:
   - {fileID: 1673689695}
   m_Father: {fileID: 948627112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!114 &254766881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 254766879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efb619f7133327e4abaefb1fd0f70e4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotSpeed: 100
-  isFront: 1
-  left: {fileID: 653774155}
-  right: {fileID: 1673689694}
-  isTurn: 0
-  tempAngle: 0
 --- !u!136 &254766882
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2331,7 +2312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e19baf62d23ea4c8a88753ebbfb079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontWheel: {fileID: 254766881}
+  frontWheel: {fileID: 0}
   backWheel: {fileID: 1243807226}
   body: {fileID: 1962937618}
   direction: {x: 0, y: 0, z: 0}
@@ -4810,6 +4791,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 948627112}
+  - component: {fileID: 948627113}
   m_Layer: 0
   m_Name: FrontWheelParent
   m_TagString: Untagged
@@ -4833,6 +4815,24 @@ Transform:
   - {fileID: 254766880}
   m_Father: {fileID: 1962937619}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &948627113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948627111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb619f7133327e4abaefb1fd0f70e4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotSpeed: 10
+  isFront: 1
+  left: {fileID: 653774155}
+  right: {fileID: 1673689694}
+  isTurn: 0
+  tempAngle: 0
 --- !u!1 &1039632223
 GameObject:
   m_ObjectHideFlags: 0

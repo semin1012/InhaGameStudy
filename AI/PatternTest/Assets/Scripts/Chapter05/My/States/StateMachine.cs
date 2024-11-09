@@ -15,7 +15,7 @@ namespace Chapter.MyState
 		{
 			this.sender = sender;
 			CurState = curState;
-			CurState.Enter(sender);
+			CurState.Enter();
 		}
 
 		public void ChangeState(IState<T> state)
@@ -26,14 +26,14 @@ namespace Chapter.MyState
 			if (CurState == null)
 				return;
 
-			CurState.Exit(sender);
+			CurState.Exit();
 			CurState = state;
-			CurState.Enter(sender);	
+			CurState.Enter();	
 		}
 
 		public void Update()
 		{
-			CurState.Stay(sender);
+			CurState.Stay();
 		}
 	}
 }
