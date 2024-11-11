@@ -373,6 +373,8 @@
 "Assets/Resources/Scripts/1105/Wheel.cs"
 "Assets/Resources/Scripts/1106/CollisionTest.cs"
 "Assets/Resources/Scripts/1106/RayCastEx.cs"
+"Assets/Resources/Scripts/1111/CameraController.cs"
+"Assets/Resources/Scripts/1111/RoomMirror.cs"
 "Assets/Resources/Scripts/GameManager.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0

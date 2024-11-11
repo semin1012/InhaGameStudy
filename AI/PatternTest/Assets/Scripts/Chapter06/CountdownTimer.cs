@@ -39,7 +39,7 @@ namespace Chapter.EventBus
 		private void OnGUI()
 		{
 			GUI.color = Color.blue;
-			GUI.Label(new Rect(125, 0, 100, 20), "COUNTDOWN: " + _currentTime);
+			GUI.Label(new Rect(225, 0, 100, 20), "COUNTDOWN: " + _currentTime);
 		}
 	}
 }

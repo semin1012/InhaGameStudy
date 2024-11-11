@@ -13,7 +13,7 @@ public class AutoCar : Car
 	private RaycastHit rayHit;
 	private Ray ray;
 	private Vector3 reflect;
-	public Camera mainCamera;
+	public CameraController mainCamera;
 
 	private void Start()
 	{
