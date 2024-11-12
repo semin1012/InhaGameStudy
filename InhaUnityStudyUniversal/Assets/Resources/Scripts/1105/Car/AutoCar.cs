@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class AutoCar : Car
 {
@@ -70,12 +69,10 @@ public class AutoCar : Car
 		if (Physics.Raycast(ray.origin, ray.direction, out rayHit, distance))
 		{
 			frontWheel.isTurn = true;
-			Debug.Log("Ray ok");
 		}
 		else
 		{
 			frontWheel.isTurn = false;
-			Debug.Log("Ray not ok");
 		}
 	}
 }

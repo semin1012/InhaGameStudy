@@ -22,7 +22,7 @@ namespace Chapter.Singleton
 					}
 				}
 				return _instance;
-			}
+			}	
 		}
 
 		public virtual void Awake() 

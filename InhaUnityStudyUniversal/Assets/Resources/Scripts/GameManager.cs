@@ -30,22 +30,29 @@ public class GameManager : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 	}
 
+	public void GameOver()
+	{
+		bGameOver = true;
+		//SceneManager.LoadScene("GameScene");
+	}
+
+	public void GameStart()
+	{
+		bGameOver = false;
+		SceneManager.LoadScene("BirdGameScene");
+	}
+
+	public void Restart()
+	{
+		SceneManager.LoadScene("TitleScene");
+		score = 0;
+	}
+
 	public bool bGameOver = false;
 	public int score = 0;
 
 	private void OnGUI()
 	{
-		GUI.TextArea(new Rect(100, 50, 100, 30), "Test Text1");
-		GUI.TextArea(new Rect(100, 80, 100, 30), "Test Text2");
-		GUI.Box(new Rect(100, 110, 100, 30), "Test Text3");
 
-		if (bGameOver)
-		{
-			if (GUI.Button(new Rect(100, 240, 200, 30), "Ω√¿€"))
-			{
-				bGameOver = false;
-				SceneManager.LoadScene("GameScene");
-			}
-		}
 	}
 }
