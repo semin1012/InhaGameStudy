@@ -5,13 +5,18 @@ using UnityEngine;
 public class Enemy2D : MonoBehaviour
 {
 	public GameObject coinPrefab;
+	public GameObject deathEffectPrefab;
 	private Rigidbody2D rigidBody;
 	private float maxSpeed = 200.0f;
 	public float amplitude = 3.0f;  //진폭
+	public int maxHp = 1;
+	private int curHp = 0;
+	public Player2D player;
 
 	void Start()
 	{
 		rigidBody = GetComponent<Rigidbody2D>();
+		curHp = maxHp;
 		//Destroy(gameObject, 1.0f);  //1초 뒤에 삭제해라. or OnTriggerEnter2D사용
 	}
 
@@ -44,10 +49,15 @@ public class Enemy2D : MonoBehaviour
 	{
 		if (collision.tag == "PlayerBullet")
 		{
-			GameManager.Instance.score += 10;
-			Destroy(gameObject);
-			Destroy(collision.gameObject);
-			Instantiate(coinPrefab, transform.position, transform.rotation);
+			curHp -= 1;
+			if (curHp <= 0)
+			{
+				player.GetScore(maxHp * 10);
+				Destroy(gameObject);
+				Destroy(collision.gameObject);
+				Instantiate(coinPrefab, transform.position, transform.rotation);
+				Instantiate(deathEffectPrefab, transform.position, transform.rotation);
+			}
 		}
 		else if (collision.tag == "EndLine")
 		{

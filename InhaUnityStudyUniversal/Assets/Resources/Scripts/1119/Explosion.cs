@@ -19,7 +19,7 @@ public class Explosion : MonoBehaviour
 
     IEnumerator Explosion_Time()
     {
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 2.0f)
             yield return null;
         Destroy(gameObject);
 	}

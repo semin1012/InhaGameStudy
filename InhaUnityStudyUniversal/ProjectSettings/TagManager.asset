@@ -9,6 +9,10 @@ TagManager:
   - Enemy
   - PlayerBullet
   - EnemyBullet
+  - Ladder
+  - Platform
+  - UI
+  - Heart
   layers:
   - Default
   - TransparentFX

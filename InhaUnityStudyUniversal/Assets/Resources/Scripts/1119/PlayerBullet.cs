@@ -14,6 +14,9 @@ public class PlayerBullet : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            Instantiate(bulletPrefab, transform.position, transform.rotation);
+        {
+            GameObject obj = Instantiate(bulletPrefab);
+            obj.transform.position = transform.position;
+        }
     }
 }

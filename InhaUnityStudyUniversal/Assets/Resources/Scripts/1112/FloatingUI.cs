@@ -17,6 +17,11 @@ public class FloatingUI : MonoBehaviour
 	}
 	public void SetPos(Vector3 pos)
 	{
-		getScore.transform.position = new Vector3(getScore.transform.position.x, pos.y, getScore.transform.position.z);
+		getScore.transform.position = new Vector3(pos.x, pos.y, getScore.transform.position.z);
+	}
+	public void SetPos(Vector3 pos, int score)
+	{
+		getScore.text = "+" + score.ToString();
+		getScore.transform.position = new Vector3(pos.x, pos.y, getScore.transform.position.z);
 	}
 }

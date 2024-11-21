@@ -6,6 +6,7 @@ public class Background : MonoBehaviour
 {
     private Vector2 startPos;
     private float width;
+	public float speed = 2.0f;
 
 	private void Start()
 	{
@@ -15,8 +16,8 @@ public class Background : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (transform.position.x < startPos.x - width)
+		if (transform.position.x <= startPos.x - width)
 			transform.position = startPos;
-		transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y, 1.0f);
+		transform.position = new Vector3(transform.position.x - speed, transform.position.y, 1.0f);
 	}
 }

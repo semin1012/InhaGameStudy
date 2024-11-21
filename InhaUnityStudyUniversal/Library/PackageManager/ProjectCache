@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638669708514071121
-    m_Hash: 3186849319
+      ticks: 638677491359935668
+    m_Hash: 398715448
   m_LockFileStatus:
     m_FilePath: D:/InhaGameStudy/InhaUnityStudyUniversal/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638669708705780821
-    m_Hash: 3339441996
+      ticks: 638677491492973164
+    m_Hash: 3835555173
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -1475,6 +1475,311 @@ m_ResolvedPackages:
     path: 
   unityLifecycle:
     version: 1.2.5
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  fingerprint: 
+- packageId: com.unity.package-validation-suite@0.23.4-preview
+  testable: 0
+  isDirectDependency: 1
+  version: 0.23.4-preview
+  source: 1
+  resolvedPath: D:\InhaGameStudy\InhaUnityStudyUniversal\Library\PackageCache\com.unity.package-validation-suite@0.23.4-preview
+  assetPath: Packages/com.unity.package-validation-suite
+  name: com.unity.package-validation-suite
+  displayName: Package Validation Suite
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: asset
+  description: Unity Package Manager validation suite, used to evaluate a package's
+    integrity before it's considered for publishing.  This is a Unity internal tool
+    at the moment, no support will be provided for this package.
+  status: 0
+  errors: []
+  versions:
+    all:
+    - 0.4.0-preview.6
+    - 0.4.0-preview.8
+    - 0.4.0-preview.11
+    - 0.4.0-preview.12
+    - 0.4.0-preview.14
+    - 0.4.0-preview.18
+    - 0.4.0-preview.19
+    - 0.4.0-preview.21
+    - 0.4.0-preview.23
+    - 0.4.0-preview.24
+    - 0.4.0-preview.25
+    - 0.4.0-preview.26
+    - 0.4.0-preview.27
+    - 0.4.0-preview.28
+    - 0.5.0-preview
+    - 0.5.1-preview
+    - 0.5.2-preview
+    - 0.6.0-preview
+    - 0.6.1-preview
+    - 0.7.1-preview
+    - 0.7.2-preview
+    - 0.7.3-preview
+    - 0.7.4-preview
+    - 0.7.5-preview
+    - 0.7.6-preview
+    - 0.7.7-preview
+    - 0.7.8-preview
+    - 0.7.9-preview
+    - 0.7.10-preview
+    - 0.7.11-preview
+    - 0.7.12-preview
+    - 0.7.13-preview
+    - 0.7.14-preview
+    - 0.7.15-preview
+    - 0.8.0-preview
+    - 0.8.1-preview
+    - 0.9.0-preview
+    - 0.9.1-preview
+    - 0.10.0-preview
+    - 0.11.0-preview
+    - 0.13.0-preview
+    - 0.14.0-preview
+    - 0.14.1-preview
+    - 0.15.0-preview
+    - 0.16.0-preview
+    - 0.17.0-preview
+    - 0.17.1-preview
+    - 0.18.0-preview
+    - 0.18.1-preview
+    - 0.19.0-preview
+    - 0.19.1-preview
+    - 0.19.2-preview
+    - 0.19.3-preview
+    - 0.20.0-preview
+    - 0.20.1-preview
+    - 0.20.2-preview
+    - 0.21.0-preview
+    - 0.21.1-preview
+    - 0.22.0-preview
+    - 0.23.0-preview
+    - 0.23.1-preview
+    - 0.23.2-preview
+    - 0.23.3-preview
+    - 0.23.4-preview
+    - 0.23.5-preview
+    - 0.23.6-preview
+    - 0.23.7-preview
+    - 0.23.8-preview
+    - 0.24.0-preview
+    - 0.25.0-preview
+    - 0.26.0-preview
+    - 0.27.0-preview
+    - 0.28.0-preview
+    - 0.29.0-preview
+    - 0.30.0-preview
+    - 0.31.0-preview
+    - 0.32.0-preview
+    - 0.33.0-preview
+    - 0.34.0-preview
+    - 0.35.0-preview
+    - 0.36.0-preview
+    - 0.37.0-preview
+    - 0.38.0-preview
+    - 0.39.0-preview
+    - 0.40.0-preview
+    - 0.41.0-preview
+    - 0.42.0-preview
+    - 0.43.0-preview
+    - 0.44.0-preview
+    - 0.45.0-preview
+    - 0.46.0-preview
+    - 0.47.0-preview
+    - 0.48.0-preview
+    - 0.49.0-preview
+    - 0.50.0-preview
+    - 0.51.0-preview
+    - 0.52.0-preview
+    - 0.53.0-preview
+    - 0.54.0-preview
+    - 0.55.0-preview
+    - 0.56.0-preview
+    - 0.57.0-preview
+    - 0.58.0-preview
+    - 0.59.0-preview
+    - 0.60.0-preview
+    - 0.61.0-preview
+    - 0.62.0-preview
+    - 0.63.0-preview
+    - 0.64.0-preview
+    - 0.65.0-preview
+    - 0.66.0-preview
+    - 0.67.0-preview
+    - 0.68.0-preview
+    - 0.69.0-preview
+    - 0.70.0-preview
+    - 0.71.0-preview
+    - 0.72.0-preview
+    - 0.73.0-preview
+    - 0.74.0-preview
+    - 0.75.0-preview
+    - 0.76.0-preview
+    - 0.77.0-preview
+    - 0.78.0-preview
+    compatible:
+    - 0.4.0-preview.6
+    - 0.4.0-preview.8
+    - 0.4.0-preview.11
+    - 0.4.0-preview.12
+    - 0.4.0-preview.14
+    - 0.4.0-preview.18
+    - 0.4.0-preview.19
+    - 0.4.0-preview.21
+    - 0.4.0-preview.23
+    - 0.4.0-preview.24
+    - 0.4.0-preview.25
+    - 0.4.0-preview.26
+    - 0.4.0-preview.27
+    - 0.4.0-preview.28
+    - 0.5.0-preview
+    - 0.5.1-preview
+    - 0.5.2-preview
+    - 0.6.0-preview
+    - 0.6.1-preview
+    - 0.7.1-preview
+    - 0.7.2-preview
+    - 0.7.3-preview
+    - 0.7.4-preview
+    - 0.7.5-preview
+    - 0.7.6-preview
+    - 0.7.7-preview
+    - 0.7.8-preview
+    - 0.7.9-preview
+    - 0.7.10-preview
+    - 0.7.11-preview
+    - 0.7.12-preview
+    - 0.7.13-preview
+    - 0.7.14-preview
+    - 0.7.15-preview
+    - 0.8.0-preview
+    - 0.8.1-preview
+    - 0.9.0-preview
+    - 0.9.1-preview
+    - 0.10.0-preview
+    - 0.11.0-preview
+    - 0.13.0-preview
+    - 0.14.0-preview
+    - 0.14.1-preview
+    - 0.15.0-preview
+    - 0.16.0-preview
+    - 0.17.0-preview
+    - 0.17.1-preview
+    - 0.18.0-preview
+    - 0.18.1-preview
+    - 0.19.0-preview
+    - 0.19.1-preview
+    - 0.19.2-preview
+    - 0.19.3-preview
+    - 0.20.0-preview
+    - 0.20.1-preview
+    - 0.20.2-preview
+    - 0.21.0-preview
+    - 0.21.1-preview
+    - 0.22.0-preview
+    - 0.23.0-preview
+    - 0.23.1-preview
+    - 0.23.2-preview
+    - 0.23.3-preview
+    - 0.23.4-preview
+    - 0.23.5-preview
+    - 0.23.6-preview
+    - 0.23.7-preview
+    - 0.23.8-preview
+    - 0.24.0-preview
+    - 0.25.0-preview
+    - 0.26.0-preview
+    - 0.27.0-preview
+    - 0.28.0-preview
+    - 0.29.0-preview
+    - 0.30.0-preview
+    - 0.31.0-preview
+    - 0.32.0-preview
+    - 0.33.0-preview
+    - 0.34.0-preview
+    - 0.35.0-preview
+    - 0.36.0-preview
+    - 0.37.0-preview
+    - 0.38.0-preview
+    - 0.39.0-preview
+    - 0.40.0-preview
+    - 0.41.0-preview
+    - 0.42.0-preview
+    - 0.43.0-preview
+    - 0.44.0-preview
+    - 0.45.0-preview
+    - 0.46.0-preview
+    - 0.47.0-preview
+    - 0.48.0-preview
+    - 0.49.0-preview
+    - 0.50.0-preview
+    - 0.51.0-preview
+    - 0.52.0-preview
+    - 0.53.0-preview
+    - 0.54.0-preview
+    - 0.55.0-preview
+    - 0.56.0-preview
+    - 0.57.0-preview
+    - 0.58.0-preview
+    - 0.59.0-preview
+    - 0.60.0-preview
+    - 0.61.0-preview
+    - 0.62.0-preview
+    - 0.63.0-preview
+    - 0.64.0-preview
+    - 0.65.0-preview
+    - 0.66.0-preview
+    - 0.67.0-preview
+    - 0.68.0-preview
+    - 0.69.0-preview
+    - 0.70.0-preview
+    - 0.71.0-preview
+    - 0.72.0-preview
+    - 0.73.0-preview
+    - 0.74.0-preview
+    - 0.75.0-preview
+    - 0.76.0-preview
+    - 0.77.0-preview
+    - 0.78.0-preview
+    recommended: 
+    deprecated: []
+  dependencies:
+  - name: com.unity.nuget.mono-cecil
+    version: 0.1.6-preview.2
+  resolvedDependencies:
+  - name: com.unity.nuget.mono-cecil
+    version: 1.11.4
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 637745002450000000
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.package-validation-suite.git
+    revision: 2ca583a646d8facf43c69aa077ee243b0974bcb0
+    path: 
+  unityLifecycle:
+    version: 
     nextVersion: 
     recommendedVersion: 
     isDeprecated: 0
@@ -5143,6 +5448,75 @@ m_ResolvedPackages:
   isDeprecated: 0
   deprecationMessage: 
   fingerprint: 
+- packageId: com.unity.nuget.mono-cecil@1.11.4
+  testable: 0
+  isDirectDependency: 0
+  version: 1.11.4
+  source: 1
+  resolvedPath: D:\InhaGameStudy\InhaUnityStudyUniversal\Library\PackageCache\com.unity.nuget.mono-cecil@1.11.4
+  assetPath: Packages/com.unity.nuget.mono-cecil
+  name: com.unity.nuget.mono-cecil
+  displayName: Mono Cecil
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: library
+  description: 'The mono cecil library from https://www.nuget.org/packages/Mono.Cecil/
+
+
+    This
+    package is intended for internal Unity use only. Most Unity users will be better
+    suite using the existing community tooling.
+
+    To avoid assembly clashes, please
+    use this package if you intend to use Mono.Cecil.'
+  status: 0
+  errors: []
+  versions:
+    all:
+    - 0.1.6-preview.2
+    - 1.0.0-preview.1
+    - 1.10.0-preview.1
+    - 1.10.1-preview.1
+    - 1.10.1
+    - 1.10.2
+    - 1.11.4
+    compatible:
+    - 1.11.4
+    recommended: 1.11.4
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 637852971930000000
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.nuget.mono-cecil.git
+    revision: d0133ce672d724694b56bfd20672acf6f8737fec
+    path: 
+  unityLifecycle:
+    version: 1.11.4
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  fingerprint: 
 - packageId: com.unity.2d.common@8.0.2
   testable: 0
   isDirectDependency: 0
@@ -5200,6 +5574,7 @@ m_ResolvedPackages:
     - 6.0.5
     - 6.0.6
     - 6.0.7
+    - 6.0.8
     - 7.0.0-pre.3
     - 7.0.0-pre.4
     - 7.0.0
@@ -5212,6 +5587,7 @@ m_ResolvedPackages:
     - 8.0.1
     - 8.0.2
     - 8.0.3
+    - 8.0.4
     - 9.0.0-pre.1
     - 9.0.0-pre.2
     - 9.0.0
@@ -5221,10 +5597,12 @@ m_ResolvedPackages:
     - 9.0.4
     - 9.0.5
     - 9.0.6
+    - 9.0.7
     compatible:
     - 8.0.2
     - 8.0.3
-    recommended: 8.0.3
+    - 8.0.4
+    recommended: 8.0.4
     deprecated: []
   dependencies:
   - name: com.unity.burst

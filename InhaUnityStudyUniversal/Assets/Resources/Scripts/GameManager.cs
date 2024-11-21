@@ -33,23 +33,25 @@ public class GameManager : MonoBehaviour
 	public void GameOver()
 	{
 		bGameOver = true;
-		//SceneManager.LoadScene("GameScene");
+		if (bestScore < score)
+			bestScore = score;
 	}
 
 	public void GameStart()
 	{
+		score = 0;
 		bGameOver = false;
-		SceneManager.LoadScene("BirdGameScene");
+		SceneManager.LoadScene("CarrotFlight");
 	}
 
 	public void Restart()
 	{
-		SceneManager.LoadScene("TitleScene");
-		score = 0;
+		SceneManager.LoadScene("Title_CarrotFlight");
 	}
 
 	public bool bGameOver = false;
 	public int score = 0;
+	public int bestScore = 0;
 
 	private void OnGUI()
 	{

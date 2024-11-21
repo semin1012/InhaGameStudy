@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour
 	public GameObject enemyPrdfab;
 	public float interval = 1.0f;
 	public float range = 200.0f;
+	public Player2D player;
 
 	IEnumerator Start()
 	{
@@ -19,9 +20,10 @@ public class EnemySpawner : MonoBehaviour
 				Random.Range(-range, range),
 				transform.position.z);
 
-			Instantiate(enemyPrdfab, pos, transform.rotation);
+			GameObject obj = Instantiate(enemyPrdfab, pos, transform.rotation);
+			Enemy2D enemy = obj.GetComponent<Enemy2D>();
+			if ( enemy != null ) 
+				enemy.player = player;
 		}
-
 	}
-
 }
