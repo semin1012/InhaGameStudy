@@ -1,7 +1,4 @@
-namespace Chapter.State
+public interface IBikeState
 {
-    public interface IBikeState
-    {
-        void Handle(BikeController controller);
-    }
+	void Handle(BikeController controller);
 }

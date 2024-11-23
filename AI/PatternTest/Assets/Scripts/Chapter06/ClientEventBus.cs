@@ -2,47 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Chapter.EventBus
+public class ClientEventBus : MonoBehaviour
 {
-	public class ClientEventBus : MonoBehaviour
+	static public bool _isButtonEnabled;
+
+	private void Start()
 	{
-		private bool _isButtonEnabled;
+		_isButtonEnabled = true;
+	}
 
-		private void Start()
-		{
-			gameObject.AddComponent<HUDController>();
-			gameObject.AddComponent<CountdownTimer>();
-			gameObject.AddComponent<BikeController>();
+	private void OnEnable()
+	{
+		EventBusManager.Subscribe(RaceEventType.STOP, Restart);
+	}
 
-			_isButtonEnabled = true;
-		}
+	private void OnDisable()
+	{
+		EventBusManager.Unsubscribe(RaceEventType.STOP, Restart);
+	}
 
-		private void OnEnable()
-		{
-			EventBusManager.Subscribe(RaceEventType.STOP, Restart);
-		}
+	private void Restart()
+	{
+		_isButtonEnabled = true;
+	}
 
-		private void OnDisable()
-		{
-			EventBusManager.Unsubscribe(RaceEventType.STOP, Restart);
-		}
-
-		private void Restart()
-		{
-			_isButtonEnabled = true;
-		}
-
-		private void OnGUI()
-		{
-			if (_isButtonEnabled)
-			{
-				if (GUILayout.Button("Start Countdown"))
-				{
-					_isButtonEnabled = false;
-					EventBusManager.Publish(RaceEventType.COUNTDOWN);
-				}
-			}
-		}
+	public static void DisplayButton()
+	{
+		_isButtonEnabled = false;
+		EventBusManager.Publish(RaceEventType.COUNTDOWN);
 	}
 }
-
