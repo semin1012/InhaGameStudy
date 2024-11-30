@@ -6,31 +6,21 @@ using UnityEngine.SceneManagement;
 public class HUDController : Observer
 {
 	private bool _isDisplayOn;
-	public BikeController _bikeController;
 	public CountdownTimer _countdownTimer;
 	public InputHandler _inputHandler;
 
 	private bool _isTurboOn;
 	private float _currentHealth;
-	delegate void SetBikeControllerObserver(Observer go);
 
 	private void Start()
-	{
-		SetBikeControllerObserver observer = new SetBikeControllerObserver(BikeController.CallBack);
-		observer(this);
+    {
+        BikeController.AddObserver -= AddObserver;
+        BikeController.AddObserver += AddObserver;
+        BikeController.RemoveObserver -= RemoveObserver;
+        BikeController.RemoveObserver += RemoveObserver;
 	}
 
-	private void OnEnable()
-	{
-		EventBusManager.Subscribe(RaceEventType.START, DisplayHUD);
-	}
-
-	private void OnDisable()
-	{
-		EventBusManager.Unsubscribe(RaceEventType.START, DisplayHUD);
-	}
-
-	void DisplayHUD()
+    void DisplayHUD()
 	{
 		_isDisplayOn = true;
 	}
@@ -104,12 +94,10 @@ public class HUDController : Observer
 
 	public override void Notify(Subject subject)
 	{
-		if (!_bikeController)
-			_bikeController = subject.GetComponent<BikeController>();	
-		if (_bikeController)
+		if (subject is BikeController bike)
 		{
-			_isTurboOn = _bikeController.IsTurboOn;
-			_currentHealth = _bikeController.CurrentHealth;         
-		}	
+			_isTurboOn = bike.IsTurboOn;
+			_currentHealth = bike.CurrentHealth;
+		}
 	}
 }

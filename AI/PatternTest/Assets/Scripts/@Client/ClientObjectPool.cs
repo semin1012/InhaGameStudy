@@ -9,7 +9,6 @@ public class ClientObjectPool : MonoBehaviour
 	private void Start()
 	{
 		_pool = new ObjPool<Drone>();
-		Debug.Log(_pool);
 	}
 
 	private void OnGUI()

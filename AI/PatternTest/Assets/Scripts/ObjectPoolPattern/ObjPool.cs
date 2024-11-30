@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class ObjPool<T> : MonoBehaviour where T : Obj<T>
+public class ObjPool<T> where T : Obj<T>
 {
 	public int maxPoolSize = 10;
 	public int stackDefaultCapacity = 10;

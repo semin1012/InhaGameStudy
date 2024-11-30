@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BikeController : Subject
 {
-	public float maxSpeed = 2.0f;
+    public float maxSpeed = 2.0f;
 	public float turnDistance = 2.0f;
 	private float _distance = 1.0f;
 	public string _status;
@@ -39,17 +39,12 @@ public class BikeController : Subject
 	}
 
 	private bool _isEngineOn;
-	private HUDController _hudController;
-	private CameraController _cameraController;
+    public delegate void DelegateClass<T>(Subject go);
+    static public event DelegateClass<Subject> AddObserver;
+	static public event DelegateClass<Subject> RemoveObserver;
 
-	[SerializeField] 
+    [SerializeField] 
 	private float health = 100.0f;
-
-	private void Awake()
-	{
-		_hudController = gameObject.AddComponent<HUDController>();
-		_cameraController = (CameraController)FindObjectOfType(typeof(CameraController));
-	}
 
 	private void Start()
 	{
@@ -66,12 +61,9 @@ public class BikeController : Subject
 		_bikeStateContext.Transition(_stopState);
 
 		StartEngine();
-	}
+        AddObserver(this);
+    }
 
-	static public void CallBack(Observer go)
-	{
-
-	}
 
 	public void TakeDamage(float amount)
 	{
@@ -128,19 +120,13 @@ public class BikeController : Subject
 	{
 		EventBusManager.Subscribe(RaceEventType.START, StartBike);
 		EventBusManager.Subscribe(RaceEventType.STOP, StopBike);
-		if (_hudController)
-			Attach(_hudController);
-		if (_cameraController)
-			Attach(_cameraController);
+		AddObserver(this);
 	}
 
 	private void OnDisable()
 	{
 		EventBusManager.Unsubscribe(RaceEventType.START, StartBike);
 		EventBusManager.Unsubscribe(RaceEventType.STOP, StopBike);
-		if (_hudController)
-			Detach(_hudController);
-		if (_cameraController)
-			Detach(_cameraController);
+		RemoveObserver(this);
 	}
 }
