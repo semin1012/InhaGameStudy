@@ -68,6 +68,11 @@ public class BikeController : Subject
 		StartEngine();
 	}
 
+	static public void CallBack(Observer go)
+	{
+
+	}
+
 	public void TakeDamage(float amount)
 	{
 		health -= amount;

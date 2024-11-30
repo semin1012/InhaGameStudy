@@ -12,6 +12,13 @@ public class HUDController : Observer
 
 	private bool _isTurboOn;
 	private float _currentHealth;
+	delegate void SetBikeControllerObserver(Observer go);
+
+	private void Start()
+	{
+		SetBikeControllerObserver observer = new SetBikeControllerObserver(BikeController.CallBack);
+		observer(this);
+	}
 
 	private void OnEnable()
 	{
