@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class ClientObjectPool : MonoBehaviour
 {
-	private DroneObjectPool _pool;
+	private ObjPool<Drone> _pool;
 
 	private void Start()
 	{
-		_pool = gameObject.AddComponent<DroneObjectPool>();
+		_pool = new ObjPool<Drone>();
+		Debug.Log(_pool);
 	}
 
 	private void OnGUI()

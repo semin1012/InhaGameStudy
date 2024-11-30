@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Drone : MonoBehaviour
+public class Drone : Obj<Drone>
 {
-    public IObjectPool<Drone> Pool { get; set; }
     public float _currentHealth;
     [SerializeField] 
     private float maxHealth = 100.0f;
