@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ClientObserver : MonoBehaviour
 {
-	private BikeController _bikeController;
+	public BikeController _bikeController;
 
 	private void Start()
 	{

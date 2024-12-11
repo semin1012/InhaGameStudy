@@ -11,13 +11,11 @@ public class HUDController : Observer
 
 	private bool _isTurboOn;
 	private float _currentHealth;
+	private BikeController _bikeController;
 
 	private void Start()
     {
-        BikeController.AddObserver -= AddObserver;
-        BikeController.AddObserver += AddObserver;
-        BikeController.RemoveObserver -= RemoveObserver;
-        BikeController.RemoveObserver += RemoveObserver;
+
 	}
 
     void DisplayHUD()
@@ -94,10 +92,13 @@ public class HUDController : Observer
 
 	public override void Notify(Subject subject)
 	{
-		if (subject is BikeController bike)
+		if (!_bikeController)
+			_bikeController = subject.GetComponent<BikeController>();
+
+		if (_bikeController != null)
 		{
-			_isTurboOn = bike.IsTurboOn;
-			_currentHealth = bike.CurrentHealth;
+			_isTurboOn = _bikeController.IsTurboOn;
+			_currentHealth = _bikeController.CurrentHealth;
 		}
 	}
 }

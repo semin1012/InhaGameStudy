@@ -10,10 +10,7 @@ public class CameraController : Observer
 
     private void Start()
     {
-        BikeController.AddObserver -= AddObserver;
-        BikeController.AddObserver += AddObserver;
-        BikeController.RemoveObserver -= RemoveObserver;
-        BikeController.RemoveObserver += RemoveObserver;
+
     }
 
     private void OnEnable()

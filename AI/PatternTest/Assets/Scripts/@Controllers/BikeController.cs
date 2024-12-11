@@ -39,12 +39,18 @@ public class BikeController : Subject
 	}
 
 	private bool _isEngineOn;
-    public delegate void DelegateClass<T>(Subject go);
-    static public event DelegateClass<Subject> AddObserver;
-	static public event DelegateClass<Subject> RemoveObserver;
+	private HUDController _hudController;
+	private CameraController _cameraController;
 
     [SerializeField] 
 	private float health = 100.0f;
+
+	private void Awake()
+	{
+		_hudController = gameObject.AddComponent<HUDController>();
+		_cameraController = (CameraController)FindObjectOfType(typeof(CameraController));
+
+	}
 
 	private void Start()
 	{
@@ -61,7 +67,6 @@ public class BikeController : Subject
 		_bikeStateContext.Transition(_stopState);
 
 		StartEngine();
-        AddObserver(this);
     }
 
 
@@ -70,7 +75,7 @@ public class BikeController : Subject
 		health -= amount;
 		IsTurboOn = false;
 
-		NotifyObservers();
+		Notify();
 
 		if (health < 0)
 			Destroy(gameObject);
@@ -79,14 +84,14 @@ public class BikeController : Subject
 	private void StartEngine()
 	{
 		_isEngineOn = true;
-		NotifyObservers();
+		Notify();
 	}
 
 	public void ToggleTurbo()
 	{
 		if (_isEngineOn)
 			_isTurboOn = !_isTurboOn;
-		NotifyObservers();
+		Notify();
 		Debug.Log("Turbo Active: " + _isTurboOn.ToString());
 	}
 
@@ -120,13 +125,19 @@ public class BikeController : Subject
 	{
 		EventBusManager.Subscribe(RaceEventType.START, StartBike);
 		EventBusManager.Subscribe(RaceEventType.STOP, StopBike);
-		AddObserver(this);
+		if (_hudController)
+			Attach(_hudController);
+		if (_cameraController)
+			Attach(_cameraController);
 	}
 
 	private void OnDisable()
 	{
 		EventBusManager.Unsubscribe(RaceEventType.START, StartBike);
 		EventBusManager.Unsubscribe(RaceEventType.STOP, StopBike);
-		RemoveObserver(this);
+		if (_hudController)
+			Detach(_hudController);
+		if (_cameraController)
+			Detach(_cameraController);
 	}
 }
