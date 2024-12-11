@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class BikeController : Subject
+public class BikeController : Subject, IBikeElement
 {
+	private List<IBikeElement> _bikeElements = new List<IBikeElement>();
     public float maxSpeed = 2.0f;
 	public float turnDistance = 2.0f;
 	private float _distance = 1.0f;
@@ -67,6 +69,10 @@ public class BikeController : Subject
 		_bikeStateContext.Transition(_stopState);
 
 		StartEngine();
+
+		_bikeElements.Add(gameObject.AddComponent<BikeShield>());
+		_bikeElements.Add(gameObject.AddComponent<BikeEngine>());
+		_bikeElements.Add(gameObject.AddComponent<BikeWeapon>());
     }
 
 
@@ -137,7 +143,16 @@ public class BikeController : Subject
 		EventBusManager.Unsubscribe(RaceEventType.STOP, StopBike);
 		if (_hudController)
 			Detach(_hudController);
-		if (_cameraController)
+		if (_cameraController) 
 			Detach(_cameraController);
+	} 
+
+	public void Accept(IVisitor visitor)
+	{
+		foreach (IBikeElement element in _bikeElements)
+		{
+			element.Accept(visitor);
+			Debug.Log("Accept" + element);
+		}
 	}
 }
