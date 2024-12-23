@@ -7,7 +7,7 @@ namespace Chapter.Adapter
 	[CreateAssetMenu(fileName = "New Item", menuName = "Inventory")]
 	public class InventoryItem : ScriptableObject
 	{
-		// PlaceHolder 클래
+		// PlaceHolder 클래스
 	}
 
 }

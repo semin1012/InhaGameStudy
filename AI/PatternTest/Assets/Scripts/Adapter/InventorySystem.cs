@@ -17,7 +17,7 @@ namespace Chapter.Adapter
 			Debug.Log("Removing item from the cloud");
 		}
 
-		public List<InventoryItem> GetInventoty()
+		public List<InventoryItem> GetInventory()
 		{
 			Debug.Log("Returning an inventory list stored in the cloud");
 			return new List<InventoryItem>();
