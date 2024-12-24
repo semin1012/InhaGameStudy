@@ -41,9 +41,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
     g_pMainGame = new cMainGame;
-    g_pMainGame->SetUp();       // 장치 초기화 
-
-
+    g_pMainGame->SetUp();       
 
     MSG msg;
 
