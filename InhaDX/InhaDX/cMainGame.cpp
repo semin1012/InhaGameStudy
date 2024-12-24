@@ -41,7 +41,7 @@ void cMainGame::Draw_Line()
 	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);			// 장치에게 나의 포맷을 알려줌 (SP_PC_VERTEX) 
 	g_pD3DDevice->DrawPrimitiveUP(D3DPT_LINELIST,		// 선 그릴 때는 LINELIST, 삼각형 그릴 때는 TRIANGLELIST 많이 쓴다. 
 		m_vecLineVertext.size() / 2,	// 몇 개인지 계산
-		&m_vecLineVertext[0],			// 0번째부터 그려라
+		&m_vecLineVertext[0],			// 0번째부터 그려라 
 		sizeof(ST_PC_VERTEX));			// ST_PC_VERTEXT의 크기만큼 잘라라
 }
 
@@ -51,7 +51,6 @@ void cMainGame::Draw_Triangle()
 	D3DXMATRIXA16 matWorld;
 	D3DXMatrixIdentity(&matWorld);	
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
-
 	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);			
 	g_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST,	// 삼각형 그릴 때는 TRIANGLELIST 
 		m_vecTriangleVertex.size() / 3,	// 삼각형이니까 3을 나눈다
