@@ -1,24 +1,35 @@
-#include "framework.h"
+ï»¿#include "framework.h"
 #include "cMainGame.h"
+#include "cDeviceManager.h"
+#include "cCubePC.h"
+#include "cGrid.h"
+#include "cCamera.h"
 
 cMainGame::cMainGame()
+	: m_pCubePC(NULL)
+	, m_pGrid(NULL)
+	, m_pCamera(NULL)
 {
+	srand(time(0));
 }
 
 cMainGame::~cMainGame()
 {
+	Safe_Delete(m_pCamera);
+	Safe_Delete(m_pGrid);
+	Safe_Delete(m_pCubePC);
 	g_pDeviceManager->Destroy();
 }
 
 void cMainGame::Setup_Line()
 {
 	ST_PC_VERTEX v;
-	v.c = D3DCOLOR_XRGB(255, 0, 0); // color ¼³Á¤
-	v.p = D3DXVECTOR3(0, 1, 0);		// position ¼³Á¤
+	v.c = D3DCOLOR_XRGB(255, 0, 0); // color ì„¤ì •
+	v.p = D3DXVECTOR3(0, 1, 0);		// position ì„¤ì •
 	m_vecLineVertext.push_back(v);
 
 	v.p = D3DXVECTOR3(0, -1, 0);
-	m_vecLineVertext.push_back(v);	// position º¯°æ ÈÄ ´Ù½Ã Ãß°¡
+	m_vecLineVertext.push_back(v);	// position ë³€ê²½ í›„ ë‹¤ì‹œ ì¶”ê°€
 }
 
 void cMainGame::Setup_Triangle()
@@ -35,25 +46,26 @@ void cMainGame::Setup_Triangle()
 void cMainGame::Draw_Line()
 {
 	D3DXMATRIXA16 matWorld;
-	D3DXMatrixIdentity(&matWorld);	// Çà·Ä ¸¸µç µÚ ÃÊ±âÈ­
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);	// ÀåÄ¡ À§Ä¡ ÃÊ±âÈ­
+	D3DXMatrixIdentity(&matWorld);	// í–‰ë ¬ ë§Œë“  ë’¤ ì´ˆê¸°í™”
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);	// ìž¥ì¹˜ ìœ„ì¹˜ ì´ˆê¸°í™”
 
-	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);			// ÀåÄ¡¿¡°Ô ³ªÀÇ Æ÷¸ËÀ» ¾Ë·ÁÁÜ (SP_PC_VERTEX) 
-	g_pD3DDevice->DrawPrimitiveUP(D3DPT_LINELIST,		// ¼± ±×¸± ¶§´Â LINELIST, »ï°¢Çü ±×¸± ¶§´Â TRIANGLELIST ¸¹ÀÌ ¾´´Ù. 
-		m_vecLineVertext.size() / 2,	// ¸î °³ÀÎÁö °è»ê
-		&m_vecLineVertext[0],			// 0¹øÂ°ºÎÅÍ ±×·Á¶ó 
-		sizeof(ST_PC_VERTEX));			// ST_PC_VERTEXTÀÇ Å©±â¸¸Å­ Àß¶ó¶ó
+	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);			// ìž¥ì¹˜ì—ê²Œ ë‚˜ì˜ í¬ë§·ì„ ì•Œë ¤ì¤Œ (SP_PC_VERTEX) 
+	g_pD3DDevice->DrawPrimitiveUP(D3DPT_LINELIST,		// ì„  ê·¸ë¦´ ë•ŒëŠ” LINELIST, ì‚¼ê°í˜• ê·¸ë¦´ ë•ŒëŠ” TRIANGLELIST ë§Žì´ ì“´ë‹¤. 
+		m_vecLineVertext.size() / 2,	// ëª‡ ê°œì¸ì§€ ê³„ì‚°
+		&m_vecLineVertext[0],			// 0ë²ˆì§¸ë¶€í„° ê·¸ë ¤ë¼ 
+		sizeof(ST_PC_VERTEX));			// ST_PC_VERTEXTì˜ í¬ê¸°ë§Œí¼ ìž˜ë¼ë¼
 }
 
 void cMainGame::Draw_Triangle()
 {
-	// ¹Ø¿¡ ¼¼ ÁÙÀº ÀÌ¹Ì ¼³Á¤µÇ¾îÀÖÀ¸¸é ¶Ç ¾È ÇØµµ µÇ±ä ÇÏÁö¸¸ ÀÏ´Ü ½áµÐ´Ù.
+	// ë°‘ì— ì„¸ ì¤„ì€ ì´ë¯¸ ì„¤ì •ë˜ì–´ìžˆìœ¼ë©´ ë˜ ì•ˆ í•´ë„ ë˜ê¸´ í•˜ì§€ë§Œ ì¼ë‹¨ ì¨ë‘”ë‹¤.
 	D3DXMATRIXA16 matWorld;
 	D3DXMatrixIdentity(&matWorld);	
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
 	g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);			
-	g_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST,	// »ï°¢Çü ±×¸± ¶§´Â TRIANGLELIST 
-		m_vecTriangleVertex.size() / 3,	// »ï°¢ÇüÀÌ´Ï±î 3À» ³ª´«´Ù
+	g_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST,	// ì‚¼ê°í˜• ê·¸ë¦´ ë•ŒëŠ” TRIANGLELIST 
+		m_vecTriangleVertex.size() / 3,	// ì‚¼ê°í˜•ì´ë‹ˆê¹Œ 3ì„ ë‚˜ëˆˆë‹¤
 		&m_vecTriangleVertex[0],			
 		sizeof(ST_PC_VERTEX));			
 }
@@ -63,21 +75,31 @@ void cMainGame::SetUp()
 	Setup_Line();
 	Setup_Triangle();
 
-	// 2DÀÏ ¶§´Â Á¶¸í ²ô°í, 3DÀÏ ¶§´Â Á¶¸í ÄÑ¸é µÈ´Ù.
-	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);	// D3DRenderState_Lighting ÀÌ¶ó´Â ¶æ. 3D¿¡¼­´Â ¼³Á¤ÇØÁà¾ß »ö±òÀÌ ³ª¿Â´Ù.
+	// 2Dì¼ ë•ŒëŠ” ì¡°ëª… ë„ê³ , 3Dì¼ ë•ŒëŠ” ì¡°ëª… ì¼œë©´ ëœë‹¤.
+
+	m_pCubePC = new cCubePC;
+	m_pCubePC->Setup();
+
+	m_pGrid = new cGrid;
+	m_pGrid->Setup();
+
+	m_pCamera = new cCamera;
+	m_pCamera->Setup(&m_pCubePC->GetPosition());	//Ä«ï¿½Þ¶ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);	// D3DRenderState_Lighting ì´ë¼ëŠ” ëœ». 3Dì—ì„œëŠ” ì„¤ì •í•´ì¤˜ì•¼ ìƒ‰ê¹”ì´ ë‚˜ì˜¨ë‹¤.
 }
 
 void cMainGame::Update()
 {
-	RECT rc;
+	/*RECT rc;
 	GetClientRect(g_hWnd, &rc);
 	
-	// À§Ä¡ ¼³Á¤
+	// ìœ„ì¹˜ ì„¤ì •
 	D3DXVECTOR3 vEye	= D3DXVECTOR3(0, 0, -5.0F);
 	D3DXVECTOR3 vLookAt = D3DXVECTOR3(0, 0, 0);
 	D3DXVECTOR3 vUp		= D3DXVECTOR3(0, 1, 0);
 
-	// view ¸ÅÆ®¸¯½º ¼³Á¤
+	// view ë§¤íŠ¸ë¦­ìŠ¤ ì„¤ì •
 	D3DXMATRIXA16 matView;
 	D3DXMatrixLookAtLH(&matView, &vEye, &vLookAt, &vUp); // Left Hand
 	g_pD3DDevice->SetTransform(D3DTS_VIEW, &matView);
@@ -85,31 +107,50 @@ void cMainGame::Update()
 	D3DXMATRIXA16 matProj;
 	D3DXMatrixPerspectiveFovLH(&matProj,
 								D3DX_PI / 4.0F,
-								(float)rc.right / rc.bottom, // È­¸é ºñÀ² ±¸ÇÔ
+								(float)rc.right / rc.bottom, // í™”ë©´ ë¹„ìœ¨ êµ¬í•¨
 								1.0F,		// Near
 								1000.0F);	// Far
 										
-	g_pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
+	g_pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);*/
+
+	if (m_pCubePC)
+		m_pCubePC->Update();
+
+	if (m_pCamera)
+		m_pCamera->Update();
 }
 
 void cMainGame::Render()
 { 
-	// Áö¿öÁØ´Ù.
+	// ì§€ì›Œì¤€ë‹¤.
 	g_pD3DDevice->Clear(NULL,
 						NULL,
 						D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-						D3DCOLOR_XRGB(127, 127, 127),	// X´Â alpha °ªÀ» ¾²Áö ¾Ê°Ú´Ù´Â ¶æÀÌ´Ù.
+						D3DCOLOR_XRGB(127, 127, 127),	// XëŠ” alpha ê°’ì„ ì“°ì§€ ì•Šê² ë‹¤ëŠ” ëœ»ì´ë‹¤.
 						1.0F, 0);
 
-	// ¶ôÀ» °É¾îÁØ´Ù.
+	// ë½ì„ ê±¸ì–´ì¤€ë‹¤.
 	g_pD3DDevice->BeginScene();
 
-	// Begin , end »çÀÌ¿¡¼­ ±×¸²
+	// Begin , end ì‚¬ì´ì—ì„œ ê·¸ë¦¼
 	Draw_Line();
 	Draw_Triangle();
 
 	g_pD3DDevice->EndScene();
 
-	// ÀüÃ¼ ¸ðµÎ ¿Å°Ü¹ö¸°´Ù. 
+	if (m_pGrid)
+		m_pGrid->Render();
+
+	if (m_pCubePC)
+		m_pCubePC->Render();
+
+	// ì „ì²´ ëª¨ë‘ ì˜®ê²¨ë²„ë¦°ë‹¤. 
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+}
+
+
+void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	if (m_pCamera)
+		m_pCamera->WndProc(hWnd, message, wParam, lParam);
 }

@@ -43,6 +43,16 @@ extern HWND g_hWnd;
 				return &instance; \
 			}
 
+#define Synthsize(varType, varName, funName) \
+	protected : varType varName; \
+	public : inline varType Get##funName(void) const { return varName; } \
+	public : inline void Set##funName(varType var) { varName = var; }
+
+#define Synthsize_Pass_By_Ref(varType, varName, funName) \
+	protected : varType varName; \
+	public : inline varType& Get##funName(void) { return varName; } \
+	public : inline void Set##funName(varType& var) { varName = var; }
+
 struct ST_PC_VERTEX		// 점의 정보
 {
 	D3DXVECTOR3 p;		// float을 안 쓴 이유: D3D를 상속받아 x, y, z 값을 포함하고 있는 자료형임

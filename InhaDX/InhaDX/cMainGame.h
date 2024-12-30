@@ -1,9 +1,18 @@
 #pragma once
+
+class cCubePC;
+class cGrid;
+class cCamera;
+
 class cMainGame
 {
 private:
 	std::vector<ST_PC_VERTEX> m_vecLineVertext;
 	std::vector<ST_PC_VERTEX> m_vecTriangleVertex;
+
+	cCubePC* m_pCubePC;
+	cGrid* m_pGrid;
+	cCamera* m_pCamera;
 
 public:
 	cMainGame();
@@ -19,5 +28,7 @@ public:
 	void SetUp();
 	void Update();
 	void Render();
+
+	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 };
 
