@@ -106,7 +106,6 @@ void cCubePC::Update()
 
 	// : SRT
 	m_matWorld = matR * matT;
-
 }
 
 void cCubePC::Render()

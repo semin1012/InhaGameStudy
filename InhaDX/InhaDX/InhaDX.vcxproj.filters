@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="헤더 파일\Bodys">
+      <UniqueIdentifier>{7ef3ed49-e22e-4d44-96fa-fb417c2d3c22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Bodys">
+      <UniqueIdentifier>{02886904-165f-46dd-b9f2-a53279afe229}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,6 +54,33 @@
     <ClInclude Include="cGrid.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="cCubeNode.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cBody.h">
+      <Filter>헤더 파일\Bodys</Filter>
+    </ClInclude>
+    <ClInclude Include="cHead.h">
+      <Filter>헤더 파일\Bodys</Filter>
+    </ClInclude>
+    <ClInclude Include="cLeftArm.h">
+      <Filter>헤더 파일\Bodys</Filter>
+    </ClInclude>
+    <ClInclude Include="cLeftLeg.h">
+      <Filter>헤더 파일\Bodys</Filter>
+    </ClInclude>
+    <ClInclude Include="cRightArm.h">
+      <Filter>헤더 파일\Bodys</Filter>
+    </ClInclude>
+    <ClInclude Include="cRightLeg.h">
+      <Filter>헤더 파일\Bodys</Filter>
+    </ClInclude>
+    <ClInclude Include="cCharacter.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cCubeMan.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InhaDX.cpp">
@@ -72,6 +105,33 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cGrid.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cCubeNode.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cBody.cpp">
+      <Filter>소스 파일\Bodys</Filter>
+    </ClCompile>
+    <ClCompile Include="cHead.cpp">
+      <Filter>소스 파일\Bodys</Filter>
+    </ClCompile>
+    <ClCompile Include="cLeftArm.cpp">
+      <Filter>소스 파일\Bodys</Filter>
+    </ClCompile>
+    <ClCompile Include="cLeftLeg.cpp">
+      <Filter>소스 파일\Bodys</Filter>
+    </ClCompile>
+    <ClCompile Include="cRightArm.cpp">
+      <Filter>소스 파일\Bodys</Filter>
+    </ClCompile>
+    <ClCompile Include="cRightLeg.cpp">
+      <Filter>소스 파일\Bodys</Filter>
+    </ClCompile>
+    <ClCompile Include="cCharacter.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cCubeMan.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

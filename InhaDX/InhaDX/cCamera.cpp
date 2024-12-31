@@ -42,7 +42,7 @@ void cCamera::Update()
 
 	D3DXMATRIXA16 matR, matRX, matRY;
 	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);
-	D3DXMatrixRotationX(&matRY, m_vCamRotAngle.y);
+	D3DXMatrixRotationY(&matRY, m_vCamRotAngle.y);
 
 	matR = matRX * matRY;
 
@@ -70,9 +70,9 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_LBUTTONDOWN:
+		m_isLButtonDown = true;
 		m_ptPrevMouse.x = LOWORD(lParam);
 		m_ptPrevMouse.y = HIWORD(lParam);
-		m_isLButtonDown = true;
 		break;
 
 	case WM_LBUTTONUP:
@@ -86,17 +86,17 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			ptCurMouse.x = LOWORD(lParam);
 			ptCurMouse.y = HIWORD(lParam);
 
-			float fDeltaX = (float)ptCurMouse.x - m_ptPrevMouse.x;
-			float fDeltaY = (float)ptCurMouse.y - m_ptPrevMouse.y;
+			float fDeltaX = (float)(ptCurMouse.x - m_ptPrevMouse.x);
+			float fDeltaY = (float)(ptCurMouse.y - m_ptPrevMouse.y);
 
 			m_vCamRotAngle.y += (fDeltaX / 100.f);
 			m_vCamRotAngle.x += (fDeltaY / 100.f);
 
-			if (m_vCamRotAngle.x < -D3DX_PI / 2.0F + 0.0001F)
+			if (m_vCamRotAngle.x <= -D3DX_PI / 2.0F + 0.0001F)
 				m_vCamRotAngle.x = -D3DX_PI / 2.0F + 0.0001F;
 
-			if (m_vCamRotAngle.x < D3DX_PI / 2.0F + 0.0001F)
-				m_vCamRotAngle.x = D3DX_PI / 2.0F + 0.0001F;
+			if (m_vCamRotAngle.x >= D3DX_PI / 2.0F - 0.0001F)
+				m_vCamRotAngle.x = D3DX_PI / 2.0F - 0.0001F;
 
 			m_ptPrevMouse = ptCurMouse;
 		}
@@ -104,7 +104,7 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	case WM_MOUSEHWHEEL:
 		m_fCameraDistance -= (GET_WHEEL_DELTA_WPARAM(wParam) / 30.0f);
-		if (m_fCameraDistance < 0.0001f)
+		if (m_fCameraDistance <= 0.0001f)
 			m_fCameraDistance = 0.0001f;
 		break;
 	default:

@@ -20,18 +20,18 @@ void cGizmo::Setup(D3DCOLOR c, D3DXMATRIXA16& mat)
 
 	// : front
 	v.p = D3DXVECTOR3(0, 0, 0); m_vecVertex.push_back(v);
-	v.p = D3DXVECTOR3(-1, -1, -1); m_vecVertex.push_back(v);
-	v.p = D3DXVECTOR3(-1, -1, -1); m_vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, -1, 1); m_vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, 1); m_vecVertex.push_back(v);
 
 	// : right
 	v.p = D3DXVECTOR3(0, 0, 0); m_vecVertex.push_back(v);
 	v.p = D3DXVECTOR3(1, -1, 1); m_vecVertex.push_back(v);
 	v.p = D3DXVECTOR3(1, -1, -1); m_vecVertex.push_back(v);
 
-	// : back
+	// : back      
 	v.p = D3DXVECTOR3(0, 0, 0); m_vecVertex.push_back(v);
-	v.p = D3DXVECTOR3(-1, -1, 1); m_vecVertex.push_back(v);
-	v.p = D3DXVECTOR3(1, -1, 1); m_vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(1, -1, -1); m_vecVertex.push_back(v);
+	v.p = D3DXVECTOR3(-1, -1, -1); m_vecVertex.push_back(v);
 
 	// : left
 	v.p = D3DXVECTOR3(0, 0, 0); m_vecVertex.push_back(v);

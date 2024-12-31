@@ -14,15 +14,15 @@ void cCubePNT::Setup()
 	std::vector<ST_PNT_VERTEX> vecVertex;
 	vecVertex.resize(8);
 
-	vecVertex[0].p.x = -0.5f; vecVertex[0].p.y = -0.5f; vecVertex[0].p.x = -0.5f;
-	vecVertex[1].p.x = -0.5f; vecVertex[1].p.y = 0.5f; vecVertex[1].p.x = -0.5f;
-	vecVertex[2].p.x = 0.5f; vecVertex[2].p.y = 0.5f; vecVertex[2].p.x = -0.5f;
-	vecVertex[3].p.x = 0.5f; vecVertex[3].p.y = -0.5f; vecVertex[3].p.x = -0.5f;
+	vecVertex[0].p.x = -0.5f; vecVertex[0].p.y = -0.5f; vecVertex[0].p.z = -0.5f;
+	vecVertex[1].p.x = -0.5f; vecVertex[1].p.y = 0.5f; vecVertex[1].p.z = -0.5f;
+	vecVertex[2].p.x = 0.5f; vecVertex[2].p.y = 0.5f; vecVertex[2].p.z = -0.5f;
+	vecVertex[3].p.x = 0.5f; vecVertex[3].p.y = -0.5f; vecVertex[3].p.z = -0.5f;
 
-	vecVertex[4].p.x = -0.5f; vecVertex[4].p.y = -0.5f; vecVertex[4].p.x = 0.5f;
-	vecVertex[5].p.x = -0.5f; vecVertex[5].p.y = 0.5f; vecVertex[5].p.x = 0.5f;
-	vecVertex[6].p.x = 0.5f; vecVertex[6].p.y = 0.5f; vecVertex[6].p.x = 0.5f;
-	vecVertex[7].p.x = 0.5f; vecVertex[7].p.y = -0.5f; vecVertex[7].p.x = 0.5f;
+	vecVertex[4].p.x = -0.5f; vecVertex[4].p.y = -0.5f; vecVertex[4].p.z = 0.5f;
+	vecVertex[5].p.x = -0.5f; vecVertex[5].p.y = 0.5f; vecVertex[5].p.z = 0.5f;
+	vecVertex[6].p.x = 0.5f; vecVertex[6].p.y = 0.5f; vecVertex[6].p.z = 0.5f;
+	vecVertex[7].p.x = 0.5f; vecVertex[7].p.y = -0.5f; vecVertex[7].p.z = 0.5f;
 
 	std::vector<DWORD> vecIndex;
 	// : front
@@ -38,8 +38,8 @@ void cCubePNT::Setup()
 	vecIndex.push_back(3); vecIndex.push_back(2); vecIndex.push_back(6);
 	vecIndex.push_back(3); vecIndex.push_back(6); vecIndex.push_back(7);
 	// : top
-	vecIndex.push_back(1); vecIndex.push_back(1); vecIndex.push_back(2);
-	vecIndex.push_back(1); vecIndex.push_back(2); vecIndex.push_back(3);
+	vecIndex.push_back(1); vecIndex.push_back(5); vecIndex.push_back(6);
+	vecIndex.push_back(1); vecIndex.push_back(6); vecIndex.push_back(2);
 	// : bottom
 	vecIndex.push_back(4); vecIndex.push_back(0); vecIndex.push_back(3);
 	vecIndex.push_back(4); vecIndex.push_back(3); vecIndex.push_back(7);
@@ -54,9 +54,8 @@ void cCubePNT::Setup()
 		m_vecVertex[i + 2] = vecVertex[vecIndex[i + 2]];
 	}
 
-	// ��ֺ��� ���Ϸ���
 	D3DXVECTOR3 u, v, n;
-	for (int i = 0; i < 36; i++)
+	for (int i = 0; i < 36; i += 3)
 	{
 		u = m_vecVertex[i + 1].p - m_vecVertex[i].p;
 		v = m_vecVertex[i + 2].p - m_vecVertex[i].p;

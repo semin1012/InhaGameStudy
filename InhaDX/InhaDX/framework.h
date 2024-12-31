@@ -43,7 +43,7 @@ extern HWND g_hWnd;
 				return &instance; \
 			}
 
-#define Synthsize(varType, varName, funName) \
+#define Synthesize(varType, varName, funName) \
 	protected : varType varName; \
 	public : inline varType Get##funName(void) const { return varName; } \
 	public : inline void Set##funName(varType var) { varName = var; }
