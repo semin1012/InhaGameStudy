@@ -14,9 +14,9 @@ namespace Semin
 			act = onUpdate;
 		}
 
-
 		public override INode.ENodeState Evaluate()
 		{
+			Debug.Log("Action Node");
 			if (act != null)
 				return act.Invoke();
 			else return INode.ENodeState.Fail;

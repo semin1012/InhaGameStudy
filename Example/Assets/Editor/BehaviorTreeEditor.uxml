@@ -5,6 +5,8 @@
     <SplitView fixed-pane-initial-dimension="300">
         <ui:VisualElement name="Left-Panel" style="flex-grow: 1; visibility: visible; overflow: visible; display: flex; background-color: rgba(0, 0, 0, 0); -unity-background-scale-mode: stretch-to-fill;">
             <ui:Label tabindex="-1" text="Inspector" parse-escape-sequences="true" display-tooltip-when-elided="true" style="background-color: rgba(37, 37, 37, 0); color: rgb(219, 219, 219);" />
+            <uie:ObjectField label="Object Field" />
+            <ui:DropdownField label="Dropdown" />
             <InspectorView />
         </ui:VisualElement>
         <ui:VisualElement name="Right-Panel" style="flex-grow: 1;">

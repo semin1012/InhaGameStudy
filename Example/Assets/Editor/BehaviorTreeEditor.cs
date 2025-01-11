@@ -2,14 +2,22 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Semin;
+using UnityEditor.UIElements;
 using Unity.VisualScripting;
+using System.Reflection;
+using System.Reflection;
 public class BehaviorTreeEditor : EditorWindow
 {
     [SerializeField]
     BehaviorTreeView treeView;
     InspectorView inspectorView;
 
-    [MenuItem("My Funcion/Behaviour Tree/Editor ...")]
+	PlayerController playerController;
+	ObjectField playerObj;
+	DropdownField dropDown;
+	private MethodInfo[] methods;
+
+	[MenuItem("My Funcion/Behaviour Tree/Editor ...")]
     public static void OpenWindow()
     {
         BehaviorTreeEditor wnd = GetWindow<BehaviorTreeEditor>();
@@ -30,9 +38,30 @@ public class BehaviorTreeEditor : EditorWindow
 
         treeView = root.Q<BehaviorTreeView>();
         inspectorView = root.Q<InspectorView>();
-		treeView.focusable = true;
+        treeView.OnNodeSelected = OnNodeSelectionChanged;
+        treeView.focusable = true;
 
-        OnSelectionChange();
+        inspectorView.CreateGUI();
+        dropDown = root.Q<DropdownField>();
+        playerObj = root.Q<ObjectField>();
+
+
+		playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+		playerObj.objectType = typeof(PlayerController);
+		playerObj.allowSceneObjects = true;
+		playerObj.value = playerController;
+
+		if (playerController != null)
+		{
+			methods = playerController.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance);
+			for (int i = 0; i < methods.Length; i++)
+			{
+                if (methods[i].IsPublic && !methods[i].IsVirtual)
+                    dropDown.choices.Add(methods[i].Name);
+			}
+		}
+
+		OnSelectionChange();
 	}
 
 	private void OnSelectionChange()
@@ -40,8 +69,11 @@ public class BehaviorTreeEditor : EditorWindow
 		SCBehaviorTree tree = Selection.activeObject as SCBehaviorTree;
 
         if (tree)
-        {
             treeView.PopulateView(tree);
-        }
 	}
+
+    void OnNodeSelectionChanged(NodeView node)
+    {
+        inspectorView.UpdateSelection(node);
+    }
 }

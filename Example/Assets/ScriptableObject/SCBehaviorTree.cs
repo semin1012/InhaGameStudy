@@ -9,7 +9,7 @@ using UnityEngine;
 public class SCBehaviorTree : ScriptableObject
 {
 	public Node rootNode;
-	public INode.ENodeState state = INode.ENodeState.Running;
+	[HideInInspector] public INode.ENodeState state = INode.ENodeState.Running;
 	public List<Node> nodes = new List<Node>();
 
 	public INode.ENodeState Operate()
@@ -44,6 +44,13 @@ public class SCBehaviorTree : ScriptableObject
 			return;
 		}
 
+		RootNode root = parent as RootNode;
+		if (root)
+		{
+			root.child = child;
+			return;
+		}
+
 		CompositeNode composite = parent as CompositeNode;
 		if (composite)
 			composite.AddChild(child);
@@ -58,6 +65,13 @@ public class SCBehaviorTree : ScriptableObject
 			return;
 		}
 
+		RootNode root = parent as RootNode;
+		if (root)
+		{
+			root.child = null;
+			return;
+		}
+
 		CompositeNode composite = parent as CompositeNode;
 		if (composite)
 			composite.RemoveChild(child);
@@ -68,12 +82,25 @@ public class SCBehaviorTree : ScriptableObject
 		List<Node> children = new List<Node>();
 		DecoratorNode decorator = parent as DecoratorNode;
 		if (decorator && decorator.GetChild() != null)
-			children.Add(decorator.GetChild() as Node);
+			children.Add(decorator.GetChild());
+
+
+		RootNode root = parent as RootNode;
+		if (root && root.child != null)
+			children.Add(root.child);
+
 
 		CompositeNode composite = parent as CompositeNode;
 		if (composite)
 			return composite.GetChild();
 
 		return children;
+	}
+
+	public SCBehaviorTree Clone()
+	{
+		SCBehaviorTree tree = Instantiate(this);
+		tree.rootNode = tree.rootNode.Clone();
+		return tree;
 	}
 }

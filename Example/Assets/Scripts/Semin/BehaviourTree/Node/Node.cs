@@ -6,11 +6,14 @@ namespace Semin
 {
 	public abstract class Node : ScriptableObject, INode
 	{
-		public string guid;
-		public Vector2 position;
+		[HideInInspector] public string guid;
+		[HideInInspector] public Vector2 position;
 
 		public abstract INode.ENodeState Evaluate();
+
+		public virtual Node Clone()
+		{
+			return Instantiate(this);
+		}
 	}
-
-
 }

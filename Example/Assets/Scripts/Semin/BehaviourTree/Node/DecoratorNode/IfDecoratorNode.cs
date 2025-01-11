@@ -9,7 +9,7 @@ namespace Semin
 {
 	public class IfDecoratorNode : DecoratorNode
 	{
-		private Func<bool> condition;
+		public Func<bool> condition;
 
 		public IfDecoratorNode(Func<bool> condition, Node child) : base(child)
 		{

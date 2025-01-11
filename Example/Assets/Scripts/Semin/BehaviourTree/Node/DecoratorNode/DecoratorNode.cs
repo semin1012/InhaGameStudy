@@ -7,7 +7,7 @@ namespace Semin
 {
     public abstract class DecoratorNode : Node 
     {
-        protected Node child;
+        [SerializeField] protected Node child;
 
         public abstract override INode.ENodeState Evaluate();
 
@@ -21,10 +21,17 @@ namespace Semin
             this.child = child;
         }
 
-        public INode GetChild()
+        public Node GetChild()
         {
             return child;
         }
-    }
+
+		public override Node Clone()
+		{
+			DecoratorNode node = Instantiate(this);
+			node.child = child.Clone();
+			return node;
+		}
+	}
 
 }

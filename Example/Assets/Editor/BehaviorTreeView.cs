@@ -10,14 +10,17 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 using UnityEngine.Assertions.Must;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using System.Linq;
+using UnityEditor.IMGUI.Controls;
 
 public class BehaviorTreeView : GraphView
 {
+	public Action<NodeView> OnNodeSelected;
 	public new class UxmlFactory : UxmlFactory<BehaviorTreeView, GraphView.UxmlTraits> { }
 	SCBehaviorTree tree;
 	public BehaviorTreeView()
 	{
 		Insert(0, new GridBackground());
+
 
 		this.AddManipulator(new ContentZoomer());
 		this.AddManipulator(new ContentDragger());
@@ -40,6 +43,13 @@ public class BehaviorTreeView : GraphView
 		graphViewChanged -= OnGraphViewChanged;
 		DeleteElements(graphElements);
 		graphViewChanged += OnGraphViewChanged;
+
+		if (tree.rootNode == null)
+		{
+			tree.rootNode = tree.CreateNode(typeof(RootNode)) as RootNode;
+			EditorUtility.SetDirty(tree);
+			AssetDatabase.SaveAssets();
+		}
 
 		tree.nodes.ForEach(n => CreateNodeView(n));
 
@@ -119,9 +129,8 @@ public class BehaviorTreeView : GraphView
 	void CreateNodeView(Semin.Node node)
 	{
 		NodeView nodeView = new NodeView(node);
+		nodeView.OnNodeSelected = OnNodeSelected;
 		AddElement(nodeView);
 	}
-
-
 }
 

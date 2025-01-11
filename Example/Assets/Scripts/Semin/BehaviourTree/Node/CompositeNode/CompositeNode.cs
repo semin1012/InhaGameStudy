@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 namespace Semin
 {
     public abstract class CompositeNode : Node
     {
-        protected List<Node> children;
+		[SerializeField] protected List<Node> children;
 
         public abstract override INode.ENodeState Evaluate();
 
@@ -25,8 +26,15 @@ namespace Semin
         public List<Node> GetChild()
         {
             return children;
-        }
-    }
+		}
+
+		public override Node Clone()
+		{
+			CompositeNode node = Instantiate(this);
+			node.children = children.ConvertAll(c => c.Clone());
+			return node;
+		}
+	}
 
 
 }

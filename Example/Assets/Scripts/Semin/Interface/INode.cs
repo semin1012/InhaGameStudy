@@ -6,6 +6,7 @@ namespace Semin
 {
 	public interface INode 
 	{
+		[HideInInspector] 
 		public enum ENodeState
 		{
 			Success,

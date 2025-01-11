@@ -14,7 +14,7 @@ namespace Semin
 		Rigidbody rigidBody;
 		Dictionary<EKey, bool> inputs = new Dictionary<EKey, bool>(new EKeyComparer());
 		public Dictionary<EKey, bool> Inputs { get { return inputs; } }
-		BehaviourTree behaviourTree;
+		RootNode behaviourTree;
 		public float moveSpeed = 6;
 		Vector2 speedValue = Vector2.zero;
 		Vector2 mousePos = Vector2.zero;
@@ -36,10 +36,10 @@ namespace Semin
 				inputs[(EKey)i] = false;
 
 			rigidBody = GetComponent<Rigidbody>();	
-			behaviourTree = new BehaviourTree(SetBehaviourTree());
+			behaviourTree = new RootNode(SetBehaviourTree());
 		}
 
-		INode SetBehaviourTree()
+		Node SetBehaviourTree()
 		{
 			return new ParallelNode(
 				new List<Node>()
@@ -55,7 +55,7 @@ namespace Semin
 
 		private void FixedUpdate()
 		{ 
-			behaviourTree.Operate();
+			behaviourTree.Evaluate();
 		}
 
 		#region Attack Node
