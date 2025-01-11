@@ -29,11 +29,11 @@ void cCharacter::Update()
 	}
 	if (GetKeyState('W') & 0x8000)
 	{
-		m_vPosition += (m_vDirection * 0.1f);
+		m_vPosition -= (m_vDirection * 0.1f);
 	}
 	if (GetKeyState('S') & 0x8000)
 	{
-		m_vPosition -= (m_vDirection * 0.1f);
+		m_vPosition += (m_vDirection * 0.1f);
 	}
 
 	D3DXMATRIXA16	matR, matT;

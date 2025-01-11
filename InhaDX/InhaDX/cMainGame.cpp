@@ -6,6 +6,9 @@
 #include "cCamera.h"
 #include "cCubeMan.h"
 
+#include "cObjLoader.h"
+#include "cGroup.h"
+
 cMainGame::cMainGame()
 	: m_pCubePC(NULL)
 	, m_pGrid(NULL)
@@ -18,12 +21,19 @@ cMainGame::cMainGame()
 
 cMainGame::~cMainGame()
 {
-	//Safe_Delete(m_pTexture);
+	for (auto p : m_vecGroup)
+	{
+		Safe_Release(p);
+	}
+	m_vecGroup.clear();
+	Safe_Release(m_pTexture);
 	Safe_Delete(m_pCamera);
 	Safe_Delete(m_pGrid);
 	Safe_Delete(m_pCubePC);
 	Safe_Delete(m_pCubeMan);
 	g_pDeviceManager->Destroy();
+	g_pObjectManager->Destroy();
+	g_pTextureManager->Destroy();
 }
 
 void cMainGame::Setup_Line()
@@ -89,6 +99,12 @@ void cMainGame::Setup_Texture()
 	m_vecVertex.push_back(v);
 }
 
+void cMainGame::Setup_Obj()
+{
+	cObjLoader loader;
+	loader.Load(m_vecGroup, (char*)"obj", (char*)"box.obj");
+}
+
 void cMainGame::Draw_Line()
 {
 	D3DXMATRIXA16 matWorld;
@@ -140,11 +156,26 @@ void cMainGame::Draw_Texture()
 	// g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);		// true로 해줘도 되고 다른 곳 세팅에 남길거면 없애도 된다
 }
 
+void cMainGame::Draw_Obj()
+{
+	D3DXMATRIXA16 matWorld, matS, matR;
+	D3DXMatrixScaling(&matS, 0.1f, 0.1f, 0.1f);		// 크기가 커서 줄임
+	D3DXMatrixRotationX(&matR, -D3DX_PI / 2.0F);	// 좌표계가 달라서 변환
+	matWorld = matS * matR;
+
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+	for (auto p : m_vecGroup)
+	{
+		p->Render();
+	}
+}
+
 void cMainGame::SetUp()
 {
 	Setup_Line();
 	Setup_Triangle();
 	Setup_Texture();
+	Setup_Obj();
 
 	// 2D일 때는 조명 끄고, 3D일 때는 조명 켜면 된다.
 
@@ -162,6 +193,7 @@ void cMainGame::SetUp()
 	m_pCamera->Setup(&m_pCubeMan->GetPosition());
 
 	Setup_Light();
+
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);	// D3DRenderState_Lighting 이라는 뜻. 3D에서는 설정해줘야 색깔이 나온다.
 }
 
@@ -214,8 +246,8 @@ void cMainGame::Render()
 	// Begin , end 사이에서 그림
 	//Draw_Line();
 	//Draw_Triangle();
-
 	//Draw_Texture();
+	Draw_Obj();
 
 	if (m_pGrid)
 		m_pGrid->Render();

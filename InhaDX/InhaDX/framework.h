@@ -18,6 +18,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <set>
 #include <list>
 #include <assert.h>
 #include <time.h>
@@ -48,10 +49,23 @@ extern HWND g_hWnd;
 	public : inline varType Get##funName(void) const { return varName; } \
 	public : inline void Set##funName(varType var) { varName = var; }
 
-#define Synthsize_Pass_By_Ref(varType, varName, funName) \
+#define Synthesize_Pass_By_Ref(varType, varName, funName) \
 	protected : varType varName; \
 	public : inline varType& Get##funName(void) { return varName; } \
 	public : inline void Set##funName(varType& var) { varName = var; }
+// 
+#define Safe_Add_Ref(p) { if(p) p->AddRef(); }
+
+#define Synthesize_Add_Ref(varType, varName, funName) \
+   protected: varType varName; \
+   public: inline varType Get##funName(void) const {return varName; } \
+   public : inline void Set##funName(varType var) {\
+					if ( varName != var ) {\
+						Safe_Add_Ref(var) ; \
+						Safe_Release(varName) ; \
+						varName = var; \
+					} \
+				}
 
 struct ST_PC_VERTEX		// 점의 정보
 {
@@ -76,3 +90,6 @@ struct ST_PT_VERTEX		// normal을 제외하면 Light를 사용하지 않게 된�
 };
 
 #include "cDeviceManager.h"
+#include "cObject.h"
+#include "cObjectManager.h"
+#include "cTextureManager.h"

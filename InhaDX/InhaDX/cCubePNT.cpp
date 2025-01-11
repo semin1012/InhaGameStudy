@@ -45,7 +45,7 @@ void cCubePNT::Setup()
 	vecIndex.push_back(4); vecIndex.push_back(0); vecIndex.push_back(3);
 	vecIndex.push_back(4); vecIndex.push_back(3); vecIndex.push_back(7);
 
-	m_vecVertex.resize(36);
+	m_vecVertex.resize(vecIndex.size());
 
 
 	for (size_t i = 0; i < vecIndex.size(); i += 3)
@@ -56,7 +56,7 @@ void cCubePNT::Setup()
 	}
 
 	D3DXVECTOR3 u, v, n;
-	for (int i = 0; i < 36; i += 3)
+	for (int i = 0; i < vecIndex.size(); i += 3)
 	{
 		u = m_vecVertex[i + 1].p - m_vecVertex[i].p;
 		v = m_vecVertex[i + 2].p - m_vecVertex[i].p;
