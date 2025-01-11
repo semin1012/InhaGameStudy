@@ -5,16 +5,17 @@ using Semin;
 using UnityEditor.UIElements;
 using Unity.VisualScripting;
 using System.Reflection;
-using System.Reflection;
+
 public class BehaviorTreeEditor : EditorWindow
 {
     [SerializeField]
     BehaviorTreeView treeView;
     InspectorView inspectorView;
+    ObjectFieldView fieldView;
+    FuncDropdownFieldView funcDropdownView;
+    ClassDropdownFieldView classDropdownView;
 
-	PlayerController playerController;
-	ObjectField playerObj;
-	DropdownField dropDown;
+    PlayerController playerController;
 	private MethodInfo[] methods;
 
 	[MenuItem("My Funcion/Behaviour Tree/Editor ...")]
@@ -38,31 +39,25 @@ public class BehaviorTreeEditor : EditorWindow
 
         treeView = root.Q<BehaviorTreeView>();
         inspectorView = root.Q<InspectorView>();
+
+        fieldView = root.Q<ObjectFieldView>();
+        funcDropdownView = root.Q<FuncDropdownFieldView>();
+        classDropdownView = root.Q<ClassDropdownFieldView>();
+
         treeView.OnNodeSelected = OnNodeSelectionChanged;
         treeView.focusable = true;
 
-        inspectorView.CreateGUI();
-        dropDown = root.Q<DropdownField>();
-        playerObj = root.Q<ObjectField>();
+        fieldView.OnChanged = OnObjectSelectionChanged;
+        fieldView.OnChanged.Invoke(fieldView);
 
+        classDropdownView.OnSelected = OnClassSelectionChanged;
 
-		playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-		playerObj.objectType = typeof(PlayerController);
-		playerObj.allowSceneObjects = true;
-		playerObj.value = playerController;
+        funcDropdownView.OnSelected = OnFuncSelectionChanged;
 
-		if (playerController != null)
-		{
-			methods = playerController.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance);
-			for (int i = 0; i < methods.Length; i++)
-			{
-                if (methods[i].IsPublic && !methods[i].IsVirtual)
-                    dropDown.choices.Add(methods[i].Name);
-			}
-		}
-
-		OnSelectionChange();
-	}
+        fieldView.SetEnabled(false);
+        funcDropdownView.SetEnabled(false);
+        classDropdownView.SetEnabled(false);
+    }
 
 	private void OnSelectionChange()
 	{
@@ -75,5 +70,33 @@ public class BehaviorTreeEditor : EditorWindow
     void OnNodeSelectionChanged(NodeView node)
     {
         inspectorView.UpdateSelection(node);
+
+        if (inspectorView.SelectNode.node is CompositeNode || inspectorView.SelectNode.node is RootNode)
+        {
+            classDropdownView.SetEnabled(false);
+            funcDropdownView.SetEnabled(false);
+        }
+
+        else
+        {
+            fieldView.SetEnabled(true);
+            funcDropdownView.SetEnabled(true);
+            classDropdownView.SetEnabled(true);
+        }
+    }
+
+    void OnObjectSelectionChanged(ObjectFieldView field)
+    {
+        classDropdownView.SetDropdownMenu(field);
+    }
+
+    void OnClassSelectionChanged(ClassDropdownFieldView field)
+    {
+        funcDropdownView.SetDropdownMenu(field);
+    }
+
+    void OnFuncSelectionChanged(FuncDropdownFieldView field)
+    {
+        inspectorView.SelectNode.SetUpdate(field);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.PackageManager.UI;
 
 namespace Semin
 {
@@ -90,6 +91,14 @@ namespace Semin
 			if (OnNodeSelected != null)
 				OnNodeSelected.Invoke(this);
 		}
-	}
+
+        public void SetUpdate(FuncDropdownFieldView field)
+        {
+			if (node is ActionNode action)
+            {
+				action.act = field.SelectFunc;
+			}            
+        }
+    }
 
 }

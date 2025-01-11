@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 namespace Semin
 {
 	public class ActionNode : Node
 	{
-		Func<INode.ENodeState> act = null;
-		
-		public ActionNode(Func<INode.ENodeState> onUpdate)
+        public UnityEvent<INode.ENodeState> act;
+        public string methodName { get { return act.ToString(); }}
+
+        public ActionNode(Action<INode.ENodeState> onUpdate)
 		{
-			act = onUpdate;
-		}
+			act.AddListener(() => onUpdate?.Invoke());
+        }
 
 		public override INode.ENodeState Evaluate()
 		{
-			Debug.Log("Action Node");
+			Debug.Log(act);
 			if (act != null)
 				return act.Invoke();
 			else return INode.ENodeState.Fail;

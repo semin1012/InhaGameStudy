@@ -47,8 +47,7 @@ namespace Semin
 					new IfDecoratorNode(() => CheckInput(inputs[EKey.W]), new ActionNode(() => Move(EDirection.Up))),
 					new IfDecoratorNode(() => CheckInput(inputs[EKey.A]), new ActionNode(() => Move(EDirection.Left))),
 					new IfDecoratorNode(() => CheckInput(inputs[EKey.S]), new ActionNode(() => Move(EDirection.Down))),
-					new IfDecoratorNode(() => CheckInput(inputs[EKey.D]), new ActionNode(() => Move(EDirection.Right))),
-					new ActionNode(RotatePlayer)
+					new IfDecoratorNode(() => CheckInput(inputs[EKey.D]), new ActionNode(() => Move(EDirection.Right)))
 				}
 			);
 		}
@@ -59,7 +58,7 @@ namespace Semin
 		}
 
 		#region Attack Node
-		INode.ENodeState Move(EDirection direction)
+		public INode.ENodeState Move(EDirection direction)
 		{
 			switch(direction)
 			{
@@ -80,8 +79,9 @@ namespace Semin
 			return INode.ENodeState.Success;
 		}
 
-		INode.ENodeState RotatePlayer()
+        public INode.ENodeState RotatePlayer()
 		{
+
 			Ray cameraRay = viewCamera.ScreenPointToRay(mousePos);
 			Plane GroupPlane = new Plane(Vector3.up, Vector3.zero);
 			float rayLength;
@@ -98,7 +98,7 @@ namespace Semin
 		#endregion
 
 		#region If Decorater Node
-		bool CheckInput(bool input)
+		public bool CheckInput(bool input)
 		{
 			return input;
 		}

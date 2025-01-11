@@ -8,38 +8,31 @@ using UnityEngine.UIElements;
 using System.Reflection;
 using UnityEditor.UIElements;
 using UnityEditor.IMGUI.Controls;
+using Unity.VisualScripting.FullSerializer.Internal;
+using System.Security.Policy;
 
 public class InspectorView : VisualElement
 {
-	[SerializeField]
-	DropdownMenu dropDown;
-	[SerializeField]
-	ObjectField playerObj;
+	public DropdownField dropDown;
+
+	public UnityEngine.Object objectValue;	
 
 	PlayerController playerController;
 	public new class UxmlFactory : UxmlFactory<InspectorView, VisualElement.UxmlTraits> { }
 	Editor editor;
 	private MethodInfo[] methods;
+	public NodeView SelectNode;
 
 	public InspectorView()
 	{
 	}
-	public void CreateGUI()
-	{
-	}
 
-	public void OnGUI()
-	{
-
-	}
-
-	internal void UpdateSelection(NodeView nodeView)
+    internal void UpdateSelection(NodeView nodeView)
 	{
 		Clear();
-		UnityEngine.Object.DestroyImmediate(editor);
+		SelectNode = nodeView;
+        UnityEngine.Object.DestroyImmediate(editor);
 		editor = Editor.CreateEditor(nodeView.node);
-
-
 
 		IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
 		Add(container);	
