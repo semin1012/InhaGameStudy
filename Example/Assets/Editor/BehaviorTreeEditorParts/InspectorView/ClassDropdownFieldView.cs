@@ -40,7 +40,6 @@ public class ClassDropdownFieldView : DropdownField
                 if (newValue == components[i].GetType().Name)
                 {
                     SelectType = components[i].GetType();
-                    playerController = components[i].GetComponent<PlayerController>();
                 }
             }
         }

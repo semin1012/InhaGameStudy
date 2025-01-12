@@ -91,14 +91,6 @@ namespace Semin
 			if (OnNodeSelected != null)
 				OnNodeSelected.Invoke(this);
 		}
-
-        public void SetUpdate(FuncDropdownFieldView field)
-        {
-			if (node is ActionNode action)
-            {
-				action.act = field.SelectFunc;
-			}            
-        }
     }
 
 }

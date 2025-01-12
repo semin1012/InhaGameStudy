@@ -19,13 +19,24 @@ public class SCBehaviorTree : ScriptableObject
 
 	public Node CreateNode(System.Type type)
 	{
-		Node node = ScriptableObject.CreateInstance(type) as Node;
-		node.name = type.Name;
-		node.guid = GUID.Generate().ToString();
-		nodes.Add(node);
+		Node node = null;
+        if (typeof(Node).IsAssignableFrom(type))
+        {
+            node = ScriptableObject.CreateInstance(type) as Node;
+            if (node != null)
+            {
+                node.name = type.Name;
+                node.guid = GUID.Generate().ToString();
+                nodes.Add(node);
 
-		AssetDatabase.AddObjectToAsset(node, this);
-		AssetDatabase.SaveAssets();
+                AssetDatabase.AddObjectToAsset(node, this);
+                AssetDatabase.SaveAssets();
+            }
+            else
+            {
+                Debug.LogError("Node 인스턴스 생성 실패");
+            }
+        }
 		return node;
 	}
 

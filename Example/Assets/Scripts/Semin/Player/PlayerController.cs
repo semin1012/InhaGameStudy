@@ -36,7 +36,7 @@ namespace Semin
 				inputs[(EKey)i] = false;
 
 			rigidBody = GetComponent<Rigidbody>();	
-			behaviourTree = new RootNode(SetBehaviourTree());
+			//behaviourTree = new RootNode(SetBehaviourTree());
 		}
 
 		Node SetBehaviourTree()
@@ -54,7 +54,7 @@ namespace Semin
 
 		private void FixedUpdate()
 		{ 
-			behaviourTree.Evaluate();
+			//behaviourTree.Evaluate();
 		}
 
 		#region Attack Node
@@ -69,7 +69,7 @@ namespace Semin
 					transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * speedValue.x);
 					break;
 				case EDirection.Up:
-					transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * speedValue.y);
+                    transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * speedValue.y);
 					break;
 				case EDirection.Down:
 					transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * -1 * speedValue.y);
@@ -147,7 +147,7 @@ namespace Semin
 			}
 		}
 
-		public int ConvertToThreeValues(float value)
+		private int ConvertToThreeValues(float value)
 		{
 			if (value > 0)
 				return 1;

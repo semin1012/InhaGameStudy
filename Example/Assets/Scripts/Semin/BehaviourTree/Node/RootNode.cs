@@ -24,6 +24,10 @@ namespace Semin
 			node.child = child.Clone();
 			return node;
 		}
-	}
 
+        public override void Start()
+        {
+			child.Start();
+        }
+    }
 }

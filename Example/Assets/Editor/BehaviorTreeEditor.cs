@@ -5,6 +5,10 @@ using Semin;
 using UnityEditor.UIElements;
 using Unity.VisualScripting;
 using System.Reflection;
+using Unity.VisualScripting.FullSerializer.Internal;
+using PlasticPipe.PlasticProtocol.Messages;
+using UnityEngine.InputSystem.XR;
+using UnityEditor.Rendering;
 
 public class BehaviorTreeEditor : EditorWindow
 {
@@ -14,11 +18,15 @@ public class BehaviorTreeEditor : EditorWindow
     ObjectFieldView fieldView;
     FuncDropdownFieldView funcDropdownView;
     ClassDropdownFieldView classDropdownView;
+    NodeView selectNode;
+    KeyParameterView keyParameterView;
+    DirectionParameterView directionParameterView;
 
     PlayerController playerController;
 	private MethodInfo[] methods;
+    private ParameterInfo[] parameters;
 
-	[MenuItem("My Funcion/Behaviour Tree/Editor ...")]
+    [MenuItem("My Funcion/Behaviour Tree/Editor ...")]
     public static void OpenWindow()
     {
         BehaviorTreeEditor wnd = GetWindow<BehaviorTreeEditor>();
@@ -43,6 +51,8 @@ public class BehaviorTreeEditor : EditorWindow
         fieldView = root.Q<ObjectFieldView>();
         funcDropdownView = root.Q<FuncDropdownFieldView>();
         classDropdownView = root.Q<ClassDropdownFieldView>();
+        keyParameterView = root.Q<KeyParameterView>();
+        directionParameterView = root.Q<DirectionParameterView>();
 
         treeView.OnNodeSelected = OnNodeSelectionChanged;
         treeView.focusable = true;
@@ -54,9 +64,13 @@ public class BehaviorTreeEditor : EditorWindow
 
         funcDropdownView.OnSelected = OnFuncSelectionChanged;
 
+        directionParameterView.OnSelected = OnDirectionSelectionChanged;
+
         fieldView.SetEnabled(false);
         funcDropdownView.SetEnabled(false);
         classDropdownView.SetEnabled(false);
+        keyParameterView.SetEnabled(false);
+        directionParameterView.SetEnabled(false);
     }
 
 	private void OnSelectionChange()
@@ -70,6 +84,7 @@ public class BehaviorTreeEditor : EditorWindow
     void OnNodeSelectionChanged(NodeView node)
     {
         inspectorView.UpdateSelection(node);
+        selectNode = node;  
 
         if (inspectorView.SelectNode.node is CompositeNode || inspectorView.SelectNode.node is RootNode)
         {
@@ -79,7 +94,6 @@ public class BehaviorTreeEditor : EditorWindow
 
         else
         {
-            fieldView.SetEnabled(true);
             funcDropdownView.SetEnabled(true);
             classDropdownView.SetEnabled(true);
         }
@@ -92,11 +106,61 @@ public class BehaviorTreeEditor : EditorWindow
 
     void OnClassSelectionChanged(ClassDropdownFieldView field)
     {
+        funcDropdownView.SelectNode = selectNode;
         funcDropdownView.SetDropdownMenu(field);
     }
 
     void OnFuncSelectionChanged(FuncDropdownFieldView field)
     {
-        inspectorView.SelectNode.SetUpdate(field);
+        parameters = GetParameters(field.value.ToString());
+
+        PlayerController controller = fieldView.value.GetComponent<PlayerController>();
+        if (controller == null)
+            return;
+
+        if (selectNode.node is ActionNode action)
+        {
+            action.SetAction(field.value.ToString(), controller);
+        }
+    }
+
+    void OnDirectionSelectionChanged(DirectionParameterView direction)
+    {
+        PlayerController controller = fieldView.value.GetComponent<PlayerController>();
+        if (parameters.Length > 0)
+        {
+            if (selectNode.node is ActionNode action)
+            {
+                action.SetActionWithParam(funcDropdownView.value.ToString(), controller, typeof(PlayerController.EDirection), direction.value.ToString());
+            }
+        }
+    }
+
+    ParameterInfo[] GetParameters(string methodName)
+    {
+        keyParameterView.SetEnabled(false);
+        directionParameterView.SetEnabled(false);
+
+        ParameterInfo[] parameters = null;
+
+        PlayerController controller = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        methods = controller.GetType().GetDeclaredMethods();
+
+        for (int i = 0; i < methods.Length; i++)
+        {
+            if (methods[i].Name == methodName)
+            {
+                parameters = methods[i].GetParameters();
+                for (int j = 0; j < parameters.Length; j++)
+                {
+                    if (parameters[j].ParameterType == typeof(EKey))
+                        keyParameterView.SetEnabled(true);
+                    if (parameters[j].ParameterType == typeof(PlayerController.EDirection))
+                        directionParameterView.SetEnabled(true);
+                }
+            }
+        }
+
+        return parameters;
     }
 }

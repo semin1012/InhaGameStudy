@@ -14,6 +14,7 @@ public class FuncDropdownFieldView : DropdownField
     public MethodInfo SelectMethod;
     public PlayerController gameObj;
     public Func<INode.ENodeState> SelectFunc;
+    public NodeView SelectNode;
 
     public FuncDropdownFieldView()
     {
@@ -26,10 +27,13 @@ public class FuncDropdownFieldView : DropdownField
         {
             gameObj = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
             methods = field.SelectType.GetDeclaredMethods();
-            for (int i = 0; i < methods.Length; i++)
+            if (SelectNode.node is ActionNode action)
             {
-                if (methods[i].IsPublic)
-                    choices.Add(methods[i].Name);
+                for (int i = 0; i < methods.Length; i++)
+                {
+                    if (methods[i].IsPublic && methods[i].ReturnType == typeof(INode.ENodeState))
+                        choices.Add(methods[i].Name);
+                }
             }
         }
     }
