@@ -19,6 +19,12 @@
     <Filter Include="소스 파일\Bodys">
       <UniqueIdentifier>{02886904-165f-46dd-b9f2-a53279afe229}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\RenderCulling">
+      <UniqueIdentifier>{bef8b073-c7cb-49b0-bd74-c50de9d50f96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\RenderCulling">
+      <UniqueIdentifier>{b4219482-5386-4bc4-8730-5956712092af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -99,6 +105,9 @@
     <ClInclude Include="cMtlTex.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="cFrustum.h">
+      <Filter>헤더 파일\RenderCulling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InhaDX.cpp">
@@ -169,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="cMtlTex.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrustum.cpp">
+      <Filter>소스 파일\RenderCulling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
