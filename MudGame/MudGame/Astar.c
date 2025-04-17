@@ -20,47 +20,37 @@ extern int size[10];
 
 int cnt = 0;
 
+typedef enum MapType
+{
+	WALL = 1,
+	COIN = 2,
+	MAX
+} MapType;
+
+typedef enum VistType
+{
+	WALL = -2,
+	MAX
+} VisitType;
+
 void UpdateFPS()
 {
-	static float timeElapsed = 5000.0f;            //흐른 시간
+	static float timeElapsed = 0.0f;			
+	DWORD curTime = clock();					
+	timeElapsed += (curTime - lastTime);
 
-
-	DWORD curTime = clock();      //현재 시간
-	int timeDelta = (curTime - lastTime);        //timeDelta(1번생성후 흐른 시간) 1초단위로 바꿔준다.
-
-	timeElapsed += timeDelta;
+	MapType wall = WALL;
+	VisitType visitWall = WALL;
 
 	if(timeElapsed >= 1000.0f)
 	{
-		for (int i = 0; i <= cnt; i++)
-		{
-			for (int j = 0; j < count[i]; j++)
-			{
-				if (newq[i][j] != NULL)
-				{
-					free(newq[i][j]);
-					newq[i][j] = NULL;
-				}
-			}
-			count[i] = 0;
-		}
-		e.x = player.x;
-		e.y = player.y;
-		s[cnt].x = enemysPos[cnt].x;
-		s[cnt].y = enemysPos[cnt].y;
-
-		Q[cnt] = NULL;
-
-		memset(g[cnt], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		memset(pre[cnt], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-		memset(visit[cnt], 0, sizeof(int) * MAPSIZE_Y * MAPSIZE_X);
-
+		FreeAndResetMemory();
 		for (int j = 0; j < MAPSIZE_Y; j++)
 		{
 			for (int z = 0; z < MAPSIZE_X; z++)
 			{
-				if (map[j][z] == 1)
-					visit[cnt][j][z] = -2;	// WALL = -2
+				if (map[j][z] == wall)
+					visit[cnt][j][z] = visitWall;	// WALL = -2
 			}
 		}
 
@@ -75,6 +65,33 @@ void UpdateFPS()
 	}
 
 	lastTime = curTime;
+}
+
+void FreeAndResetMemory()
+{
+	for (int i = 0; i <= cnt; i++)
+	{
+		for (int j = 0; j < count[i]; j++)
+		{
+			if (newq[i][j] != NULL)
+			{
+				free(newq[i][j]);
+				newq[i][j] = NULL;
+			}
+		}
+		count[i] = 0;
+	}
+	e.x = player.x;
+	e.y = player.y;
+	s[cnt].x = enemysPos[cnt].x;
+	s[cnt].y = enemysPos[cnt].y;
+
+	Q[cnt] = NULL;
+
+	memset(g[cnt], 0, sizeof(int)* MAPSIZE_Y* MAPSIZE_X);
+	memset(pre[cnt], 0, sizeof(int)* MAPSIZE_Y* MAPSIZE_X);
+	memset(visit[cnt], 0, sizeof(int)* MAPSIZE_Y* MAPSIZE_X);
+
 }
 
 
@@ -175,7 +192,6 @@ void add_openlist(VERTEX v, int visit[][MAPSIZE_X], int g[][MAPSIZE_X], int pre[
 	VERTEX temp;
 	int i, j, w, gx;
 
-	// 가까운 지점들 탐색한다
 	for (i = v.y - 1; i <= v.y + 1; i++)
 	{
 		if (i < 0 || i >= MAPSIZE_Y) continue;
@@ -227,15 +243,14 @@ VERTEX dequeue(QUEUE** Q)
 void astar(int pre[][MAPSIZE_X], VERTEX* s, int visit[][MAPSIZE_X], QUEUE** Q, int g[][MAPSIZE_X], VERTEX* e, int i)
 {
 	VERTEX v;
-	pre[s->y][s->x] = UNDEF;	// 시작 지점은 루트가 없다
+	pre[s->y][s->x] = UNDEF;
 	s->g = 0;
-	v = *s;	// current 포인트를 시작점으로 만든다
+	v = *s;	// 시작점 지정
 
 	add_openlist(v, visit, g, pre, e, Q, i);
 
 	while (!empty_queue(i))
 	{
-		// 큐가 비지 않았다면 현재 점을 방문 목록에 넣는다
 		visit[v.y][v.x] = CLOSED;
 		v = dequeue(Q);
 
